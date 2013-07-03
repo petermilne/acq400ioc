@@ -1,0 +1,78 @@
+
+record (longout, "${UUT}:${SITE}:INTCLK_HZ") {
+	field(DTYP, "Soft Channel")
+        field(PINI, "YES")
+        field(VAL,  "500000")
+        field(DESC, "Internal FCLK [Hz]")
+        field(LOPR, "10000")
+        field(HOPR, "1000000")
+        field(FLNK, "${UUT}:${SITE}:INTCLK_calc")
+        field(EGU,  "Hz")
+	
+}
+record (calc, "${UUT}:${SITE}:INTCLK_calc") {
+	field(INPA, "100000000")
+	field(INPB, "${UUT}:${SITE}:INTCLK_HZ")
+	field(CALC, "A/B")
+	field(PREC, "0")
+	field(DESC, "calculates INTCLK clkdiv")
+	field(FLNK, "${UUT}:${SITE}:clkdiv")
+}
+record (longout, "${UUT}:${SITE}:clkdiv") {
+	field(DTYP, "longoutAcqHost")
+	field(DOL,  "${UUT}:${SITE}:INTCLK_calc")
+	field(OUT, "@/dev/acq420.${SITE}.knobs/clkdiv")
+	field(OMSL, "closed_loop")
+}
+
+record (mbbo, "${UUT}:${SITE}:gain:1")	{
+	field(DTYP, "mbboAcqHost")
+	field(OUT, "@/dev/acq420.${SITE}.knobs/gain1")
+        field(ZRST, "10V")
+        field(ONST, "5V0")
+        field(TWST, "2V5")
+        field(THST, "1V2")
+        field(NOBT, "2")
+        field(PINI, "YES")
+
+}
+record (mbbo, "${UUT}:${SITE}:gain:2")	{
+	field(DTYP, "mbboAcqHost")
+	field(OUT, "@/dev/acq420.${SITE}.knobs/gain2")
+        field(ZRST, "10V")
+        field(ONST, "5V0")
+        field(TWST, "2V5")
+        field(THST, "1V2")
+        field(NOBT, "2")
+        field(PINI, "YES")
+}
+record (mbbo, "${UUT}:${SITE}:gain:3")	{
+	field(DTYP, "mbboAcqHost")
+	field(OUT, "@/dev/acq420.${SITE}.knobs/gain3")
+        field(ZRST, "10V")
+        field(ONST, "5V0")
+        field(TWST, "2V5")
+        field(THST, "1V2")
+        field(NOBT, "2")
+        field(PINI, "YES")
+}
+record (mbbo, "${UUT}:${SITE}:gain:4")	{
+	field(DTYP, "mbboAcqHost")
+	field(OUT, "@/dev/acq420.${SITE}.knobs/gain4")
+        field(ZRST, "10V")
+        field(ONST, "5V0")
+        field(TWST, "2V5")
+        field(THST, "1V2")
+        field(NOBT, "2")
+        field(PINI, "YES")
+}
+
+record(bo, "${UUT}:${SITE}:simulate") {
+	field(DTYP, "boAcqHost")
+	field(OUT, "@/dev/acq420.${SITE}.knobs/simulate")
+}
+
+record(stringin, "${UUT}:${SITE}:stats") {
+	field(DTYP, "dsSysfsStringin")
+	field(INP, "@/dev/acq420.${SITE}.knobs/stats")
+}

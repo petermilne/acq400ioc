@@ -1,0 +1,20 @@
+record(waveform, "${UUT}:AI:WF:${cid}") {	
+	field(DTYP, "wfAcqHost")
+	field(INP, "@${fname}_wf ${cid}")
+	field(SCAN, "I/O Intr")	
+	field(DESC, "AI waveform record raw")
+	field(NELM,"${size}")
+	field(FTVL,"${type}")
+	field(FLNK,"${UUT}:AI:WF${cid}:uv")
+}
+
+record(aSub, "${UUT}:AI:WF${cid}:uv") {	
+	field(SNAM, "raw_to_uvolts")
+	field(FTA,  "LONG")
+	field(NOA,  "${size}")
+	field(INPA, "${UUT}:AI:WF:${cid}")
+	field(FTVA, "LONG")
+	field(NOVA, "${size}")
+	field(DESC, "AI waveform record scaled to micro volts")
+}
+

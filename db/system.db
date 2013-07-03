@@ -1,0 +1,5 @@
+record (longin, "${UUT}:SYS:uptime") {
+	field(DTYP, "longinAcqHost")
+	field(INP, "@/proc/uptime")
+	field(SCAN, "1 second")
+}
