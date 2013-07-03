@@ -6,6 +6,8 @@ include $(TOP)/configure/CONFIG
 #=============================
 # Huge kludge by pgm reaches the parts ..
 USR_LDFLAGS += -L $(TOP)/lib/$(T_A)
+
+CXXFLAGS+=-fno-operator-names
 #=============================
 # Build the IOC application
 
@@ -15,6 +17,12 @@ DBD += acq400ioc.dbd
 
 # acq400ioc.dbd will be made up from these files:
 acq400ioc_DBD += base.dbd
+acq400ioc_DBD += system.dbd
+acq400ioc_DBD += xxAcqHost.dbd
+
+acq400ioc_DBD += sysfs.dbd
+acq400ioc_DBD += lxb.dbd
+acq400ioc_DBD += acqAi.dbd
 
 # Include dbd files from all support applications:
 #acq400ioc_DBD += xxx.dbd
@@ -22,8 +30,9 @@ acq400ioc_DBD += asyn.dbd
 acq400ioc_DBD += drvAsynIPPort.dbd
 acq400ioc_DBD += stream.dbd
 
+
 # Add all the support libraries needed by this IOC
-acq400ioc_LIBS += 
+acq400ioc_LIBS += acq2ioc
 
 #PROD_LIBS += stream
 #PROD_LIBS += asyn
@@ -31,7 +40,19 @@ acq400ioc_LIBS +=
 acq400ioc_SRCS += acq400ioc_registerRecordDeviceDriver.cpp
 
 # Build the main IOC entry point on workstation OSs.
-acq400ioc_SRCS_DEFAULT += acq400iocMain.cpp
+acq400ioc_SRCS_DEFAULT += acq400iocMain.cpp \
+    AcqHostDescr.cpp AcqHostDevice.cpp \
+    devAiAcqHost.cpp AcqAiHostDescr.cpp \
+    devWfAcqHost.cpp AcqWfHostDescr.cpp AcqWfCalc.cpp \
+    devBiAcqHost.cpp AcqBiHostDescr.cpp \
+    devBoAcqHost.cpp AcqBoHostDescr.cpp \
+    devLiAcqHost.cpp AcqLiHostDescr.cpp \
+    devLoAcqHost.cpp AcqLoHostDescr.cpp \
+    devMbbiAcqHost.cpp AcqMbbiHostDescr.cpp \
+    devMbboAcqHost.cpp AcqMbboHostDescr.cpp \
+    devWfAWGHost.cpp AcqWfAWGHostDescr.cpp \
+    devBoAcqCommand.cpp AcqBoCommandDescr.cpp \
+    FileMonitor.cpp VFile.cpp 
 acq400ioc_SRCS_vxWorks += -nil-
 
 # Add support from base/src/vxWorks if needed

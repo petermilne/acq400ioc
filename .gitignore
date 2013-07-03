@@ -1,0 +1,9 @@
+acq400iocApp/src/O.Common/
+acq400iocApp/src/O.linux-arm/
+acq400iocApp/src/O.linux-x86_64/
+bin/
+configure/
+lib
+opkg/
+release/
+

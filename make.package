@@ -1,0 +1,16 @@
+#!/bin/bash
+
+DC=$(date +%y%m%d%H%M)
+SEQ=40
+
+rm -f opkg/usr/local/bin/acq400ioc
+cp bin/linux-arm/acq400ioc opkg/usr/local/bin
+rm -f opkg/usr/local/lib/*
+cp lib/linux-arm/*.so opkg/usr/local/lib
+rm -f opkg/usr/local/epics/dbd/acq400ioc.dbd
+cp dbd/acq400ioc.dbd opkg/usr/local/epics/dbd
+cp db/* opkg/usr/local/epics/db
+cp -a ../base/lib/linux-arm/* opkg/usr/local/lib
+cp -a ../base/bin/linux-arm/ca* opkg/usr/local/bin
+
+tar cvzf release/${SEQ}-acq400ioc-${DC}.tgz -C opkg .
