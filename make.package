@@ -10,6 +10,7 @@ cp lib/linux-arm/*.so opkg/usr/local/lib
 rm -f opkg/usr/local/epics/dbd/acq400ioc.dbd
 cp dbd/acq400ioc.dbd opkg/usr/local/epics/dbd
 cp db/* opkg/usr/local/epics/db
+cp scripts/* opkg/usr/local/epics/scripts
 cp -a ../base/lib/linux-arm/* opkg/usr/local/lib
 cp -a ../base/bin/linux-arm/ca* opkg/usr/local/bin
 

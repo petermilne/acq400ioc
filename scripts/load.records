@@ -1,0 +1,44 @@
+#!/bin/sh
+
+HOST=${1:-$(hostname)}
+SIZE=${SIZE:-4096}
+TYPE=${TYPE:-SHORT}
+FNAME=AI
+
+HSIZE=256
+
+# There's only ONE lot of AI records... this is deliberate for now
+make_AI() {
+	let ch=0; while [ $ch -lt 4 ]; do
+		let ch=$ch+1
+		cid=$(printf "%02d" $ch)
+		let IDX=$ch
+
+		PRAMS="UUT=$HOST,cid=$cid,idx=$IDX,fname=${FNAME}"
+		WPRAMS="$PRAMS,size=$SIZE,type=$TYPE"
+
+		echo dbLoadRecords\(\"db/wfAcqHost.db\",\"$WPRAMS\"\)
+	done
+}
+
+make_HISTO() {
+	let site=0; while [ $site -lt 6 ]; do
+		let site=$site+1
+		PRAMS="UUT=$HOST,cid=$site,idx=$site,fname=HG"
+		WPRAMS="$PRAMS,size=$HSIZE,type=LONG"
+		echo dbLoadRecords\(\"db/hgAcqHost.db\",\"$WPRAMS\"\)		
+	done
+}
+
+cat - <<EOF
+dbLoadDatabase("dbd/acq400ioc.dbd",0,0)
+acq400ioc_registerRecordDeviceDriver(pdbbase)
+dbLoadRecords("db/system.db","UUT=${HOST}")
+dbLoadRecords("db/acq420fmc.db","UUT=${HOST},SITE=0")
+dbLoadRecords("db/acq420fmc.db","UUT=${HOST},SITE=1")
+$(make_AI)
+$(make_HISTO)
+iocInit()
+dbl > /tmp/records.dbl
+EOF
+
