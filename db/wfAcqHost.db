@@ -1,11 +1,11 @@
 record(waveform, "${UUT}:${SITE}:AI:WF:${cid}") {	
 	field(DTYP, "wfAcqHost")
-	field(INP, "@${fname}_wf ${cid}")
+	field(INP, "@${fname}.wf ${cid}")
 	field(SCAN, "I/O Intr")	
 	field(DESC, "AI waveform record raw")
 	field(NELM,"${size}")
 	field(FTVL,"${type}")
-	field(FLNK,"${UUT}:AI:WF${cid}:uv")
+	field(FLNK,"${UUT}:${SITE}:AI:WF${cid}:uv")
 }
 
 record(aSub, "${UUT}:${SITE}:AI:WF${cid}:uv") {	

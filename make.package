@@ -15,3 +15,4 @@ cp -a ../base/lib/linux-arm/* opkg/usr/local/lib
 cp -a ../base/bin/linux-arm/ca* opkg/usr/local/bin
 
 tar cvzf release/${SEQ}-acq400ioc-${DC}.tgz -C opkg .
+ls -l release/${SEQ}-acq400ioc-${DC}.tgz
