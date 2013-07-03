@@ -1,4 +1,4 @@
-record(waveform, "${UUT}:AI:HG:${cid}") {	
+record(waveform, "${UUT}:${SITE}:AI:HG") {	
 	field(DTYP, "wfAcqHost")
 	field(INP, "@${fname}_wf ${cid}")
 	field(SCAN, "I/O Intr")	
