@@ -21,7 +21,7 @@ record(calc, "${UUT}:${SITE}:SIG:${lname}:COUNT") {
 	field(INPA, "${UUT}:${SITE}:SIG:${lname}:rawcount")
 	field(INPB, "${UUT}:${SITE}:SIG:${lname}:COUNT.LA")
 	field(INPC, "268435456")
-	field(CALC, "A==0 && B==0? 0: A > B? VAL+(A-B): VAL+(A+C-B)")
+	field(CALC, "A==0 || B==0? 0: A > B? VAL+(A-B): VAL+(A+C-B)")
 	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:delta")
 	field(DESC, "64 bit count detects and corrects 28 bit rollover")
 }
@@ -50,7 +50,7 @@ record(calc, "${UUT}:${SITE}:SIG:${lname}:FREQ") {
 	field(INPG, "${UUT}:${SITE}:SIG:${lname}:FREQ.LF")
 	field(INPH, "${UUT}:${SITE}:SIG:${lname}:FREQ.LG")
 	field(INPL, "${UUT}:${SITE}:SIG:${lname}:nzcount")
-	field(CALC, "A==0? 0: (A+(L>8? B+C+D+E+F+G+H: 0))/(L>8? 8: 1)")
+	field(CALC, "A==0? 0: (A+(L>8? B+C+D+E+F+G+H + 8*VAL: 0))/(L>8? 16: 1)")
 	field(PREC, "0")
 	field(EGU,  "Hz")
 	field(DESC, "LRU:${UUT}:${SITE} CLK FREQ ${lname}")
