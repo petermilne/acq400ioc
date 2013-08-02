@@ -32,6 +32,13 @@ record(calc, "${UUT}:${SITE}:SIG:${lname}:delta") {
 	field(INPB, "${UUT}:${SITE}:SIG:${lname}:delta.LA")
 	field(CALC, "A > B && B != 0 ? A-B: 0")
 	field(DESC, "computes count difference")
+	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:nzcount")
+}
+
+record(calc, "${UUT}:${SITE}:SIG:${lname}:nzcount") {
+	field(INPA, "${UUT}:${SITE}:SIG:${lname}:rollover28")
+	field(DESC, "computes number of non-zero samples")
+	field(CALC, "A == 0? 0: VAL+1")
 	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:FREQ")
 }
 record(calc, "${UUT}:${SITE}:SIG:${lname}:FREQ") {
@@ -43,11 +50,8 @@ record(calc, "${UUT}:${SITE}:SIG:${lname}:FREQ") {
 	field(INPF, "${UUT}:${SITE}:SIG:${lname}:FREQ.LE")
 	field(INPG, "${UUT}:${SITE}:SIG:${lname}:FREQ.LF")
 	field(INPH, "${UUT}:${SITE}:SIG:${lname}:FREQ.LG")
-	field(INPI, "${UUT}:${SITE}:SIG:${lname}:FREQ.LH")
-	field(INPJ, "${UUT}:${SITE}:SIG:${lname}:FREQ.LI")
-	field(INPK, "${UUT}:${SITE}:SIG:${lname}:FREQ.LJ")
-	field(INPL, "${UUT}:${SITE}:SIG:${lname}:FREQ.LK")
-	field(CALC, "A == 0? 0: (A+B+C+D+E+F+G+H+I+J+K+L)/12")
+	field(INPL, "${UUT}:${SITE}:SIG:${lname}:nzcount")
+	field(CALC, "A==0? 0: (A+(L>8? B+C+D+E+F+G+H: 0))/(L>8? 8: 1)")
 	field(PREC, "0")
 	field(EGU,  "Hz")
 	field(DESC, "LRU:${UUT}:${SITE} CLK FREQ ${lname}")
