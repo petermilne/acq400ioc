@@ -26,12 +26,17 @@ load_420() {
 	SITE=$1
 
 	echo 'dbLoadRecords("db/acq420fmc.db","UUT='${HOST}',SITE='${SITE}'")'
-	
+
+	CPRAMS="UUT=$HOST,SITE=${SITE}"	
 	HPRAMS="UUT=$HOST,SITE=${SITE},size=$HSIZE,type=LONG,fname=HG.${SITE}"
 	
 	echo 'dbLoadRecords("db/hgAcqHost.db","'${HPRAMS}'")'
 	
 	make_AI $SITE	
+
+	CPRAMS=$HPRAMS,lname=clk_count
+	echo 'dbLoadRecords("db/counter.db","'${CPRAMS},lname=clk_count'")'
+	echo 'dbLoadRecords("db/counter.db","'${CPRAMS},lname=sample_count'")'
 }
 
 
