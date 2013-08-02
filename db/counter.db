@@ -1,4 +1,4 @@
-record(longin, "${UUT}:${SITE}:SIG:${lname}:COUNT") {
+record(longin, "${UUT}:${SITE}:SIG:${lname}:rawcount") {
 	field(SCAN, "1 second")
 	field(DTYP, "longinAcqHost")
 	field(INP,  "@/dev/acq420.${SITE}.knobs/${lname}")
@@ -9,26 +9,25 @@ record(longin, "${UUT}:${SITE}:SIG:${lname}:COUNT") {
 }
 
 record(calc, "${UUT}:${SITE}:SIG:${lname}:ACTIVE") {
-	field(INPA, "${UUT}:${SITE}:SIG:${lname}:COUNT")
+	field(INPA, "${UUT}:${SITE}:SIG:${lname}:rawcount")
 	field(INPB, "${UUT}:${SITE}:SIG:${lname}:ACTIVE.LA")
 	field(CALC, "(A-B) ? 1: 0")
 	field(PREC, "1")
-	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:rollover28")
+	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:COUNT")
 	field(DESC, "LRU:${UUT}:${SITE} CLK ACTIVE ${lname}")
 }
 
-record(calc, "${UUT}:${SITE}:SIG:${lname}:rollover28") {
-	field(INPA, "${UUT}:${SITE}:SIG:${lname}:COUNT")
-	field(INPB, "${UUT}:${SITE}:SIG:${lname}:rollover28.LA")
-#	field(INPC, "1<<28")
+record(calc, "${UUT}:${SITE}:SIG:${lname}:COUNT") {
+	field(INPA, "${UUT}:${SITE}:SIG:${lname}:rawcount")
+	field(INPB, "${UUT}:${SITE}:SIG:${lname}:COUNT.LA")
 	field(INPC, "268435456")
 	field(CALC, "A==0 && B==0? 0: A > B? VAL+(A-B): VAL+(A+C-B)")
 	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:delta")
-	field(DESC, "detects and corrects 24 bit rollover")
+	field(DESC, "64 bit count detects and corrects 28 bit rollover")
 }
 
 record(calc, "${UUT}:${SITE}:SIG:${lname}:delta") {
-	field(INPA, "${UUT}:${SITE}:SIG:${lname}:rollover28")
+	field(INPA, "${UUT}:${SITE}:SIG:${lname}:COUNT")
 	field(INPB, "${UUT}:${SITE}:SIG:${lname}:delta.LA")
 	field(CALC, "A > B && B != 0 ? A-B: 0")
 	field(DESC, "computes count difference")
@@ -36,7 +35,7 @@ record(calc, "${UUT}:${SITE}:SIG:${lname}:delta") {
 }
 
 record(calc, "${UUT}:${SITE}:SIG:${lname}:nzcount") {
-	field(INPA, "${UUT}:${SITE}:SIG:${lname}:rollover28")
+	field(INPA, "${UUT}:${SITE}:SIG:${lname}:COUNT")
 	field(DESC, "computes number of non-zero samples")
 	field(CALC, "A == 0? 0: VAL+1")
 	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:FREQ")
