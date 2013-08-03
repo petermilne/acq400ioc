@@ -1,9 +1,30 @@
+
 record(bo, "${UUT}:${SITE}:${FNAM}") {
 	field(DTYP, "Soft Channel")	
 	field(ZNAM, "${ZNAM}")
 	field(ONAM, "${ONAM}")
-	field(FLNK, "${UUT}:${SITE}:_${FN}")
+	field(FLNK, "${UUT}:${SITE}:${FNAM}:w PP")
+}
+
+record(bi, "${UUT}:${SITE}:${FNAM}:r") {
+	field(DTYP, "stream")
+	field(INP,  "@signal.proto getSig(${FN}) ${SPORT}")
+	field(SCAN, "1 second")
 	field(PINI, "YES")
+	field(FLNK, "${UUT}:${SITE}:${FNAM}:s")
+}
+record(bo, "${UUT}:${SITE}:${FNAM}:s") {
+	field(DTYP, "Soft Channel")
+	field(DOL,  "${UUT}:${SITE}:${FNAM}:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:${SITE}:${FNAM} PP")
+}
+
+record(bo, "${UUT}:${SITE}:${FNAM}:w") {
+	field(DTYP, "Soft Channel")	
+	field(FLNK, "${UUT}:${SITE}:_${FN} PP")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:${FNAM}:s.PACT")
 }
 
 record(mbbo, "${UUT}:${SITE}:${FNAM}:DX") {
@@ -16,18 +37,56 @@ record(mbbo, "${UUT}:${SITE}:${FNAM}:DX") {
     field(FRST, "d4")
     field(FVST, "d5")
     field(SXST, "d6")
-    field(SVST, "d7")
-    field(EIST, "d8")
-    field(FLNK, "${UUT}:${SITE}:_${FN}")
-}       	
+    field(SVST, "d7")    
+    field(FLNK, "${UUT}:${SITE}:${FNAM}:DX:w PP")
+}     
 
+record(mbbi, "${UUT}:${SITE}:${FNAM}:DX:r") {
+	field(DTYP, "stream")
+	field(NOBT, "3")
+	field(INP,  "@signal.proto getSigDx(${FN}) ${SPORT}")
+	field(SCAN, "I/O Intr")		
+	field(FLNK, "${UUT}:${SITE}:${FNAM}:DX:s")
+}
+record(mbbo, "${UUT}:${SITE}:${FNAM}:DX:s") {
+	field(DTYP, "Soft Channel")
+	field(NOBT, "3")
+	field(DOL,  "${UUT}:${SITE}:${FNAM}:DX:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:${SITE}:${FNAM}:DX PP")
+} 	
+
+record(bo, "${UUT}:${SITE}:${FNAM}:DX:w") {
+	field(DTYP, "Soft Channel")	
+	field(FLNK, "${UUT}:${SITE}:_${FN} PP")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:${FNAM}:DX:s.PACT")
+}
 record(bo, "${UUT}:${SITE}:${FNAM}:SENSE") {
 	field(DTYP, "Soft Channel")
 	field(ZNAM, "falling")
 	field(ONAM, "rising")
-	field(FLNK, "${UUT}:${SITE}:_${FN}")
+	field(FLNK, "${UUT}:${SITE}:${FNAM}:SENSE:w PP")
 }
 
+record(bi, "${UUT}:${SITE}:${FNAM}:SENSE:r") {
+	field(DTYP, "stream")
+	field(INP,  "@signal.proto getSigSense(${FN}) ${SPORT}")
+	field(SCAN, "I/O Intr")	
+	field(FLNK, "${UUT}:${SITE}:${FNAM}:SENSE:s")
+}
+record(bo, "${UUT}:${SITE}:${FNAM}:SENSE:s") {
+	field(DTYP, "Soft Channel")
+	field(DOL,  "${UUT}:${SITE}:${FNAM}:SENSE:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:${SITE}:${FNAM}:SENSE PP")
+}
+record(bo, "${UUT}:${SITE}:${FNAM}:SENSE:w") {
+	field(DTYP, "Soft Channel")	
+	field(FLNK, "${UUT}:${SITE}:_${FN} PP")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:${FNAM}:SENSE:s.PACT")
+}
 record(calcout, "${UUT}:${SITE}:_${FN}") {
 	field(INPA, "${UUT}:${SITE}:${FNAM}")
 	field(INPB, "${UUT}:${SITE}:${FNAM}:DX")
