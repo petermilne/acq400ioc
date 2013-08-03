@@ -1,0 +1,5 @@
+Terminator = LF;
+
+setSig {
+	out "\$1=%(A)d,%(B)d,%(C)d";
+}

@@ -17,7 +17,7 @@ record(calc, "${UUT}:${SITE}:SIG:${lname}:ACTIVE") {
 	field(DESC, "True is signal changed from last")
 }
 
-record(calc, "${UUT}:${SITE}:SIG:${lname}:nzcount") {
+record(calcout, "${UUT}:${SITE}:SIG:${lname}:nzcount") {
 	field(INPA, "${UUT}:${SITE}:SIG:${lname}:ACTIVE")
 	field(DESC, "computes number of active updates")
 	field(CALC, "A == 0? 0: VAL+1")

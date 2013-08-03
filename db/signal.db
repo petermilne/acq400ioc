@@ -1,0 +1,38 @@
+record(bo, "${UUT}:${SITE}:${FNAM}") {
+	field(DTYP, "Soft Channel")	
+	field(ZNAM, "${ZNAM}")
+	field(ONAM, "${ONAM}")
+	field(FLNK, "${UUT}:${SITE}:_${FN}")
+	field(PINI, "YES")
+}
+
+record(mbbo, "${UUT}:${SITE}:${FNAM}:DX") {
+	field(DTYP, "Soft Channel")
+	field(NOBT, "3")
+	field(ZRST, "d0")
+    field(ONST, "d1")
+    field(TWST, "d2")
+    field(THST, "d3")
+    field(FRST, "d4")
+    field(FVST, "d5")
+    field(SXST, "d6")
+    field(SVST, "d7")
+    field(EIST, "d8")
+    field(FLNK, "${UUT}:${SITE}:_${FN}")
+}       	
+
+record(bo, "${UUT}:${SITE}:${FNAM}:SENSE") {
+	field(DTYP, "Soft Channel")
+	field(ZNAM, "falling")
+	field(ONAM, "rising")
+	field(FLNK, "${UUT}:${SITE}:_${FN}")
+}
+
+record(calcout, "${UUT}:${SITE}:_${FN}") {
+	field(INPA, "${UUT}:${SITE}:${FNAM}")
+	field(INPB, "${UUT}:${SITE}:${FNAM}:DX")
+	field(INPC, "${UUT}:${SITE}:${FNAM}:SENSE")
+	field(CALC, "0")
+	field(DTYP, "stream")
+	field(OUT,  "@signal.proto setSig(${FN}) ${SPORT}")
+}
