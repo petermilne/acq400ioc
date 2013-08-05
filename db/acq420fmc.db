@@ -8,8 +8,8 @@ record (longout, "${UUT}:${SITE}:INTCLK_HZ") {
         field(HOPR, "1000000")
         field(FLNK, "${UUT}:${SITE}:INTCLK_calc")
         field(EGU,  "Hz")
-	
 }
+
 record (calc, "${UUT}:${SITE}:INTCLK_calc") {
 	field(INPA, "100000000")
 	field(INPB, "${UUT}:${SITE}:INTCLK_HZ")
@@ -17,6 +17,8 @@ record (calc, "${UUT}:${SITE}:INTCLK_calc") {
 	field(PREC, "0")
 	field(DESC, "calculates INTCLK clkdiv")
 	field(FLNK, "${UUT}:${SITE}:clkdiv")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:INTCLK_calc:r.PACT")
 }
 record (longout, "${UUT}:${SITE}:clkdiv") {
 	field(DTYP, "longoutAcqHost")
@@ -25,6 +27,23 @@ record (longout, "${UUT}:${SITE}:clkdiv") {
 	field(OMSL, "closed_loop")
 }
 
+record (longin, "${UUT}:${SITE}:clkdiv:r") {
+	field(DTYP, "longinAcqHost")
+	field(INP, "@/dev/acq420.${SITE}.knobs/clkdiv")
+	field(SCAN, "1 second")
+	field(PINI, "YES")
+	field(FLNK, "${UUT}:${SITE}:INTCLK_calc:r")		
+}
+
+record (calcout, "${UUT}:${SITE}:INTCLK_calc:r") {
+	field(INPA, "100000000")
+	field(INPB, "${UUT}:${SITE}:clkdiv:r")
+	field(CALC, "A/B")
+	field(PREC, "0")
+	field(DESC, "calculates INTCLK clkdiv")
+	field(OUT, "${UUT}:${SITE}:INTCLK_HZ PP")
+	field(OOPT, "On Change")
+}
 record (mbbo, "${UUT}:${SITE}:gain:1")	{
 	field(DTYP, "mbboAcqHost")
 	field(OUT, "@/dev/acq420.${SITE}.knobs/gain1")
