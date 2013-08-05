@@ -3,8 +3,17 @@ record(bo, "${UUT}:${SITE}:${FNAM}") {
 	field(DTYP, "Soft Channel")	
 	field(ZNAM, "${ZNAM}")
 	field(ONAM, "${ONAM}")
-	field(FLNK, "${UUT}:${SITE}:${FNAM}:w PP")
+	field(FLNK, "${UUT}:${SITE}:${FNAM}:w PP")	
 }
+
+#http://www.aps.anl.gov/epics/tech-talk/2010/msg00131.php
+# ${FN}   : setpoint
+# ${FN}:r : readback
+# ${FN}:s : sync
+# ${FN}:w : write
+# added twist, all 3 writes get muxed together in :_${FN}
+# while we could disable DX, SENSE when set==0, better effect doing this on 
+# the gui. The driver driver will reject attempts to set 0,X,X where X!=0
 
 record(bi, "${UUT}:${SITE}:${FNAM}:r") {
 	field(DTYP, "stream")
