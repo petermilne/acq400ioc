@@ -1,0 +1,36 @@
+record (mbbo, "${UUT}:${SITE}:gain:${CH}")	{
+	field(DTYP, "Soft Channel")
+	field(NOBT, "2")	
+    field(ZRST, "10V")
+    field(ONST, "5V0")
+    field(TWST, "2V5")
+    field(THST, "1V2")        
+    field(FLNK, "${UUT}:${SITE}:gain:${CH}:w PP")
+}
+
+record (mbbo, "${UUT}:${SITE}:gain:${CH}:w")	{
+	field(DTYP, "mbboAcqHost")
+	field(NOBT, "2")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:gain:${CH}:s.PACT")
+	field(OMSL, "closed_loop")
+	field(DOL, "${UUT}:${SITE}:gain:${CH} PP")	
+	field(OUT, "@/dev/acq420.${SITE}.knobs/gain${CH}")	
+}
+
+record (mbbi, "${UUT}:${SITE}:gain:${CH}:r") {
+	field(DTYP, "mbbiAcqHost")
+	field(NOBT, "2")
+	field(INP,  "@/dev/acq420.${SITE}.knobs/gain${CH}")
+	field(SCAN, "1 second")
+	field(PINI, "YES")	
+	field(FLNK, "${UUT}:${SITE}:gain:${CH}:s")
+}
+
+record (mbbo, "${UUT}:${SITE}:gain:${CH}:s") {
+	field(DTYP, "Soft Channel")
+	field(NOBT, "2")
+	field(OMSL, "closed_loop")	
+	field(DOL, "${UUT}:${SITE}:gain:${CH}:r NPP")	
+	field(OUT, "${UUT}:${SITE}:gain:${CH} PP")
+}

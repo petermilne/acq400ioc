@@ -44,47 +44,6 @@ record (calcout, "${UUT}:${SITE}:INTCLK_calc:r") {
 	field(OUT, "${UUT}:${SITE}:INTCLK_HZ PP")
 	field(OOPT, "On Change")
 }
-record (mbbo, "${UUT}:${SITE}:gain:1")	{
-	field(DTYP, "mbboAcqHost")
-	field(OUT, "@/dev/acq420.${SITE}.knobs/gain1")
-        field(ZRST, "10V")
-        field(ONST, "5V0")
-        field(TWST, "2V5")
-        field(THST, "1V2")
-        field(NOBT, "2")
-        field(PINI, "YES")
-
-}
-record (mbbo, "${UUT}:${SITE}:gain:2")	{
-	field(DTYP, "mbboAcqHost")
-	field(OUT, "@/dev/acq420.${SITE}.knobs/gain2")
-        field(ZRST, "10V")
-        field(ONST, "5V0")
-        field(TWST, "2V5")
-        field(THST, "1V2")
-        field(NOBT, "2")
-        field(PINI, "YES")
-}
-record (mbbo, "${UUT}:${SITE}:gain:3")	{
-	field(DTYP, "mbboAcqHost")
-	field(OUT, "@/dev/acq420.${SITE}.knobs/gain3")
-        field(ZRST, "10V")
-        field(ONST, "5V0")
-        field(TWST, "2V5")
-        field(THST, "1V2")
-        field(NOBT, "2")
-        field(PINI, "YES")
-}
-record (mbbo, "${UUT}:${SITE}:gain:4")	{
-	field(DTYP, "mbboAcqHost")
-	field(OUT, "@/dev/acq420.${SITE}.knobs/gain4")
-        field(ZRST, "10V")
-        field(ONST, "5V0")
-        field(TWST, "2V5")
-        field(THST, "1V2")
-        field(NOBT, "2")
-        field(PINI, "YES")
-}
 
 record(bo, "${UUT}:${SITE}:simulate") {
 	field(DTYP, "boAcqHost")

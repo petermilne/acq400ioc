@@ -40,6 +40,10 @@ load_420() {
 	echo 'dbLoadRecords("db/signal.db","'${TPRAMS}',FNAM=CLK,FN=clk,ZNAM=internal,ONAM=external")'
 	echo 'dbLoadRecords("db/signal.db","'${TPRAMS}',FNAM=EVENT1,FN=event1,ZNAM=disable,ONAM=enable")'
 	echo 'dbLoadRecords("db/signal.db","'${TPRAMS}',FNAM=EVENT2,FN=event2,ZNAM=disable,ONAM=enable")'
+	for ch in 1 2 3 4
+	do
+		echo 'dbLoadRecords("db/gain.db","'${TPRAMS}',CH='$ch'")'
+	done
 	echo 'drvAsynIPPortConfigure("S'${SITE}'", "192.168.0.22:422'${SITE}'")'
 }
 
