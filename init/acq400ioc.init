@@ -15,7 +15,7 @@ make_stcmd() {
 		./scripts/load.records >${STCMD})
 		touch /dev/shm/AI
 		
-		ai_monitor_all
+		ai_monitor_all start
 	fi
 }
 
