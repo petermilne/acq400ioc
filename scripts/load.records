@@ -10,6 +10,11 @@ HSIZE=256
 # There's only ONE lot of AI records... this is deliberate for now
 make_AI() {
 	SITE=$1
+	if [ -e $2.knobs/data32 ]; then
+		if [ $(cat $2.knobs/data32 -eq 1 ]; then
+			TYPE=LONG
+		fi
+	fi
 	let ch=0; while [ $ch -lt 4 ]; do
 		let ch=$ch+1
 		cid=$(printf "%02d" $ch)
@@ -31,7 +36,7 @@ load_420() {
 	HPRAMS="${CPRAMS},size=$HSIZE,type=LONG,fname=HG.${SITE}"
 	echo 'dbLoadRecords("db/hgAcqHost.db","'${HPRAMS}'")'
 	
-	make_AI $SITE	
+	make_AI $SITE	$ACQ420
 
 	echo 'dbLoadRecords("db/counter.db","'${CPRAMS},lname=clk_count'")'
 	echo 'dbLoadRecords("db/counter.db","'${CPRAMS},lname=sample_count'")'
@@ -57,7 +62,7 @@ EOF
 
 for ACQ420 in /dev/acq420.?
 do
-	load_420 ${ACQ420##*.}
+	load_420 ${ACQ420##*.} $ACQ420
 done
 
 cat - <<EOF2

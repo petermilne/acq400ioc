@@ -1,0 +1,46 @@
+#!/bin/sh
+
+ETOP=/usr/local/epics
+STCMD=/tmp/st.cmd
+PID=${ETOP}/pid.txt
+LOG=/var/log/epics.log
+
+if [ -f /etc/profile.d/epics.sh ]; then
+	source /etc/profile.d/epics.sh
+fi
+
+make_stcmd() {
+	if [ ! -e ${STCMD} ]; then
+		(cd ${ETOP}
+		./scripts/load.records >${STCMD})
+		touch /dev/shm/AI
+		
+		ai_monitor_all
+	fi
+}
+
+start_ioc() {
+	/usr/local/bin/procServ -c ${ETOP} 2222 \
+	/usr/local/bin/acq400ioc ${STCMD} >$LOG
+}
+
+stop_ioc() {
+	if [ -r ${PID} ]; then
+		kill -s TERM $(cat ${PID})
+		rm ${PID}
+	fi
+}
+
+case "$1" in
+forcestart)
+	rm -f ${STCMD}       
+start|"")
+	make_stcmd
+	stop_ioc
+	start_ioc;;
+stop)
+	stop_ioc;;
+
+*)
+	echo usage cpsc_ioc start\|stop;;
+esac
