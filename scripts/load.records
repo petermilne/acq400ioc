@@ -11,7 +11,7 @@ HSIZE=256
 make_AI() {
 	SITE=$1
 	if [ -e $2.knobs/data32 ]; then
-		if [ $(cat $2.knobs/data32 -eq 1 ]; then
+		if [ $(cat $2.knobs/data32) -eq 1 ]; then
 			TYPE=LONG
 		fi
 	fi

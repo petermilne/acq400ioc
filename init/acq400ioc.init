@@ -2,7 +2,7 @@
 
 ETOP=/usr/local/epics
 STCMD=/tmp/st.cmd
-PID=${ETOP}/pid.txt
+PIDF=/var/run/acq400ioc.pid
 LOG=/var/log/epics.log
 
 if [ -f /etc/profile.d/epics.sh ]; then
@@ -20,27 +20,36 @@ make_stcmd() {
 }
 
 start_ioc() {
-	/usr/local/bin/procServ -c ${ETOP} 2222 \
+	/usr/local/bin/procServ \
+		-c ${ETOP} -p $PIDF \
+		2222 \
 	/usr/local/bin/acq400ioc ${STCMD} >$LOG
 }
 
 stop_ioc() {
-	if [ -r ${PID} ]; then
-		kill -s TERM $(cat ${PID})
-		rm ${PID}
+	if [ -r ${PIDF} ]; then
+		kill -s TERM $(cat ${PIDF})
+		rm ${PIDF}
 	fi
+}
+
+restart() {
+	if [ "$1" = "force" ]; then
+		rm -f ${STCMD}
+	fi	
+	make_stcmd
+	stop_ioc
+	start_ioc
 }
 
 case "$1" in
 forcestart)
-	rm -f ${STCMD}       
+	restart force;;
 start|"")
-	make_stcmd
-	stop_ioc
-	start_ioc;;
+	restart;;
 stop)
 	stop_ioc;;
 
 *)
-	echo usage cpsc_ioc start\|stop;;
+	echo usage cpsc_ioc start\|stop\|forcestart;;
 esac
