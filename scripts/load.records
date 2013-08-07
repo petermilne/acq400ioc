@@ -40,17 +40,18 @@ load_420() {
 
 	echo 'dbLoadRecords("db/counter.db","'${CPRAMS},lname=clk_count'")'
 	echo 'dbLoadRecords("db/counter.db","'${CPRAMS},lname=sample_count'")'
+	for ch in 1 2 3 4
+	do
+		echo 'dbLoadRecords("db/gain.db","'${CPRAMS}',CH='$ch'")'
+	done
+	
 	TPRAMS="${CPRAMS},SPORT=S${SITE}"
 	echo 'dbLoadRecords("db/signal.db","'${TPRAMS}',FNAM=TRG,FN=trg,ZNAM=soft,ONAM=external")'
 	echo 'dbLoadRecords("db/signal.db","'${TPRAMS}',FNAM=CLK,FN=clk,ZNAM=internal,ONAM=external")'
 	echo 'dbLoadRecords("db/signal.db","'${TPRAMS}',FNAM=SYNC,FN=sync,ZNAM=internal,ONAM=external")'
 	echo 'dbLoadRecords("db/signal.db","'${TPRAMS}',FNAM=EVENT1,FN=event1,ZNAM=disable,ONAM=enable")'
 	echo 'dbLoadRecords("db/signal.db","'${TPRAMS}',FNAM=EVENT0,FN=event0,ZNAM=disable,ONAM=enable")'
-	for ch in 1 2 3 4
-	do
-		echo 'dbLoadRecords("db/gain.db","'${TPRAMS}',CH='$ch'")'
-	done
-	echo 'drvAsynIPPortConfigure("S'${SITE}'", "192.168.0.22:422'${SITE}'")'
+	echo 'drvAsynIPPortConfigure("S'${SITE}'", "127.0.0.1:422'${SITE}'")'
 }
 
 
