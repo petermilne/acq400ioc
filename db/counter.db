@@ -29,6 +29,8 @@ record(calc, "${UUT}:${SITE}:SIG:${lname}:COUNT") {
 	field(INPB, "${UUT}:${SITE}:SIG:${lname}:COUNT.LA")
 	field(INPC, "268435456")
 	field(INPD, "${UUT}:${SITE}:SIG:${lname}:ACTIVE")
+# reset on becoming active?
+# D == 0? VAL: D != LD? A - LA: (A==0 || B==0? 0: A > B? VAL+(A-B): VAL+(A+C-B))"	
 	field(CALC, "D != 0? (A==0 || B==0? 0: A > B? VAL+(A-B): VAL+(A+C-B)): VAL")
 	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:delta")
 	field(DESC, "64 bit count corrects HW 28 bit rollover")
