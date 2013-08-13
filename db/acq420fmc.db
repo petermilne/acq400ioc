@@ -1,4 +1,6 @@
 
+# Internal clock: with full feedback
+
 record (longout, "${UUT}:${SITE}:INTCLK_HZ") {
 	field(DTYP, "Soft Channel")
     field(PINI, "YES")
@@ -18,15 +20,18 @@ record (calc, "${UUT}:${SITE}:INTCLK_calc") {
 	field(CALC, "A/B")
 	field(PREC, "0")
 	field(DESC, "calculates INTCLK clkdiv")
-	field(FLNK, "${UUT}:${SITE}:clkdiv")
+	field(FLNK, "${UUT}:${SITE}:clkdiv:i")
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:INTCLK_calc:r.PACT")
 }
-record (longout, "${UUT}:${SITE}:clkdiv") {
+
+record (longout, "${UUT}:${SITE}:clkdiv:i") {
 	field(DTYP, "longoutAcqHost")
 	field(DOL,  "${UUT}:${SITE}:INTCLK_calc")
 	field(OUT, "@/dev/acq420.${SITE}.knobs/clkdiv")
 	field(OMSL, "closed_loop")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:CLK")	
 }
 
 record (longin, "${UUT}:${SITE}:clkdiv:r") {
@@ -45,7 +50,28 @@ record (calcout, "${UUT}:${SITE}:INTCLK_calc:r") {
 	field(DESC, "calculates INTCLK clkdiv")
 	field(OUT, "${UUT}:${SITE}:INTCLK_HZ PP")
 	field(OOPT, "On Change")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:CLK")		
 }
+
+# Clkdiv with external clock - go direct.
+
+record (longout, "${UUT}:${SITE}:clkdiv") {
+	field(DTYP, "Soft Channel")	
+	field(FLNK, "${UUT}:${SITE}:clkdiv:e")
+    field(LOPR, "1")
+    field(HOPR, "65535")	
+}
+
+record (longout, "${UUT}:${SITE}:clkdiv:e") {
+	field(DTYP, "longoutAcqHost")
+	field(DOL,  "${UUT}:${SITE}:clkdiv")
+	field(OUT, "@/dev/acq420.${SITE}.knobs/clkdiv")
+	field(OMSL, "closed_loop")
+	field(DISV, "0")
+	field(SDIS, "${UUT}:${SITE}:CLK")	
+}
+
 
 record(bo, "${UUT}:${SITE}:simulate") {
 	field(DTYP, "boAcqHost")
@@ -70,14 +96,14 @@ record(mbbo, "${UUT}:${SITE}:SIG:clk_counter_src")
 	field(OUT,  "@/dev/acq420.${SITE}.knobs/clk_counter_src")
 	field(NOBT, "4")
 	field(PINI, "YES")
-	field(ZRST, "INTERNAL")
-	field(ONST, "d1")
-	field(TWST, "d2")
-	field(THST, "d3")
-	field(FRST, "d4")
-	field(FVST, "d5")
-	field(SXST, "d6")
-	field(SVST, "d7")
-	field(EIST, "d8")	
+	field(ZRST, "DIV")
+	field(EIST, "d0")	
+	field(NIST, "d1")
+	field(TEST, "d2")
+	field(ELST, "d3")
+	field(TVST, "d4")
+	field(TTST, "d5")
+	field(FTST, "d6")
+	field(FFST, "d7")
 }
 
