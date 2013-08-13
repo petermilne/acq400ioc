@@ -10,8 +10,8 @@ getSig {
 	in "\$1=%d,%*d,%*d";
 	@replytimeout {
 		disconnect;
-# connect happens automatically?
-#		connect;    
+		wait 2000;
+		connect 1000;    
 	}			
 }
 
