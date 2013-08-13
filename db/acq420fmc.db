@@ -1,13 +1,15 @@
 
 record (longout, "${UUT}:${SITE}:INTCLK_HZ") {
 	field(DTYP, "Soft Channel")
-        field(PINI, "YES")
-        field(VAL,  "500000")
-        field(DESC, "Internal FCLK [Hz]")
-        field(LOPR, "10000")
-        field(HOPR, "1000000")
-        field(FLNK, "${UUT}:${SITE}:INTCLK_calc")
-        field(EGU,  "Hz")
+    field(PINI, "YES")
+    field(VAL,  "500000")
+    field(DESC, "Internal FCLK [Hz]")
+    field(LOPR, "10000")
+    field(HOPR, "1000000")
+    field(FLNK, "${UUT}:${SITE}:INTCLK_calc")
+    field(EGU,  "Hz")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:CLK")                
 }
 
 record (calc, "${UUT}:${SITE}:INTCLK_calc") {
