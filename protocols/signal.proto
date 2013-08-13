@@ -6,7 +6,13 @@ setSig {
 }
 
 getSig {
-	out "\$1"; in "\$1=%d,%*d,%*d";		
+	out "\$1";
+	in "\$1=%d,%*d,%*d";
+	@replytimeout {
+		disconnect;
+# connect happens automatically?
+#		connect;    
+	}			
 }
 
 getSigDx {
