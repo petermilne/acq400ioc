@@ -14,6 +14,8 @@ record (longout, "${UUT}:${SITE}:INTCLK_HZ") {
 	field(SDIS, "${UUT}:${SITE}:CLK")                
 }
 
+
+
 record (calc, "${UUT}:${SITE}:INTCLK_calc") {
 	field(INPA, "100000000")
 	field(INPB, "${UUT}:${SITE}:INTCLK_HZ")

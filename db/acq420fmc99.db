@@ -1,0 +1,4 @@
+# force restore previous clkdiv on transition back to internal clock
+record(calc, "${UUT}:${SITE}:_CLK" ) {
+	field(FLNK, "${UUT}:${SITE}:INTCLK_HZ")
+}

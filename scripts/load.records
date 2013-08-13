@@ -30,9 +30,10 @@ make_AI() {
 load_420() {
 	SITE=$1
 
-	echo 'dbLoadRecords("db/acq420fmc.db","UUT='${HOST}',SITE='${SITE}'")'
-
 	CPRAMS="UUT=${HOST},SITE=${SITE}"	
+	echo 'dbLoadRecords("db/acq420fmc.db","'${CPRAMS}'")'
+
+	
 	HPRAMS="${CPRAMS},size=$HSIZE,type=LONG,fname=HG.${SITE}"
 	echo 'dbLoadRecords("db/hgAcqHost.db","'${HPRAMS}'")'
 	
@@ -51,6 +52,7 @@ load_420() {
 	echo 'dbLoadRecords("db/signal.db","'${TPRAMS}',FNAM=SYNC,FN=sync,ZNAM=internal,ONAM=external")'
 	echo 'dbLoadRecords("db/signal.db","'${TPRAMS}',FNAM=EVENT1,FN=event1,ZNAM=disable,ONAM=enable")'
 	echo 'dbLoadRecords("db/signal.db","'${TPRAMS}',FNAM=EVENT0,FN=event0,ZNAM=disable,ONAM=enable")'
+	echo 'dbLoadRecords("db/acq420fmc99.db","'${CPRAMS}'")'
 	echo 'drvAsynIPPortConfigure("S'${SITE}'", "127.0.0.1:422'${SITE}'")'
 }
 
