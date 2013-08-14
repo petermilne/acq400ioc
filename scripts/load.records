@@ -7,6 +7,11 @@ FNAME=AI
 
 HSIZE=256
 
+
+knobs() {
+	echo /dev/acq420.$1.knobs
+}
+
 # There's only ONE lot of AI records... this is deliberate for now
 make_AI() {
 	SITE=$1
@@ -15,7 +20,12 @@ make_AI() {
 			TYPE=LONG
 		fi
 	fi
-	let ch=0; while [ $ch -lt 4 ]; do
+	if [ -e $(knobs $SITE)/nchan ]; then
+		NCHAN=$(cat $(knobs $SITE)/nchan)
+	else
+		NCHAN=4
+	fi
+	let ch=0; while [ $ch -lt $NCHAN ]; do
 		let ch=$ch+1
 		cid=$(printf "%02d" $ch)
 		let IDX=$ch
@@ -41,9 +51,12 @@ load_420() {
 
 	echo 'dbLoadRecords("db/counter.db","'${CPRAMS},lname=clk_count'")'
 	echo 'dbLoadRecords("db/counter.db","'${CPRAMS},lname=sample_count'")'
+
 	for ch in 1 2 3 4
 	do
-		echo 'dbLoadRecords("db/gain.db","'${CPRAMS}',CH='$ch'")'
+		if [ -e $(knobs $SITE)/gain$ch ]; then
+			echo 'dbLoadRecords("db/gain.db","'${CPRAMS}',CH='$ch'")'
+		fi
 	done
 	
 	TPRAMS="${CPRAMS},SPORT=S${SITE}"
