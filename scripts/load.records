@@ -7,10 +7,8 @@ FNAME=AI
 
 HSIZE=256
 
+source /etc/sysconfig/acq400.conf
 
-knobs() {
-	echo /dev/acq420.$1.knobs
-}
 
 # There's only ONE lot of AI records... this is deliberate for now
 make_AI() {
@@ -39,10 +37,21 @@ make_AI() {
 
 load_420() {
 	SITE=$1
+	MODEL=$(cat /dev/acq420.${SITE}.knobs/module_type)
+	LO=100000000
+	
+	if [ $MODEL -eq 2 ]; then
+		#ACQ435
+		let LO=$LO/256;
+	fi
 
-	CPRAMS="UUT=${HOST},SITE=${SITE}"	
-	echo 'dbLoadRecords("db/acq420fmc.db","'${CPRAMS}'")'
+	CPRAMS="UUT=${HOST},SITE=${SITE}"
+		
+	echo 'dbLoadRecords("db/acq420fmc.db","'${CPRAMS},LO=$LO'")'
 
+	if [ $MODEL -eq 2 ]; then
+		echo 'dbLoadRecords("db/acq430fmc.db","'${CPRAMS},LO=$LO'")'
+	fi
 	
 	HPRAMS="${CPRAMS},size=$HSIZE,type=LONG,fname=HG.${SITE}"
 	echo 'dbLoadRecords("db/hgAcqHost.db","'${HPRAMS}'")'
