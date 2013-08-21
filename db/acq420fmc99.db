@@ -1,12 +1,21 @@
 # force restore previous clkdiv on transition back to internal clock
-record(calc, "${UUT}:${SITE}:_CLK" ) {
-	field(FLNK, "${UUT}:${SITE}:INTCLK_HZ")
+record(calcout, "${UUT}:${SITE}:_clk") {
+	field(FLNK, "${UUT}:${SITE}:_onclk")
 }
+record(fanout, "${UUT}:${SITE}:_onclk") {
+	field(LNK1, "${UUT}:${SITE}:clkdiv:i")
+	field(LNK2, "${UUT}:${SITE}:clkdiv:e")		
+}
+
+# force rapid Hz and count reset on change of source.
 record(calcout, "${UUT}:${SITE}:SIG:clk_count:nzcount") {
 	field(INPJ, "${UUT}:${SITE}:SIG:clk_counter_src")
 }
 record(calc, "${UUT}:${SITE}:SIG:clk_count:COUNT") {
 	field(INPJ, "${UUT}:${SITE}:SIG:clk_counter_src")
+}
+record(calc, "${UUT}:${SITE}:SIG:sample_count:COUNT") {
+	field(INPJ, "${UUT}:${SITE}:SHOT")
 }
 record(mbbo, "${UUT}:${SITE}:SIG:clk_counter_src") {
 	field(FLNK, "${UUT}:${SITE}:SIG:clk_count:nzcount")

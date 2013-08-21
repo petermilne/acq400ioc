@@ -111,4 +111,9 @@ record(mbbo, "${UUT}:${SITE}:SIG:clk_counter_src")
 	field(SVST, "d7")
 	field(EIST, "DIV")
 }
-
+record (longin, "${UUT}:${SITE}:SHOT") {
+	field(DTYP, "longinAcqHost")
+	field(INP, "@/dev/acq420.${SITE}.knobs/shot")
+	field(SCAN, "1 second")
+	field(PINI, "YES")		
+}
