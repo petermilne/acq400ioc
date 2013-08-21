@@ -18,7 +18,6 @@ record(longout, "${UUT}:${SITE}:LO"){
 	field(DTYP, "Soft Channel")
 	field(VAL,  "${LO}")
 	field(FLNK, "${UUT}:${SITE}:INTCLK_calc")
-	field(DESCR, "Local Oscillator")
 }
 record (calc, "${UUT}:${SITE}:INTCLK_calc") {
 	field(INPA, "${UUT}:${SITE}:LO")
@@ -62,16 +61,16 @@ record (calcout, "${UUT}:${SITE}:INTCLK_calc:r") {
 
 # Clkdiv with external clock - go direct.
 
-record (longout, "${UUT}:${SITE}:clkdiv") {
+record (longout, "${UUT}:${SITE}:CLKDIV") {
 	field(DTYP, "Soft Channel")	
 	field(FLNK, "${UUT}:${SITE}:clkdiv:e")
-    field(LOPR, "1")
-    field(HOPR, "65535")	
+	field(LOPR, "1")
+	field(HOPR, "65535")	
 }
 
 record (longout, "${UUT}:${SITE}:clkdiv:e") {
 	field(DTYP, "longoutAcqHost")
-	field(DOL,  "${UUT}:${SITE}:clkdiv")
+	field(DOL,  "${UUT}:${SITE}:CLKDIV")
 	field(OUT, "@/dev/acq420.${SITE}.knobs/clkdiv")
 	field(OMSL, "closed_loop")
 	field(DISV, "0")
@@ -102,14 +101,14 @@ record(mbbo, "${UUT}:${SITE}:SIG:clk_counter_src")
 	field(OUT,  "@/dev/acq420.${SITE}.knobs/clk_counter_src")
 	field(NOBT, "4")
 	field(PINI, "YES")
-	field(ZRST, "DIV")
-	field(EIST, "d0")	
-	field(NIST, "d1")
-	field(TEST, "d2")
-	field(ELST, "d3")
-	field(TVST, "d4")
-	field(TTST, "d5")
-	field(FTST, "d6")
-	field(FFST, "d7")
+	field(ZRST, "d0")	
+	field(ONST, "d1")
+	field(TWST, "d2")
+	field(THST, "d3")
+	field(FRST, "d4")
+	field(FVST, "d5")
+	field(SXST, "d6")
+	field(SVST, "d7")
+	field(EIST, "DIV")
 }
 
