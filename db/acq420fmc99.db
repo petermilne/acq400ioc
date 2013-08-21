@@ -2,3 +2,13 @@
 record(calc, "${UUT}:${SITE}:_CLK" ) {
 	field(FLNK, "${UUT}:${SITE}:INTCLK_HZ")
 }
+record(calcout, "${UUT}:${SITE}:SIG:clk_count:nzcount") {
+	field(INPJ, "${UUT}:${SITE}:SIG:clk_counter_src")
+}
+record(calc, "${UUT}:${SITE}:SIG:clk_count:COUNT") {
+	field(INPJ, "${UUT}:${SITE}:SIG:clk_counter_src")
+}
+record(mbbo, "${UUT}:${SITE}:SIG:clk_counter_src") {
+	field(FLNK, "${UUT}:${SITE}:SIG:clk_count:nzcount")
+}
+
