@@ -102,5 +102,8 @@ record(calcout, "${UUT}:${SITE}:_${FN}") {
 	field(INPC, "${UUT}:${SITE}:${FNAM}:SENSE")
 	field(CALC, "0")
 	field(DTYP, "stream")
+# refuse to update in the RUN state	
+	field(SDIS, "${UUT}:${SITE}:RUN")
+	field(DISV, "1")
 	field(OUT,  "@signal.proto setSig(${FN}) ${SPORT}")
 }

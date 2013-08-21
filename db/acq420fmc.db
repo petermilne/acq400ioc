@@ -65,7 +65,9 @@ record (longout, "${UUT}:${SITE}:CLKDIV") {
 	field(DTYP, "Soft Channel")	
 	field(FLNK, "${UUT}:${SITE}:clkdiv:e")
 	field(LOPR, "1")
-	field(HOPR, "65535")	
+	field(HOPR, "65535")
+	field(VAL,  "1")
+	field(PINI, "YES")	
 }
 
 record (longout, "${UUT}:${SITE}:clkdiv:e") {
@@ -114,6 +116,13 @@ record(mbbo, "${UUT}:${SITE}:SIG:clk_counter_src")
 record (longin, "${UUT}:${SITE}:SHOT") {
 	field(DTYP, "longinAcqHost")
 	field(INP, "@/dev/acq420.${SITE}.knobs/shot")
+	field(SCAN, "1 second")
+	field(PINI, "YES")		
+}
+
+record (bi, "${UUT}:${SITE}:RUN") {
+	field(DTYP, "biAcqHost")
+	field(INP, "@/dev/acq420.${SITE}.knobs/run")
 	field(SCAN, "1 second")
 	field(PINI, "YES")		
 }
