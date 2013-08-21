@@ -37,7 +37,8 @@ record(calc, "${UUT}:${SITE}:SIG:${lname}:COUNT") {
 	field(INPK, "${UUT}:${SITE}:SIG:${lname}:COUNT.LJ")
 # reset on becoming active?
 # D == 0? VAL: D != LD? A - LA: (A==0 || B==0? 0: A > B? VAL+(A-B): VAL+(A+C-B))"	
-	field(CALC, "J!=K? 0: (D!=0? (A==0||B==0? 0: A>B? VAL+(A-B): VAL+(A+C-B)): VAL)")
+#ok	field(CALC, "J!=K? 0: (D!=0? (A==0||B==0? 0: A>B? VAL+(A-B): VAL+(A+C-B)): VAL)")
+	field(CALC, "J!=K? 0: D!=0 && A!=0 && B!=0? A>B? VAL+(A-B): VAL+(A+C-B): VAL")
 	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:delta")
 	field(DESC, "64 bit count corrects HW 28 bit rollover")
 }
