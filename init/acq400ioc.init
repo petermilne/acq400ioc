@@ -21,9 +21,9 @@ make_stcmd() {
 
 start_ioc() {
 	/usr/local/bin/procServ \
-		-c ${ETOP} -p $PIDF \
+		-c ${ETOP} -p $PIDF -L $LOG \
 		2222 \
-	/usr/local/bin/acq400ioc ${STCMD} >$LOG
+	/usr/local/bin/acq400ioc ${STCMD}
 }
 
 stop_ioc() {

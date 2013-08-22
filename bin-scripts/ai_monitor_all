@@ -5,9 +5,9 @@ LOG=/var/log/ai_monitor.log
 
 start() {
 	/usr/local/bin/procServ \
-		-c / -p ${PIDF} \
+		-c / -p ${PIDF} -L $LOG \
 		2223 \
-	/usr/local/bin/ai_monitor_all run_monitor >$LOG
+	/usr/local/bin/ai_monitor_all run_monitor
 }
 
 stop() {
