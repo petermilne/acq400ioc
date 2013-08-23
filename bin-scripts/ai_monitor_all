@@ -24,6 +24,9 @@ run_monitor() {
 		DATA32=$(cat $SX.knobs/data32)
 		if [ $DATA32 -eq 1 ]; then
 			OPTS="-w 4"
+		fi
+		if [ -e /etc/acq400/$SITE/nchan ]; then
+			OPTS="$OPTS -n $(cat /etc/acq400/$SITE/nchan)"
 		fi	
 		/usr/local/bin/acq400_stream $OPTS --hb0 $SITE &
 	done
