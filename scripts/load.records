@@ -18,8 +18,9 @@ make_AI() {
 			TYPE=LONG
 		fi
 	fi
-	if [ -e $(knobs $SITE)/nchan ]; then
-		NCHAN=$(cat $(knobs $SITE)/nchan)
+	NCFILE=/etc/sysconfig/acq400/$SITE/nchan
+	if [ -e $NCFILE/nchan ]; then
+		NCHAN=$(cat $NCFILE/nchan)
 	else
 		NCHAN=4
 	fi

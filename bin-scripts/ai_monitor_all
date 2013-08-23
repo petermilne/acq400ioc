@@ -25,8 +25,9 @@ run_monitor() {
 		if [ $DATA32 -eq 1 ]; then
 			OPTS="-w 4"
 		fi
-		if [ -e /etc/acq400/$SITE/nchan ]; then
-			OPTS="$OPTS -n $(cat /etc/acq400/$SITE/nchan)"
+		NCFILE=/etc/acq400/$SITE/nchan
+		if [ -e $NCFILE ]; then
+			OPTS="$OPTS -n $(cat $NCFILE)"
 		fi	
 		/usr/local/bin/acq400_stream $OPTS --hb0 $SITE &
 	done
