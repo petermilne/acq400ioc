@@ -33,7 +33,7 @@ record (calc, "${UUT}:${SITE}:INTCLK_calc") {
 record (longout, "${UUT}:${SITE}:clkdiv:i") {
 	field(DTYP, "longoutAcqHost")
 	field(DOL,  "${UUT}:${SITE}:INTCLK_calc")
-	field(OUT, "@/dev/acq420.${SITE}.knobs/clkdiv")
+	field(OUT, "@/dev/acq400.${SITE}.knobs/clkdiv")
 	field(OMSL, "closed_loop")
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:CLK")	
@@ -41,7 +41,7 @@ record (longout, "${UUT}:${SITE}:clkdiv:i") {
 
 record (longin, "${UUT}:${SITE}:clkdiv:r") {
 	field(DTYP, "longinAcqHost")
-	field(INP, "@/dev/acq420.${SITE}.knobs/clkdiv")
+	field(INP, "@/dev/acq400.${SITE}.knobs/clkdiv")
 	field(SCAN, "1 second")
 	field(PINI, "YES")
 	field(FLNK, "${UUT}:${SITE}:INTCLK_calc:r")		
@@ -73,7 +73,7 @@ record (longout, "${UUT}:${SITE}:CLKDIV") {
 record (longout, "${UUT}:${SITE}:clkdiv:e") {
 	field(DTYP, "longoutAcqHost")
 	field(DOL,  "${UUT}:${SITE}:CLKDIV")
-	field(OUT, "@/dev/acq420.${SITE}.knobs/clkdiv")
+	field(OUT, "@/dev/acq400.${SITE}.knobs/clkdiv")
 	field(OMSL, "closed_loop")
 	field(DISV, "0")
 	field(SDIS, "${UUT}:${SITE}:CLK")	
@@ -82,17 +82,17 @@ record (longout, "${UUT}:${SITE}:clkdiv:e") {
 
 record(bo, "${UUT}:${SITE}:simulate") {
 	field(DTYP, "boAcqHost")
-	field(OUT, "@/dev/acq420.${SITE}.knobs/simulate")
+	field(OUT, "@/dev/acq400.${SITE}.knobs/simulate")
 }
 
 record(stringin, "${UUT}:${SITE}:stats") {
 	field(DTYP, "dsSysfsStringin")
-	field(INP, "@/dev/acq420.${SITE}.knobs/stats")
+	field(INP, "@/dev/acq400.${SITE}.knobs/stats")
 }
 
 record(bo, "${UUT}:${SITE}:data32") {
 	field(DTYP, "boAcqHost")
-	field(OUT,  "@/dev/acq420.${SITE}.knobs/data32")
+	field(OUT,  "@/dev/acq400.${SITE}.knobs/data32")
 	field(PINI, "YES")
 	field(DESC, "select 32 bit data packing")
 }
@@ -100,7 +100,7 @@ record(bo, "${UUT}:${SITE}:data32") {
 record(mbbo, "${UUT}:${SITE}:SIG:clk_counter_src")
 {
 	field(DTYP,	"mbboAcqHost")
-	field(OUT,  "@/dev/acq420.${SITE}.knobs/clk_counter_src")
+	field(OUT,  "@/dev/acq400.${SITE}.knobs/clk_counter_src")
 	field(NOBT, "4")
 	field(PINI, "YES")
 	field(ZRST, "d0")	
@@ -115,14 +115,14 @@ record(mbbo, "${UUT}:${SITE}:SIG:clk_counter_src")
 }
 record (longin, "${UUT}:${SITE}:SHOT") {
 	field(DTYP, "longinAcqHost")
-	field(INP, "@/dev/acq420.${SITE}.knobs/shot")
+	field(INP, "@/dev/acq400.${SITE}.knobs/shot")
 	field(SCAN, "1 second")
 	field(PINI, "YES")		
 }
 
 record (bi, "${UUT}:${SITE}:RUN") {
 	field(DTYP, "biAcqHost")
-	field(INP, "@/dev/acq420.${SITE}.knobs/run")
+	field(INP, "@/dev/acq400.${SITE}.knobs/run")
 	field(SCAN, "1 second")
 	field(PINI, "YES")		
 }

@@ -1,7 +1,7 @@
 record(longin, "${UUT}:${SITE}:SIG:${lname}:rawcount") {
 	field(SCAN, "1 second")
 	field(DTYP, "longinAcqHost")
-	field(INP,  "@/dev/acq420.${SITE}.knobs/${lname}")
+	field(INP,  "@/dev/acq400.${SITE}.knobs/${lname}")
 	field(DESC, "LRU:${UUT}:${SITE} CLK STAT ${lname}")
 	field(SCAN, "1 second")
 	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:ACTIVE")
