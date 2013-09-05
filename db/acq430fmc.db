@@ -1,0 +1,50 @@
+# specific to ACQ430/ACQ435/ACQ436
+
+record (bo, "${UUT}:${SITE}:ADC_MODE") {
+	field(DTYP, "Soft Channel")
+	field(ZNAM, "HS_256")
+	field(ONAM, "HR_512")	
+	field(FLNK, "${UUT}:${SITE}:ADC_MODE:w PP")
+}
+
+record (bo, "${UUT}:${SITE}:ADC_MODE:w") {
+	field(DTYP, "boAcqHost")
+	field(ZNAM, "HS_256")
+	field(ONAM, "HR_512")
+	field(OMSL, "closed_loop")
+	field(DOL, "{UUT}:${SITE}:ADC_MODE")
+	field(OUT, "@/dev/acq420.${SITE}.knobs/hi_res_mode")
+	field(FLNK, "${UUT}:${SITE}:ADC_MODE:c")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:ADC_MODE:r.PACT")
+}
+
+record(calcout, "${UUT}:${SITE}:ADC_MODE:c") {
+	field(OUT,  "${UUT}:${SITE}:LO")
+	field(OOPT, "On Change")
+#	field(DOPT, "CALC")
+	field(INPA, "${UUT}:${SITE}:ADC_MODE")
+	field(INPB, "100000000")
+	field(CALC, "B / (A? 512: 256)")
+	field(FLNK, "${UUT}:${SITE}:LO")
+}
+
+record(bi, "${UUT}:${SITE}:ADC_MODE:r") {
+	field(DTYP,  "biAcqHost")
+	field(ZNAM, "HS_256")
+	field(ONAM, "HR_512")	
+	field(INP, "@/dev/acq420.${SITE}.knobs/hi_res_mode")
+	field(SCAN, "1 second")
+	field(PINI, "YES")
+	field(FLNK, "${UUT}:${SITE}:ADC_MODE:s")
+}
+
+record(bo, "${UUT}:${SITE}:ADC_MODE:s") {
+	field(DTYP, "Soft Channel")
+	field(OMSL, "closed_loop")
+	field(ZNAM, "HS_256")
+	field(ONAM, "HR_512")	
+	field(DOL,  "${UUT}:${SITE}:ADC_MODE:r NPP")
+	field(OUT,  "${UUT}:${SITE}:ADC_MODE PP")
+}
+
