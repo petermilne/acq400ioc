@@ -36,9 +36,9 @@ make_AI() {
 	done
 }
 
-load_420() {
+load_400() {
 	SITE=$1
-	MODEL=$(cat /dev/acq420.${SITE}.knobs/module_type)
+	MODEL=$(cat /dev/acq400.${SITE}.knobs/module_type)
 	LO=100000000
 	
 	if [ $MODEL -eq 2 ]; then
@@ -57,7 +57,7 @@ load_420() {
 	HPRAMS="${CPRAMS},size=$HSIZE,type=LONG,fname=HG.${SITE}"
 	echo 'dbLoadRecords("db/hgAcqHost.db","'${HPRAMS}'")'
 	
-	make_AI $SITE	$ACQ420
+	make_AI $SITE	$ACQ400
 
 	echo 'dbLoadRecords("db/counter.db","'${CPRAMS},lname=clk_count'")'
 	echo 'dbLoadRecords("db/counter.db","'${CPRAMS},lname=sample_count'")'
@@ -87,9 +87,9 @@ acq400ioc_registerRecordDeviceDriver(pdbbase)
 dbLoadRecords("db/system.db","UUT=${HOST}")
 EOF
 
-for ACQ420 in /dev/acq420.?
+for ACQ400 in /dev/acq400.?
 do
-	load_420 ${ACQ420##*.} $ACQ420
+	load_400 ${ACQ400##*.} $ACQ400
 done
 
 cat - <<EOF2

@@ -17,7 +17,7 @@ stop() {
         fi
 }
 run_monitor() {
-	for SX in /dev/acq420.?
+	for SX in /dev/acq400.?
 	do
 		SITE=${SX#*.}
 		OPTS=""
