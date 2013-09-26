@@ -1,0 +1,43 @@
+# valid MA 
+record(ao, "${UUT}:${SITE}:AO:SLOW_SET:CH:${cid}") {
+        field(DTYP, "dsSysfsAo")
+        field(OUT, "@/dev/acq400.${SITE}.knobs/AO_0${cid}")
+        field(SCAN, "Passive")
+        field(DESC, "Slow set AO${cid}")
+        field(DRVL, "-2.5")
+        field(DRVH, "+2.5")
+        field(LINR, "LINEAR")
+        field(ESLO, "0.076293945e-3")
+        field(HOPR, "2.5")
+        field(LOPR, "-2.5")
+        field(EGU,  "V")
+}
+
+record(ao, "${UUT}:${SITE}:AWG:G:${cid}") {
+	field(DTYP, "dsSysfsAo")
+	field(OUT, "@/dev/shm/awg/G${cid}")
+	field(SCAN, "Passive")
+	field(DESC, "AWG GAIN adjust")
+        field(DRVL, "0.000")
+        field(DRVH, "100")
+        field(LINR, "LINEAR")
+        field(ESLO, "0.09765625")
+        field(HOPR, "100.0")
+        field(LOPR, "0.000")
+        field(EGU,  "%")	
+}
+
+record(ao, "${UUT}:${SITE}:AWG:D:${cid}") {
+	field(DTYP, "dsSysfsAo")
+	field(OUT, "@/dev/shm/awg/D${cid}")
+	field(SCAN, "Passive")
+	field(DESC, "AWG DC adjust")
+        field(DRVL, "-100.0")
+        field(DRVH, "100.0")
+        field(LINR, "LINEAR")
+        field(ESLO, "3.0517578e-3")
+        field(HOPR, "100.0")
+        field(LOPR, "-100.0")
+        field(EGU,  "%")	
+}
+

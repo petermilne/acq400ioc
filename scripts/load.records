@@ -41,12 +41,21 @@ load_400() {
 	MODEL=$(cat /dev/acq400.${SITE}.knobs/module_type)
 	LO=100000000
 	
-	if [ $MODEL -eq 2 ]; then
-		#ACQ435
-		let LO=$LO/256;
-	fi
-
 	CPRAMS="UUT=${HOST},SITE=${SITE}"
+	
+	case $MODEL in
+	2)	
+		#ACQ435 .. nb HIRES makes it /2
+		let LO=$LO/256;;
+	64)
+		for ch in 1 2 3 4
+		do
+			echo 'dbLoadRecords("db/ao420fmc.db","'${CPRAMS},cid=$ch'")'
+		done
+		let LO=66000000;;
+	esac	
+
+	
 		
 	echo 'dbLoadRecords("db/acq420fmc.db","'${CPRAMS},LO=$LO'")'
 
