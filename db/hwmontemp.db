@@ -1,4 +1,4 @@
-record(ai, "${UUT}:${lname}:TEMP") {
+record(ai, "${UUT}:SYS:${lname}:TEMP") {
         field(DTYP, "dsSysfsAi")
         field(INP, "@${pname}")
         field(SCAN, "10 second")
@@ -7,4 +7,10 @@ record(ai, "${UUT}:${lname}:TEMP") {
         field(LINR, "LINEAR")
         field(EGU,  "C")
         field(PINI, "YES")
+        field(HOPR, "99")
+        field(LOPR, "0")
+        field(HIGH, "55")
+        field(HIHI, "75")
+        field(LOW,  "-1")
+        field(LOLO, "-1")
 }
