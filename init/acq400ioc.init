@@ -51,5 +51,5 @@ stop)
 	stop_ioc;;
 
 *)
-	echo usage cpsc_ioc start\|stop\|forcestart;;
+	echo usage acq400ioc.init start\|stop\|forcestart;;
 esac

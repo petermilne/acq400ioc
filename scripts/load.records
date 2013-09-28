@@ -68,8 +68,8 @@ load_400() {
 	
 	make_AI $SITE	$ACQ400
 
-	echo 'dbLoadRecords("db/counter.db","'${CPRAMS},lname=clk_count'")'
-	echo 'dbLoadRecords("db/counter.db","'${CPRAMS},lname=sample_count'")'
+	echo 'dbLoadRecords("db/counter.db","'${CPRAMS},lname=clk_count,pname=clk_count'")'
+	echo 'dbLoadRecords("db/counter.db","'${CPRAMS},lname=sample_count,pname=sample_count'")'
 
 	for ch in 1 2 3 4
 	do
@@ -89,12 +89,45 @@ load_400() {
 }
 
 
+zynq_hwmon() {
+	DEV=$1
+	PRAMS="UUT=${HOST},lname=Z,pname=/dev/hwmon/${DEV}/temp,scale=1"
+	echo 'dbLoadRecords("db/hwmontemp.db","'${PRAMS}'")'
+}
+load_acq2006() {
+	KB=$1
+	CPRAMS="UUT=${HOST},SITE=0"
+	(
+		cd ${KB}
+		for counter in scount*
+		do
+			PRAMS="${CPRAMS},lname=${counter#scount_*},pname=${counter}"
+			echo 'dbLoadRecords("db/counter.db","'${PRAMS}'")'
+		done
+	)
+	zynq_hwmon Z
+	
+	for SITE in 0 1 2 3 4 5 6
+	do
+		CPRAMS="UUT=${HOST},lname=${SITE}"
+		PRAMS="$CPRAMS,pname=/dev/hwmon/${SITE}/temp,scale=0.001"
+		echo 'dbLoadRecords("db/hwmontemp.db","'${PRAMS}'")'
+	done
+	echo 'dbLoadRecords("db/hwmonvolts.db","UUT='${HOST}'")'
+}
+
 cat - <<EOF
 epicsEnvSet("STREAM_PROTOCOL_PATH","./protocols")
 dbLoadDatabase("dbd/acq400ioc.dbd",0,0)
 acq400ioc_registerRecordDeviceDriver(pdbbase)
 dbLoadRecords("db/system.db","UUT=${HOST}")
 EOF
+
+KB=/dev/acq400.0.knobs
+if [ -e $KB/module_name -a "$(cat $KB/module_name)" = "acq2006sc" ]; then
+	load_acq2006 $KB
+fi
+
 
 for ACQ400 in /dev/acq400.?
 do

@@ -1,0 +1,10 @@
+record(ai, "${UUT}:${lname}:TEMP") {
+        field(DTYP, "dsSysfsAi")
+        field(INP, "@${pname}")
+        field(SCAN, "10 second")
+        field(DESC, "Temperature")
+        field(ASLO, ${scale})
+        field(LINR, "LINEAR")
+        field(EGU,  "C")
+        field(PINI, "YES")
+}
