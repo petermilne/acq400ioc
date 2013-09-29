@@ -7,6 +7,9 @@ FNAME=AI
 
 HSIZE=256
 
+CTR28=268435456
+CTR16=65536
+
 source /etc/sysconfig/acq400.conf
 
 
@@ -68,8 +71,9 @@ load_400() {
 	
 	make_AI $SITE	$ACQ400
 
-	echo 'dbLoadRecords("db/counter.db","'${CPRAMS},lname=clk_count,pname=clk_count'")'
-	echo 'dbLoadRecords("db/counter.db","'${CPRAMS},lname=sample_count,pname=sample_count'")'
+	CTPR="${CPRAMS},CTRMAX=$CTR28"
+	echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=clk_count,pname=clk_count'")'
+	echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=sample_count,pname=sample_count'")'
 
 	for ch in 1 2 3 4
 	do
@@ -88,6 +92,21 @@ load_400() {
 	echo 'drvAsynIPPortConfigure("S'${SITE}'", "127.0.0.1:422'${SITE}'")'
 }
 
+load_421() {
+	SITE=$1
+	KB=/dev/acq400.${SITE}.knobs
+	PRAMS="UUT=${HOST},SITE=${SITE}"
+	for CX in 1 2
+	do
+		for sw in $(seq 1 20)
+		do
+			LNAME=$(printf "CH%02d:%02d" $CX $sw)
+			PNAME=$(printf "%s/CH%02d.%02d" $KB $CX $sw)
+			CPRAMS="${PRAMS},lname=${LNAME},pname=${PNAME}"
+			echo 'dbLoadRecords("db/ao421mux.db","'${CPRAMS}'")'
+		done
+	done		
+}
 
 zynq_hwmon() {
 	DEV=$1
@@ -101,7 +120,13 @@ load_acq2006() {
 		cd ${KB}
 		for counter in scount*
 		do
-			PRAMS="${CPRAMS},lname=${counter#scount_*},pname=${counter}"
+			if [ "x${counter%_*}" = "xscount_CLK" ]; then
+				SCMAX=$CTR28
+			else
+				SCMAX=$CTR16
+			fi
+			CTPRAMS="${CPRAMS},CTRMAX=${SCMAX}"
+			PRAMS="${CTPRAMS},lname=${counter#scount_*},pname=${counter}"
 			echo 'dbLoadRecords("db/counter.db","'${PRAMS}'")'
 		done
 	)
@@ -133,6 +158,8 @@ for ACQ400 in /dev/acq400.?
 do
 	load_400 ${ACQ400##*.} $ACQ400
 done
+
+load_421 5
 
 cat - <<EOF2
 #	asynSetTraceMask("S0",-1,0xff)

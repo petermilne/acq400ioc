@@ -30,7 +30,7 @@ record(calcout, "${UUT}:${SITE}:SIG:${lname}:nzcount") {
 record(calc, "${UUT}:${SITE}:SIG:${lname}:COUNT") {
 	field(INPA, "${UUT}:${SITE}:SIG:${lname}:rawcount")
 	field(INPB, "${UUT}:${SITE}:SIG:${lname}:COUNT.LA")
-	field(INPC, "268435456")
+	field(INPC, "${CTRMAX}")
 	field(INPD, "${UUT}:${SITE}:SIG:${lname}:ACTIVE")
 # potential change detect ..
 	field(INPJ, "1")
@@ -40,7 +40,7 @@ record(calc, "${UUT}:${SITE}:SIG:${lname}:COUNT") {
 #ok	field(CALC, "J!=K? 0: (D!=0? (A==0||B==0? 0: A>B? VAL+(A-B): VAL+(A+C-B)): VAL)")
 	field(CALC, "J!=K? 0: D!=0 && A!=0 && B!=0? A>B? VAL+(A-B): VAL+(A+C-B): VAL")
 	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:delta")
-	field(DESC, "64 bit count corrects HW 28 bit rollover")
+	field(DESC, "64 bit count corrects HW rollover")
 }
 
 record(calc, "${UUT}:${SITE}:SIG:${lname}:delta") {
