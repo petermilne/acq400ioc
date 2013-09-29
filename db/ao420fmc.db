@@ -21,7 +21,8 @@ record(ao, "${UUT}:${SITE}:AWG:G:${cid}") {
         field(DRVL, "0.000")
         field(DRVH, "100")
         field(LINR, "LINEAR")
-        field(ESLO, "0.09765625")
+        field(ESLO, "0.09765625")        
+        field(PINI, "YES")
         field(HOPR, "100.0")
         field(LOPR, "0.000")
         field(EGU,  "%")	
@@ -38,6 +39,7 @@ record(ao, "${UUT}:${SITE}:AWG:D:${cid}") {
         field(ESLO, "3.0517578e-3")
         field(HOPR, "100.0")
         field(LOPR, "-100.0")
-        field(EGU,  "%")	
+        field(EGU,  "%")        
+        field(PINI, "YES")        	
 }
 
