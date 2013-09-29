@@ -1,9 +1,71 @@
-record (bo, "${UUT}:SYS:CLK:FP_CLK_OE") {
-	field(DTYP, "boAcqHost")
-	field(OUT, "@/dev/gpio/CLK/FP_CLK_OE")
+
+record (bo, "${UUT}:SYS:CLK:FPMUX") {
+	field(DTYP, "Soft Channel")
+	field(ZNAM, "XCLK")
+	field(ONAM, "FPCLK")
+	field(FLNK, "${UUT}:SYS:CLK:fpclk0")	
 }
 
-record (bo, "${UUT}:SYS:CLK:FP_OE") {
+# break before make .. 
+record (calcout, "${UUT}:SYS:CLK:fpclk0") {
+	field(INPA, "${UUT}:SYS:CLK:FPMUX")
+	field(CALC, "A")
+	field(OUT, "${UUT}:SYS:CLK:_FP_CLK_OE PP")
+	field(OOPT, "When Zero")
+	field(FLNK, "${UUT}:SYS:CLK:xclk0")	
+}
+
+record (calcout, "${UUT}:SYS:CLK:xclk0") {
+	field(INPA, "${UUT}:SYS:CLK:FPMUX")
+	field(CALC, "!A")
+	field(OUT, "${UUT}:SYS:CLK:_OSC_X_CLK_OE PP")
+	field(OOPT, "When Zero")
+	field(FLNK, "${UUT}:SYS:CLK:fpclk")	
+}
+
+# make
+record (calcout, "${UUT}:SYS:CLK:fpclk") {
+	field(INPA, "${UUT}:SYS:CLK:FPMUX")
+	field(CALC, "A")
+	field(OUT, "${UUT}:SYS:CLK:_FP_CLK_OE PP")
+	field(OOPT, "Transition To Non-zero")
+	field(FLNK, "${UUT}:SYS:CLK:xclk")		
+}
+
+record (calcout, "${UUT}:SYS:CLK:xclk") {
+	field(INPA, "${UUT}:SYS:CLK:FPMUX")
+	field(CALC, "!A")	
+	field(OUT, "${UUT}:SYS:CLK:_OSC_X_CLK_OE PP")
+	field(OOPT, "Transition To Non-zero")
+	field(FLNK, "${UUT}:SYS:CLK:_FP_OE")			
+}
+
+
+
+record (bo, "${UUT}:SYS:CLK:_FP_CLK_OE") {
+	field(DTYP, "boAcqHost")
+	field(OUT, "@/dev/gpio/CLK/FP_CLK_OE")
+	
+}
+
+record (bo, "${UUT}:SYS:CLK:_FP_OE") {
 	field(DTYP, "boAcqHost")
 	field(OUT, "@/dev/gpio/CLK/FP_OE")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:SYS:CLK:fpclk")
+	field(FLNK, "${UUT}:SYS:CLK:_OSC_X_OE")			
 }
+
+record (bo, "${UUT}:SYS:CLK:_OSC_X_CLK_OE") {
+	field(DTYP, "boAcqHost")
+	field(OUT, "@/dev/gpio/CLK/OSC_X_CLK_OE")
+		
+}
+
+record (bo, "${UUT}:SYS:CLK:_OSC_X_OE") {
+	field(DTYP, "boAcqHost")
+	field(OUT, "@/dev/gpio/CLK/OSC_X_OE")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:SYS:CLK:xclk")		
+}
+
