@@ -71,7 +71,7 @@ load_400() {
 	
 	make_AI $SITE	$ACQ400
 
-	CTPR="${CPRAMS},CTRMAX=$CTR28"
+	CTPR="${CPRAMS},CTRMAX=$CTR28,DT=1"
 	echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=clk_count,pname=clk_count'")'
 	echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=sample_count,pname=sample_count'")'
 
@@ -122,10 +122,13 @@ load_acq2006() {
 		do
 			if [ "x${counter%_*}" = "xscount_CLK" ]; then
 				SCMAX=$CTR28
+				dt="1"
 			else
 				SCMAX=$CTR16
+				dt="1"
+				# dt=".1"   @@todo GOES MAD at 10Hz !
 			fi
-			CTPRAMS="${CPRAMS},CTRMAX=${SCMAX}"
+			CTPRAMS="${CPRAMS},CTRMAX=${SCMAX},DT=${dt}"
 			PRAMS="${CTPRAMS},lname=${counter#scount_*},pname=${counter}"
 			echo 'dbLoadRecords("db/counter.db","'${PRAMS}'")'
 		done
