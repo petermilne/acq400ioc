@@ -1,0 +1,12 @@
+record (bi, "${UUT}:MOD:${site}:GOOD") {
+	field(DTYP, "biAcqHost")
+	field(INP, "@/dev/gpio/LED/FMC${site}_G")
+	field(PINI, "YES")
+}
+
+record (bi, "${UUT}:MOD:${site}:FAIL") {
+	field(DTYP, "biAcqHost")
+	field(INP, "@/dev/gpio/LED/FMC${site}_R")
+	field(PINI, "YES")
+}
+

@@ -1,0 +1,9 @@
+record (bo, "${UUT}:SYS:CLK:FP_CLK_OE") {
+	field(DTYP, "boAcqHost")
+	field(OUT, "@/dev/gpio/CLK/FP_CLK_OE")
+}
+
+record (bo, "${UUT}:SYS:CLK:FP_OE") {
+	field(DTYP, "boAcqHost")
+	field(OUT, "@/dev/gpio/CLK/FP_OE")
+}

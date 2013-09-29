@@ -138,7 +138,14 @@ load_acq2006() {
 		PRAMS="$CPRAMS,pname=/dev/hwmon/${SITE}/temp,scale=0.001"
 		echo 'dbLoadRecords("db/hwmontemp.db","'${PRAMS}'")'
 	done
+	for SITE in 1 2 3 4 5 6
+	do
+		CPRAMS="UUT=${HOST},site=${SITE}"
+		echo 'dbLoadRecords("db/acq2006sites.db","'${CPRAMS}'")'
+	done
 	echo 'dbLoadRecords("db/hwmonvolts.db","UUT='${HOST}'")'
+	echo 'dbLoadRecords("db/acq2006leds.db","UUT='${HOST}'")'
+	echo 'dbLoadRecords("db/acq2006clktree.db","UUT='${HOST}'")'
 }
 
 cat - <<EOF

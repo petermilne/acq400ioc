@@ -1,0 +1,5 @@
+record(bo, "${UUT}:${SITE}:${lname}") {
+	field(DTYP, "boAcqHost")
+	field(OUT, "@${pname}")
+	field(PINI, "YES")
+}
