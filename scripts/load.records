@@ -9,6 +9,7 @@ HSIZE=256
 
 CTR28=268435456
 CTR16=65536
+CTR20=1048576
 
 source /etc/sysconfig/acq400.conf
 
@@ -124,7 +125,7 @@ load_acq2006() {
 				SCMAX=$CTR28
 				dt="1"
 			else
-				SCMAX=$CTR16
+				SCMAX=$CTR20
 				dt="1"
 				# dt=".1"   @@todo GOES MAD at 10Hz !
 			fi

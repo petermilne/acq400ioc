@@ -1,15 +1,17 @@
 
-record (bo, "${UUT}:SYS:CLK:FPMUX") {
+record (mbbo, "${UUT}:SYS:CLK:FPMUX") {
 	field(DTYP, "Soft Channel")
-	field(ZNAM, "XCLK")
-	field(ONAM, "FPCLK")
+	field(NOBT, "2")
+	field(ZRST, "OFF")
+	field(ONST, "XCLK")
+	field(TWST, "FPCLK")
 	field(FLNK, "${UUT}:SYS:CLK:fpclk0")	
 }
 
 # break before make .. 
 record (calcout, "${UUT}:SYS:CLK:fpclk0") {
 	field(INPA, "${UUT}:SYS:CLK:FPMUX")
-	field(CALC, "A")
+	field(CALC, "A==2")
 	field(OUT, "${UUT}:SYS:CLK:_FP_CLK_OE PP")
 	field(OOPT, "When Zero")
 	field(FLNK, "${UUT}:SYS:CLK:xclk0")	
@@ -17,7 +19,7 @@ record (calcout, "${UUT}:SYS:CLK:fpclk0") {
 
 record (calcout, "${UUT}:SYS:CLK:xclk0") {
 	field(INPA, "${UUT}:SYS:CLK:FPMUX")
-	field(CALC, "!A")
+	field(CALC, "A==1")
 	field(OUT, "${UUT}:SYS:CLK:_OSC_X_CLK_OE PP")
 	field(OOPT, "When Zero")
 	field(FLNK, "${UUT}:SYS:CLK:fpclk")	
@@ -26,7 +28,7 @@ record (calcout, "${UUT}:SYS:CLK:xclk0") {
 # make
 record (calcout, "${UUT}:SYS:CLK:fpclk") {
 	field(INPA, "${UUT}:SYS:CLK:FPMUX")
-	field(CALC, "A")
+	field(CALC, "A==2")
 	field(OUT, "${UUT}:SYS:CLK:_FP_CLK_OE PP")
 	field(OOPT, "Transition To Non-zero")
 	field(FLNK, "${UUT}:SYS:CLK:xclk")		
@@ -34,7 +36,7 @@ record (calcout, "${UUT}:SYS:CLK:fpclk") {
 
 record (calcout, "${UUT}:SYS:CLK:xclk") {
 	field(INPA, "${UUT}:SYS:CLK:FPMUX")
-	field(CALC, "!A")	
+	field(CALC, "A==1")	
 	field(OUT, "${UUT}:SYS:CLK:_OSC_X_CLK_OE PP")
 	field(OOPT, "Transition To Non-zero")
 	field(FLNK, "${UUT}:SYS:CLK:_FP_OE")			
