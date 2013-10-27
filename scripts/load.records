@@ -170,7 +170,16 @@ do
 	load_400 ${ACQ400##*.} $ACQ400
 done
 
-load_421 5
+for sitepath in /dev/sites/*
+do
+	file=$sitepath/details	
+	FRU_PROD_NAME=nothing
+	source $file
+	if [ "x$FRU_PROD_NAME" = "xAO421FMC" ]; then
+		site=$(basename $sitepath)
+ 		load_421 $site
+ 	fi
+done
 
 cat - <<EOF2
 #	asynSetTraceMask("S0",-1,0xff)
