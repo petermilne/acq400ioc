@@ -21,7 +21,8 @@ record(ao, "${UUT}:${SITE}:AWG:G:${cid}") {
         field(DRVL, "0.000")
         field(DRVH, "100")
         field(LINR, "LINEAR")
-        field(ESLO, "0.09765625")        
+# full scale: 32768        
+        field(ESLO, "3.0517578e-3")        
         field(PINI, "YES")
         field(HOPR, "100.0")
         field(LOPR, "0.000")
