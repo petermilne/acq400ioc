@@ -1,5 +1,28 @@
 record(bo, "${UUT}:${SITE}:${lname}") {
+	field(DTYP, "Soft Channel")
+	field(FLNK, "${UUT}:${SITE}:${lname}:w PP")
+}
+
+record(bo, "${UUT}:${SITE}:${lname}:w") {
 	field(DTYP, "boAcqHost")
-	field(OUT, "@${pname}")
+	field(OUT,  "@${pname}")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:${SITE}:${lname} PP")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:${lname}:s.PACT")
+}
+
+record(bi, "${UUT}:${SITE}:${lname}:r") {
+	field(DTYP, "biAcqHost")
+	field(INP,  "@${pname}")
+	field(SCAN, "1 second")
 	field(PINI, "YES")
+	field(FLNK, "${UUT}:${SITE}:${lname}:s")
+}
+
+record(bo, "${UUT}:${SITE}:${lname}:s") {
+	field(DTYP, "Soft Channel")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:${SITE}:${lname}:r NPP")
+	field(OUT,  "${UUT}:${SITE}:${lname} PP")
 }
