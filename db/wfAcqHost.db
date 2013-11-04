@@ -5,10 +5,10 @@ record(waveform, "${UUT}:${SITE}:AI:WF:${cid}") {
 	field(DESC, "AI waveform record raw")
 	field(NELM,"${size}")
 	field(FTVL,"${type}")
-	field(FLNK,"${UUT}:${SITE}:AI:WF:${cid}:v")
+	field(FLNK,"${UUT}:${SITE}:AI:WF:${cid}:V")
 }
 
-record(aSub, "${UUT}:${SITE}:AI:WF:${cid}:v") {	
+record(aSub, "${UUT}:${SITE}:AI:WF:${cid}:V") {	
 	field(SNAM, "raw_to_volts")
 	field(FTA,  "LONG")
 	field(NOA,  "${size}")
