@@ -5,16 +5,22 @@ record(waveform, "${UUT}:${SITE}:AI:WF:${cid}") {
 	field(DESC, "AI waveform record raw")
 	field(NELM,"${size}")
 	field(FTVL,"${type}")
-	field(FLNK,"${UUT}:${SITE}:AI:WF${cid}:uv")
+	field(FLNK,"${UUT}:${SITE}:AI:WF:${cid}:v")
 }
 
-record(aSub, "${UUT}:${SITE}:AI:WF${cid}:uv") {	
-	field(SNAM, "raw_to_uvolts")
+record(aSub, "${UUT}:${SITE}:AI:WF:${cid}:v") {	
+	field(SNAM, "raw_to_volts")
 	field(FTA,  "LONG")
 	field(NOA,  "${size}")
 	field(INPA, "${UUT}:${SITE}:AI:WF:${cid}")
-	field(FTVA, "LONG")
+	field(FTB,  "LONG")
+	field(NOB,  "1")
+	field(INPB, "2147483648")
+	field(FTC,  "FLOAT")
+	field(NOC,  "1")
+	field(INPC,  "5")
+	field(FTVA, "FLOAT")
 	field(NOVA, "${size}")
-	field(DESC, "AI waveform record scaled to micro volts")
+	field(DESC, "AI waveform record scaled to volts")
 }
 

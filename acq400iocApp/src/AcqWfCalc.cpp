@@ -71,8 +71,48 @@ static long raw_to_uvolts(aSubRecord *prec) {
 
        return 0;
    }
+
+static int report_done;
+
+static long raw_to_volts(aSubRecord *prec) {
+
+       double yy;
+       long *raw = (long *)prec->a;
+       int len = prec->noa;
+       float * cooked = (float *)prec->vala;
+       long rmax = *(long*)prec->valb;
+       float vmax = *(float*)prec->valc;
+       double ratio = vmax/rmax;
+
+
+       if (report_done++ < 10){
+	       printf("raw_to_volts() len:%d\n", len);
+	       printf("raw_to_volts() rmax:%ld\n", rmax);
+	       printf("raw_to_volts() vmax:%.2f\n", vmax);
+       }
+
+       if (rmax == 0){
+	       if (report_done < 10){
+		       printf("cheating, hardcode vmax, rmax");
+	       }
+	       ratio = 5.0/(1<<31);
+       }
+
+       for (int ii=0; ii <len; ii++) {
+    	   yy = raw[ii];
+    	   yy *= ratio;
+           cooked[ii] = (float)yy;
+           if (report_done < 10 && ii < 10){
+        	   printf("raw_to_volts() raw:%08lx ratio:%.4f cooked:%.4f\n",
+        	   	   raw[ii], ratio, cooked[ii]);
+           }
+       }
+
+       return 0;
+   }
  static registryFunctionRef my_asub_Ref[] = {
-       {"raw_to_uvolts", (REGISTRYFUNCTION) raw_to_uvolts}
+       {"raw_to_uvolts", (REGISTRYFUNCTION) raw_to_uvolts},
+       {"raw_to_volts",  (REGISTRYFUNCTION) raw_to_volts},
  };
 
  static void raw_to_uvolts_Registrar(void) {
