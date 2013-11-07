@@ -97,7 +97,7 @@ static long raw_to_volts(aSubRecord *prec) {
        if (rmax == 0){
 
 	       ratio = 10.0/INT_MAX;
-	       if (report_done < 5){
+	       if (report_done < 2){
 	       	       printf("cheating, hardcode vmax, rmax ratio %f\n", ratio);
 	       }
        }
