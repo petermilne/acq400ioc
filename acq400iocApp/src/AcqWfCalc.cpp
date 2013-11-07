@@ -106,10 +106,6 @@ static long raw_to_volts(aSubRecord *prec) {
     	   yy = raw[ii];
     	   yy *= ratio;
            cooked[ii] = (float)yy;
-           if (report_done < 2 && ii%32 == 0){
-        	   printf("raw_to_volts() raw:%08lx ratio:%.4f cooked:%.4f\n",
-        	   	   raw[ii], ratio, cooked[ii]);
-           }
        }
 
        return 0;
