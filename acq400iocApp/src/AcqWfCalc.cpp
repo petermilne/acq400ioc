@@ -34,6 +34,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <limits.h>
 
 
 #include "alarm.h"
@@ -85,24 +86,27 @@ static long raw_to_volts(aSubRecord *prec) {
        double ratio = vmax/rmax;
 
 
-       if (report_done++ < 10){
+       if (report_done++ < 2){
+	       printf("raw_to_volts() ->valb %p", prec->valb);
+	       printf("raw_to_volts() ->valc %p", prec->valc);
 	       printf("raw_to_volts() len:%d\n", len);
 	       printf("raw_to_volts() rmax:%ld\n", rmax);
 	       printf("raw_to_volts() vmax:%.2f\n", vmax);
        }
 
        if (rmax == 0){
-	       if (report_done < 10){
-		       printf("cheating, hardcode vmax, rmax");
+
+	       ratio = 10.0/INT_MAX;
+	       if (report_done < 5){
+	       	       printf("cheating, hardcode vmax, rmax ratio %f\n", ratio);
 	       }
-	       ratio = 5.0/(1<<31);
        }
 
        for (int ii=0; ii <len; ii++) {
     	   yy = raw[ii];
     	   yy *= ratio;
            cooked[ii] = (float)yy;
-           if (report_done < 10 && ii < 10){
+           if (report_done < 2 && ii%32 == 0){
         	   printf("raw_to_volts() raw:%08lx ratio:%.4f cooked:%.4f\n",
         	   	   raw[ii], ratio, cooked[ii]);
            }
