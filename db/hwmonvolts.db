@@ -74,10 +74,10 @@ record(ai, "${UUT}:SYS:VADJ") {
         field(EGU,  "V")
         field(PINI, "YES")
         field(FLNK,  "${UUT}:SYS:VAP")
-        field(HOPR, "15")
+        field(HOPR, "3")
         field(LOPR, "0")
-        field(LOW,  "2.5")
-        field(HIGH, "3.5")        
+        field(LOW,  "1.6")
+        field(HIGH, "2.0")        
 }
 
 
