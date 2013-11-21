@@ -68,8 +68,8 @@ record(ai, "${UUT}:SYS:VADJ") {
         field(DTYP, "dsSysfsAi")
         field(INP, "@/dev/hwmon/0/VADJ")        
         field(DESC, "ZYNQ Rails")
-# 3/1000        
-        field(ASLO, "0.003")
+# 2/1000        
+        field(ASLO, "0.002")
         field(LINR, "LINEAR")
         field(EGU,  "V")
         field(PINI, "YES")
