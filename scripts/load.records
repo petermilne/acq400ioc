@@ -160,14 +160,18 @@ dbLoadRecords("db/system.db","UUT=${HOST}")
 EOF
 
 KB=/dev/acq400.0.knobs
-if [ -e $KB/module_name -a "$(cat $KB/module_name)" = "acq2006sc" ]; then
-	load_acq2006 $KB
+if [ -e $KB/module_name ]; then
+	if [ "$(cat $KB/module_name)" = "acq2006sc" ]; then
+		load_acq2006 $KB
+	fi
 fi
 
 
 for ACQ400 in /dev/acq400.?
 do
-	load_400 ${ACQ400##*.} $ACQ400
+	if [ -e $ACQ400 ]; then
+		load_400 ${ACQ400##*.} $ACQ400
+	fi
 done
 
 for sitepath in /dev/sites/*
