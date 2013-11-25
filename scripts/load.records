@@ -172,13 +172,15 @@ done
 
 for sitepath in /dev/sites/*
 do
-	file=$sitepath/details	
-	FRU_PROD_NAME=nothing
-	source $file
-	if [ "x$FRU_PROD_NAME" = "xAO421FMC" ]; then
-		site=$(basename $sitepath)
- 		load_421 $site
- 	fi
+	if [ -d $sitepath ]; then
+		file=$sitepath/details	
+		FRU_PROD_NAME=nothing
+		source $file
+		if [ "x$FRU_PROD_NAME" = "xAO421FMC" ]; then
+			site=$(basename $sitepath)
+	 		load_421 $site
+	 	fi
+	fi
 done
 
 cat - <<EOF2
