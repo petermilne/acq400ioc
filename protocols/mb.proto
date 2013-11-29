@@ -1,0 +1,8 @@
+Terminator = LF;
+ExtraInput = Ignore;
+
+setMB {
+# fin kHz, fout (setpoint)
+	out "%d,%(A)d";
+}
+

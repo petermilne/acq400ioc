@@ -150,6 +150,8 @@ load_acq2006() {
 	echo 'dbLoadRecords("db/hwmonvolts.db","UUT='${HOST}'")'
 	echo 'dbLoadRecords("db/acq2006leds.db","UUT='${HOST}'")'
 	echo 'dbLoadRecords("db/acq2006clktree.db","UUT='${HOST}'")'
+	echo 'dbLoadRecords("db/acq2006mb.db","UUT='${HOST}',SPORT=S0")'
+	echo 'drvAsynIPPortConfigure("S0", "127.0.0.1:4230")'
 }
 
 cat - <<EOF

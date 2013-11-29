@@ -1,0 +1,16 @@
+record(longout, "${UUT}:0:SIG:CLK_MB:SET") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "MB CLK setpoint")
+	field(EGU,  "kHz")
+	field(FLNK, "${UUT}:0:SIG:CLK_MB:w")
+}
+
+
+record(calcout, "${UUT}:0:SIG:CLK_MB:w") {
+	field(INPA, "${UUT}:0:SIG:CLK_MB:SET")
+	field(INPB, "${UUT}:0:SIG:CLK_EXT:FREQ")
+	field(INPC, "${UUT}:${SITE}:${FNAM}:SENSE")
+	field(CALC, "B/1000")
+	field(DTYP, "stream")
+	field(OUT,  "@mb.proto setMB() ${SPORT}")
+}
