@@ -10,7 +10,6 @@ record(longout, "${UUT}:0:SIG:CLK_MB:SET") {
 record(calc, "${UUT}:0:SIG:CLK_MB:set_kHz") {
 	field(INPA,  "${UUT}:0:SIG:CLK_MB:SET")
 	field(CALC, "A/1000")
-	field(DTYP, "Soft Channel")
 	field(DESC, "MB CLK setpoint")
 	field(EGU,  "kHz")
 	field(FLNK, "${UUT}:0:SIG:CLK_MB:w")
