@@ -6,6 +6,24 @@ record (mbbo, "${UUT}:SYS:CLK:FPMUX") {
 	field(ONST, "XCLK")
 	field(TWST, "FPCLK")
 	field(FLNK, "${UUT}:SYS:CLK:fpclk0")	
+	field(PINI, "YES")
+}
+
+record (mbbi, "${UUT}:SYS:CLK:FPMUX:r") {
+	field(DTYP, "mbbiAcqHost")
+	field(NOBT, "2")
+	field(INP,  "@/dev/shm/platform/clk/FPMUX")
+	field(SCAN, "1 second")
+	field(PINI, "YES")
+	field(FLNK, "${UUT}:SYS:CLK:FPMUX:s")	
+}
+
+record (mbbo, "${UUT}:SYS:CLK:FPMUX:s") {
+	field(DTYP,  "Soft Channel")
+	field(NOBT,  "2")
+	field(OMSL,  "closed_loop")
+	field(DOL,   "${UUT}:SYS:CLK:FPMUX:r NPP")
+	field(OUT,   "${UUT}:SYS:CLK:FPMUX")
 }
 
 # break before make .. 
@@ -15,6 +33,8 @@ record (calcout, "${UUT}:SYS:CLK:fpclk0") {
 	field(OUT, "${UUT}:SYS:CLK:_FP_CLK_OE PP")
 	field(OOPT, "When Zero")
 	field(FLNK, "${UUT}:SYS:CLK:xclk0")	
+	field(DISV, "1")
+	field(SDIS, "${UUT}:SYS:CLK:FPMUX:r.PACT")
 }
 
 record (calcout, "${UUT}:SYS:CLK:xclk0") {

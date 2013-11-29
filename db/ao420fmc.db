@@ -23,7 +23,7 @@ record(ao, "${UUT}:${SITE}:AWG:G:${cid}") {
         field(LINR, "LINEAR")
 # full scale: 32768        
         field(ESLO, "0.003051851")
-	field(ESOF, "0")
+	field(EOFF, "0")
         field(PINI, "YES")
         field(HOPR, "100.0")
         field(LOPR, "0.000")
