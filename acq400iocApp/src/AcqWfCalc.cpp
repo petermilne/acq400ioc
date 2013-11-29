@@ -85,7 +85,7 @@ static long raw_to_volts(aSubRecord *prec) {
        float vmax = *(float*)prec->valc;
        double ratio = vmax/rmax;
 
-
+/*
        if (report_done++ < 2){
 	       printf("raw_to_volts() ->valb %p", prec->valb);
 	       printf("raw_to_volts() ->valc %p", prec->valc);
@@ -93,13 +93,15 @@ static long raw_to_volts(aSubRecord *prec) {
 	       printf("raw_to_volts() rmax:%ld\n", rmax);
 	       printf("raw_to_volts() vmax:%.2f\n", vmax);
        }
-
+*/
        if (rmax == 0){
 
 	       ratio = 10.0/INT_MAX;
+/*
 	       if (report_done < 2){
 	       	       printf("cheating, hardcode vmax, rmax ratio %f\n", ratio);
 	       }
+*/
        }
 
        for (int ii=0; ii <len; ii++) {
