@@ -18,8 +18,8 @@ record(calc, "${UUT}:0:SIG:CLK_MB:set_kHz") {
 record(calcout, "${UUT}:0:SIG:CLK_MB:w") {
 	field(INPA, "${UUT}:0:SIG:CLK_MB:set_kHz")
 	field(INPB, "${UUT}:0:SIG:CLK_EXT:FREQ")
-	field(INPC, "${UUT}:${SITE}:${FNAM}:SENSE")
 	field(CALC, "B/1000")
 	field(DTYP, "stream")
 	field(OUT,  "@mb.proto setMB() ${SPORT}")
 }
+
