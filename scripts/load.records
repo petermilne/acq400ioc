@@ -191,6 +191,7 @@ done
 
 cat - <<EOF2
 #	asynSetTraceMask("S0",-1,0xff)
+#	 asynSetTraceIOMask("S0",-1,0x2)
 iocInit()
 dbl > /tmp/records.dbl
 EOF2
