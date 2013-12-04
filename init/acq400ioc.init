@@ -29,10 +29,11 @@ EOF
 }
 
 make_epics_knobs() {
-	while [ ! -e /tmp/epics.log ]; do
+	sleep 1
+	while [ ! -e /tmp/records.dbl ]; do
 		sleep 1
 	done
-	for PV in $(grep FREQ /tmp/epics.log)
+	for PV in $(grep FREQ /tmp/records.dbl)
 	do
 		NU=${PV#*:}
 		SITE=${NU:0:1}
