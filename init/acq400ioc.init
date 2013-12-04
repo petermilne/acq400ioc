@@ -29,6 +29,9 @@ EOF
 }
 
 make_epics_knobs() {
+	while [ ! -e /tmp/epics.log ]; do
+		sleep 1
+	done
 	for PV in $(grep FREQ /tmp/epics.log)
 	do
 		NU=${PV#*:}
@@ -41,7 +44,7 @@ make_stcmd() {
 		(cd ${ETOP}
 		./scripts/load.records >${STCMD})
 		touch /dev/shm/AI
-		make_epics_knobs		
+		make_epics_knobs &
 		ai_monitor_all start
 	fi
 }
