@@ -1,0 +1,16 @@
+record (bo, "${UUT}:SYS:LED:TRG") {
+	field(DTYP, "boAcqHost")
+	field(SCAN, "1 second")
+	field(OMSL, "closed_loop")	
+	field(DOL, "${UUT}:0:SIG:TRG_EXT:ACTIVE")
+	field(OUT, "@/dev/gpio/LED/TRG_G")
+}
+
+record (bo, "${UUT}:SYS:LED:CLK") {
+	field(DTYP, "boAcqHost")
+	field(SCAN, "1 second")
+	field(OMSL, "closed_loop")	
+	field(DOL, "${UUT}:0:SIG:CLK_EXT:ACTIVE")
+	field(OUT, "@/dev/gpio/LED/CLK_G")
+}
+

@@ -116,6 +116,7 @@ zynq_hwmon() {
 }
 load_acq2006() {
 	KB=$1
+	NS=$2
 	CPRAMS="UUT=${HOST},SITE=0"
 	(
 		cd ${KB}
@@ -136,19 +137,23 @@ load_acq2006() {
 	)
 	zynq_hwmon Z
 	
-	for SITE in 0 1 2 3 4 5 6
+	for SITE in $(seq 0 $NS)
 	do
 		CPRAMS="UUT=${HOST},lname=${SITE}"
 		PRAMS="$CPRAMS,pname=/dev/hwmon/${SITE}/temp,scale=0.001"
 		echo 'dbLoadRecords("db/hwmontemp.db","'${PRAMS}'")'
 	done
-	for SITE in 1 2 3 4 5 6
+	for SITE in $(seq 1 $NS)
 	do
 		CPRAMS="UUT=${HOST},site=${SITE}"
 		echo 'dbLoadRecords("db/acq2006sites.db","'${CPRAMS}'")'
 	done
 	echo 'dbLoadRecords("db/hwmonvolts.db","UUT='${HOST}'")'
-	echo 'dbLoadRecords("db/acq2006leds.db","UUT='${HOST}'")'
+	if [ "$3" = "acq2006" ]; then
+		echo 'dbLoadRecords("db/acq2006leds.db","UUT='${HOST}'")'
+	else
+		echo 'dbLoadRecords("db/acq1001leds.db","UUT='${HOST}'")'
+	fi
 	echo 'dbLoadRecords("db/acq2006clktree.db","UUT='${HOST}'")'
 	echo 'dbLoadRecords("db/acq2006mb.db","UUT='${HOST}',SPORT=S0")'
 	echo 'drvAsynIPPortConfigure("S0", "127.0.0.1:4230")'
@@ -163,9 +168,11 @@ EOF
 
 KB=/dev/acq400.0.knobs
 if [ -e $KB/module_name ]; then
-	if [ "$(cat $KB/module_name)" = "acq2006sc" ]; then
-		load_acq2006 $KB
-	fi
+	case $(cat $KB/module_name) in
+	acq2006sc) load_acq2006 $KB 6 acq2006;;
+	acq1001sc) load_acq2006 $KB 1 acq1001;;
+	acq1002sc) load_acq2006 $KB 2 acq1002;;
+	esac
 fi
 
 
