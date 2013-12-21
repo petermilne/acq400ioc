@@ -13,6 +13,19 @@ CTR20=1048576
 
 source /etc/sysconfig/acq400.conf
 
+# nchan deprecated, NCHAN preferred
+
+get_nchan() {
+        SITE=$1
+        if [ -e /etc/acq400/$SITE/NCHAN ]; then
+                cat /etc/acq400/$SITE/NCHAN
+        elif [ -e /etc/acq400/$SITE/nchan ]; then
+                cat /etc/acq400/$SITE/nchan
+        else
+                echo 4
+        fi
+}
+
 
 # There's only ONE lot of AI records... this is deliberate for now
 make_AI() {
@@ -22,12 +35,8 @@ make_AI() {
 			TYPE=LONG
 		fi
 	fi
-	NCFILE=/etc/acq400/$SITE/nchan
-	if [ -e $NCFILE ]; then
-		NCHAN=$(cat $NCFILE)
-	else
-		NCHAN=4
-	fi
+	NCHAN=$(get_nchan $SITE)
+
 	let ch=0; while [ $ch -lt $NCHAN ]; do
 		let ch=$ch+1
 		cid=$(printf "%02d" $ch)

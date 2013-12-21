@@ -29,6 +29,9 @@ EOF
 }
 
 make_epics_knobs() {
+	if [ -e /tmp/epics_knobs_done ]; then
+		return
+	fi
 	sleep 1
 	while [ ! -e /tmp/records.dbl ]; do
 		sleep 1
@@ -39,13 +42,13 @@ make_epics_knobs() {
 		SITE=${NU:0:1}
 		make_caget $PV ${NU#*:} ${SITE}	
 	done
+	echo make_epics_knobs_done >/tmp/epics_knobs_done
 }
 make_stcmd() {
 	if [ ! -e ${STCMD} ]; then
 		(cd ${ETOP}
 		./scripts/load.records >${STCMD})
 		touch /dev/shm/AI
-		make_epics_knobs &
 		ai_monitor_all start
 	fi
 }
@@ -71,6 +74,7 @@ restart() {
 	make_stcmd
 	stop_ioc
 	start_ioc
+	make_epics_knobs 
 }
 
 case "$1" in

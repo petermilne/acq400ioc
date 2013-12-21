@@ -25,7 +25,7 @@ run_monitor() {
 		if [ $DATA32 -eq 1 ]; then
 			OPTS="-w 4"
 		fi
-		NCFILE=/etc/acq400/$SITE/nchan
+		NCFILE=/etc/acq400/$SITE/NCHAN
 		if [ -e $NCFILE ]; then
 			OPTS="$OPTS --nchan $(cat $NCFILE)"
 		fi	
