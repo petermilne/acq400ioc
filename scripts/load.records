@@ -165,7 +165,7 @@ load_acq2006() {
 	fi
 	echo 'dbLoadRecords("db/acq2006clktree.db","UUT='${HOST}'")'
 	echo 'dbLoadRecords("db/acq2006mb.db","UUT='${HOST}',SPORT=S0")'
-	echo 'drvAsynIPPortConfigure("S0", "127.0.0.1:4230")'
+	echo 'drvAsynIPPortConfigure("S0", "127.0.0.1:4220")'
 }
 
 cat - <<EOF
@@ -185,7 +185,7 @@ if [ -e $KB/module_name ]; then
 fi
 
 
-for ACQ400 in /dev/acq400.?
+for ACQ400 in /dev/acq400.[123456]
 do
 	if [ -e $ACQ400 ]; then
 		load_400 ${ACQ400##*.} $ACQ400
@@ -198,7 +198,8 @@ do
 		file=$sitepath/details	
 		FRU_PROD_NAME=nothing
 		source $file
-		if [ "x$FRU_PROD_NAME" = "xAO421FMC" ]; then
+		if [ "x$FRU_PROD_NAME" = "xAO421FMC" -o \
+		     "x$FRU_PROD_NAME" = "xAO421ELF"      ]; then
 			site=$(basename $sitepath)
 	 		load_421 $site
 	 	fi
