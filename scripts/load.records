@@ -27,11 +27,10 @@ get_nchan() {
 }
 
 
-# There's only ONE lot of AI records... this is deliberate for now
 make_AI() {
 	SITE=$1
-	if [ -e $2.knobs/data32 ]; then
-		if [ $(cat $2.knobs/data32) -eq 1 ]; then
+	if [ -e /etc/acq400/$SITE/data32 ]; then
+		if [ $(cat /etc/acq400/$SITE/data32) -eq 1 ]; then
 			TYPE=LONG
 		fi
 	fi
@@ -79,7 +78,7 @@ load_400() {
 	HPRAMS="${CPRAMS},size=$HSIZE,type=LONG,fname=HG.${SITE}"
 	echo 'dbLoadRecords("db/hgAcqHost.db","'${HPRAMS}'")'
 	
-	make_AI $SITE	$ACQ400
+	make_AI $SITE
 
 	CTPR="${CPRAMS},CTRMAX=$CTR28,DT=1"
 	echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=clk_count,pname=clk_count'")'
@@ -205,6 +204,10 @@ do
 	 	fi
 	fi
 done
+
+# perhaps an aggregator at work \?
+make_AI 0
+
 
 cat - <<EOF2
 #	asynSetTraceMask("S0",-1,0xff)
