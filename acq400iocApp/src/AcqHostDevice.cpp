@@ -66,7 +66,7 @@ void AcqHostDevice::monitorFunction()
 	int errcount = 0;
 
 	while((monitor = FileMonitor::create(fname)) == 0){
-		if ((++errcount&0xf) == 1){
+		if ((++errcount&0xfff) == 1){
 			err("waiting for file %s", fname);
 		}
 		usleep(100000);
