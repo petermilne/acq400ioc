@@ -16,6 +16,26 @@ stop() {
                 rm ${PIDF}
         fi
 }
+
+link_aggregator_sites() 
+{
+	ASITES=$(awk '{ print $2 }' </etc/acq400/0/aggregator | tr ,  \  | sed -e s/=/=\"/ -e s/\$/\"/)
+	let ACH=1
+	eval $ASITES
+	for site in $sites
+	do
+		TWF=/dev/shm/AI.$site.wf
+		echo mkdir $TWF
+		mkdir $TWF
+
+		for ch in $(seq 1 $(cat /dev/acq400.$site.knobs/active_chan))
+		do
+			ln -s /dev/shm/AI.0.wf/$(printf "CH%02d" $ACH) $TWF/$(printf "CH%02d" $ch)
+			let ACH=$ACH+1
+		done
+	done
+}
+
 run_monitor() {
 	for SX in /dev/acq400.?
 	do
@@ -26,10 +46,17 @@ run_monitor() {
 			OPTS="-w 4"
 		fi
 		NCFILE=/etc/acq400/$SITE/NCHAN
+		NCHAN=0
 		if [ -e $NCFILE ]; then
-			OPTS="$OPTS --nchan $(cat $NCFILE)"
+			NCHAN=$(cat $NCFILE)
+			OPTS="$OPTS --nchan $NCHAN"
 		fi	
 		/usr/local/bin/acq400_stream $OPTS --hb0 $SITE &
+
+		if [ $SITE -eq 0 ] && [ $NCHAN -gt 0 ]; then
+			link_aggregator_sites
+			break
+		fi
 	done
 	
 	forsleep update-histo 2>&1 >/dev/null &
