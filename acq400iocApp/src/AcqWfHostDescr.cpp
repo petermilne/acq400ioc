@@ -100,9 +100,10 @@ public:
 class ConcreteAcqWfHostDescr: public AcqWfHostDescr {
 	AcqWfHostDevice* dev;
 	char *ch_fname;
+	bool error_reported;
 public:
 	ConcreteAcqWfHostDescr(int cid, AcqWfHostDevice* _dev, char* blockname):
-		AcqWfHostDescr(), dev(_dev)
+		AcqWfHostDescr(), dev(_dev), error_reported(false)
 	{
 		int idx = ((cid-1)&(32-1)) + 1;
 		char local_fname[128];
@@ -151,7 +152,10 @@ public:
 			dbg(1, "read done: %d", nread);
 			return 0;
 		}else{
-			printf("Failed to open file %s\n", ch_fname);
+			if (!error_reported){
+				printf("Failed to open file %s\n", ch_fname);
+				error_reported = true;
+			}
 			return -1;
 		}
 	}
