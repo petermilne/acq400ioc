@@ -3,6 +3,6 @@ ExtraInput = Ignore;
 
 setMB {
 # fin kHz, fout (setpoint)
-	out "%d,%(A)d";
+	out "mb_clk %d %(A)d";
 }
 
