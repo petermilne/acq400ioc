@@ -42,6 +42,14 @@ make_epics_knobs() {
 		SITE=${NU:0:1}
 		make_caget $PV ${NU#*:} ${SITE}	
 	done
+	mkdir -p /etc/acq400/S
+	for PV in $(egrep SYS:[5Vv] /tmp/records.dbl)
+	do
+		NU=${PV#*:}
+		make_caget $PV ${NU#*:} S
+	done
+	killall voltsmon
+	daemon voltsmon.epics
 	echo make_epics_knobs_done >/tmp/epics_knobs_done
 }
 make_stcmd() {

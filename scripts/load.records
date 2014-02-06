@@ -28,15 +28,33 @@ get_nchan() {
         fi
 }
 
+get_range() {
+	SITE=$1
+	if [ -e /etc/acq400/$SITE/PART_NUM ]; then
+	VSPEC=$(tr -s -- -\  \\n   </etc/acq400/$SITE/PART_NUM | grep V)
+	VR=${VSPEC%*V}
+	else
+	VSPEC=""
+	fi
+	if [ "x$VR" != "x" ]; then
+		echo $VR
+	else
+		echo 10
+	fi
+}
 
 make_AI() {
 	SITE=$1
+	TYPE=SHORT
+	MAXCODE=32768
 	if [ -e /etc/acq400/$SITE/data32 ]; then
 		if [ $(cat /etc/acq400/$SITE/data32) -eq 1 ]; then
 			TYPE=LONG
+			MAXCODE=2147483648
 		fi
 	fi
 	NCHAN=$(get_nchan $SITE)
+	VMAX=$(get_range $SITE)
 
 	let ch=0; while [ $ch -lt $NCHAN ]; do
 		let ch=$ch+1
@@ -45,6 +63,7 @@ make_AI() {
 
 		PRAMS="UUT=${HOST},SITE=${SITE},cid=$cid,idx=${IDX},fname=AI.${SITE}"
 		WPRAMS="${PRAMS},size=${SIZE},type=${TYPE}"
+		WPRAMS="${WPRAMS},maxcode=${MAXCODE},vmax=${VMAX}"
 
 		echo dbLoadRecords\(\"db/wfAcqHost.db\",\"${WPRAMS}\"\)
 	done

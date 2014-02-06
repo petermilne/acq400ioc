@@ -10,15 +10,15 @@ record(waveform, "${UUT}:${SITE}:AI:WF:${cid}") {
 
 record(aSub, "${UUT}:${SITE}:AI:WF:${cid}:V") {	
 	field(SNAM, "raw_to_volts")
-	field(FTA,  "LONG")
+	field(FTA,  "${type}")
 	field(NOA,  "${size}")
 	field(INPA, "${UUT}:${SITE}:AI:WF:${cid}")
 	field(FTB,  "LONG")
 	field(NOB,  "1")
-	field(INPB, "2147483648")
+	field(INPB, "${maxcode}")
 	field(FTC,  "FLOAT")
 	field(NOC,  "1")
-	field(INPC,  "5")
+	field(INPC,  "${vmax}")
 	field(FTVA, "FLOAT")
 	field(NOVA, "${size}")
 	field(DESC, "AI waveform record scaled to volts")
