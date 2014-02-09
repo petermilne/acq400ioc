@@ -49,7 +49,7 @@ make_epics_knobs() {
 		make_caget $PV ${NU#*:} S
 	done
 	killall voltsmon
-	daemon voltsmon.epics
+	daemon /usr/local/bin/voltsmon.epics
 	echo make_epics_knobs_done >/tmp/epics_knobs_done
 }
 make_stcmd() {

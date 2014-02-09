@@ -1,7 +1,11 @@
 #!/bin/sh
+# monitor volts with EPICS PV values
+# sometimes it wedges first time thru, so run bg and kill it
+
+PATH=$PATH:/usr/local/bin
 
 monitor() {
-for file in /etc/acq400/S/*
+for file in /etc/acq400/S/*[Vv]*
 do
 	$file
 done
@@ -10,8 +14,10 @@ done
 
 while [ 1 ]
 do
-	monitor | fs2xml --kvp >/dev/shm/volts.xml
+	(monitor | fs2xml --kvp >/dev/shm/volts.xml) &
+	MONPID=$!
 	sleep 5
+	kill -9 $MONPID
 done
 
 

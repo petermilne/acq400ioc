@@ -199,8 +199,12 @@ KB=/dev/acq400.0.knobs
 if [ -e $KB/module_name ]; then
 	case $(cat $KB/module_name) in
 	acq2006sc) load_acq2006 $KB 6 acq2006;;
-	acq1001sc) load_acq2006 $KB 1 acq1001;;
-	acq1002sc) load_acq2006 $KB 2 acq1002;;
+	acq1001sc) 
+		case $(cat /proc/device-tree/chosen/model) in
+		acq1002)	ns=2;;
+		*)		ns=1;;
+		esac
+		load_acq2006 $KB $ns acq1001;;
 	esac
 fi
 
