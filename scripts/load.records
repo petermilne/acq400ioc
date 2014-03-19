@@ -71,6 +71,7 @@ make_AI() {
 
 load_400() {
 	SITE=$1
+	# since driver B2.457, module_type printed in hex
 	MODEL=$(cat /dev/acq400.${SITE}.knobs/module_type)
 	LO=100000000
 	
@@ -80,7 +81,7 @@ load_400() {
 	2)	
 		#ACQ435 .. nb HIRES makes it /2
 		let LO=$LO/256;;
-	64)
+	40)
 		for ch in 1 2 3 4
 		do
 			echo 'dbLoadRecords("db/ao420fmc.db","'${CPRAMS},cid=$ch'")'
@@ -92,7 +93,7 @@ load_400() {
 		
 	echo 'dbLoadRecords("db/acq420fmc.db","'${CPRAMS},LO=$LO'")'
 
-	if [ $MODEL -eq 2 ]; then
+	if [ $MODEL = "2" ]; then
 		echo 'dbLoadRecords("db/acq430fmc.db","'${CPRAMS},LO=$LO'")'
 	fi
 	
