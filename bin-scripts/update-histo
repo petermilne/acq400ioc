@@ -1,0 +1,17 @@
+#!/bin/sh
+
+for HISTO in /dev/acq400.?.histo
+do
+	S1=${HISTO#*.}
+	SITE=${S1%.*}	
+
+	if [ ! -d /dev/shm/HG.${SITE}.wf ]; then
+		mkdir -p /dev/shm/HG.${SITE}.wf
+	fi
+	cat /dev/acq400.${SITE}.histo >/dev/shm/HG.${SITE}.wf/CH01
+	date >/dev/shm/HG.${SITE}.wf.fin
+done
+
+
+
+

@@ -222,12 +222,18 @@ do
 	if [ -d $sitepath ]; then
 		file=$sitepath/details	
 		FRU_PROD_NAME=nothing
+		site=$(basename $sitepath)
 		source $file
 		if [ "x$FRU_PROD_NAME" = "xAO421FMC" -o \
 		     "x$FRU_PROD_NAME" = "xAO421ELF"      ]; then
-			site=$(basename $sitepath)
+			
 	 		load_421 $site
 	 	fi
+	 	
+	 	LOAD_MOD=/usr/local/epics/scripts/load.$FRU_PROD_NAME
+	 	if [ -e $LOAD_MOD ]; then
+	 		$LOAD_MOD $HOST $site
+		fi
 	fi
 done
 
