@@ -81,27 +81,24 @@ long raw_to_volts(aSubRecord *prec) {
 	T *raw = (T *)prec->a;
 	int len = prec->noa;
 	float * cooked = (float *)prec->vala;
-	long rmax = *(long*)prec->valb;
-	float vmax = *(float*)prec->valc;
+	long rmax = *(long*)prec->b;
+	float vmax = *(float*)prec->c;
 	double ratio = vmax/rmax;
 
-	/*
-	       if (report_done++ < 2){
-		       printf("raw_to_volts() ->valb %p", prec->valb);
-		       printf("raw_to_volts() ->valc %p", prec->valc);
+
+	if (report_done++ < 2){
+		       printf("raw_to_volts() ->b %p  %d", prec->b, rmax);
+		       printf("raw_to_volts() ->c %p %f", prec->c, vmax);
 		       printf("raw_to_volts() len:%d\n", len);
 		       printf("raw_to_volts() rmax:%ld\n", rmax);
 		       printf("raw_to_volts() vmax:%.2f\n", vmax);
-	       }
-	 */
+	}
 	if (rmax == 0){
+		ratio = 10.0/(sizeof(T)==4? INT_MAX: SHRT_MAX);
 
-		ratio = 10.0/INT_MAX;
-		/*
-		       if (report_done < 2){
-		       	       printf("cheating, hardcode vmax, rmax ratio %f\n", ratio);
-		       }
-		 */
+		if (report_done < 2){
+			printf("cheating, hardcode vmax, rmax ratio %f\n", ratio);
+		}
 	}
 
 	for (int ii=0; ii <len; ii++) {
