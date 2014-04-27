@@ -1,0 +1,4 @@
+record (bo, "${PVPFX}:${LED}") {
+	field(DTYP, "boAcqHost")	
+	field(OUT, "@${KNOB}")
+}

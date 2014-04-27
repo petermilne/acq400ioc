@@ -1,0 +1,13 @@
+record(ao, "${PVPFX}:OFF:${CH}") {
+        field(DTYP, "dsSysfsAo")
+        field(OUT, "@${KNOB}")
+        field(SCAN, "Passive")
+        field(DESC, "Offset dac setting")
+        field(DRVL, "-2.5")
+        field(DRVH, "+2.5")
+        field(LINR, "LINEAR")
+        field(ESLO, "0.076293945e-3")
+        field(HOPR, "2.5")
+        field(LOPR, "-2.5")
+        field(EGU,  "V")
+}

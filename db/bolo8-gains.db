@@ -1,0 +1,44 @@
+record (mbbo, "${PVPFX}:GAIN:${CH}")	{
+	field(DTYP, "Soft Channel")
+	field(NOBT, "2")	
+	field(ZRST, "10V")
+	field(ONST, "5V0")
+	field(TWST, "2V5")
+	field(THST, "1V2")        
+	field(FLNK, "${PVPFX}:GAIN:${CH}:_cx")
+}
+
+record (fanout, "${PVPFX}:GAIN:${CH}:_cx"){
+	field(LNK1, "${PVPFX}:GAIN:${CH}:_c0")
+	field(LNK2, "${PVPFX}:GAIN:${CH}:_c1")
+}
+record (calcout, "${PVPFX}:GAIN:${CH}:_c0"){
+	field(INPA, "${PVPFX}:GAIN:${CH}")
+	field(CALC, "(A&1) != 0")
+	field(PREC, "0")
+	field(OUT,  "${PVPFX}:GAIN:${CH}:_0 PP")
+	field(OOPT, "On Change")
+}
+record (calcout, "${PVPFX}:GAIN:${CH}:_c1"){
+	field(INPA, "${PVPFX}:GAIN:${CH}")
+	field(CALC, "(A&2) != 0")
+	field(PREC, "0")
+	field(OUT,  "${PVPFX}:GAIN:${CH}:_1 PP")
+	field(OOPT, "On Change")
+}
+
+record(bo, "${PVPFX}:GAIN:${CH}:_0") {
+        field(DTYP, "boAcqHost")
+        field(OUT, "@${KNOB}A0")
+        field(SCAN, "Passive")
+	field(OMSL, "closed_loop")	
+	field(DOL, "${PVPFX}:GAIN:${CH}:_c0")        
+}
+
+record(bo, "${PVPFX}:GAIN:${CH}:_1") {
+        field(DTYP, "boAcqHost")
+        field(OUT, "@${KNOB}A1")
+        field(SCAN, "Passive")
+	field(OMSL, "closed_loop")	
+	field(DOL, "${PVPFX}:GAIN:${CH}:_c1")         
+}

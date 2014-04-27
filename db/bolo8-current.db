@@ -1,0 +1,15 @@
+record(ai, "${PVPFX}:CUR:${CH}") {
+        field(DTYP, "dsSysfsAi")
+        field(INP, "@${KNOB}")
+        field(SCAN, ".1 second")
+        field(DESC, "Bolo Current readback")
+# 3/1000        
+        field(ASLO, "0.003")
+        field(LINR, "LINEAR")
+        field(EGU,  "V")
+        field(PINI, "YES")        
+        field(HOPR, "15")
+        field(LOPR, "0")
+        field(LOW,  "4.95")
+        field(HIGH, "5.05")                  
+}
