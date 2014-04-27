@@ -6,7 +6,7 @@ record(ai, "${PVPFX}:CUR:${CH}") {
 # 3/1000        
         field(ASLO, "0.003")
         field(LINR, "LINEAR")
-        field(EGU,  "V")
+        field(EGU,  "mA")
         field(PINI, "YES")        
         field(HOPR, "15")
         field(LOPR, "0")

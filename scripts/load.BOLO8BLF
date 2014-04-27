@@ -37,3 +37,6 @@ do
 	PRAMS="PVPFX=${PVPFX},KNOB=/dev/bolo8/${SITE}/ADC_${ch}_,CH=${ch}"
 	echo 'dbLoadRecords("db/bolo8-gains.db","'${PRAMS}'")'
 done
+
+# hwmon
+echo 'dbLoadRecords("db/bolo8-main.db","'PVPFX=${PVPFX},SITE=${SITE}'")'

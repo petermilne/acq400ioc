@@ -1,0 +1,77 @@
+#AD7417ARUZ	0	0x28	
+#AIN1	Power	-13VA	I	Analogue input for -13VA monitoring			=12-(((100k+150k)*(12-input_in_V))/100k)
+#AIN2	Power	+13VA	I	Analogue input for +13VA monitoring			=input_in_V*11
+#AIN3	Power	+5V	I	Analogue input for +5V monitoring			=input_in_V*4.012
+#AIN4	Power	+2V5	I	Analogue input for +2V5 monitoring			=input_in_V*2
+
+
+record(ai, "${PVPFX}:N13VA") {
+        field(DTYP, "dsSysfsAi")
+        field(INP, "@/dev/hwmon/${SITE}/in1")
+        field(SCAN, "10 second")
+        field(DESC, "Bolo Negative Analog Rail")
+# 3/1000     
+# this is too hard: see https://wiki-ext.aps.anl.gov/epics/index.php/RRM_3-14_Analog_Input#Conversion_Related_Fields
+# RAW: 0..2500 mv
+# RAW =    12-(((100k+150k)*(12-VOLTS))/100k)
+# val = val * ESLO + EOFF 
+        field(ASLO, "0.003")
+        field(LINR, "LINEAR")
+        field(EGU,  "V")
+        field(PINI, "YES")
+        field(FLNK,  "${PVPFX}:P13VA")
+        field(HOPR, "-15")
+        field(LOPR, "0")
+        field(LOW,  "-14")
+        field(HIGH, "-12")           
+}
+
+record(ai, "${PVPFX}:P13VA") {
+field(DTYP, "dsSysfsAi")
+        field(INP, "@/dev/hwmon/${SITE}/in2")
+        field(DESC, "Bolo Positive Analog Rail")
+# input_in_V*11       
+	field(ASLO, "1")
+	field(ESLO, "0.011")
+        field(LINR, "LINEAR")
+        field(EGU,  "V")
+        field(PINI, "YES")
+        field(FLNK,  "${PVPFX}:P5V")
+        field(HOPR, "15")
+        field(LOPR, "0")
+        field(LOW,  "12")
+        field(HIGH, "14")           	
+}
+
+record(ai, "${PVPFX}:P5V") {
+field(DTYP, "dsSysfsAi")
+        field(INP, "@/dev/hwmon/${SITE}/in3")
+        field(DESC, "Bolo Analog Rail")
+# input_in_V*4.012      
+	field(ASLO, "1")
+	field(ESLO, "0.004012")
+        field(LINR, "LINEAR")
+        field(EGU,  "V")
+        field(PINI, "YES")
+        field(FLNK,  "${PVPFX}:P2V5")
+        field(HOPR, "6")
+        field(LOPR, "0")
+        field(LOW,  "4.5")
+        field(HIGH, "5.5")           	
+}
+
+record(ai, "${PVPFX}:P2V5") {
+field(DTYP, "dsSysfsAi")
+        field(INP, "@/dev/hwmon/${SITE}/in4")
+        field(DESC, "Bolo Analog Rail")
+# input_in_V*2       
+	field(ASLO, "1")
+	field(ESLO, "0.002")
+        field(LINR, "LINEAR")
+        field(EGU,  "V")
+        field(PINI, "YES")        
+        field(HOPR, "3")
+        field(LOPR, "0")
+        field(LOW,  "2.45")
+        field(HIGH, "2.55")           	
+}
