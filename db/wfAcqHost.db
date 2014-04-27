@@ -9,7 +9,7 @@ record(waveform, "${UUT}:${SITE}:AI:WF:${cid}") {
 }
 
 record(aSub, "${UUT}:${SITE}:AI:WF:${cid}:V") {	
-	field(SNAM, "raw_to_volts")
+	field(SNAM, "raw_to_volts_${type}")
 	field(FTA,  "${type}")
 	field(NOA,  "${size}")
 	field(INPA, "${UUT}:${SITE}:AI:WF:${cid}")
