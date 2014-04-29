@@ -1,4 +1,4 @@
-record (bo, "${PVPFX}:${LED}") {
+record (bo, "${HS}:B8:${LED}") {
 	field(DTYP, "boAcqHost")	
 	field(OUT, "@${KNOB}")
 }

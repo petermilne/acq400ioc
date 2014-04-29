@@ -1,4 +1,4 @@
-record(ai, "${PVPFX}:CUR:${CH}") {
+record(ai, "${HS}:B8:CUR:${CH}") {
         field(DTYP, "dsSysfsAi")
         field(INP, "@${KNOB}")
         field(SCAN, ".1 second")

@@ -5,7 +5,7 @@
 #AIN4	Power	+2V5	I	Analogue input for +2V5 monitoring			=input_in_V*2
 
 
-record(ai, "${PVPFX}:SYS:N13VA") {
+record(ai, "${HS}:B8:SYS:N13VA") {
         field(DTYP, "dsSysfsAi")
         field(INP, "@/dev/hwmon/${SITE}/in1")
         field(SCAN, "10 second")
@@ -20,14 +20,14 @@ record(ai, "${PVPFX}:SYS:N13VA") {
         field(LINR, "LINEAR")
         field(EGU,  "V")
         field(PINI, "YES")
-        field(FLNK,  "${PVPFX}:P13VA")
-        field(HOPR, "-15")
-        field(LOPR, "0")
+        field(FLNK,  "${HS}:B8:SYS:P13VA")
+        field(HOPR, "0")
+        field(LOPR, "-15")        
         field(LOW,  "-14")
         field(HIGH, "-12")           
 }
 
-record(ai, "${PVPFX}:SYS:P13VA") {
+record(ai, "${HS}:B8:SYS:P13VA") {
 field(DTYP, "dsSysfsAi")
         field(INP, "@/dev/hwmon/${SITE}/in2")
         field(DESC, "Bolo Positive Analog Rail")
@@ -37,14 +37,14 @@ field(DTYP, "dsSysfsAi")
         field(LINR, "LINEAR")
         field(EGU,  "V")
         field(PINI, "YES")
-        field(FLNK,  "${PVPFX}:P5V")
+        field(FLNK,  "${HS}:B8:SYS:P5V")
         field(HOPR, "15")
         field(LOPR, "0")
         field(LOW,  "12")
         field(HIGH, "14")           	
 }
 
-record(ai, "${PVPFX}:SYS:P5V") {
+record(ai, "${HS}:B8:SYS:P5V") {
 field(DTYP, "dsSysfsAi")
         field(INP, "@/dev/hwmon/${SITE}/in3")
         field(DESC, "Bolo Analog Rail")
@@ -54,14 +54,14 @@ field(DTYP, "dsSysfsAi")
         field(LINR, "LINEAR")
         field(EGU,  "V")
         field(PINI, "YES")
-        field(FLNK,  "${PVPFX}:P2V5")
+        field(FLNK,  "${HS}:B8:SYS:P2V5")
         field(HOPR, "6")
         field(LOPR, "0")
         field(LOW,  "4.5")
         field(HIGH, "5.5")           	
 }
 
-record(ai, "${PVPFX}:SYS:P2V5") {
+record(ai, "${HS}:B8:SYS:P2V5") {
 field(DTYP, "dsSysfsAi")
         field(INP, "@/dev/hwmon/${SITE}/in4")
         field(DESC, "Bolo Analog Rail")

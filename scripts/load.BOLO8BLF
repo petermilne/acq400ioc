@@ -4,13 +4,13 @@ HOST=$1
 SITE=$2
 echo "#records added by load.BOLO8BLF $HOST $SITE"
 
-PVPFX=$HOST:$SITE:B8
+HS=$HOST:$SITE
 
 # LEDS
 
 for led in /dev/bolo8/$SITE/LED?
 do
-	PRAMS="PVPFX=${PVPFX},SITE=${SITE},KNOB=${led},LED=$(basename ${led})"
+	PRAMS="HS=${HS},SITE=${SITE},KNOB=${led},LED=$(basename ${led})"
 	echo 'dbLoadRecords("db/bolo8-led.db","'${PRAMS}'")'
 done
 
@@ -18,7 +18,7 @@ done
 
 for cur in /etc/acq400/$SITE/current/*
 do
-	PRAMS="PVPFX=${PVPFX},KNOB=${cur},CH=$(basename ${cur})"
+	PRAMS="HS=${HS},KNOB=${cur},CH=$(basename ${cur})"
 	echo 'dbLoadRecords("db/bolo8-current.db","'${PRAMS}'")'
 done
 
@@ -26,7 +26,7 @@ done
 
 for dac in $(seq 1 8)
 do
-	PRAMS="PVPFX=${PVPFX},KNOB=/etc/acq400/$SITE/offset_dac${dac},CH=${dac}"
+	PRAMS="HS=${HS},KNOB=/etc/acq400/$SITE/offset_dac${dac},CH=${dac}"
 	echo 'dbLoadRecords("db/bolo8-offset.db","'${PRAMS}'")'
 done
 
@@ -34,9 +34,9 @@ done
 
 for ch in $(seq 1 8)
 do
-	PRAMS="PVPFX=${PVPFX},KNOB=/dev/bolo8/${SITE}/ADC_${ch}_,CH=${ch}"
+	PRAMS="HS=${HS},KNOB=/dev/bolo8/${SITE}/ADC_${ch}_,CH=${ch}"
 	echo 'dbLoadRecords("db/bolo8-gains.db","'${PRAMS}'")'
 done
 
 # hwmon
-echo 'dbLoadRecords("db/bolo8-main.db","'PVPFX=${PVPFX},SITE=${SITE}'")'
+echo 'dbLoadRecords("db/bolo8-main.db","'HS=${HS},SITE=${SITE}'")'

@@ -1,4 +1,4 @@
-record(ao, "${PVPFX}:OFF:${CH}") {
+record(ao, "${HS}:B8:OFF:${CH}") {
         field(DTYP, "dsSysfsAo")
         field(OUT, "@${KNOB}")
         field(SCAN, "Passive")

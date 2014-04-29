@@ -1,44 +1,59 @@
-record (mbbo, "${PVPFX}:GAIN:${CH}")	{
+record (mbbo, "${HS}:B8:GAIN:${CH}")	{
 	field(DTYP, "Soft Channel")
 	field(NOBT, "2")	
 	field(ZRST, "10V")
 	field(ONST, "5V0")
 	field(TWST, "2V5")
 	field(THST, "1V2")        
-	field(FLNK, "${PVPFX}:GAIN:${CH}:_cx")
+	field(FLNK, "${HS}:B8:GAIN:${CH}:_cx")
+	field(PINI, "YES")
 }
 
-record (fanout, "${PVPFX}:GAIN:${CH}:_cx"){
-	field(LNK1, "${PVPFX}:GAIN:${CH}:_c0")
-	field(LNK2, "${PVPFX}:GAIN:${CH}:_c1")
+
+record (fanout, "${HS}:B8:GAIN:${CH}:_cx"){
+	field(LNK1, "${HS}:B8:GAIN:${CH}:_c0")
+	field(LNK2, "${HS}:B8:GAIN:${CH}:_c1")
+	field(LNK3, "${HS}:B8:GAIN:${CH}_f")
 }
-record (calcout, "${PVPFX}:GAIN:${CH}:_c0"){
-	field(INPA, "${PVPFX}:GAIN:${CH}")
+
+
+
+record (calcout, "${HS}:B8:GAIN:${CH}:_c0"){
+	field(INPA, "${HS}:B8:GAIN:${CH}")
 	field(CALC, "(A&1) != 0")
 	field(PREC, "0")
-	field(OUT,  "${PVPFX}:GAIN:${CH}:_0 PP")
+	field(OUT,  "${HS}:B8:GAIN:${CH}:_0 PP")
 	field(OOPT, "On Change")
 }
-record (calcout, "${PVPFX}:GAIN:${CH}:_c1"){
-	field(INPA, "${PVPFX}:GAIN:${CH}")
+record (calcout, "${HS}:B8:GAIN:${CH}:_c1"){
+	field(INPA, "${HS}:B8:GAIN:${CH}")
 	field(CALC, "(A&2) != 0")
 	field(PREC, "0")
-	field(OUT,  "${PVPFX}:GAIN:${CH}:_1 PP")
+	field(OUT,  "${HS}:B8:GAIN:${CH}:_1 PP")
 	field(OOPT, "On Change")
 }
 
-record(bo, "${PVPFX}:GAIN:${CH}:_0") {
+record(bo, "${HS}:B8:GAIN:${CH}:_0") {
         field(DTYP, "boAcqHost")
         field(OUT, "@${KNOB}A0")
         field(SCAN, "Passive")
 	field(OMSL, "closed_loop")	
-	field(DOL, "${PVPFX}:GAIN:${CH}:_c0")        
+	field(DOL, "${HS}:B8:GAIN:${CH}:_c0")        
 }
 
-record(bo, "${PVPFX}:GAIN:${CH}:_1") {
+record(bo, "${HS}:B8:GAIN:${CH}:_1") {
         field(DTYP, "boAcqHost")
         field(OUT, "@${KNOB}A1")
         field(SCAN, "Passive")
 	field(OMSL, "closed_loop")	
-	field(DOL, "${PVPFX}:GAIN:${CH}:_c1")         
+	field(DOL, "${HS}:B8:GAIN:${CH}:_c1")         
+}
+
+# force waveform record to rescale
+record(calc, "${HS}:B8:GAIN:${CH}_f") {
+	field(INPA, "${HS}:B8:GAIN:${CH}")
+	field(CALC, "A==0? 10: A==1? 5: A==2? 2.5: 1.25")
+}
+record(aSub, "${HS}:AI:WF:0${CH}:V") {	
+	field(INPC,  "${HS}:B8:GAIN:${CH}_f")
 }
