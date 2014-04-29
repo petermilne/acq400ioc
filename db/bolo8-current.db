@@ -3,13 +3,19 @@ record(ai, "${HS}:B8:CUR:${CH}") {
         field(INP, "@${KNOB}")
         field(SCAN, ".1 second")
         field(DESC, "Bolo Current readback")
-# 3/1000        
-        field(ASLO, "0.003")
+# +5V = 32767
+# +2V5 = 16384
+# V = raw*5/32768 + 0   raw*ASLO - AOFF
+# I mA =  1000*(V - 2.5)/120  
+#      =  8.333V - 20.833   v*ESLO - ESOFF     
+        field(ASLO, "0.000152588")
+        field(AOFF, "0")
+        field(PREC, "2")
+        field(ESLO, "8.333")
+        field(EOFF, "20.833")
         field(LINR, "LINEAR")
         field(EGU,  "mA")
         field(PINI, "YES")        
         field(HOPR, "15")
-        field(LOPR, "0")
-        field(LOW,  "4.95")
-        field(HIGH, "5.05")                  
+        field(LOPR, "-15")                  
 }
