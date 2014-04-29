@@ -12,7 +12,7 @@ record(ai, "${HS}:B8:CUR:${CH}") {
         field(AOFF, "0")
         field(PREC, "2")
         field(ESLO, "8.333")
-        field(EOFF, "20.833")
+        field(EOFF, "-20.833")
         field(LINR, "LINEAR")
         field(EGU,  "mA")
         field(PINI, "YES")        
