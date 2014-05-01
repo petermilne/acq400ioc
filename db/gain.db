@@ -17,13 +17,13 @@ record (mbbo, "${UUT}:${SITE}:GAIN:${CH}:w")	{
 	field(SDIS, "${UUT}:${SITE}:GAIN:${CH}:s.PACT")
 	field(OMSL, "closed_loop")
 	field(DOL, "${UUT}:${SITE}:GAIN:${CH} PP")	
-	field(OUT, "@/dev/acq400.${SITE}.knobs/GAIN${CH}")	
+	field(OUT, "@${KNOB}")	
 }
 
 record (mbbi, "${UUT}:${SITE}:GAIN:${CH}:r") {
 	field(DTYP, "mbbiAcqHost")
 	field(NOBT, "2")
-	field(INP,  "@/dev/acq400.${SITE}.knobs/GAIN${CH}")
+	field(INP,  "@${KNOB}")
 	field(SCAN, "1 second")
 	field(PINI, "YES")	
 	field(FLNK, "${UUT}:${SITE}:GAIN:${CH}:s")

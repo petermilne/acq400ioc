@@ -110,7 +110,7 @@ load_400() {
 	do
 		if [ -e $kb ]; then
 			ch=$(printf "%02d" ${kb#*gain})
-			echo 'dbLoadRecords("db/gain.db","'${CPRAMS}',CH='$ch'")'
+			echo 'dbLoadRecords("db/gain.db","'${CPRAMS}',CH='$ch',KNOB='${kb}'")'
 		fi
 	done
 	
