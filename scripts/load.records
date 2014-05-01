@@ -108,7 +108,7 @@ load_400() {
 
 	for kb in /dev/acq400.${SITE}.knobs/gain[0-9]*
 	do
-		if [ -e $kb ] then
+		if [ -e $kb ]; then
 			ch=$(printf "%02d" ${kb#*gain})
 			echo 'dbLoadRecords("db/gain.db","'${CPRAMS}',CH='$ch'")'
 		fi
