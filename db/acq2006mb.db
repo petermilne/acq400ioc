@@ -34,10 +34,17 @@ record(mbbi, "${UUT}:0:SPAD:MODE") {
 }
 
 record(mbbi, "${UUT}:0:SPAD:LEN") {
-
+	field(DTYP, "Soft Channel")
+	field(NOBT, "3")
+	field(FLNK, "${UUT}:0:SPAD:MODE:w PP")
 }
 record(mbbi, "${UUT}:0:SPAD:DISEL") {
-
+	field(DTYP, "Soft Channel")
+	field(NOBT, "3")
+	field(ZRST, "OFF")
+	field(ONST, "DI4")
+	field(TWST, "DI32")
+	field(FLNK, "${UUT}:0:SPAD:MODE:w PP")
 }
 record(mbbo, "${UUT}:0:SPAD:MODE:w") {
 	field(DTYP, "stream")
