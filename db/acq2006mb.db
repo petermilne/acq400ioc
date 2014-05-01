@@ -22,3 +22,52 @@ record(calcout, "${UUT}:0:SIG:CLK_MB:w") {
 	field(OUT,  "@mb.proto setMB() ${SPORT}")
 }
 
+
+
+record(mbbi, "${UUT}:0:SPAD:MODE") {
+	field(DTYP, "Soft Channel")
+	field(NOBT, "3")
+	field(ZRST, "OFF")
+	field(ONST, "SPAD")
+	field(TWST, "FRAME")
+	field(FLNK, "${UUT}:0:SPAD:MODE:w PP")
+}
+
+record(mbbi, "${UUT}:0:SPAD:LEN") {
+
+}
+record(mbbi, "${UUT}:0:SPAD:DISEL") {
+
+}
+record(mbbo, "${UUT}:0:SPAD:MODE:w") {
+	field(DTYP, "stream")
+	field(NOBT, "3")
+	field(OUT,  "@mb.proto setSPAD(${UUT}:0:SPAD:LEN,${UUT}:0:SPAD:DISEL) ${SPORT}")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:0:SPAD:MODE:s.PACT")
+	field(DOL,  "${UUT}:0:SPAD:MODE PP")
+	field(OMSL, "closed_loop")
+}
+
+record(mbbi, "${UUT}:0:SPAD:MODE:r") {
+	field(DTYP, "stream")
+	field(NOBT, "3")
+	field(INP,  "@mb.proto getSPAD(${UUT}:0:SPAD:LEN:r,${UUT}:0:SPAD:DISEL:r) ${SPORT}")
+	field(SCAN, "1 second")	
+	field(FLNK, "${UUT}:0:SPAD:MODE:s")
+}
+
+record(mbbo, "${UUT}:0:SPAD:MODE:s") {
+	field(DTYP, "Soft Channel")
+	field(NOBT, "3")
+	field(DOL,  "${UUT}:0:SPAD:MODE:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:0:SPAD:MODE PP")
+}
+
+record(mbbi, "${UUT}:0:SPAD:LEN:r") {
+
+}
+record(mbbi, "${UUT}:0:SPAD:DISEL:r") {
+
+}

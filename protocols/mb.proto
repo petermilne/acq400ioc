@@ -6,3 +6,13 @@ setMB {
 	out "mb_clk %d %(A)d";
 }
 
+setSPAD {
+# EN,LEN,DI4/32
+	out "spad %i,%(\$1)i,%(\$2)i";
+}
+
+getSPAD {
+# EN,LEN,DI4/32
+	out "spad";
+	in "%d,%(\$1)d,%(\$2)d";
+}
