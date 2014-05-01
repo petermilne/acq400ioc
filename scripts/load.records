@@ -73,8 +73,8 @@ load_400() {
 	SITE=$1
 	# since driver B2.457, module_type printed in hex
 	MODEL=$(cat /dev/acq400.${SITE}.knobs/module_type)
-	LO=100000000
-	
+	LO=100000000	
+		
 	CPRAMS="UUT=${HOST},SITE=${SITE}"
 	
 	case $MODEL in
@@ -86,7 +86,7 @@ load_400() {
 		do
 			echo 'dbLoadRecords("db/ao420fmc.db","'${CPRAMS},cid=$ch'")'
 		done
-		let LO=66000000;;
+		let LO=66000000;;	
 	esac	
 
 	
@@ -106,9 +106,10 @@ load_400() {
 	echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=clk_count,pname=clk_count'")'
 	echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=sample_count,pname=sample_count'")'
 
-	for ch in 1 2 3 4
+	for kb in /dev/acq400.${SITE}.knobs/gain[0-9]*
 	do
-		if [ -e $(knobs $SITE)/gain$ch ]; then
+		if [ -e $kb ] then
+			ch=$(printf "%02d" ${kb#*gain})
 			echo 'dbLoadRecords("db/gain.db","'${CPRAMS}',CH='$ch'")'
 		fi
 	done
