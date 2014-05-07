@@ -41,5 +41,7 @@ done
 # hwmon
 echo 'dbLoadRecords("db/bolo8-main.db","'HS=${HS},SITE=${SITE}'")'
 
-echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=ADC_SAMPLE_COUNT,pname=adc_sample_count'")'
-echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=DAC_SAMPLE_COUNT,pname=dac_sample_count'")'
+# "UUT=acq1001_030,SITE=0,CTRMAX=1048576,DT=1,
+PRAMS="UUT=${HOST},SITE=${SITE},CTRMAX=1048576,DT=1"
+echo 'dbLoadRecords("db/counter.db","'${PRAMS},lname=ADC_SAMPLE_COUNT,pname=adc_sample_count'")'
+echo 'dbLoadRecords("db/counter.db","'${PRAMS},lname=DAC_SAMPLE_COUNT,pname=dac_sample_count'")'
