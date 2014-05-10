@@ -1,3 +1,21 @@
 Terminator = LF;
 ExtraInput = Ignore;
 
+setNacc {
+	out "nacc %d";
+}
+
+getNacc {
+	out "nacc";
+	in "%d,%*d";
+	@replytimeout {
+		disconnect;
+		wait 2000;
+		connect 1000;    
+	}			
+}
+
+getDiv {
+	in "%*d,%d";
+}
+
