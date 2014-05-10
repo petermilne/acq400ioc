@@ -75,6 +75,20 @@ static long raw_to_uvolts(aSubRecord *prec) {
 
 static int report_done;
 
+
+#define OR_THRESHOLD 32
+
+/* ARGS:
+ * INPUTS:
+ * INPA : const T raw[size}
+ * INPB : long maxcode
+ * INPC : float vmax
+ * INPD : long threshold (distance from rail for alarm)
+ * OUTPUTS:
+ * VALA : float* cooked
+ * VALB : long* alarm
+ */
+
 template <class T>
 long raw_to_volts(aSubRecord *prec) {
 	double yy;
@@ -84,14 +98,16 @@ long raw_to_volts(aSubRecord *prec) {
 	long rmax = *(long*)prec->b;
 	float vmax = *(float*)prec->c;
 	double ratio = vmax/rmax;
+	long* p_thresh = (long*)prec->d;
+	long* p_over_range = (long*)prec->valb;
+	long over_range = 0;
+	long alarm_threshold = rmax - (p_thresh? *p_thresh: OR_THRESHOLD);
 
-
-	if (report_done++ < 2){
-		       printf("raw_to_volts() ->b %p  %d", prec->b, rmax);
-		       printf("raw_to_volts() ->c %p %f", prec->c, vmax);
-		       printf("raw_to_volts() len:%d\n", len);
-		       printf("raw_to_volts() rmax:%ld\n", rmax);
-		       printf("raw_to_volts() vmax:%.2f\n", vmax);
+	if (++report_done == 1){
+		printf("raw_to_volts() ->b %p rmax %ld\n", prec->b, rmax);
+		printf("raw_to_volts() ->c %p vmax %f\n", prec->c, vmax);
+		printf("raw_to_volts() len:%d th:%ld p_over:%p\n",
+				len, alarm_threshold, p_over_range);
 	}
 	if (rmax == 0){
 		ratio = 10.0/(sizeof(T)==4? INT_MAX: SHRT_MAX);
@@ -102,11 +118,17 @@ long raw_to_volts(aSubRecord *prec) {
 	}
 
 	for (int ii=0; ii <len; ii++) {
+		if (raw[ii] > alarm_threshold || raw[ii] < -alarm_threshold){
+			over_range = 1;
+		}
 		yy = raw[ii];
 		yy *= ratio;
 		cooked[ii] = (float)yy;
 	}
 
+	if (p_over_range){
+		*p_over_range = over_range;
+	}
 	return 0;
 }
 
