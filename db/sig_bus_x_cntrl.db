@@ -1,0 +1,38 @@
+record (mbbo, "${UUT}:0:SIG:SRC:${FUN}:${BIT}") {
+	field(DTYP, "Soft Channel")
+	field(NOBT, "2")
+	field(ZRST, "EXT")
+	field(ONST, "HDMI")
+	field(TWST, "CELF")
+	field(FLNK, "${UUT}:0:SIG:SRC:${FUN}:${BIT}:w PP")	
+	field(PINI, "YES")
+}
+
+record (mbbo, "${UUT}:0:SIG:SRC:${FUN}:${BIT}:w") {
+	field(DTYP, "mbboAcqHost")
+	field(NOBT, "2")
+	field(OUT,  "@/dev/acq400.0.knobs/sig_src_route_${fun}_d${BIT}")	
+	field(PINI, "YES")	
+	field(DISV, "1")
+	field(SDIS, "${UUT}:0:SIG:SRC:${FUN}:${BIT}:s.PACT")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:0:SIG:SRC:${FUN}:${BIT}")	
+}
+
+record (mbbi, "${UUT}:0:SIG:SRC:${FUN}:${BIT}:r") {
+	field(DTYP, "mbbiAcqHost")
+	field(NOBT, "2")	
+	field(INP,  "@/dev/acq400.0.knobs/sig_src_route_${fun}_d${BIT}")
+	field(SCAN, "1 second")
+	field(PINI, "YES")
+	field(FLNK, "${UUT}:0:SIG:SRC:${FUN}:${BIT}:s")	
+}
+
+record (mbbo, "${UUT}:0:SIG:SRC:${FUN}:${BIT}:s") {
+	field(DTYP,  "Soft Channel")
+	field(NOBT,  "2")
+	field(OMSL,  "closed_loop")
+	field(DOL,   "${UUT}:0:SIG:SRC:${FUN}:${BIT}:r NPP")
+	field(OUT,   "${UUT}:0:SIG:SRC:${FUN}:${BIT} PP")
+}
+
