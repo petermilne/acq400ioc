@@ -2,7 +2,7 @@ record(longin, "${UUT}:${SITE}:SIG:${lname}:rawcount") {
 	field(SCAN, "${DT} second")
 	field(DTYP, "longinAcqHost")
 	field(INP,  "@/dev/acq400.${SITE}.knobs/${pname}")
-	field(DESC, "LRU:${UUT}:${SITE} CLK STAT ${lname}")	
+	field(DESC, "CLK STAT ${lname}")	
 	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:ACTIVE")
 	field(PRIO, "HIGH")
 }
@@ -64,6 +64,6 @@ record(calc, "${UUT}:${SITE}:SIG:${lname}:FREQ") {
 	field(CALC, "A==0? 0: (A+(L>8?B+C+D+E+F+G+H+8*VAL:0))/(L>8?16:1)/K")
 	field(PREC, "0")
 	field(EGU,  "Hz")
-	field(DESC, "LRU:${UUT}:${SITE} CLK FREQ ${lname}")
+	field(DESC, "CLK FREQ ${lname}")
 }
 
