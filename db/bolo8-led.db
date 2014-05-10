@@ -1,4 +1,6 @@
 record (bo, "${HS}:B8:${LED}") {
 	field(DTYP, "boAcqHost")	
 	field(OUT, "@${KNOB}")
+	field(DISV, "1")
+	field(SDIS, "${HS}:RUN")	
 }

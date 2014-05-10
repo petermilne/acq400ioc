@@ -8,19 +8,55 @@ record(waveform, "${UUT}:${SITE}:AI:WF:${cid}") {
 	field(FLNK,"${UUT}:${SITE}:AI:WF:${cid}:V")
 }
 
+record(bo, "${UUT}:${SITE}:AI:WF:${cid}:OVER") {
+	field(DTYP, "Soft Channel")
+	field(OMSL, "closed_loop")
+	field(DOL, "${UUT}:${SITE}:AI:WF:${cid}:V.VALB")
+	#field(OUT, "${UUT}:${SITE}:B8:${cid}")
+	field(PINI, "YES")
+	field(FLNK, "${UUT}:${SITE}:WF:LED${cid} PP")
+}
+
+record(bo, "${UUT}:${SITE}:WF:LED${cid}") {
+	field(DTYP, "boAcqHost")	
+	field(OUT, "@/dev/bolo8/${SITE}/LED${idx}")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:${SITE}:AI:WF:${cid}:OVER")
+	 # only closed loop during RUN
+	field(DISV, "0")
+	field(SDIS, "${UUT}:${SITE}:RUN")
+}
+record(longout, "${UUT}:${SITE}:AI:WF:${cid}:TH") {
+	field(DTYP, "Soft Channel")
+	field(VAL,  "512")
+	field(PINI, "YES")
+}
+
 record(aSub, "${UUT}:${SITE}:AI:WF:${cid}:V") {	
 	field(SNAM, "raw_to_volts_${type}")
+	
 	field(FTA,  "${type}")
 	field(NOA,  "${size}")
 	field(INPA, "${UUT}:${SITE}:AI:WF:${cid}")
+	
 	field(FTB,  "LONG")
 	field(NOB,  "1")
 	field(INPB, "${maxcode}")
+	
 	field(FTC,  "FLOAT")
 	field(NOC,  "1")
 	field(INPC,  "${vmax}")
+	
+	field(FTD,  "LONG")
+	field(NOD,  "1")
+	field(INPD, "${UUT}:${SITE}:AI:WF:${cid}:TH")
+	
 	field(FTVA, "FLOAT")
 	field(NOVA, "${size}")
 	field(DESC, "AI waveform record scaled to volts")
+	
+	field(FTVB, "LONG")
+	field(NOVB, "1")
+	field(OUTB, "${UUT}:${SITE}:AI:WF:${cid}:OVER PP")
 }
 

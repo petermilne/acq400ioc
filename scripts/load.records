@@ -249,10 +249,6 @@ do
 	fi
 done
 
-# perhaps an aggregator at work \?
-make_AI 0
-
-
 cat - <<EOF2
 #	asynSetTraceMask("S0",-1,0xff)
 #	 asynSetTraceIOMask("S0",-1,0x2)
