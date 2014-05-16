@@ -6,24 +6,24 @@ record (mbbo, "${UUT}:${SITE}:GAIN:${CH}")	{
 	field(ZRST, "10V")
 	field(ONST, "5V0")
 	field(TWST, "2V5")
-	field(THST, "1V2")        
+	field(THST, "1V25")        
 	field(FLNK, "${UUT}:${SITE}:GAIN:${CH}:w PP")
 }
 
 record (mbbo, "${UUT}:${SITE}:GAIN:${CH}:w")	{
-	field(DTYP, "mbboAcqHost")
+	field(DTYP, "stream")
+	field(OUT,  "@acq42x.proto setGain(${IX}) ${SPORT}")	
 	field(NOBT, "2")
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:GAIN:${CH}:s.PACT")
 	field(OMSL, "closed_loop")
-	field(DOL, "${UUT}:${SITE}:GAIN:${CH} PP")	
-	field(OUT, "@${KNOB}")	
+	field(DOL, "${UUT}:${SITE}:GAIN:${CH} PP")		
 }
 
 record (mbbi, "${UUT}:${SITE}:GAIN:${CH}:r") {
-	field(DTYP, "mbbiAcqHost")
-	field(NOBT, "2")
-	field(INP,  "@${KNOB}")
+	field(DTYP, "stream")
+	field(INP,  "@acq42x.proto getGain(${IX}) ${SPORT}")	
+	field(NOBT, "2")	
 	field(SCAN, "1 second")
 	field(PINI, "YES")	
 	field(FLNK, "${UUT}:${SITE}:GAIN:${CH}:s")

@@ -14,18 +14,9 @@ record(bo, "${UUT}:${SITE}:AI:WF:${cid}:OVER") {
 	field(DOL, "${UUT}:${SITE}:AI:WF:${cid}:V.VALB")
 	#field(OUT, "${UUT}:${SITE}:B8:${cid}")
 	field(PINI, "YES")
-	field(FLNK, "${UUT}:${SITE}:WF:LED${cid} PP")
+	
 }
 
-record(bo, "${UUT}:${SITE}:WF:LED${cid}") {
-	field(DTYP, "boAcqHost")	
-	field(OUT, "@/dev/bolo8/${SITE}/LED${idx}")
-	field(OMSL, "closed_loop")
-	field(DOL,  "${UUT}:${SITE}:AI:WF:${cid}:OVER")
-	 # only closed loop during RUN
-	field(DISV, "0")
-	field(SDIS, "${UUT}:${SITE}:RUN")
-}
 record(longout, "${UUT}:${SITE}:AI:WF:${cid}:TH") {
 	field(DTYP, "Soft Channel")
 	field(VAL,  "512")
