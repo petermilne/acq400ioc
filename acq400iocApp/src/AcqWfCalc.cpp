@@ -56,6 +56,9 @@
 #include <registryFunction.h>
 #include <epicsExport.h>
 
+
+ #include <math.h>
+
 #define MILLION	1000000
 
 static long raw_to_uvolts(aSubRecord *prec) {
@@ -86,8 +89,27 @@ static int report_done;
  * INPD : long threshold (distance from rail for alarm)
  * OUTPUTS:
  * VALA : float* cooked
+ * optional:
  * VALB : long* alarm
+ * VALC : float* min
+ * VALD : float* max
+ * VALE : float* mean
+ * VALF : float* stddev
+ * VALG : float* rms
  */
+
+
+
+
+template <class T> long square(T raw) {
+	return raw*raw;
+}
+
+// avoid overflow by truncation
+template<long> long square(long raw) {
+	raw >>= 16;
+	return raw*raw;
+}
 
 template <class T>
 long raw_to_volts(aSubRecord *prec) {
@@ -100,8 +122,18 @@ long raw_to_volts(aSubRecord *prec) {
 	double ratio = vmax/rmax;
 	long* p_thresh = (long*)prec->d;
 	long* p_over_range = (long*)prec->valb;
+	float* p_min = (float*)prec->valc;
+	float* p_max = (float*)prec->vald;
+	float* p_mean = (float*)prec->vale;
+	float* p_stddev = (float*)prec->valf;
+	float* p_rms = (float*)prec->valg;
+	long min_value;
+	long max_value;
 	long over_range = 0;
 	long alarm_threshold = rmax - (p_thresh? *p_thresh: OR_THRESHOLD);
+	long long sum = 0;
+	long long sumsq = 0;
+	bool compute_squares = p_stddev != 0 || p_rms != 0;
 
 	if (++report_done == 1){
 		printf("raw_to_volts() ->b %p rmax %ld\n", prec->b, rmax);
@@ -117,10 +149,17 @@ long raw_to_volts(aSubRecord *prec) {
 		}
 	}
 
+	min_value = raw[0];
+	max_value = raw[0];
+
 	for (int ii=0; ii <len; ii++) {
-		if (raw[ii] > alarm_threshold || raw[ii] < -alarm_threshold){
-			over_range = 1;
-		}
+		if (raw[ii] > max_value) max_value = raw[ii];
+		if (raw[ii] < min_value) min_value = raw[ii];
+		if (raw[ii] > alarm_threshold) 	over_range = 1;
+		if (raw[ii] < -alarm_threshold) over_range = -1;
+		if (compute_squares) sumsq += square<T>(raw[ii]);
+		sum += raw[ii];
+
 		yy = raw[ii];
 		yy *= ratio;
 		cooked[ii] = (float)yy;
@@ -129,6 +168,12 @@ long raw_to_volts(aSubRecord *prec) {
 	if (p_over_range){
 		*p_over_range = over_range;
 	}
+	if (p_max) 	*p_max = max_value * ratio;
+	if (p_min) 	*p_min = min_value * ratio;
+	if (p_mean) 	*p_mean = sum*ratio/len;
+
+	if (p_rms)	*p_rms = sqrt((double)sumsq/len) * ratio;
+	if (p_stddev)	*p_stddev = sqrt(((double)sumsq - (double)sum*sum/len)/len) * ratio;
 	return 0;
 }
 
