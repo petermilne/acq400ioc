@@ -141,6 +141,8 @@ zynq_hwmon() {
 	PRAMS="UUT=${HOST},lname=Z,pname=/dev/hwmon/${DEV}/temp,scale=1"
 	echo 'dbLoadRecords("db/hwmontemp.db","'${PRAMS}'")'
 }
+
+
 load_acq2006() {
 	KB=$1
 	NS=$2
@@ -180,6 +182,9 @@ load_acq2006() {
 		echo 'dbLoadRecords("db/acq2006leds.db","UUT='${HOST}'")'
 	else
 		echo 'dbLoadRecords("db/acq1001leds.db","UUT='${HOST}'")'
+	fi
+	if [ -e /dev/acq2006 ]; then
+		echo 'dbLoadRecords("db/acq2006psu.db","UUT='${HOST}'")'
 	fi
 	echo 'dbLoadRecords("db/acq2006clktree.db","UUT='${HOST}'")'
 	echo 'dbLoadRecords("db/acq2006mb.db","UUT='${HOST}',SPORT=S0")'
