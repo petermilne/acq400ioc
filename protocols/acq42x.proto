@@ -1,0 +1,17 @@
+Terminator = LF;
+ExtraInput = Ignore;
+
+setGain {
+	out "gain\$1 %d";
+	in;
+}
+
+getGain {
+	out "gain\$1";
+	in "%d";
+	@replytimeout {
+		disconnect;
+		wait 2000;
+		connect 1000;    
+	}			
+}
