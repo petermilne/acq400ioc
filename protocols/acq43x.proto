@@ -15,6 +15,15 @@ getNacc {
 	}			
 }
 
+setRtmTranslen {
+	out "rtm_translen %d";
+}
+
+getRtmTranslen {
+	out "rtm_translen";
+	in "%d";
+}
+
 getDiv {
 	in "%*d,%d";
 }

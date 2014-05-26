@@ -94,8 +94,8 @@ record(longout, "${UUT}:${SITE}:RTM_TRANSLEN") {
 }
 
 record(longout, "${UUT}:${SITE}:RTM_TRANSLEN:w") {
-	field(DTYP, "longoutAcqHost")
-	field(OUT,  "@/dev/acq400.${SITE}.knobs/rtm_translen")	
+	field(DTYP, "stream")
+	field(OUT,  "@acq43x.proto setRtmTranslen ${SPORT}")	
 	field(DISV, "1")
 	field(SDIS, "{UUT}:${SITE}:RTM_TRANSLEN:s.PACT")
 	field(DOL,  "${UUT}:${SITE}:RTM_TRANSLEN PP")
@@ -103,8 +103,8 @@ record(longout, "${UUT}:${SITE}:RTM_TRANSLEN:w") {
 }
 
 record(longin, "${UUT}:${SITE}:RTM_TRANSLEN:r") {
-	field(DTYP, "longinAcqHost")
-	field(INP,  "@/dev/acq400.${SITE}.knobs/rtm_translen")
+	field(DTYP, "stream")
+	field(INP,  "@acq43x.proto getRtmTranslen ${SPORT}")
 	field(SCAN, "1 second")
 	field(FLNK, "${UUT}:${SITE}:RTM_TRANSLEN:s")
 }
