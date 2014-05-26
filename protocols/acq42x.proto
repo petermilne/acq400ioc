@@ -6,6 +6,11 @@ setGain {
 	in;
 }
 
+setGainAll {
+	out "gain %d";
+	wait 1000;
+	in;
+}
 getGain {
 	out "gain\$1";
 	in "%d";

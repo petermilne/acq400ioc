@@ -102,14 +102,19 @@ load_400() {
 	echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=clk_count,pname=clk_count'")'
 	echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=sample_count,pname=sample_count'")'
 
+	has_gain=0
 	for kb in /etc/acq400/${SITE}/gain[0-9]*
 	do
 		if [ -e $kb ]; then
 			ix=${kb#*gain}
 			ch=$(printf "%02d" $ix)
 			echo 'dbLoadRecords("db/gain.db","'${CPRAMS}',CH='$ch',IX='$ix',KNOB='${kb}'")'
-		fi
+			has_gain=1
+		fi		
 	done
+	if [ $has_gain -ne 0 ]; then
+		echo 'dbLoadRecords("db/gainM.db","'${CPRAMS}',CH='ALL'")'				
+	fi
 		
 	echo 'dbLoadRecords("db/signal.db","'${CPRAMS}',FNAM=TRG,FN=trg,ZNAM=soft,ONAM=external")'
 	echo 'dbLoadRecords("db/signal.db","'${CPRAMS}',FNAM=CLK,FN=clk,ZNAM=internal,ONAM=external")'

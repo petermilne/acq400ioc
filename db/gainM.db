@@ -1,0 +1,11 @@
+# ACQ420, ACQ425 gains : Master : control only
+
+record (mbbo, "${UUT}:${SITE}:GAIN:${CH}") {	
+	field(DTYP, "stream")
+	field(OUT,  "@acq42x.proto setGainAll ${SPORT}")
+	field(NOBT, "2")	
+	field(ZRST, "10V")
+	field(ONST, "5V0")
+	field(TWST, "2V5")
+	field(THST, "1V25")        	
+}
