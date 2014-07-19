@@ -58,6 +58,12 @@ link_aggregator_sites()
 }
 
 run_monitor() {
+	while [ ! -e /etc/acq400/0/data32 ]; do
+		/usr/bin/logger -t ai_monitor_all \
+			"waiting for /etc/acq400/0/data32"
+		sleep 2
+	done
+
 	for SX in /dev/acq400.?
 	do
 		SITE=${SX#*.}
