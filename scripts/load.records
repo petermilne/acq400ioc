@@ -143,7 +143,11 @@ load_421() {
 
 zynq_hwmon() {
 	DEV=$1
-	PRAMS="UUT=${HOST},lname=Z,pname=/dev/hwmon/${DEV}/temp,scale=1"
+	# scale values 
+	# cat in_temp0_offset in_temp0_scale  (mC)
+	# -2219
+	# 123.040771484
+	PRAMS="UUT=${HOST},lname=Z,pname=/dev/hwmon/Z/in_temp0_raw,scale=0.1230,offset=-2219"
 	echo 'dbLoadRecords("db/hwmontemp.db","'${PRAMS}'")'
 }
 
@@ -174,7 +178,7 @@ load_acq2006() {
 	for SITE in $(seq 0 $NS)
 	do
 		CPRAMS="UUT=${HOST},lname=${SITE}"
-		PRAMS="$CPRAMS,pname=/dev/hwmon/${SITE}/temp,scale=0.001"
+		PRAMS="$CPRAMS,pname=/dev/hwmon/${SITE}/temp,scale=0.001,offset=0"
 		echo 'dbLoadRecords("db/hwmontemp.db","'${PRAMS}'")'
 	done
 	for SITE in $(seq 1 $NS)
