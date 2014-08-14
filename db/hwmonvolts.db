@@ -1,6 +1,6 @@
 record(ai, "${UUT}:SYS:vccaux") {
         field(DTYP, "dsSysfsAi")
-        field(INP, "@/dev/hwmon/Z/in_voltage1_vccaux_raw")
+        field(INP, "@/dev/hwmon/Z/in_voltage4_vccpaux_raw")
         field(SCAN, "10 second")
         field(DESC, "ZYNQ Rails")
         field(ASLO, "0.000732421875")
