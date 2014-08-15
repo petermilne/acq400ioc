@@ -36,14 +36,14 @@ make_epics_knobs() {
 	while [ ! -e /tmp/records.dbl ]; do
 		sleep 1
 	done
-	for PV in $(egrep FREQ\|COUNT\|Z:TEMP /tmp/records.dbl)
+	for PV in $(egrep FREQ\|COUNT\ /tmp/records.dbl)
 	do
 		NU=${PV#*:}
 		SITE=${NU:0:1}
 		make_caget $PV ${NU#*:} ${SITE}	
 	done
 	mkdir -p /etc/acq400/S
-	for PV in $(egrep SYS:[5Vv] /tmp/records.dbl)
+	for PV in $(egrep SYS:[5Vv]\|Z:TEMP /tmp/records.dbl)
 	do
 		NU=${PV#*:}
 		make_caget $PV ${NU#*:} S
