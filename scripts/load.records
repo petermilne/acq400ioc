@@ -229,7 +229,7 @@ if [ -e $KB/module_name ]; then
 	acq1001sc) 
 		case $(cat /proc/device-tree/chosen/model) in
 		acq1002)	ns=2;;
-		*)		ns=1;;
+		*)			ns=1;;
 		esac
 		load_acq2006 $KB $ns acq1001
 		load_acq1001 $KB;;

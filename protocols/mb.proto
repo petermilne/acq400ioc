@@ -17,3 +17,25 @@ getSPAD {
 	in "%d,%(\$1)d,%(\$2)d";
 }
 
+# Qstats=BS_EMPTY, BS_FILLING, BS_FULL, BS_FULL_APP, DROPS
+# in "%*d,%*d,%*d,%*d,%*d";
+getQstatsEmpty {
+	out "Qstats";
+	in "%d,%(\$1:FILLING)d,%(\$1:FULL)d,%(\$1:FULL_APP)d,%(\$1:DROPS)d";
+}
+
+getQstatsFilling {
+	in "%*d,%d,%*d,%*d,%*d";
+}
+
+getQstatsFull {
+	in "%*d,%*d,%d,%*d,%*d";
+}
+
+getQstatsFullApp {
+	in "%*d,%*d,%*d,%d,%*d";
+}
+
+getQstatsDrops {
+	in "%*d,%*d,%*d,%*d,%d";
+}

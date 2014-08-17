@@ -78,3 +78,14 @@ record(mbbi, "${UUT}:0:SPAD:LEN:r") {
 record(mbbi, "${UUT}:0:SPAD:DISEL:r") {
 
 }
+
+record(longin, "${UUT}:0:QS:EMPTY"){
+	field(DTYP, "stream")
+	field(INP,  "@mb.proto getQstatsEmpty(${UUT}:0:QS) ${SPORT}")
+	field(SCAN, "1 second")
+}
+record(longin, "${UUT}:0:QS:FILLING"){}
+record(longin, "${UUT}:0:QS:FULL"){}
+record(longin, "${UUT}:0:QS:FULL_APP"){}
+record(longin, "${UUT}:0:QS:DROPS"){}
+
