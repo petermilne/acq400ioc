@@ -8,7 +8,7 @@ setGain {
 
 setGainAll {
 	out "gain %d";
-	wait 1000;
+	wait 4000;
 	in;
 }
 getGain {
