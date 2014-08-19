@@ -78,7 +78,7 @@ make_AI_records() {
 	for ix in $(seq $i1 $i2)
 	do
 		cid=$(printf "%02d" $ch)
-		PRAMS="UUT=$HOST:${site},cid=$cid,idx=$ix,fname=/dev/shm/subrate"		
+		PRAMS="UUT=$HOST:${site},cid=$cid,idx=$ix,fname=subrate"		
 		echo dbLoadRecords\(\"db/aiAcqHost.db\",\"$PRAMS\"\)		
 		let ch=$ch+1
 	done									
