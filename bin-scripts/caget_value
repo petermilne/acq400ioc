@@ -1,0 +1,7 @@
+#!/bin/sh
+
+VALUE=$(caget -s $(basename $0))
+
+SITEVAL=${VALUE#*:}
+echo ${SITEVAL#*:}
+
