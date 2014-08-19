@@ -1,0 +1,29 @@
+# psu control
+record(ao, "${UUT}:SYS:PSU:POT:VAN") {
+	field(DTYP, "dsSysfsAo")
+	field(OUT,  "@/dev/acq2006/van")
+	field(SCAN, "Passive")
+	field(DESC, "Set VA Negative CAREFUL")
+	field(EGU,  "V")
+	field(LINR, "SLOPE")
+	field(EOFF, "-15.44")
+	field(ESLO, "0.0409")
+	field(DRVL, "-15.4")
+	field(DRVH, "-5")
+}
+
+record(ao, "${UUT}:SYS:PSU:POT:VAP") {
+	field(DTYP, "dsSysfsAo")
+	field(OUT,  "@/dev/acq2006/vap")
+	field(SCAN, "Passive")
+	field(DESC, "Set VA Positive CAREFUL")
+	field(EGU,  "V")
+	field(LINR, "SLOPE")
+	field(EOFF, "15.64")
+	field(ESLO, "-0.0417")
+	field(DRVL, "5")
+	field(DRVH, "15.64")
+}
+
+
+
