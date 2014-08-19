@@ -1,0 +1,15 @@
+record(ai, "${UUT}:AI:CH:${cid}"){
+	field(DESC, "AI running mean")
+#	alias("${UUT}:AI:CH:${alt}")
+	field(DTYP, "aiAcqHost")
+	field(INP,  "@${fname} ${idx}")
+	field(SCAN, "I/O Intr")
+#	field(EGUL, "${egul}")
+#	field(EGUF, "${eguf}")
+	field(LINR, "LINEAR")
+	field(EGU,  "Volts")
+#	field(ESLO, "${eslo}")
+#	field(HOPR, "${hopr}")
+#	field(LOPR, "${lopr}")
+#	field(EOFF, "${eoff}")
+}

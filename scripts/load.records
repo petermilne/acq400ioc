@@ -69,6 +69,40 @@ make_AI() {
 	done
 }
 
+make_AI_records() {
+	site=$1
+	let i1=$2
+	let i2=$i1+$3
+	let ch=1
+	
+	for ix in $(seq $i1 $i2)
+	do
+		cid=$(printf "%02d" $ch)
+		PRAMS="UUT=$HOST:${site},cid=$cid,idx=$ix,fname=/dev/shm/subrate"		
+		echo dbLoadRecords\(\"db/aiAcqHost.db\",\"$PRAMS\"\)		
+		let ch=$ch+1
+	done									
+}
+make_AI_subrate() {	
+	for cc in $(get.site 0 aggregator)
+	do
+		echo $cc | grep -q sites=
+		if [ $? -eq 0 ]; then
+			eval $cc
+			sites2=$(echo $sites | tr , \  )
+		fi
+	done
+	if [ "x$sites" != "x" ]; then
+		let i1=0
+		for site in $sites2
+		do
+			nc=$(get.site $site NCHAN)
+			make_AI_records $site $i1 $nc-1
+			let i1=$i1+$nc
+	 	done
+	fi
+}
+
 load_400() {
 	SITE=$1
 	# since driver B2.457, module_type printed in hex
@@ -243,6 +277,8 @@ do
 		load_400 ${ACQ400##*.} $ACQ400
 	fi
 done
+
+make_AI_subrate
 
 for sitepath in /dev/sites/*
 do
