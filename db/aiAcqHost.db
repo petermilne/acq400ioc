@@ -1,15 +1,15 @@
 record(ai, "${UUT}:AI:CH:${cid}"){
 	field(DESC, "AI running mean")
-#	alias("${UUT}:AI:CH:${alt}")
 	field(DTYP, "aiAcqHost")
 	field(INP,  "@${fname} ${idx}")
-	field(SCAN, "I/O Intr")
-#	field(EGUL, "${egul}")
-#	field(EGUF, "${eguf}")
+	field(SCAN, ".1 second")
 	field(LINR, "LINEAR")
 	field(EGU,  "Volts")
-#	field(ESLO, "${eslo}")
-#	field(HOPR, "${hopr}")
-#	field(LOPR, "${lopr}")
-#	field(EOFF, "${eoff}")
+# assume calibration gets inserted after record created	
+	field(EGUL, "10")
+	field(EGUF, "-10")	
+	field(ESLO, "3.051804e-04")
+	field(HOPR, "10")
+	field(LOPR, "10")
+	field(EOFF, "0")	
 }

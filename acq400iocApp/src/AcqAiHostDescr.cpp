@@ -68,12 +68,13 @@ using namespace std;
 class AcqAiHostDevice: public AcqHostDevice {
 	static DeviceMap devices;
 
+	int nchan;
 	int *channel_data;
 
 	void getChannelData();
 
 	AcqAiHostDevice(const char* _fname) : AcqHostDevice(_fname) {
-		channel_data = new int[MAXCHAN1];
+		channel_data = new int[nchan = MAXCHAN1];
 		getChannelData();
 	}
 
@@ -110,6 +111,15 @@ public:
 		getChannelData();
 		AcqHostDevice::onChange();
 	}
+
+	void reportNchan(int cid){
+		if (cid >= nchan){
+			delete [] channel_data;
+			/* force round up to next 32x so we don't do it too often */
+			nchan = (cid/32 + 1)*32;
+			channel_data = new int[nchan];
+		}
+	}
 };
 
 void AcqAiHostDevice::getChannelData()
@@ -139,18 +149,13 @@ AcqAiHostDescr::~AcqAiHostDescr() {
 
 class ConcreteAcqAiHostDescr: public AcqAiHostDescr {
 	AcqAiHostDevice* dev;
-	int idx;
+	const int idx;
 public:
 	ConcreteAcqAiHostDescr(int cid, AcqAiHostDevice* _dev):
 		AcqAiHostDescr(),
-		dev(_dev)
-	{
-#ifdef HAS_TIMESTAMP
-		idx = ((cid-1)&(32-1)) + 1;
-#else
-		idx = ((cid-1)&(32-1));
-#endif
-	}
+		dev(_dev),
+		idx(cid)
+	{}
 	virtual bool getValue(int& xx) {
 		dev->getValue(idx, xx);
 		dbg(1, "value:%d", xx);
@@ -168,6 +173,7 @@ AcqAiHostDescr* AcqAiHostDescr::create(const char* inp)
 		return 0;
 	}
 	AcqAiHostDevice* dev = AcqAiHostDevice::create(fname);
+	dev->reportNchan(cid);
 	AcqAiHostDescr* descr = new ConcreteAcqAiHostDescr(cid, dev);
 
 	dev->channels[cid] = descr;
