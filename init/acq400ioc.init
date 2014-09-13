@@ -51,6 +51,9 @@ make_epics_knobs() {
 	killall voltsmon
 	daemon /usr/local/bin/voltsmon.epics
 	echo make_epics_knobs_done >/tmp/epics_knobs_done
+	if [ -e /usr/local/init/acq400_knobs.init ]; then
+		/usr/local/init/acq400_knobs.init start
+	fi
 }
 make_stcmd() {
 	if [ ! -e ${STCMD} ]; then
