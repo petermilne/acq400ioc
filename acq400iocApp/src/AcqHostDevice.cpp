@@ -43,7 +43,12 @@ const char* AcqHostDevice::ROOT = "/dev/shm";
 AcqHostDevice::AcqHostDevice(const char* _fname)  :
 	channel_data_valid(false), thread_name(_fname) {
 	fname = new char[strlen(ROOT)+strlen(_fname)+2];
-	sprintf(fname, "%s/%s", ROOT, _fname);
+
+	if (_fname[0] == '/'){
+		strcpy(fname, _fname);
+	}else{
+		sprintf(fname, "%s/%s", ROOT, _fname);
+	}
 
 	dbg(1, "new device %s", fname);
 

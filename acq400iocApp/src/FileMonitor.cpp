@@ -46,10 +46,10 @@ class FileMonitorImpl: public FileMonitor {
 	int wd;
 
 public:
-		~FileMonitorImpl();
-		FileMonitorImpl(const char* fname);
+	~FileMonitorImpl();
+	FileMonitorImpl(const char* fname);
 
-		virtual void waitChange();
+	virtual void waitChange();
 };
 
 FileMonitorImpl::FileMonitorImpl(const char* fname)
@@ -87,6 +87,7 @@ FileMonitor* FileMonitor::create(const char *fname)
 {
 	int fd = open(fname, O_RDONLY);
 	if (fd < 0){
+		perror(fname);
 		return 0;
 	}else{
 		close(fd);

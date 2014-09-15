@@ -16,7 +16,7 @@ using namespace std;
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-
+#include <libgen.h>
 
 #include "alarm.h"
 #include "cvtTable.h"
@@ -64,6 +64,8 @@ public:
 	static AcqWfHostDevice* create(const char* _fname) {
 		char *fname = new char[strlen(_fname)+1];
 		strcpy(fname, _fname);
+
+		dbg(1, "AcqWfHostDevice::create(%s)\n", fname);
 		return _create(fname);
 	}
 };
@@ -116,6 +118,13 @@ public:
 
 		dbg(1, "idx:%d ch_fname:%s dirfile:%s", idx, ch_fname, dev->getFname());
 	}
+	ConcreteAcqWfHostDescr(AcqWfHostDevice* _dev, char* fname):
+		AcqWfHostDescr(), dev(_dev), error_reported(false)
+	{
+		ch_fname = new char[strlen(fname)+1];
+		strcpy(ch_fname, fname);
+		dbg(1, "ConcreteAcqWfHostDescr: ch_fname:%s dirfile:%s", ch_fname, dev->getFname());
+	}
 	virtual ~ConcreteAcqWfHostDescr() {
 		delete [] ch_fname;
 	}
@@ -165,15 +174,39 @@ AcqWfHostDescr* AcqWfHostDescr::create(const char* inp)
 	char dirfile[80];
 	char fname[80];
 	int cid;
+	AcqWfHostDevice* dev;
+	AcqWfHostDescr* descr;
 
-	if (sscanf(inp, INP_FMT, dirfile, &cid) != 2){
-		err("sscanf \"%s\" failed in \"%s\"", INP_FMT, inp);
-		return 0;
+	if (*inp == '/'){
+		static const char* monitor_file = "../.control";
+		/* 0123456789012345678901234567890123456789 */
+		/* /dev/acq400/data/1/01 */
+
+		dbg(1, "AcqWfHostDescr::create(%s) ABS PATH", inp);
+
+		strcpy(dirfile, inp);
+		char* dn = dirname(dirfile);
+
+		sprintf(fname, "%s/%s", dn, monitor_file);
+
+		char ch[80];
+		strcpy(ch, inp);
+		char* chid = basename(ch);
+
+		cid = strtol(chid, 0, 10);
+		dev = AcqWfHostDevice::create(fname);
+		descr = new ConcreteAcqWfHostDescr(dev, strcpy(fname, inp));
+	}else{
+		/* @AI.1.wf 01 */
+		if (sscanf(inp, INP_FMT, dirfile, &cid) != 2){
+			err("sscanf \"%s\" failed in \"%s\"", INP_FMT, inp);
+			sprintf(fname, "%s.fin", dirfile);
+			return 0;
+		}
+		sprintf(fname, "%s.fin", dirfile);
+		dev = AcqWfHostDevice::create(fname);
+		descr = new ConcreteAcqWfHostDescr(cid, dev, dirfile);
 	}
-	sprintf(fname, "%s.fin", dirfile);
-	AcqWfHostDevice* dev = AcqWfHostDevice::create(fname);
-	AcqWfHostDescr* descr = new ConcreteAcqWfHostDescr(cid, dev, dirfile);
-
 	dev->channels[cid] = descr;
 	return descr;
 }

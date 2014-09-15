@@ -83,6 +83,24 @@ make_AI_records() {
 		let ch=$ch+1
 	done									
 }
+
+make_AI_TR_records() {
+	site=$1
+	let i1=$2
+	let i2=$i1+$3
+	let ch=1
+	let size=$4
+	
+	for ix in $(seq $i1 $i2)
+	do
+		cid=$(printf "%02d" $ch)
+		let ix1=$ix+1
+		alt=$(printf "%02d" $ix1)
+		PRAMS="UUT=$HOST,SITE=${site},cid=$cid,ch=$ch,alt=$alt,size=$size,type=$TYPE"		
+		echo dbLoadRecords\(\"db/wfAcqHostTw.db\",\"$PRAMS\"\)		
+		let ch=$ch+1
+	done		
+}	
 make_AI_subrate() {	
 	for cc in $(get.site 0 aggregator)
 	do
@@ -92,12 +110,20 @@ make_AI_subrate() {
 			sites2=$(echo $sites | tr , \  )
 		fi
 	done
+	
+	if [ -e /dev/acq400/data/.control ]; then
+		source /dev/acq400/data/.control
+	else
+		NSAMPLES=0
+		TYPE=short
+	fi
 	if [ "x$sites" != "x" ]; then
 		let i1=0
 		for site in $sites2
 		do
 			nc=$(get.site $site NCHAN)
 			make_AI_records $site $i1 $nc-1
+			make_AI_TR_records $site $i1 $nc-1 $NSAMPLES
 			let i1=$i1+$nc
 	 	done
 	fi
