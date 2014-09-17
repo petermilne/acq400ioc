@@ -48,5 +48,5 @@ setTransient {
 }
 
 setArm {
-	out "set_arm %d";
+	out "set_arm";
 }

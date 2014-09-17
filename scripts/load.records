@@ -75,6 +75,8 @@ make_AI_records() {
 	let i2=$i1+$3
 	let ch=1
 	
+	touch /dev/shm/subrate
+	
 	for ix in $(seq $i1 $i2)
 	do
 		cid=$(printf "%02d" $ch)
