@@ -1,0 +1,49 @@
+record(longout, "${UUT}:MODE:TRANSIENT") {
+	field(DTYP, "stream")	
+	field(DESC, "set transient samples")
+	field(EGU,  "Samples")
+	field(LOPR, "0")
+	field(HOPR, "1")	
+	field(OUT,  "@mb.proto setTransient(${UUT}:MODE:TRANSIENT) ${SPORT}")
+}
+
+record(longout, "${UUT}:MODE:TRANSIENT:PRE") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "set transient pre-samples")
+	field(EGU,  "Samples")
+	field(LOPR, "0")
+	field(HOPR, "100000000")
+}
+
+record(longout, "${UUT}:MODE:TRANSIENT:POST") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "set transient post-samples")
+	field(EGU,  "Samples")
+	field(LOPR, "0")
+	field(HOPR, "100000000")
+}
+
+record(longout, "${UUT}:MODE:TRANSIENT:OSAM") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "subrate oversample ratio")
+	field(EGU,  "Samples")
+	field(LOPR, "0")
+	field(HOPR, "256")
+}
+
+record(longout, "${UUT}:MODE:TRANSIENT:SOFT_TRIGGER") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "set transient pre-samples")
+	field(EGU,  "Samples")
+	field(LOPR, "0")
+	field(HOPR, "1")
+}
+
+record(longout, "${UUT}:MODE:TRANSIENT:SET_ARM") {
+	field(DTYP, "stream")	
+	field(DESC, "start transient capture")
+	field(EGU,  "Samples")
+	field(LOPR, "0")
+	field(HOPR, "1")	
+	field(OUT,  "@mb.proto setArm ${SPORT}")
+}

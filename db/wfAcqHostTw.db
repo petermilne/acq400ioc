@@ -1,0 +1,22 @@
+record(waveform, "${UUT}:${SITE}:AI:TW:${cid}") {
+	alias("${UUT}:AI:TW:${alt}")
+	field(DTYP, "wfAcqHost")
+	field(INP, "@/dev/acq400/data/${SITE}/${cid}")
+	field(SCAN, "I/O Intr")	
+	field(DESC, "AI waveform record raw")
+	field(NELM,"${size}")
+	field(FTVL,"${type}")
+	field(FLNK,"${UUT}:${SITE}:AI:TW:${cid}:uv")
+}
+
+record(aSub, "${UUT}:${SITE}:AI:TW:${cid}:uv") {
+	alias("${UUT}:AI:TW:${alt}:uv")
+	field(SNAM, "raw_to_uvolts")
+	field(FTA,  "LONG")
+	field(NOA,  "${size}")
+	field(INPA, "${UUT}:AI:WF:${cid}")
+	field(FTVA, "LONG")
+	field(NOVA, "${size}")
+	field(DESC, "AI waveform record scaled to micro volts")
+}
+
