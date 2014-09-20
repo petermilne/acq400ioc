@@ -2,7 +2,7 @@ record(ai, "${UUT}:AI:CH:${cid}"){
 	field(DESC, "AI running mean")
 	field(DTYP, "aiAcqHost")
 	field(INP,  "@${fname} ${idx}")
-	field(SCAN, ".1 second")
+	field(SCAN, "I/O Intr")
 	field(LINR, "LINEAR")
 	field(EGU,  "V")
 	field(PREC,  "3")

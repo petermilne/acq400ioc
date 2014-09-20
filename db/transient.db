@@ -47,3 +47,37 @@ record(longout, "${UUT}:MODE:TRANSIENT:SET_ARM") {
 	field(HOPR, "1")	
 	field(OUT,  "@mb.proto setArm ${SPORT}")
 }
+
+record(longout, "${UUT}:MODE:TRANSIENT:SET_ABORT") {
+	field(DTYP, "stream")	
+	field(DESC, "start transient capture")
+	field(EGU,  "Samples")
+	field(LOPR, "0")
+	field(HOPR, "1")	
+	field(OUT,  "@mb.proto setAbort ${SPORT}")
+}
+
+record(mbbi, "${UUT}:MODE:TRANS_ACT:STATE") {
+	field(DTYP, "stream")
+	field(NOBT, "3")
+	field(ZRST, "IDLE")
+	field(ONST, "ARM")
+	field(TWST, "RUN_PRE")
+	field(THST, "RUN_POST")
+	field(FRST, "POST_PROCESS")
+	field(IN,   "@mb.proto getState(${UUT}:MODE:TRANS_ACT) ${SPORT}")
+	field(SCAN  "1 second")
+}
+
+record(longin, "${UUT}:MODE:TRANS_ACT:PRE") {
+	field(DTYP, "Soft Channel")
+}
+
+record(longin, "${UUT}:MODE:TRANS_ACT:POST") {
+	field(DTYP, "Soft Channel")
+}
+
+record(longin, "${UUT}:MODE:TRANS_ACT:TOTSAM") {
+	field(DTYP, "Soft Channel")
+}
+

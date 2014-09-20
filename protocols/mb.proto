@@ -50,3 +50,12 @@ setTransient {
 setArm {
 	out "set_arm";
 }
+
+setAbort {
+	out "set_abort";
+}
+
+getState {
+	out "get_state";
+	int "%d %(\$1:PRE)d %(\$1:POST) %(\$1:TOTSAM)";
+}
