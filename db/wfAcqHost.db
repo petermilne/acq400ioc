@@ -21,6 +21,7 @@ record(longout, "${UUT}:${SITE}:AI:WF:${cid}:TH") {
 	field(DTYP, "Soft Channel")
 	field(VAL,  "512")
 	field(PINI, "YES")
+	field(DESC, "alarm threshold in bits")
 }
 
 record(aSub, "${UUT}:${SITE}:AI:WF:${cid}:V") {	

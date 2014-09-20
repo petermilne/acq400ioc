@@ -98,8 +98,10 @@ make_AI_TR_records() {
 		cid=$(printf "%02d" $ch)
 		let ix1=$ix+1
 		alt=$(printf "%02d" $ix1)
-		PRAMS="UUT=$HOST,SITE=${site},cid=$cid,ch=$ch,alt=$alt,size=$size,type=$TYPE"		
-		echo dbLoadRecords\(\"db/wfAcqHostTw.db\",\"$PRAMS\"\)		
+		PRAMS="UUT=$HOST,SITE=${site},cid=$cid,ch=$ch,alt=$alt"
+		WPRAMS="${PRAMS},size=${size},type=${TYPE}"
+		WPRAMS="${WPRAMS},maxcode=${MAXCODE},vmax=${VMAX}"		
+		echo dbLoadRecords\(\"db/wfAcqHostTw.db\",\"$WPRAMS\"\)		
 		let ch=$ch+1
 	done		
 }	
