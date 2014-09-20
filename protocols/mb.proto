@@ -56,6 +56,6 @@ setAbort {
 }
 
 getState {
-	out "get_state";
-	int "%d %(\$1:PRE)d %(\$1:POST) %(\$1:TOTSAM)";
+	out "state";
+	in "%d %(\$1:PRE)d %(\$1:POST)d %(\$1:TOTSAM)d";
 }

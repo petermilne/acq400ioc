@@ -65,8 +65,8 @@ record(mbbi, "${UUT}:MODE:TRANS_ACT:STATE") {
 	field(TWST, "RUN_PRE")
 	field(THST, "RUN_POST")
 	field(FRST, "POST_PROCESS")
-	field(IN,   "@mb.proto getState(${UUT}:MODE:TRANS_ACT) ${SPORT}")
-	field(SCAN  "1 second")
+	field(INP,  "@mb.proto getState(${UUT}:MODE:TRANS_ACT) ${SPORT}")
+	field(SCAN, "1 second")
 }
 
 record(longin, "${UUT}:MODE:TRANS_ACT:PRE") {
