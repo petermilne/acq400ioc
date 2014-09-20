@@ -8,7 +8,7 @@ record(ai, "${UUT}:AI:CH:${cid}"){
 # assume calibration gets inserted after record created	
 	field(EGUL, "10")
 	field(EGUF, "-10")	
-	field(ESLO, "3.051804e-04")
+	field(ESLO, "0.00000119")
 	field(HOPR, "10")
 	field(LOPR, "10")
 	field(EOFF, "0")	
