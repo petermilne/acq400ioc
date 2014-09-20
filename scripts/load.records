@@ -277,8 +277,8 @@ load_acq1001() {
 	for FUN in SYNC TRG CLK
 	do		 
 		lprams="FUN=${FUN},fun=$(toLower ${FUN})"
-		echo 'dbLoadRecords("db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=0'")'
-		echo 'dbLoadRecords("db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=1'")'
+		echo 'dbLoadRecords("db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=0,ZRST=EXT'")'
+		echo 'dbLoadRecords("db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=1,ZRST=MCLK'")'
 	done	
 }
 

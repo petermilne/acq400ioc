@@ -1,7 +1,7 @@
 record (mbbo, "${UUT}:0:SIG:SRC:${FUN}:${BIT}") {
 	field(DTYP, "Soft Channel")
 	field(NOBT, "2")
-	field(ZRST, "EXT")
+	field(ZRST, "${ZRST}")
 	field(ONST, "HDMI")
 	field(TWST, "CELF")
 	field(FLNK, "${UUT}:0:SIG:SRC:${FUN}:${BIT}:w PP")	
