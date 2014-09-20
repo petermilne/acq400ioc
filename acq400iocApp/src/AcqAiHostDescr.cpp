@@ -58,7 +58,7 @@ using namespace std;
 
 #define INP_FMT "%s %d"
 
-#define MAXCHAN	32
+#define MAXCHAN	192
 #define MAXCHAN1	(MAXCHAN+1)		/* index from 1 */
 
 #define MAXCHANSZ	(MAXCHAN+1*sizeof(int))
