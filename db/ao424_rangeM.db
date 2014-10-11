@@ -1,0 +1,18 @@
+# AO424 range, init : Master : control only
+
+record (mbbo, "${UUT}:${SITE}:RANGE:ALL") {	
+	field(DTYP, "stream")
+	field(OUT,  "@ao424.proto setRangeAll ${SPORT}")
+	field(NOBT, "3")	
+	field(ZRST, "UP5V")
+	field(ONST, "UP10V")
+	field(TWST, "5V")
+	field(THST, "10V")
+	field(FRST, "2V5")
+	field(FVST, "-2V5/7V5")        	
+}
+
+record (longout, "${UUT}:${SITE}:INITRAW:ALL") {
+	field(DTYP, "stream")
+	field(OUT,  "@ao424.proto setInitAll ${SPORT}")
+}

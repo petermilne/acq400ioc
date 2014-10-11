@@ -133,60 +133,90 @@ make_AI_subrate() {
 	fi
 }
 
+
+load_AO() {
+		site=$1
+		mtype=$2
+		cprams=$3
+		
+		case $mtype in
+		40)
+					nchan=4;;
+		41)
+					nchan=32;;
+		esac
+		
+		for ch in $(seq 1 $nchan)
+		do
+			echo 'dbLoadRecords("db/ao420fmc.db","'${cprams},cid=$ch'")'
+		done	
+		
+		has_range=0
+		for kb in /etc/acq400/${SITE}/range[0-9]*
+		do
+			if [ -e $kb ]; then
+				ix=${kb#*gain}
+				ch=$(printf "%02d" $ix)
+				echo 'dbLoadRecords("db/ao424_range.db","'${CPRAMS}',CH='$ch',IX='$ix',KNOB='${kb}'")'
+				has_range=1
+			fi		
+		done
+		if [ $has_range -ne 0 ]; then
+			echo 'dbLoadRecords("db/ao424_rangeM.db","'${CPRAMS}',CH='ALL'")'				
+		fi					
+}
+
 load_400() {
-	SITE=$1
+	site=$1
 	# since driver B2.457, module_type printed in hex
-	MODEL=$(cat /dev/acq400.${SITE}.knobs/module_type)
+	model=$(cat /dev/acq400.${site}.knobs/module_type)
 	LO=100000000	
 		
-	CPRAMS="UUT=${HOST},SITE=${SITE},SPORT=S${SITE}"
+	cprams="UUT=${HOST},site=${site},SPORT=S${site}"
 	
-	echo 'dbLoadRecords("db/acq420fmc.db","'${CPRAMS},LO=$LO'")'
+	echo 'dbLoadRecords("db/acq420fmc.db","'${cprams},LO=$LO'")'
 	
-	case $MODEL in
+	case $model in
 	2|3)	
 		#ACQ435 .. nb HIRES makes it /2
-		echo 'dbLoadRecords("db/acq430fmc.db","'${CPRAMS},LO=$LO'")'
-		echo 'dbLoadRecords("db/acq43x_rgm.db","'${CPRAMS}'")'
+		echo 'dbLoadRecords("db/acq430fmc.db","'${cprams},LO=$LO'")'
+		echo 'dbLoadRecords("db/acq43x_rgm.db","'${cprams}'")'
 		let LO=$LO/256;;
-	40)
-		for ch in 1 2 3 4
-		do
-			echo 'dbLoadRecords("db/ao420fmc.db","'${CPRAMS},cid=$ch'")'
-		done
+	40|41)
+		load_AO $site $model $cprams		
 		let LO=66000000;;	
 	esac
 	
-	HPRAMS="${CPRAMS},size=$HSIZE,type=LONG,fname=HG.${SITE}"
+	HPRAMS="${cprams},size=$HSIZE,type=LONG,fname=HG.${site}"
 	echo 'dbLoadRecords("db/hgAcqHost.db","'${HPRAMS}'")'
 	
-	make_AI $SITE
+	make_AI $site
 
-	CTPR="${CPRAMS},CTRMAX=$CTR28,DT=1"
+	CTPR="${cprams},CTRMAX=$CTR28,DT=1"
 	echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=clk_count,pname=clk_count'")'
 	echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=sample_count,pname=sample_count'")'
 
 	has_gain=0
-	for kb in /etc/acq400/${SITE}/gain[0-9]*
+	for kb in /etc/acq400/${site}/gain[0-9]*
 	do
 		if [ -e $kb ]; then
 			ix=${kb#*gain}
 			ch=$(printf "%02d" $ix)
-			echo 'dbLoadRecords("db/gain.db","'${CPRAMS}',CH='$ch',IX='$ix',KNOB='${kb}'")'
+			echo 'dbLoadRecords("db/gain.db","'${cprams}',CH='$ch',IX='$ix',KNOB='${kb}'")'
 			has_gain=1
 		fi		
 	done
 	if [ $has_gain -ne 0 ]; then
-		echo 'dbLoadRecords("db/gainM.db","'${CPRAMS}',CH='ALL'")'				
+		echo 'dbLoadRecords("db/gainM.db","'${cprams}',CH='ALL'")'				
 	fi
 		
-	echo 'dbLoadRecords("db/signal.db","'${CPRAMS}',FNAM=TRG,FN=trg,ZNAM=soft,ONAM=external")'
-	echo 'dbLoadRecords("db/signal.db","'${CPRAMS}',FNAM=CLK,FN=clk,ZNAM=internal,ONAM=external")'
-	echo 'dbLoadRecords("db/signal.db","'${CPRAMS}',FNAM=SYNC,FN=sync,ZNAM=internal,ONAM=external")'
-	echo 'dbLoadRecords("db/signal.db","'${CPRAMS}',FNAM=EVENT1,FN=event1,ZNAM=disable,ONAM=enable")'
-	echo 'dbLoadRecords("db/signal.db","'${CPRAMS}',FNAM=EVENT0,FN=event0,ZNAM=disable,ONAM=enable")'
-	echo 'dbLoadRecords("db/acq420fmc99.db","'${CPRAMS}'")'
-	echo 'drvAsynIPPortConfigure("S'${SITE}'", "127.0.0.1:422'${SITE}'")'
+	echo 'dbLoadRecords("db/signal.db","'${cprams}',FNAM=TRG,FN=trg,ZNAM=soft,ONAM=external")'
+	echo 'dbLoadRecords("db/signal.db","'${cprams}',FNAM=CLK,FN=clk,ZNAM=internal,ONAM=external")'
+	echo 'dbLoadRecords("db/signal.db","'${cprams}',FNAM=SYNC,FN=sync,ZNAM=internal,ONAM=external")'
+	echo 'dbLoadRecords("db/signal.db","'${cprams}',FNAM=EVENT1,FN=event1,ZNAM=disable,ONAM=enable")'
+	echo 'dbLoadRecords("db/signal.db","'${cprams}',FNAM=EVENT0,FN=event0,ZNAM=disable,ONAM=enable")'
+	echo 'dbLoadRecords("db/acq420fmc99.db","'${cprams}'")'
+	echo 'drvAsynIPPortConfigure("S'${site}'", "127.0.0.1:422'${site}'")'
 }
 
 load_421() {

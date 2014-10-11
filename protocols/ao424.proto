@@ -1,0 +1,42 @@
+Terminator = LF;
+ExtraInput = Ignore;
+
+setRange {
+	out "range\$1 %d";
+	in;
+}
+
+setRangeAll {
+	out "range %d";
+	wait 4000;
+	in;
+}
+getRange {
+	out "range\$1";
+	in "%d";
+	@replytimeout {
+		disconnect;
+		wait 2000;
+		connect 1000;    
+	}			
+}
+
+setInit {
+	out "init\$1 %d";
+	in;
+}
+
+setInitAll {
+	out "init %d";
+	wait 4000;
+	in;
+}
+getInit {
+	out "init\$1";
+	in "%d";
+	@replytimeout {
+		disconnect;
+		wait 2000;
+		connect 1000;    
+	}			
+}
