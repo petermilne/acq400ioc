@@ -40,3 +40,17 @@ getInit {
 		connect 1000;    
 	}			
 }
+
+setCommit {
+	out "dacreset_device 1";
+}
+
+setPlayloopLength {
+	out "playloop_length %d";
+	in;
+}
+
+getPlayloopLength {
+	out "playloop_length";
+	in "%d";
+}
