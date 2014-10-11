@@ -152,17 +152,17 @@ load_AO() {
 		done	
 		
 		has_range=0
-		for kb in /etc/acq400/${SITE}/range[0-9]*
+		for kb in /etc/acq400/${site}/range[0-9]*
 		do
 			if [ -e $kb ]; then
-				ix=${kb#*gain}
-				ch=$(printf "%02d" $ix)
-				echo 'dbLoadRecords("db/ao424_range.db","'${CPRAMS}',CH='$ch',IX='$ix',KNOB='${kb}'")'
+				ix=${kb#*range}
+				ch=$ix				
+				echo 'dbLoadRecords("db/ao424_range.db","'${cprams}',CH='$ch',IX='$ix',KNOB='${kb}'")'
 				has_range=1
 			fi		
 		done
 		if [ $has_range -ne 0 ]; then
-			echo 'dbLoadRecords("db/ao424_rangeM.db","'${CPRAMS}',CH='ALL'")'				
+			echo 'dbLoadRecords("db/ao424_rangeM.db","'${cprams}',CH='ALL'")'				
 		fi					
 }
 
@@ -172,7 +172,7 @@ load_400() {
 	model=$(cat /dev/acq400.${site}.knobs/module_type)
 	LO=100000000	
 		
-	cprams="UUT=${HOST},site=${site},SPORT=S${site}"
+	cprams="UUT=${HOST},SITE=${site},SPORT=S${site}"
 	
 	echo 'dbLoadRecords("db/acq420fmc.db","'${cprams},LO=$LO'")'
 	
