@@ -120,6 +120,7 @@ record (longin, "${UUT}:${SITE}:SHOT") {
 	field(PINI, "YES")		
 }
 
+
 record (bi, "${UUT}:${SITE}:RUN") {
 	field(DTYP, "biAcqHost")
 	field(INP, "@/dev/acq400.${SITE}.knobs/run")
