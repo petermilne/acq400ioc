@@ -39,7 +39,7 @@ make_epics_knobs() {
 	while [ ! -e /tmp/records.dbl ]; do
 		sleep 1
 	done
-	for PV in $(egrep FREQ\|COUNT /tmp/records.dbl)
+	for PV in $(egrep FREQ\|COUNT\|GAIN /tmp/records.dbl)
 	do
 		NU=${PV#*:}
 		SITE=${NU:0:1}
