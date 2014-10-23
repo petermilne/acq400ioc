@@ -216,7 +216,7 @@ load_400() {
 		if [ -e $kb ]; then
 			ix=${kb#*gain}
 			ch=$(printf "%02d" $ix)
-			echo 'dbLoadRecords("${gain_file}","'${cprams}',CH='$ch',IX='$ix',KNOB='${kb}'")'
+			echo 'dbLoadRecords("'${gain_file}'","'${cprams}',CH='$ch',IX='$ix',KNOB='${kb}'")'
 			has_gain=1
 		fi		
 	done
