@@ -8,6 +8,9 @@ LOG=/var/log/epics.log
 if [ -f /etc/profile.d/epics.sh ]; then
 	source /etc/profile.d/epics.sh
 fi
+if [ -f /mnt/local/epics.sh ]; then
+	source /mnt/local/epics.sh
+fi
 
 make_caget() {
 	PFX=${1%*:$2}

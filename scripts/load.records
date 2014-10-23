@@ -186,12 +186,16 @@ load_400() {
 	
 	echo 'dbLoadRecords("db/acq420fmc.db","'${cprams},LO=$LO'")'
 	
+	gain_file="db/gain.db"
+	
 	case $model in
 	2|3)	
 		#ACQ435 .. nb HIRES makes it /2
 		echo 'dbLoadRecords("db/acq430fmc.db","'${cprams},LO=$LO'")'
 		echo 'dbLoadRecords("db/acq43x_rgm.db","'${cprams}'")'
 		let LO=$LO/256;;
+	6)
+		gain_file="db/gain125_10.db";;		
 	40|41)
 		load_AO $site $model $cprams		
 		let LO=66000000;;	
@@ -212,7 +216,7 @@ load_400() {
 		if [ -e $kb ]; then
 			ix=${kb#*gain}
 			ch=$(printf "%02d" $ix)
-			echo 'dbLoadRecords("db/gain.db","'${cprams}',CH='$ch',IX='$ix',KNOB='${kb}'")'
+			echo 'dbLoadRecords("${gain_file}","'${cprams}',CH='$ch',IX='$ix',KNOB='${kb}'")'
 			has_gain=1
 		fi		
 	done
