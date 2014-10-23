@@ -81,3 +81,10 @@ record(longin, "${UUT}:MODE:TRANS_ACT:TOTSAM") {
 	field(DTYP, "Soft Channel")
 }
 
+record (longin, "${UUT}:SHOT_COMPLETE") {
+	field(DTYP, "longinAcqHost")
+	field(INP, "@/etc/acq400/0/shot_complete")
+	field(SCAN, "1 second")
+	field(PINI, "YES")		
+}
+
