@@ -88,3 +88,12 @@ record (longin, "${UUT}:SHOT_COMPLETE") {
 	field(PINI, "YES")		
 }
 
+record(longout, "${UUT}:MODE:TRANSIENT:REPEAT") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "auto repeat N, decrements to zero -1=forever")
+}
+
+record(longout, "${UUT}:MODE:TRANSIENT:DELAYMS") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "delay before auto restart")
+}

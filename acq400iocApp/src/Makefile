@@ -29,15 +29,23 @@ acq400ioc_DBD += acqAi.dbd
 acq400ioc_DBD += asyn.dbd
 acq400ioc_DBD += drvAsynIPPort.dbd
 acq400ioc_DBD += stream.dbd
+#acq400ioc_DBD += seqSoftIoc.dbd
+acq400ioc_DBD += sncExample.dbd
+acq400ioc_DBD += autoRepeat.dbd
 
 
 # Add all the support libraries needed by this IOC
 acq400ioc_LIBS += acq2ioc
+acq400ioc_LIBS += seq pv
+
 
 #PROD_LIBS += stream
 #PROD_LIBS += asyn
 # acq400ioc_registerRecordDeviceDriver.cpp derives from acq400ioc.dbd
 acq400ioc_SRCS += acq400ioc_registerRecordDeviceDriver.cpp
+
+acq400ioc_SRCS += sncExample.st
+acq400ioc_SRCS += autoRepeat.st
 
 # Build the main IOC entry point on workstation OSs.
 acq400ioc_SRCS_DEFAULT += acq400iocMain.cpp \
