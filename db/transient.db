@@ -50,7 +50,7 @@ record(longout, "${UUT}:MODE:TRANSIENT:SET_ARM") {
 
 record(longout, "${UUT}:MODE:TRANSIENT:SET_ABORT") {
 	field(DTYP, "stream")	
-	field(DESC, "start transient capture")
+	field(DESC, "abort transient capture")
 	field(EGU,  "Samples")
 	field(LOPR, "0")
 	field(HOPR, "1")	
@@ -59,6 +59,7 @@ record(longout, "${UUT}:MODE:TRANSIENT:SET_ABORT") {
 
 record(mbbi, "${UUT}:MODE:TRANS_ACT:STATE") {
 	field(DTYP, "stream")
+	field(DESC, "transient actual state")
 	field(NOBT, "3")
 	field(ZRST, "IDLE")
 	field(ONST, "ARM")
@@ -91,9 +92,12 @@ record (longin, "${UUT}:SHOT_COMPLETE") {
 record(longout, "${UUT}:MODE:TRANSIENT:REPEAT") {
 	field(DTYP, "Soft Channel")
 	field(DESC, "auto repeat N, decrements to zero -1=forever")
+	field(HOPR, "99999")
+	field(LOPR, "-1")
 }
 
 record(longout, "${UUT}:MODE:TRANSIENT:DELAYMS") {
 	field(DTYP, "Soft Channel")
 	field(DESC, "delay before auto restart")
+	field(VAL,  "1000")
 }
