@@ -13,6 +13,7 @@ CTR20=1048576
 
 source /etc/sysconfig/acq400.conf
 
+
 # nchan deprecated, NCHAN preferred
 
 get_nchan() {
@@ -377,9 +378,17 @@ do
 	fi
 done
 
+if [ "x$IOC_PREINIT" != "x" ]; then
+	source $IOC_PREINIT
+fi
 cat - <<EOF2
 #	asynSetTraceMask("S0",-1,0xff)
 #	 asynSetTraceIOMask("S0",-1,0x2)
 iocInit()
-dbl > /tmp/records.dbl
 EOF2
+if [ "x$IOC_POSTINIT" != "x" ]; then
+	source $IOC_POSTINIT
+fi
+cat - <<EOF3
+dbl > /tmp/records.dbl
+EOF3
