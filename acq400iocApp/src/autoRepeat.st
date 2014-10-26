@@ -24,6 +24,12 @@ int set_abort;
 assign set_abort to "{uut}:MODE:TRANSIENT:SET_ABORT";
 monitor set_abort;
 
+int shot_complete;
+assign shot_complete to "{uut}:SHOT_COMPLETE";
+monitor shot_complete;
+
+int shot_complete0;
+
 ss autorepeat
 {
 	state stop
@@ -81,6 +87,8 @@ ss autorepeat
 		entry {
       			pvGet(repeat_delay_ms);
       			repeat_delay = repeat_delay_ms/1000;
+      			pvGet(shot_complete);
+      			shot_complete0 = shot_complete;
     		}
 		when (delay(repeat_delay)) {
 			printf("rearm=>waitrun\n");
@@ -90,6 +98,10 @@ ss autorepeat
 	
 	state waitrun 
 	{
+		when(shot_complete != shot_complete0){
+			printf("wait_run->run_transition\n");
+		} state run_transition
+		
 		when(tstate != 0){
 			printf("wait_run=>run\n");
 		} state run
