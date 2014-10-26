@@ -88,7 +88,8 @@ record(bo, "${UUT}:${SITE}:${FNAM}:SENSE:s") {
 	field(DTYP, "Soft Channel")
 	field(DOL,  "${UUT}:${SITE}:${FNAM}:SENSE:r NPP")
 	field(OMSL, "closed_loop")
-	field(OUT,  "${UUT}:${SITE}:${FNAM}:SENSE PP")
+# this feedback is counterproductive: can't set sense when disabled	
+#	field(OUT,  "${UUT}:${SITE}:${FNAM}:SENSE PP")
 }
 record(bo, "${UUT}:${SITE}:${FNAM}:SENSE:w") {
 	field(DTYP, "Soft Channel")	
