@@ -232,6 +232,7 @@ load_400() {
 	echo 'dbLoadRecords("db/signal.db","'${cprams}',FNAM=EVENT0,FN=event0,ZNAM=disable,ONAM=enable")'
 	echo 'dbLoadRecords("db/acq420fmc99.db","'${cprams}'")'
 	echo 'drvAsynIPPortConfigure("S'${site}'", "127.0.0.1:422'${site}'")'
+	echo 'dbLoadRecords("db/asynRecord.db","P='${HOST}':,R=asyn:S'${site}',PORT=S0,ADDR=0,IMAX=100,OMAX=100")'
 }
 
 load_421() {
@@ -307,9 +308,13 @@ load_acq2006() {
 	echo 'dbLoadRecords("db/acq2006clktree.db","UUT='${HOST}'")'
 	echo 'dbLoadRecords("db/acq2006mb.db","UUT='${HOST}',SPORT=S0")'
 	if [ -e /etc/acq400/0/transient ]; then
-				echo 'dbLoadRecords("db/transient.db","UUT='${HOST}',SPORT=S0")'
+				echo 'dbLoadRecords("db/transient.db","UUT='${HOST}',SPORT=SS")'
 	fi
 	echo 'drvAsynIPPortConfigure("S0", "127.0.0.1:4220")'
+	echo 'dbLoadRecords("db/asynRecord.db","P='${HOST}':,R=asyn:S0,PORT=S0,ADDR=0,IMAX=100,OMAX=100")'
+	echo 'drvAsynIPPortConfigure("SS", "127.0.0.1:4220")'
+	echo 'dbLoadRecords("db/asynRecord.db","P='${HOST}':,R=asyn:SS,PORT=SS,ADDR=0,IMAX=100,OMAX=100")'
+		
 }
 
 toLower() {
@@ -381,14 +386,11 @@ done
 if [ "x$IOC_PREINIT" != "x" ]; then
 	source $IOC_PREINIT
 fi
-cat - <<EOF2
-#	asynSetTraceMask("S0",-1,0xff)
-#	 asynSetTraceIOMask("S0",-1,0x2)
-iocInit()
-EOF2
+
+echo 'iocInit()'
+
 if [ "x$IOC_POSTINIT" != "x" ]; then
 	source $IOC_POSTINIT
 fi
-cat - <<EOF3
-dbl > /tmp/records.dbl
-EOF3
+
+echo 'dbl > /tmp/records.dbl'
