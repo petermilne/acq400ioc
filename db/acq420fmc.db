@@ -7,7 +7,7 @@ record (longout, "${UUT}:${SITE}:INTCLK_HZ") {
 	field(VAL,  "500000")
 	field(DESC, "Internal FCLK [Hz]")
 	field(LOPR, "10000")
-	field(HOPR, "1000000")
+	field(HOPR, "${MAXHZ}")
 	field(FLNK, "${UUT}:${SITE}:INTCLK_calc")
 	field(EGU,  "Hz")
 	field(DISV, "1")

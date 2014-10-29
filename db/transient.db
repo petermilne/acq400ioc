@@ -91,7 +91,7 @@ record (longin, "${UUT}:SHOT_COMPLETE") {
 
 record(longout, "${UUT}:MODE:TRANSIENT:REPEAT") {
 	field(DTYP, "Soft Channel")
-	field(DESC, "auto repeat N, decrements to zero -1=forever")
+	field(DESC, "auto repeat N, decr to zero -1=forever")
 	field(HOPR, "99999")
 	field(LOPR, "-1")
 }

@@ -43,6 +43,12 @@ record(calc, "${UUT}:${SITE}:GAIN:${CH}_f") {
 	field(INPA, "${UUT}:${SITE}:GAIN:${CH}")
 	field(CALC, "A==0? 10: A==1? 5: A==2? 2.5: 1.25")
 }
+
+# and set the volts range in all associated WF records..
 record(aSub, "${UUT}:${SITE}:AI:WF:${CH}:V") {	
 	field(INPC,  "${UUT}:${SITE}:GAIN:${CH}_f")
 }
+record(aSub, "${UUT}:${SITE}:AI:TW:${CH}:V") {	
+	field(INPC,  "${UUT}:${SITE}:GAIN:${CH}_f")
+}
+
