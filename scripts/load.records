@@ -13,6 +13,8 @@ CTR20=1048576
 
 source /etc/sysconfig/acq400.conf
 
+# gains are loaded last, as they tweak other WF records, must be there first..
+echo > /tmp/gains_last
 
 # nchan deprecated, NCHAN preferred
 
@@ -187,9 +189,9 @@ load_400() {
 	if [ -e /etc/acq400/$site/MAX_KHZ ]; then
 		let maxhz="$(cat /etc/acq400/$site/MAX_KHZ) * 1000"
 	fi
-	cprams="UUT=${HOST},SITE=${site},SPORT=S${site},MAXHZ=${maxhz}"
+	cprams="UUT=${HOST},SITE=${site},SPORT=S${site}"
 	
-	echo 'dbLoadRecords("db/acq420fmc.db","'${cprams},LO=$LO'")'
+	echo 'dbLoadRecords("db/acq420fmc.db","'${cprams},'LO='${LO}',MAXHZ='${maxhz}'")'
 	
 	gain_file="db/gain.db"
 	
@@ -215,6 +217,7 @@ load_400() {
 	echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=clk_count,pname=clk_count'")'
 	echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=sample_count,pname=sample_count'")'
 
+	(
 	has_gain=0
 	for kb in /etc/acq400/${site}/gain[0-9]*
 	do
@@ -228,6 +231,7 @@ load_400() {
 	if [ $has_gain -ne 0 ]; then
 		echo 'dbLoadRecords("db/gainM.db","'${cprams}',CH='ALL'")'				
 	fi
+	) >>/tmp/gains_last
 		
 	echo 'dbLoadRecords("db/signal.db","'${cprams}',FNAM=TRG,FN=trg,ZNAM=soft,ONAM=external")'
 	echo 'dbLoadRecords("db/signal.db","'${cprams}',FNAM=CLK,FN=clk,ZNAM=internal,ONAM=external")'
@@ -366,6 +370,8 @@ do
 done
 
 make_AI_subrate
+
+cat /tmp/gains_last
 
 for sitepath in /dev/sites/*
 do
