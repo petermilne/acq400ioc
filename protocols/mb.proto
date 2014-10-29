@@ -45,14 +45,17 @@ getQstatsDrops {
 
 setTransient {
 	out "transient PRE=%(\$1:PRE)d POST=%(\$1:POST)d OSAM=%(\$1:OSAM)d SOFT_TRIGGER=%(\$1:SOFT_TRIGGER)d";
+	in;
 }
 
 setArm {
 	out "set_arm";
+	in;
 }
 
 setAbort {
 	out "set_abort";
+	in;
 }
 
 getState {
