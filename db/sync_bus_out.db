@@ -1,0 +1,30 @@
+record (bo, "${UUT}:0:SIG:SYNC_BUS_OUT:${FUN}") {
+	field(DTYP, "Soft Channel")	
+	field(FLNK, "${UUT}:0:SIG:SYNC_BUS_OUT:${FUN}:w PP")	
+	field(PINI, "YES")
+}
+
+record (bo, "${UUT}:0:SIG:SYNC_BUS_OUT:${FUN}:w") {
+	field(DTYP, "boAcqHost")	
+	field(OUT,  "@/dev/acq400.0.knobs/sync_out_${fun}")	
+	field(PINI, "YES")	
+	field(DISV, "1")
+	field(SDIS, "${UUT}:0:SIG:SYNC_BUS_OUT:${FUN}:s.PACT")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:0:SIG:SYNC_BUS_OUT:${FUN}")	
+}
+
+record (bi, "${UUT}:0:SIG:SYNC_BUS_OUT:${FUN}:r") {
+	field(DTYP, "biAcqHost")
+	field(INP,  "@/dev/acq400.0.knobs/sync_out_${fun}")
+	field(SCAN, "1 second")
+	field(PINI, "YES")
+	field(FLNK, "${UUT}:0:SIG:SYNC_BUS_OUT:${FUN}:s")	
+}
+
+record (bo, "${UUT}:0:SIG:SYNC_BUS_OUT:${FUN}:s") {
+	field(DTYP,  "Soft Channel")	
+	field(OMSL,  "closed_loop")
+	field(DOL,   "${UUT}:0:SIG:SYNC_BUS_OUT:${FUN}:r NPP")
+	field(OUT,   "${UUT}:0:SIG:SYNC_BUS_OUT:${FUN} PP")
+}
