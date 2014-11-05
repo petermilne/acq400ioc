@@ -341,9 +341,10 @@ load_acq1001() {
 	for FUN in SYNC TRG GPIO CLK
 	do
 		lprams="FUN=${FUN},fun=$(toLower ${FUN})"
-		echo 'dbLoadRecords("db/sync_bus_out.db","'${CPRAMS},${lprams}'")'		
+		echo 'dbLoadRecords("db/sync_bus_out.db","'${CPRAMS},${lprams}'")'
+		echo 'dbLoadRecords("db/sync_out_src_x.db","'${CPRAMS},${lprams}'")'		
 	done
-	echo 'dbLoadRecords("db/sync_bus_data.db","	'${CPRAMS}'")'
+	echo 'dbLoadRecords("db/sync_bus_data.db","'${CPRAMS}'")'
 }
 
 cat - <<EOF
