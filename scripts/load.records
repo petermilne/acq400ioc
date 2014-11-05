@@ -344,6 +344,10 @@ load_acq1001() {
 		echo 'dbLoadRecords("db/sync_bus_out.db","'${CPRAMS},${lprams}'")'
 		echo 'dbLoadRecords("db/sync_out_src_x.db","'${CPRAMS},${lprams}'")'		
 	done
+	for dx in 0 1 2 3 4 5 6 7
+	do
+			echo 'dbLoadRecords("db/sig_event_src.db","'${CPRAMS},BIT=${dx}'")'
+	done
 	echo 'dbLoadRecords("db/sync_bus_data.db","'${CPRAMS}'")'
 }
 

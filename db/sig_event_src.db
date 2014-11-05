@@ -1,0 +1,39 @@
+record (mbbo, "${UUT}:0:SIG:EVENT_SRC:${BIT}") {
+	field(DTYP, "Soft Channel")
+	field(NOBT, "2")
+	field(ZRST, "TRG")
+	field(ONST, "GPG")
+	field(TWST, "HDMI")
+	field(THST, "CELF")
+	field(FLNK, "${UUT}:0:SIG:EVENT_SRC:${BIT}:w PP")	
+	field(PINI, "YES")
+}
+
+record (mbbo, "${UUT}:0:SIG:EVENT_SRC:${BIT}:w") {
+	field(DTYP, "mbboAcqHost")
+	field(NOBT, "2")
+	field(OUT,  "@/dev/acq400.0.knobs/evt_src_d${BIT}")	
+	field(PINI, "YES")	
+	field(DISV, "1")
+	field(SDIS, "${UUT}:0:SIG:EVENT_SRC:${BIT}:s.PACT")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:0:SIG:EVENT_SRC:${BIT}")	
+}
+
+record (mbbi, "${UUT}:0:SIG:EVENT_SRC:${BIT}:r") {
+	field(DTYP, "mbbiAcqHost")
+	field(NOBT, "2")	
+	field(INP,  "@/dev/acq400.0.knobs/evt_src_d${BIT}")
+	field(SCAN, "1 second")
+	field(PINI, "YES")
+	field(FLNK, "${UUT}:0:SIG:EVENT_SRC:${BIT}:s")	
+}
+
+record (mbbo, "${UUT}:0:SIG:EVENT_SRC:${BIT}:s") {
+	field(DTYP,  "Soft Channel")
+	field(NOBT,  "2")
+	field(OMSL,  "closed_loop")
+	field(DOL,   "${UUT}:0:SIG:EVENT_SRC:${BIT}:r NPP")
+	field(OUT,   "${UUT}:0:SIG:EVENT_SRC:${BIT} PP")
+}
+
