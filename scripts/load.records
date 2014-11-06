@@ -140,7 +140,9 @@ make_AI_subrate() {
 		do
 			nc=$(get.site $site NCHAN)
 			make_AI_records $site $i1 $nc-1
-			make_AI_TR_records $site $i1 $nc-1 $NSAMPLES
+			if [ $NSAMPLES -ne 0 ]; then
+				make_AI_TR_records $site $i1 $nc-1 $NSAMPLES
+			fi
 			let i1=$i1+$nc
 	 	done
 	fi

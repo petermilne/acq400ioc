@@ -91,7 +91,14 @@ restart() {
 	make_epics_knobs 
 }
 
+bump() 
+{
+	echo X | tr X \018 | acq4xx-epics-console
+}
+
 case "$1" in
+bump)
+	bump;;
 forcestart)
 	restart force;;
 start|"")
