@@ -1,9 +1,9 @@
 record (mbbo, "${UUT}:0:SIG:SYNC_OUT:${FUN}") {
 	field(DTYP, "Soft Channel")
 	field(NOBT, "2")
-	field(ZRST, "dX")
-	field(ONST, "dX")
-	field(TWST, "CLK")
+	field(ZRST, "DO")
+	field(ONST, "DO")
+	field(TWST, "${TWST}")
 	field(THST, "GPG")
 	field(FLNK, "${UUT}:0:SIG:SYNC_OUT:${FUN}:w PP")	
 	field(PINI, "YES")
