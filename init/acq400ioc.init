@@ -93,7 +93,7 @@ restart() {
 
 bump() 
 {
-	echo X | tr X \018 | acq4xx-epics-console
+	echo X | tr X \\030 | acq4xx-epics-console >/dev/null
 }
 
 case "$1" in
