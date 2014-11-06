@@ -339,9 +339,9 @@ load_acq1001() {
 		lprams="FUN=${FUN},fun=$(toLower ${FUN})"
 		echo 'dbLoadRecords("db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=0,ZRST=EXT'")'
 		case $FUN in
-		TRG) zrst=STRIG;;
-		SYNC) zrst=EST;;
-		*) zrst=MCLK;;
+		TRG) 	zrst=STRIG;;
+		SYNC) 	zrst=EXT;;
+		*) 		zrst=MCLK;;
 		esac
 		echo 'dbLoadRecords("db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=1,ZRST=${zrst}'")'
 	done
