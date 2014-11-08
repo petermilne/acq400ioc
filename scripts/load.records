@@ -337,13 +337,17 @@ load_acq1001() {
 	for FUN in SYNC TRG CLK
 	do		 
 		lprams="FUN=${FUN},fun=$(toLower ${FUN})"
-		echo 'dbLoadRecords("db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=0,ZRST=EXT'")'
+		case $FUN in
+		CLK)	nobt=1; twst="nc";;
+		*)		nobt=2; twst="CELF";;
+		esac
+		echo 'dbLoadRecords("db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=0,ZRST=EXT,TWST=${twst},NOBT=${nobt}'")'
 		case $FUN in
 		TRG) 	zrst=STRIG;;
 		SYNC) 	zrst=EXT;;
 		*) 		zrst=MCLK;;
 		esac
-		echo 'dbLoadRecords("db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=1,ZRST=${zrst}'")'
+		echo 'dbLoadRecords("db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=1,ZRST=${zrst},TWST=${twst},NOBT=${nobt}'")'
 	done
 	for FUN in SYNC TRG GPIO CLK
 	do
