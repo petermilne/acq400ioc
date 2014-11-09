@@ -280,6 +280,7 @@ zynq_hwmon() {
 load_mb_sites() {
 	KB=$1
 	NS=$2
+	echo 1>&2 "load.records:load_mb_sites $1 $2 $3"
 	CPRAMS="UUT=${HOST},SITE=0"
 	(
 		cd ${KB}
@@ -312,11 +313,13 @@ load_mb_sites() {
 		echo 'dbLoadRecords("db/acq2006sites.db","'${CPRAMS}'")'
 	done
 	echo 'dbLoadRecords("db/hwmonvolts.db","UUT='${HOST}'")'
-	if [ "$3" = "acq2006" ]; then
-		echo 'dbLoadRecords("db/acq2006leds.db","UUT='${HOST}'")'
-	else
-		echo 'dbLoadRecords("db/acq1001leds.db","UUT='${HOST}'")'
-	fi
+	case $3 in
+	acq2006|acq2006b)	
+		echo 'dbLoadRecords("db/acq2006leds.db","UUT='${HOST}'")' ;;
+	*)
+		echo 'dbLoadRecords("db/acq1001leds.db","UUT='${HOST}'")' ;;
+	esac
+	
 	if [ -e /dev/acq2006 ]; then
 		echo 'dbLoadRecords("db/acq2006psu.db","UUT='${HOST}'")'
 	fi
@@ -385,8 +388,7 @@ KB=/dev/acq400.0.knobs
 load_mb() {
 	echo 1>&2 "load.records:load_mb"
 	source /tmp/u-boot_env
-	mb_model=${devicetree_image%*.dtb}
-	
+	mb_model=$(basename ${devicetree_image%*.dtb})
 	case $mb_model in
 		acq2006)
 				load_mb_sites $KB 6 acq2006
