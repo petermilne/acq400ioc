@@ -19,16 +19,16 @@ echo > /tmp/gains_last
 # nchan deprecated, NCHAN preferred
 
 get_nchan() {
-        SITE=$1
+    SITE=$1
 	if [ -e /etc/acq400/$SITE/active_chan ]; then
 		cat /etc/acq400/$SITE/active_chan
-        elif [ -e /etc/acq400/$SITE/NCHAN ]; then
-                cat /etc/acq400/$SITE/NCHAN
-        elif [ -e /etc/acq400/$SITE/nchan ]; then
-                cat /etc/acq400/$SITE/nchan
-        else
-                echo 4
-        fi
+    elif [ -e /etc/acq400/$SITE/NCHAN ]; then
+        cat /etc/acq400/$SITE/NCHAN
+    elif [ -e /etc/acq400/$SITE/nchan ]; then
+        cat /etc/acq400/$SITE/nchan
+    else
+        echo 4
+    fi
 }
 
 get_range() {
@@ -55,6 +55,8 @@ make_AI() {
 			TYPE=LONG
 			MAXCODE=2147483648
 		fi
+	else
+		echo # 
 	fi
 	NCHAN=$(get_nchan $SITE)
 	VMAX=$(get_range $SITE)
@@ -119,12 +121,14 @@ make_AI_TR_records() {
 	done		
 }	
 make_AI_subrate() {	
-	for cc in $(get.site 0 aggregator)
+	for cc in $(cat /dev/acq400.0.knobs/aggregator)
 	do
 		echo $cc | grep -q sites=
 		if [ $? -eq 0 ]; then
 			eval $cc
-			sites2=$(echo $sites | tr , \  )
+			if [ "$sites" != "none" ]; then
+				sites2=$(echo $sites | tr , \  )
+			fi
 		fi
 	done
 	
@@ -183,6 +187,7 @@ load_AO() {
 
 load_400() {
 	site=$1
+	echo 1>&2 "load.records:load_400 $site"
 	# since driver B2.457, module_type printed in hex
 	model=$(cat /dev/acq400.${site}.knobs/module_type)
 	LO=100000000
@@ -272,7 +277,7 @@ zynq_hwmon() {
 }
 
 
-load_acq2006() {
+load_mb_sites() {
 	KB=$1
 	NS=$2
 	CPRAMS="UUT=${HOST},SITE=0"
@@ -331,7 +336,7 @@ toLower() {
 	echo $* | tr '[:upper:]' '[:lower:]'
 }
 
-load_acq1001() {
+load_mb_sync() {
 # and acq2006 R2 with HDMI
 	CPRAMS="UUT=${HOST},SITE=0"
 	for FUN in SYNC TRG CLK
@@ -376,18 +381,29 @@ dbLoadRecords("db/system.db","UUT=${HOST}")
 EOF
 
 KB=/dev/acq400.0.knobs
-if [ -e $KB/module_name ]; then
-	case $(cat $KB/module_name) in
-	acq2006sc) load_acq2006 $KB 6 acq2006;;
-	acq1001sc) 
-		case $(cat /proc/device-tree/chosen/model) in
-		acq1002)	ns=2;;
-		*)			ns=1;;
-		esac
-		load_acq2006 $KB $ns acq1001
-		load_acq1001 $KB;;
-	esac
-fi
+
+load_mb() {
+	echo 1>&2 "load.records:load_mb"
+	source /tmp/u-boot_env
+	mb_model=${devicetree_image%*.dtb}
+	
+	case $mb_model in
+		acq2006)
+				load_mb_sites $KB 6 acq2006
+				return;;
+		acq2006b)
+				ns=6;mt=acq2006;;
+		acq1002)
+				ns=2;mt=acq1001;;
+		*)
+				ns=1;mt=acq1001;;
+	esac		
+		
+	load_mb_sites $KB $ns $mt
+	load_mb_sync $KB
+}
+
+load_mb
 
 
 for ACQ400 in /dev/acq400.[123456]
@@ -416,19 +432,23 @@ do
 	 	
 	 	LOAD_MOD=/usr/local/epics/scripts/load.$FRU_PROD_NAME
 	 	if [ -e $LOAD_MOD ]; then
+	 		echo 1>&2 "load.records:$LOAD_MOD"
 	 		$LOAD_MOD $HOST $site
 		fi
 	fi
 done
 
 if [ "x$IOC_PREINIT" != "x" ]; then
+	echo 1>&2 "load.records:$IOC_PREINIT"
 	source $IOC_PREINIT
 fi
 
 echo 'iocInit()'
 
 if [ "x$IOC_POSTINIT" != "x" ]; then
+	echo 1>&2 "load.records:$IOC_POSTINIT"
 	source $IOC_POSTINIT
 fi
 
 echo 'dbl > /tmp/records.dbl'
+echo 1>&2 "load.records 99"

@@ -60,9 +60,11 @@ make_epics_knobs() {
 }
 make_stcmd() {
 	if [ ! -e ${STCMD} ]; then
+		echo "++ create EPICS db ${STCMD}" 
 		(cd ${ETOP}
 		./scripts/load.records >${STCMD})
 		touch /dev/shm/AI
+		echo "++ ai_monitor_all"
 		ai_monitor_all start
 	fi
 }
