@@ -282,6 +282,14 @@ zynq_hwmon() {
 }
 
 
+load_intmon() {
+	activeirq=$(echo y | nc localhost 4239  | awk '{ print $1 }')
+	dt=${INTMON_DT:-10}
+	for irq in $activeirq
+	do	
+		echo 'dbLoadRecords("db/intmon.db","UUT='${HOST}',SPORT=SI,irq='$irq',dt='$dt'")'
+	done	
+}
 load_mb_sites() {
 	KB=$1
 	NS=$2
@@ -333,11 +341,17 @@ load_mb_sites() {
 	if [ -e /etc/acq400/0/transient ]; then
 				echo 'dbLoadRecords("db/transient.db","UUT='${HOST}',SPORT=SS")'
 	fi
+	if [ "$LOAD_INTMON" = "y" ]; then
+		# uses 1% cpu for monitoring. Not default
+		echo 'drvAsynIPPortConfigure("SI", "127.0.0.1:4239")'
+		echo 'dbLoadRecords("db/asynRecord.db","P='${HOST}':,R=asyn:SI,PORT=SI,ADDR=0,IMAX=100,OMAX=100")'				
+		load_intmon
+	fi
 	echo 'drvAsynIPPortConfigure("S0", "127.0.0.1:4220")'
 	echo 'dbLoadRecords("db/asynRecord.db","P='${HOST}':,R=asyn:S0,PORT=S0,ADDR=0,IMAX=100,OMAX=100")'
 	echo 'drvAsynIPPortConfigure("SS", "127.0.0.1:4220")'
 	echo 'dbLoadRecords("db/asynRecord.db","P='${HOST}':,R=asyn:SS,PORT=SS,ADDR=0,IMAX=100,OMAX=100")'
-		
+	
 }
 
 toLower() {

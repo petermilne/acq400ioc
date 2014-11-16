@@ -1,0 +1,16 @@
+Terminator = LF;
+ExtraInput = Ignore;
+
+trig {
+# fin kHz, fout (setpoint)
+	out "y";
+}
+
+
+irq {
+	in "\$1 %d %*s";
+}
+
+irqs {
+	in "\$1 %*d %s";
+}

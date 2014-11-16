@@ -1,0 +1,87 @@
+# intmon interrupt monitor using intmon service
+# trig is referenced many times, but only one instance is actually created
+# descr is a const, but it refreshed every time (lazy)
+
+
+record(bi, "${UUT}:SYS:INTMON:trig") {
+	field(DTYP, "stream")
+	field(INP,  "@intmon.proto trig ${SPORT}")
+	field(SCAN, "$(dt) second")
+}
+
+record(stringin, "${UUT}:SYS:INTMON:IRQ:$(irq):descr") {
+	field(DTYP, "stream")
+	field(INP,  "@intmon.proto irqs($(irq)) ${SPORT}")
+	field(SCAN, "I/O Intr")
+}
+
+record(longin, "${UUT}:SYS:INTMON:IRQ:$(irq):count") {
+	field(DTYP, "stream")
+	field(INP,  "@intmon.proto irq($(irq)) ${SPORT}")
+	field(SCAN, "I/O Intr")
+	field(FLNK, "${UUT}:SYS:INTMON:IRQ:$(irq):ACTIVE")
+}
+
+# copy of counters.db
+
+record(calc, "${UUT}:SYS:INTMON:IRQ:$(irq):ACTIVE") {
+	field(INPA, "${UUT}:SYS:INTMON:IRQ:$(irq):count")
+	field(INPB, "${UUT}:SYS:INTMON:IRQ:$(irq):ACTIVE.LA")
+	field(CALC, "(A-B) ? 1: 0")
+	field(PREC, "1")
+	field(FLNK, "${UUT}:SYS:INTMON:IRQ:$(irq):nzcount")
+	field(DESC, "True is signal changed from last")
+}
+
+record(calcout, "${UUT}:SYS:INTMON:IRQ:$(irq):nzcount") {
+	field(INPA, "${UUT}:SYS:INTMON:IRQ:$(irq):ACTIVE")
+# potential change detect ..
+	field(INPJ, "1")
+	field(INPK, "${UUT}:SYS:INTMON:IRQ:$(irq):nzcount.LJ")
+	field(DESC, "computes number of active updates")
+	field(CALC, "J!=K || A==0? 0: VAL+1")
+	field(FLNK, "${UUT}:SYS:INTMON:IRQ:$(irq):COUNT")
+}
+
+record(calc, "${UUT}:SYS:INTMON:IRQ:$(irq):COUNT") {
+	field(INPA, "${UUT}:SYS:INTMON:IRQ:$(irq):count")
+	field(INPB, "${UUT}:SYS:INTMON:IRQ:$(irq):COUNT.LA")
+	field(INPC, "2147483648")
+	field(INPD, "${UUT}:SYS:INTMON:IRQ:$(irq):ACTIVE")
+# potential change detect ..
+	field(INPJ, "1")
+	field(INPK, "${UUT}:SYS:INTMON:IRQ:$(irq):COUNT.LJ")
+# reset on becoming active?
+# D == 0? VAL: D != LD? A - LA: (A==0 || B==0? 0: A > B? VAL+(A-B): VAL+(A+C-B))"	
+#ok	field(CALC, "J!=K? 0: (D!=0? (A==0||B==0? 0: A>B? VAL+(A-B): VAL+(A+C-B)): VAL)")
+	field(CALC, "J!=K? 0: D!=0 && A!=0 && B!=0? A>B? VAL+(A-B): VAL+(A+C-B): VAL")
+	field(FLNK, "${UUT}:SYS:INTMON:IRQ:$(irq):delta")
+	field(DESC, "64 bit count corrects HW rollover")
+}
+
+record(calc, "${UUT}:SYS:INTMON:IRQ:$(irq):delta") {
+	field(INPA, "${UUT}:SYS:INTMON:IRQ:$(irq):COUNT")
+	field(INPB, "${UUT}:SYS:INTMON:IRQ:$(irq):delta.LA")
+	field(CALC, "A > B && B != 0 ? A-B: 0")
+	field(DESC, "computes count difference")
+	field(FLNK, "${UUT}:SYS:INTMON:IRQ:$(irq):FREQ")	
+}
+
+record(calc, "${UUT}:SYS:INTMON:IRQ:$(irq):FREQ") {
+	field(INPA, "${UUT}:SYS:INTMON:IRQ:$(irq):delta")
+	field(INPB, "${UUT}:SYS:INTMON:IRQ:$(irq):FREQ.LA")
+	field(INPC, "${UUT}:SYS:INTMON:IRQ:$(irq):FREQ.LB")
+	field(INPD, "${UUT}:SYS:INTMON:IRQ:$(irq):FREQ.LC")
+	field(INPE, "${UUT}:SYS:INTMON:IRQ:$(irq):FREQ.LD")
+	field(INPF, "${UUT}:SYS:INTMON:IRQ:$(irq):FREQ.LE")
+	field(INPG, "${UUT}:SYS:INTMON:IRQ:$(irq):FREQ.LF")
+	field(INPH, "${UUT}:SYS:INTMON:IRQ:$(irq):FREQ.LG")
+# 1 second ..	
+	field(INPK, "$(dt)")
+	field(INPL, "${UUT}:SYS:INTMON:IRQ:$(irq):nzcount")
+	field(CALC, "A==0? 0: (A+(L>8?B+C+D+E+F+G+H:0))/(L>8?8:1)/K")
+	field(PREC, "0")
+	field(EGU,  "Hz")
+	field(DESC, "irq FREQ ${irq}")
+}
+
