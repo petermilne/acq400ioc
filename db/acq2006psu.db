@@ -1,29 +1,76 @@
-# psu control
+# PSU Control
+# PJ Update Nov 17th 2014
+
+# NEGATIVE
+# --------
+# POT = - (1489.2 / (V + 0.8)) - 102
+
 record(ao, "${UUT}:SYS:PSU:POT:VAN") {
-	field(DTYP, "dsSysfsAo")
-	field(OUT,  "@/dev/acq2006/van")
+	field(DTYP, "Soft Channel")
 	field(SCAN, "Passive")
 	field(DESC, "Set VA Negative CAREFUL")
 	field(EGU,  "V")
-	field(LINR, "SLOPE")
-	field(EOFF, "-15.44")
-	field(ESLO, "0.0409")
-	field(DRVL, "-15.4")
+	field(PINI, "YES")
+	field(FLNK,  "${UUT}:SYS:PSU:POT:_van")
+	field(DRVL, "-15.5")
 	field(DRVH, "-5")
 }
 
-record(ao, "${UUT}:SYS:PSU:POT:VAP") {
+record(calcout, "${UUT}:SYS:PSU:POT:_van") {
+	field(INPA, "${UUT}:SYS:PSU:POT:VAN")
+	field(OUT,  "${UUT}:SYS:PSU:POT:_vanpot PP")
+	field(CALC, "nint((-(1489.2/(A+0.8)))-102)")
+	field(DOPT, "Use CALC")
+	field(OOPT, "Every Time")
+	field(PREC, "0")
+	field(DESC, "Analog Rail Neg Pot Setting")
+	field(EGU,  "pot ticks")
+	field(HOPR, "255")
+	field(LOPR, "0")
+}
+
+record(ao, "${UUT}:SYS:PSU:POT:_vanpot") {
 	field(DTYP, "dsSysfsAo")
-	field(OUT,  "@/dev/acq2006/vap")
+	field(OUT,  "@/dev/acq2006/van")
+	field(LINR, "LINEAR")
+	field(ESLO, "1")
+	field(ASLO, "1")
+}
+
+# POSITIVE
+# --------
+# POT = (1142.4 / (V - 1.6)) - 81.6
+
+record(ao, "${UUT}:SYS:PSU:POT:VAP") {
+	field(DTYP, "Soft Channel")
 	field(SCAN, "Passive")
 	field(DESC, "Set VA Positive CAREFUL")
 	field(EGU,  "V")
-	field(LINR, "SLOPE")
-	field(EOFF, "15.64")
-	field(ESLO, "-0.0417")
+	field(PINI, "YES")
+	field(FLNK,  "${UUT}:SYS:PSU:POT:_vap")
 	field(DRVL, "5")
-	field(DRVH, "15.64")
+	field(DRVH, "15.5")	
 }
 
+record(calcout, "${UUT}:SYS:PSU:POT:_vap") {
+	field(INPA, "${UUT}:SYS:PSU:POT:VAP")
+	field(OUT,  "${UUT}:SYS:PSU:POT:_vappot PP")
+	field(CALC, "nint((1142.4/(A-1.6))-81.6)")
+	field(DOPT, "Use CALC")
+	field(OOPT, "Every Time")
+	field(PREC, "0")
+	field(DESC, "Analog Rail Pos Pot Setting")
+	field(EGU,  "pot ticks")
+	field(HOPR, "255")
+	field(LOPR, "0")
+}
+
+record(ao, "${UUT}:SYS:PSU:POT:_vappot") {
+	field(DTYP, "dsSysfsAo")
+	field(OUT,  "@/dev/acq2006/vap")
+	field(LINR, "LINEAR")
+	field(ESLO, "1")
+	field(ASLO, "1")
+}
 
 
