@@ -5,10 +5,10 @@ record(ao, "${UUT}:${SITE}:AO:SLOW_SET:CH:${cid}") {
         field(SCAN, "Passive")
         field(DESC, "Slow set AO${cid}")
         field(DRVL, "-2.5")
-        field(DRVH, "+2.5")
+        field(DRVH, "+2.4999")
         field(LINR, "LINEAR")
         field(ESLO, "0.076293945e-3")
-        field(HOPR, "2.5")
+        field(HOPR, "2.4999")
         field(LOPR, "-2.5")
         field(EGU,  "V")
 }
