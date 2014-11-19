@@ -23,6 +23,8 @@ monitor gain;
 int ref0;
 int gain0;
 
+int fmc_set = 0;
+
 ss gain_set
 {
 	state init {
@@ -32,10 +34,11 @@ ss gain_set
 			pvGet(model);
 		
 			/* FMC is always fixed 5V */
-			if (strncmp(model, "AO420FMC", 9) == 0){
+			if (!fmc_set && strncmp(model, "AO420FMC", 9) == 0){
 				ref = 1;
 				pvPut(ref);
-				ref0 = !ref;							
+				ref0 = !ref;
+				fmc_set = 1;							
 			}				
 		} state run
 	}
