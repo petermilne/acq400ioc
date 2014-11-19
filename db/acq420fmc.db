@@ -1,6 +1,11 @@
 
 # Internal clock: with full feedback
 
+record (stringin, "${UUT}:${SITE}:MODEL") {
+	field(DTYP, "stream")
+	field(INP, "@acq42x.proto getModel ${SPORT}")
+	field(PINI, "YES")	
+}
 record (longout, "${UUT}:${SITE}:INTCLK_HZ") {
 	field(DTYP, "Soft Channel")
 	field(PINI, "YES")

@@ -14,7 +14,7 @@ double eslo;	assign eslo to "{UUT}:{SITE}:AO:SLOW_SET:CH:{CID}.ESLO";
 double hopr;	assign hopr to "{UUT}:{SITE}:AO:SLOW_SET:CH:{CID}.HOPR";
 double lopr;	assign lopr to "{UUT}:{SITE}:AO:SLOW_SET:CH:{CID}.LOPR";
 
-
+string model;	assign model to "{UUT}:{SITE}:MODEL";
 
 
 monitor ref; 
@@ -29,6 +29,15 @@ ss gain_set
 		when() {		
 			ref0 = ref;
 			gain0 = gain;
+			pvGet(model);
+		
+			/* FMC is always fixed 5V */
+			if (strncmp(model, "AO420FMC", 9) == 0){
+				ref = 1;
+				if (ref != ref0){
+					pvPut(ref);
+				}				
+			}				
 		} state run
 	}
 	state run 

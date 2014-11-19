@@ -20,3 +20,8 @@ getGain {
 		connect 1000;    
 	}			
 }
+
+getModel {
+	out "MODEL";
+	in "%s";
+}
