@@ -176,7 +176,8 @@ load_AO() {
 		41)
 			for ch in $(seq 1 32)
 			do
-				echo 'dbLoadRecords("db/ao424fmc.db","'${cprams},cid=$ch'")'
+				cid=$(printf "%02d" $ch)
+				echo 'dbLoadRecords("db/ao424fmc.db","'${cprams},cid=$cid'")'
 			done
 			has_range=0
 			for kb in /etc/acq400/${site}/range[0-9]*
