@@ -1,0 +1,3 @@
+# AcqAi - efficient ACQ196 mean device support
+driver(drvAcqAi)
+device(ai, 	INST_IO, devAcqAi,       "dsAcqAi")

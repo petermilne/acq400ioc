@@ -1,0 +1,4 @@
+# BiBo Binary IO driver Device Support
+driver(drvLxb)
+device(bi, 	INST_IO, devLxb,       "dsLxbBi")
+device(mbbi,    INST_IO, devLxbMbbi,   "dsLxbMbbi")

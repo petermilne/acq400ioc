@@ -1,4 +1,4 @@
-# valid MA 
+# ao420fmc.db - DC set, gains, AWG gain and offset.
 record(ao, "${UUT}:${SITE}:AO:SLOW_SET:CH:${cid}") {
         field(DTYP, "dsSysfsAo")
         field(OUT, "@/dev/acq400.${SITE}.knobs/AO_0${cid}")
@@ -11,6 +11,24 @@ record(ao, "${UUT}:${SITE}:AO:SLOW_SET:CH:${cid}") {
         field(HOPR, "2.4999")
         field(LOPR, "-2.5")
         field(EGU,  "V")
+}
+
+record(bo, "${UUT}:${SITE}:AO:GAIN:CH:${cid}") {
+        field(DTYP, "dsSysfsBo")
+        field(OUT, "@/dev/acq400.${SITE}.knobs/DAC_range_0${cid}")
+        field(SCAN, "Passive")
+        field(DESC, "AO GAIN")
+        field(ZNAM, "x1")
+        field(ONAM, "x2")
+}
+
+record(bo, "${UUT}:${SITE}:AO:REF"){
+        field(DTYP, "dsSysfsBo")
+        field(OUT, "@/dev/acq400.${SITE}.knobs/dac_range_REF")
+        field(SCAN, "Passive")
+        field(DESC, "AO REF")
+        field(ZNAM, "2.5V")
+        field(ONAM, "5.0V")
 }
 
 record(ao, "${UUT}:${SITE}:AWG:G:${cid}") {

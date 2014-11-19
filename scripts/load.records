@@ -16,6 +16,8 @@ source /etc/sysconfig/acq400.conf
 # gains are loaded last, as they tweak other WF records, must be there first..
 echo > /tmp/gains_last
 
+echo > /tmp/st_post.cmd
+
 # nchan deprecated, NCHAN preferred
 
 get_nchan() {
@@ -164,30 +166,32 @@ load_AO() {
 		cprams=$3
 		
 		case $mtype in
-		40)
-					nchan=4;;
+		40)			
+			for ch in $(seq 1 4)
+			do
+				echo 'dbLoadRecords("db/ao420fmc.db","'${cprams},cid=$ch'")'
+				echo "seq ao420_range_set \"UUT=$(hostname),SITE=${site},CID=$ch\"" >>/tmp/st_post.cmd
+			done
+			;;
 		41)
-					nchan=32;;
+			for ch in $(seq 1 32)
+			do
+				echo 'dbLoadRecords("db/ao424fmc.db","'${cprams},cid=$ch'")'
+			done
+			has_range=0
+			for kb in /etc/acq400/${site}/range[0-9]*
+			do
+				if [ -e $kb ]; then
+					ix=${kb#*range}
+					ch=$ix				
+					echo 'dbLoadRecords("db/ao424_range.db","'${cprams}',CH='$ch',IX='$ix',KNOB='${kb}'")'
+					has_range=1
+				fi		
+			done
+			if [ $has_range -ne 0 ]; then
+				echo 'dbLoadRecords("db/ao424_rangeM.db","'${cprams}',CH='ALL'")'				
+			fi;;			
 		esac
-		
-		for ch in $(seq 1 $nchan)
-		do
-			echo 'dbLoadRecords("db/ao420fmc.db","'${cprams},cid=$ch'")'
-		done	
-		
-		has_range=0
-		for kb in /etc/acq400/${site}/range[0-9]*
-		do
-			if [ -e $kb ]; then
-				ix=${kb#*range}
-				ch=$ix				
-				echo 'dbLoadRecords("db/ao424_range.db","'${cprams}',CH='$ch',IX='$ix',KNOB='${kb}'")'
-				has_range=1
-			fi		
-		done
-		if [ $has_range -ne 0 ]; then
-			echo 'dbLoadRecords("db/ao424_rangeM.db","'${cprams}',CH='ALL'")'				
-		fi					
 }
 
 load_400() {
@@ -469,6 +473,9 @@ echo 'iocInit()'
 if [ "x$IOC_POSTINIT" != "x" ]; then
 	echo 1>&2 "load.records:$IOC_POSTINIT"
 	source $IOC_POSTINIT
+fi
+if [ -e "/tmp/st_post.cmd" ]; then
+	cat /tmp/st_post.cmd
 fi
 
 echo 'dbl > /tmp/records.dbl'

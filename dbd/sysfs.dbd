@@ -1,0 +1,8 @@
+device(ai,INST_IO,devSysfsAi,"dsSysfsAi")
+device(ao,INST_IO,devSysfsAo,"dsSysfsAo")
+device(bi,INST_IO,devSysfsBi,"dsSysfsBi")
+device(bo,INST_IO,devSysfsBo,"dsSysfsBo")
+device(waveform,INST_IO,devSysfsWfAi,"dsSysfsWfAi")
+device(stringin,INST_IO,devSysfsStringin,"dsSysfsStringin")
+device(stringout,INST_IO,devSysfsStringout,"dsSysfsStringout")
+
