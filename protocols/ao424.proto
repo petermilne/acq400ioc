@@ -2,18 +2,18 @@ Terminator = LF;
 ExtraInput = Ignore;
 
 setRange {
-	out "range\$1 %d";
+	out "range\$1 %x";
 	in;
 }
 
 setRangeAll {
-	out "range %d";
+	out "range %x";
 	wait 4000;
 	in;
 }
 getRange {
 	out "range\$1";
-	in "%d";
+	in "%x";
 	@replytimeout {
 		disconnect;
 		wait 2000;
