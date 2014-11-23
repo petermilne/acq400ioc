@@ -5,7 +5,7 @@ rescale AO records depending on range.
 program ao424_range_set
 option +r;
 
-int range;	assign range to "{UUT}:{STIRE}:RANGE:{CID}";
+int range;	assign range to "{UUT}:{SITE}:RANGE:{CID}";
 double drvl;	assign drvl to "{UUT}:{SITE}:AO:SLOW_SET:CH:{CID}.DRVL";
 double drvh;	assign drvh to "{UUT}:{SITE}:AO:SLOW_SET:CH:{CID}.DRVH";
 double eslo;	assign eslo to "{UUT}:{SITE}:AO:SLOW_SET:CH:{CID}.ESLO";
