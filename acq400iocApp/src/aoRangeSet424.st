@@ -25,12 +25,12 @@ int range0 = -1;
 	static void getGain(int range, double* drvl, double* drvh)
 	{
 		switch(range){
-			case 0: *drvl = 0; 	*drvh = 5; 	break; 
-			case 1: *drvl = 0; 	*drvh = 10; 	break;
-			case 2: *drvl = -5; 	*drvh = 5; 	break;
-			case 3: *drvl = -10; 	*drvh = 10; 	break;
-			case 4: *drvl = -2.5;	*drvh = 2.5;	break;
-			case 5: *drvl = -2.5;	*drvh = 7.5; 	break;
+			case 0: *drvl = 0; 	*drvh = 4.9999;	break; 
+			case 1: *drvl = 0; 	*drvh = 9.9999;	break;
+			case 2: *drvl = -5; 	*drvh = 4.9999;	break;
+			case 3: *drvl = -10; 	*drvh = 9.9999;	break;
+			case 4: *drvl = -2.5;	*drvh = 2.4999;	break;
+			case 5: *drvl = -2.5;	*drvh = 7.4999;	break;
 		}
 	}
 }%
