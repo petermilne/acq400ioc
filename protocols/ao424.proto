@@ -3,12 +3,10 @@ ExtraInput = Ignore;
 
 setRange {
 	out "range\$1 %x";
-	in;
 }
 
 setRangeAll {
-	out "range %x";
-	wait 4000;
+	out "range %x";	
 	in;
 }
 getRange {

@@ -19,7 +19,8 @@ record (mbbo, "${UUT}:${SITE}:RANGE:${CH}:w")	{
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:RANGE:${CH}:s.PACT")
 	field(OMSL, "closed_loop")
-	field(DOL, "${UUT}:${SITE}:RANGE:${CH} PP")		
+	field(DOL, "${UUT}:${SITE}:RANGE:${CH} PP")
+	field(FLNK, "${UUT}:${SITE}:RANGE:COMMIT")		
 }
 
 record (mbbi, "${UUT}:${SITE}:RANGE:${CH}:r") {
