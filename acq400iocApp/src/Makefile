@@ -47,6 +47,7 @@ acq400ioc_SRCS += acq400ioc_registerRecordDeviceDriver.cpp
 acq400ioc_SRCS += sncExample.st
 acq400ioc_SRCS += autoRepeat.st
 acq400ioc_SRCS += aoRangeSet.st
+acq400ioc_SRCS += aoRangeSet424.st
 
 # Build the main IOC entry point on workstation OSs.
 acq400ioc_SRCS_DEFAULT += acq400iocMain.cpp \
