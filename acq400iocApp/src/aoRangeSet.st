@@ -13,6 +13,7 @@ double drvh;	assign drvh to "{UUT}:{SITE}:AO:SLOW_SET:CH:{CID}.DRVH";
 double eslo;	assign eslo to "{UUT}:{SITE}:AO:SLOW_SET:CH:{CID}.ESLO";
 double hopr;	assign hopr to "{UUT}:{SITE}:AO:SLOW_SET:CH:{CID}.HOPR";
 double lopr;	assign lopr to "{UUT}:{SITE}:AO:SLOW_SET:CH:{CID}.LOPR";
+double val;	assign val  to "{UUT}:{SITE}:AO:SLOW_SET:CH:{CID}";
 
 string model;	assign model to "{UUT}:{SITE}:MODEL";
 
@@ -61,6 +62,8 @@ ss gain_set
 			pvPut(eslo);
 			pvPut(hopr);
 			pvPut(lopr);
+			val = 0;
+			pvPut(val);
 		} state init
 	}
 }
