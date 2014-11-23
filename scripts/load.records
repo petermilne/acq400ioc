@@ -178,7 +178,7 @@ load_AO() {
 			do
 				cid=$(printf "%02d" $ch)
 				echo 'dbLoadRecords("db/ao424fmc.db","'${cprams},cid=$cid'")'
-				echo "seq ao424_range_set \"UUT=$(hostname),SITE=${site},CID=$ch\"" >>/tmp/st_post.cmd
+				echo "seq ao424_range_set \"UUT=$(hostname),SITE=${site},CID=$cid\"" >>/tmp/st_post.cmd
 			done
 			has_range=0
 			for kb in /etc/acq400/${site}/range[0-9]*
