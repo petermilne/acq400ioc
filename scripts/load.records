@@ -339,7 +339,12 @@ load_mb_sites() {
 	esac
 	
 	if [ -e /dev/acq2006 ]; then
-		echo 'dbLoadRecords("db/acq2006psu.db","UUT='${HOST}'")'
+		if [ -e /etc/sysconfig/power ]; then
+			source /etc/sysconfig/power
+		else
+			VAP=0;VAN=0
+		fi
+		echo 'dbLoadRecords("db/acq2006psu.db","UUT='${HOST},vap=$VAP,van=$VAN'")'
 	fi
 	echo 'dbLoadRecords("db/acq2006clktree.db","UUT='${HOST}'")'
 	echo 'dbLoadRecords("db/acq2006mb.db","UUT='${HOST}',SPORT=S0")'
