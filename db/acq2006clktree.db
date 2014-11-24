@@ -5,6 +5,7 @@ record (mbbo, "${UUT}:SYS:CLK:FPMUX") {
 	field(ZRST, "OFF")
 	field(ONST, "XCLK")
 	field(TWST, "FPCLK")
+	field(THST, "ZCLK")
 	field(FLNK, "${UUT}:SYS:CLK:fpclk0")	
 	field(PINI, "YES")
 }
@@ -42,9 +43,16 @@ record (calcout, "${UUT}:SYS:CLK:xclk0") {
 	field(CALC, "A==1")
 	field(OUT, "${UUT}:SYS:CLK:_OSC_X_CLK_OE PP")
 	field(OOPT, "When Zero")
-	field(FLNK, "${UUT}:SYS:CLK:fpclk")	
+	field(FLNK, "${UUT}:SYS:CLK:zclk0")	
 }
 
+record (calcout, "${UUT}:SYS:CLK:zclk0") {
+	field(INPA, "${UUT}:SYS:CLK:FPMUX")
+	field(CALC, "A==3")
+	field(OUT, "${UUT}:SYS:CLK:_ZCLK_OE PP")
+	field(OOPT, "When Zero")
+	field(FLNK, "${UUT}:SYS:CLK:fpclk")	
+}
 # make
 record (calcout, "${UUT}:SYS:CLK:fpclk") {
 	field(INPA, "${UUT}:SYS:CLK:FPMUX")
@@ -59,10 +67,16 @@ record (calcout, "${UUT}:SYS:CLK:xclk") {
 	field(CALC, "A==1")	
 	field(OUT, "${UUT}:SYS:CLK:_OSC_X_CLK_OE PP")
 	field(OOPT, "Transition To Non-zero")
-	field(FLNK, "${UUT}:SYS:CLK:_FP_OE")			
+	field(FLNK, "${UUT}:SYS:CLK:zclk")			
 }
 
-
+record (calcout, "${UUT}:SYS:CLK:zclk") {
+	field(INPA, "${UUT}:SYS:CLK:FPMUX")
+	field(CALC, "A==3")	
+	field(OUT, "${UUT}:SYS:CLK:_ZCLK_OE PP")
+	field(OOPT, "Transition To Non-zero")
+	field(FLNK, "${UUT}:SYS:CLK:_FP_OE")			
+}
 
 record (bo, "${UUT}:SYS:CLK:_FP_CLK_OE") {
 	field(DTYP, "boAcqHost")
@@ -91,3 +105,7 @@ record (bo, "${UUT}:SYS:CLK:_OSC_X_OE") {
 	field(DOL,  "${UUT}:SYS:CLK:xclk")		
 }
 
+record (bo, "${UUT}:SYS:CL:_ZCLK_OE") {
+	field(DTYP, "boAcqHost")
+	field(OUT, "@/dev/gpio/CLK/ZCLK_OE")	
+}
