@@ -4,7 +4,7 @@ record (mbbo, "${UUT}:${SITE}:GAIN:${CH}")	{
 	field(DTYP, "Soft Channel")
 	field(NOBT, "2")	
 	field(ZRST, "10V")
-	field(ONST, "5V0")
+	field(ONST, "5V")
 	field(TWST, "2V")
 	field(THST, "1V")        
 	field(FLNK, "${UUT}:${SITE}:GAIN:${CH}:w PP")

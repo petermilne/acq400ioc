@@ -211,7 +211,7 @@ load_400() {
 	
 	echo 'dbLoadRecords("db/acq420fmc.db","'${cprams},'LO='${LO}',MAXHZ='${maxhz}'")'
 	
-	gain_file="db/gain.db"
+	gain_file_pfx="db/gain"
 	
 	case $model in
 	2|3)	
@@ -220,7 +220,7 @@ load_400() {
 		echo 'dbLoadRecords("db/acq43x_rgm.db","'${cprams}'")'
 		let LO=$LO/256;;
 	6)
-		gain_file="db/gain125_10.db";;		
+		gain_file_pfx="db/gain125_10";;		
 	40|41)
 		load_AO $site $model $cprams		
 		let LO=66000000;;	
@@ -235,6 +235,7 @@ load_400() {
 	echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=clk_count,pname=clk_count'")'
 	echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=sample_count,pname=sample_count'")'
 
+	gain_file=${gain_file_pfx}.db
 	(
 	has_gain=0
 	for kb in /etc/acq400/${site}/gain[0-9]*
@@ -247,7 +248,7 @@ load_400() {
 		fi		
 	done
 	if [ $has_gain -ne 0 ]; then
-		echo 'dbLoadRecords("db/gainM.db","'${cprams}',CH='ALL'")'				
+		echo 'dbLoadRecords("db/'${gain_file_pfx}'M.db","'${cprams}',CH='ALL'")'				
 	fi
 	) >>/tmp/gains_last
 		
