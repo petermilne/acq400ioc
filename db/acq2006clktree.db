@@ -105,7 +105,7 @@ record (bo, "${UUT}:SYS:CLK:_OSC_X_OE") {
 	field(DOL,  "${UUT}:SYS:CLK:xclk")		
 }
 
-record (bo, "${UUT}:SYS:CL:_ZCLK_OE") {
+record (bo, "${UUT}:SYS:CLK:_ZCLK_OE") {
 	field(DTYP, "boAcqHost")
 	field(OUT, "@/dev/gpio/CLK/ZCLK_OE")	
 }
