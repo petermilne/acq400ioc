@@ -5,6 +5,8 @@ STCMD=/tmp/st.cmd
 PIDF=/var/run/acq400ioc.pid
 LOG=/var/log/epics.log
 
+LG="logger -t acq400ioc.init"
+
 if [ -f /etc/profile.d/epics.sh ]; then
 	source /etc/profile.d/epics.sh
 fi
@@ -69,11 +71,45 @@ make_stcmd() {
 	fi
 }
 
+bump() 
+{
+	echo X | tr X \\030 | acq4xx-epics-console >/dev/null
+}
+
+bump_on_first_start()
+{
+# ioc is prone to coming up with 100% cpu first boot. wait, then bump it.
+	while [ ! -e /tmp/records.dbl ]; do
+		$LG bump_on_first_start waits /tmp/records.dbl
+		sleep 1
+	done
+	$LG bump_on_first_start ioc started give it 5
+	sleep 5
+	$LG bump_on_first_start bump now
+	bump
+	echo done > /tmp/bump_on_first_start99	
+}
+
+
 start_ioc() {
+	wait_bump=0
+	if [ ! -e /tmp/records.dbl ] ; then
+		bump_on_first_start &
+		wait_bump=1
+	fi
 	/usr/local/bin/procServ \
 		-c ${ETOP} -p $PIDF -L $LOG \
 		2222 \
 	/usr/local/bin/acq400ioc ${STCMD}
+	$LG start_ioc PID $(cat $PIDF)
+	if [ $wait_bump -ne 0 ]; then
+		while [ ! -e /tmp/bump_on_first_start99 ]; do
+			sleep 2
+			$LG start_ioc waiting for bump
+		done
+		rm /tmp/bump_on_first_start99
+		$LG start_ioc all done
+	fi
 }
 
 stop_ioc() {
@@ -93,10 +129,6 @@ restart() {
 	make_epics_knobs 
 }
 
-bump() 
-{
-	echo X | tr X \\030 | acq4xx-epics-console >/dev/null
-}
 
 case "$1" in
 bump)
