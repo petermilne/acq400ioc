@@ -172,6 +172,7 @@ load_AO() {
 				echo 'dbLoadRecords("db/ao420fmc.db","'${cprams},cid=$ch'")'
 				echo "seq ao420_range_set \"UUT=$(hostname),SITE=${site},CID=$ch\"" >>/tmp/st_post.cmd
 			done
+			echo 'dbLoadRecords("db/aoALL.db","'${cprams}'")'
 			;;
 		41)
 			for ch in $(seq 1 32)
@@ -180,6 +181,7 @@ load_AO() {
 				echo 'dbLoadRecords("db/ao424fmc.db","'${cprams},cid=$cid'")'
 				echo "seq ao424_range_set \"UUT=$(hostname),SITE=${site},CID=$cid\"" >>/tmp/st_post.cmd
 			done
+			echo 'dbLoadRecords("db/aoALL.db","'${cprams},SPORT=S${site}'")'
 			has_range=0
 			for kb in /etc/acq400/${site}/range[0-9]*
 			do
@@ -191,7 +193,7 @@ load_AO() {
 				fi		
 			done
 			if [ $has_range -ne 0 ]; then
-				echo 'dbLoadRecords("db/ao424_rangeM.db","'${cprams}',CH='ALL'")'				
+				echo 'dbLoadRecords("db/ao424_rangeM.db","'${cprams},SPORT=S${site}',CH='ALL'")'				
 			fi;;			
 		esac
 }
@@ -248,11 +250,11 @@ load_400() {
 		fi		
 	done
 	if [ $has_gain -ne 0 ]; then
-		echo 'dbLoadRecords("db/'${gain_file_pfx}'M.db","'${cprams}',CH='ALL'")'				
+		echo 'dbLoadRecords("'${gain_file_pfx}'M.db","'${cprams}',CH='ALL'")'				
 	fi
 	) >>/tmp/gains_last
 		
-	echo 'dbLoadRecords("db/signal.db","'${cprams}',FNAM=TRG,FN=trg,ZNAM=soft,ONAM=external")'
+	echo 'dbLoadRecords("db/signal.db","'${cprams}',FNAM=TRG,FN=trg,ZNAM=none,ONAM=enable")'
 	echo 'dbLoadRecords("db/signal.db","'${cprams}',FNAM=CLK,FN=clk,ZNAM=internal,ONAM=external")'
 	echo 'dbLoadRecords("db/signal.db","'${cprams}',FNAM=SYNC,FN=sync,ZNAM=internal,ONAM=external")'
 	echo 'dbLoadRecords("db/signal.db","'${cprams}',FNAM=EVENT1,FN=event1,ZNAM=disable,ONAM=enable")'
