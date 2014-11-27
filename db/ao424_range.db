@@ -8,7 +8,9 @@ record (mbbo, "${UUT}:${SITE}:RANGE:${CH}")	{
 	field(TWST, "5V")
 	field(THST, "10V")
 	field(FRST, "2V5")
-	field(FVST, "-2V5/7V5")         
+	field(FVST, "-2V5/7V5")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:FIXED_RANGE")         
 	field(FLNK, "${UUT}:${SITE}:RANGE:${CH}:w PP")
 }
 

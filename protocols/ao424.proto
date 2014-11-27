@@ -9,6 +9,8 @@ setRangeAll {
 	out "range %x";	
 	in;
 }
+
+
 getRange {
 	out "range\$1";
 	in "%x";
@@ -19,6 +21,10 @@ getRange {
 	}			
 }
 
+setSlowAll {
+	out "AO_ALL %d";
+	in;
+}
 setInit {
 	out "init\$1 %d";
 	in;
@@ -50,5 +56,10 @@ setPlayloopLength {
 
 getPlayloopLength {
 	out "playloop_length";
+	in "%d";
+}
+
+getOdds {
+	out "odd_channels";
 	in "%d";
 }
