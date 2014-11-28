@@ -27,7 +27,7 @@ record (bi, "${UUT}:0:SIG:SYNC_BUS:IN:CLK") {
 
 record (bi, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DETn") {
 	field(DTYP, "biAcqHost")
-	field(INP,  "@/etc/acq400/0/sync_out_cable_detN")
+	field(INP,  "@/etc/acq400/0/sync_out_cable_det")
 	field(SCAN, "1 second")
 	field(PINI, "YES")
 	field(FLNK, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DET")	
