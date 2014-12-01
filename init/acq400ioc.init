@@ -13,6 +13,9 @@ fi
 if [ -f /mnt/local/epics.sh ]; then
 	source /mnt/local/epics.sh
 fi
+if [ -f /mnt/local/sysconfig/epics.sh ]; then
+	source /mnt/local/sysconfig/epics.sh
+fi
 
 make_caget() {
 	PFX=${1%*:$2}
