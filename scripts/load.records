@@ -476,14 +476,18 @@ done
 
 if [ "x$IOC_PREINIT" != "x" ]; then
 	echo 1>&2 "load.records:$IOC_PREINIT"
-	source $IOC_PREINIT
+	if [ -e $IOC_PREINIT ]; then
+		source $IOC_PREINIT
+	fi
 fi
 
 echo 'iocInit()'
 
 if [ "x$IOC_POSTINIT" != "x" ]; then
 	echo 1>&2 "load.records:$IOC_POSTINIT"
-	source $IOC_POSTINIT
+	if [ -e $IOC_POSTINIT ]; then
+		source $IOC_POSTINIT
+	fi
 fi
 if [ -e "/tmp/st_post.cmd" ]; then
 	cat /tmp/st_post.cmd
