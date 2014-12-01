@@ -407,6 +407,7 @@ load_mb_sync() {
 			echo 'dbLoadRecords("db/sig_event_src.db","'${CPRAMS},BIT=${dx}'")'
 	done
 	echo 'dbLoadRecords("db/sync_bus_data.db","'${CPRAMS}'")'
+	echo >>/tmp/st_post.cmd "seq acq43x_setSampleRate \"uut=${HOST}\""
 }
 
 cat - <<EOF

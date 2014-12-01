@@ -33,6 +33,7 @@ acq400ioc_DBD += stream.dbd
 acq400ioc_DBD += sncExample.dbd
 acq400ioc_DBD += autoRepeat.dbd
 acq400ioc_DBD += aoRangeSet.dbd
+acq400ioc_DBD += acq43x_setSampleRate.dbd
 
 # Add all the support libraries needed by this IOC
 acq400ioc_LIBS += acq2ioc
@@ -48,6 +49,7 @@ acq400ioc_SRCS += sncExample.st
 acq400ioc_SRCS += autoRepeat.st
 acq400ioc_SRCS += aoRangeSet.st
 acq400ioc_SRCS += aoRangeSet424.st
+acq400ioc_SRCS += acq43x_setSampleRate.st
 
 # Build the main IOC entry point on workstation OSs.
 acq400ioc_SRCS_DEFAULT += acq400iocMain.cpp \
