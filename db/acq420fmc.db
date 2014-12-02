@@ -68,7 +68,7 @@ record (calcout, "${UUT}:${SITE}:INTCLK_calc:r") {
 
 record (longout, "${UUT}:${SITE}:CLKDIV") {
 	field(DTYP, "Soft Channel")	
-	field(FLNK, "${UUT}:${SITE}:clkdiv:e")
+	field(FLNK, "${UUT}:${SITE}:clkdiv:e PP")
 	field(LOPR, "1")
 	field(HOPR, "65535")
 	field(VAL,  "1")

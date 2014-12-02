@@ -36,6 +36,33 @@ EOF
 	ln -s $VERB /etc/acq400/$3/$2
 }
 
+
+make_caput() {
+	PFX=${1%*:$2}
+	VERB=/usr/local/bin/caput_$PFX
+	if [ ! -e $VERB ]; then
+cat - >$VERB <<EOF
+#!/bin/sh
+PV=${PFX}:\$(basename \${0})
+if [ "$1" = "" ]; then
+	VALUE=\$(caget -s \${PV})
+	if [ \$? -eq 0 ]; then
+			echo \${VALUE#${PFX}:}
+	else
+			echo \${VALUE}
+	fi
+else
+	VALUE=\$(caput \${PV} \$1)
+	if [ \$? -ne 0 ]; then
+		echo ERROR
+	fi
+fi 
+EOF
+		chmod a+rx $VERB		
+	fi
+	ln -s $VERB /etc/acq400/$3/$2
+}
+
 make_epics_knobs() {
 	if [ -e /tmp/epics_knobs_done ]; then
 		return
@@ -44,7 +71,7 @@ make_epics_knobs() {
 	while [ ! -e /tmp/records.dbl ]; do
 		sleep 1
 	done
-	for PV in $(egrep FREQ\|COUNT\|GAIN /tmp/records.dbl)
+	for PV in $(egrep FREQ\|COUNT\|GAIN /tmp/records.dbl | grep -v .[rsfw]$)
 	do
 		NU=${PV#*:}
 		SITE=${NU:0:1}
@@ -55,6 +82,13 @@ make_epics_knobs() {
 	do
 		NU=${PV#*:}
 		make_caget $PV ${NU#*:} S
+	done
+	
+	for PV in $(grep ACQ43X_SAMPLE_RATE /tmp/records.dbl)
+	do
+		NU=${PV#*:}
+		SITE=${NU:0:1}
+		make_caput $PV ${NU#*:} ${SITE}
 	done
 	killall voltsmon
 	daemon /usr/local/bin/voltsmon.epics

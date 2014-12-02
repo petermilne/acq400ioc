@@ -68,6 +68,12 @@ record(mbbi, "${UUT}:MODE:TRANS_ACT:STATE") {
 	field(FRST, "POST_PROCESS")
 	field(INP,  "@mb.proto getState(${UUT}:MODE:TRANS_ACT) ${SPORT}")
 	field(SCAN, "1 second")
+	field(FLNK, "${UUT}:MODE:TRANS_ACT:STATE_NOT_IDLE")
+}
+
+record(calc, "${UUT}:MODE:TRANS_ACT:STATE_NOT_IDLE") {
+	field(INPA, "${UUT}:MODE:TRANS_ACT:STATE")
+	field(CALC, "A == 0? 0: 1")
 }
 
 record(longin, "${UUT}:MODE:TRANS_ACT:PRE") {

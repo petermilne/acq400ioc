@@ -216,13 +216,14 @@ load_400() {
 	gain_file_pfx="db/gain"
 	
 	case $model in
-	2|3)	
+	6)	gain_file_pfx="db/gain125_10";;	
+	esac
+	case $model in
+	2|3|6)	
 		#ACQ435 .. nb HIRES makes it /2
 		echo 'dbLoadRecords("db/acq430fmc.db","'${cprams},LO=$LO'")'
 		echo 'dbLoadRecords("db/acq43x_rgm.db","'${cprams}'")'
-		let LO=$LO/256;;
-	6)
-		gain_file_pfx="db/gain125_10";;		
+		let LO=$LO/256;;	
 	40|41)
 		load_AO $site $model $cprams		
 		let LO=66000000;;	

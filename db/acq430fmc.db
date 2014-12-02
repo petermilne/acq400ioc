@@ -1,4 +1,4 @@
-# specific to ACQ430/ACQ435/ACQ436
+# specific to ACQ430/ACQ435/ACQ436/ACQ437
 
 record (bo, "${UUT}:${SITE}:ADC_MODE") {
 	field(DTYP, "Soft Channel")
@@ -12,8 +12,8 @@ record (bo, "${UUT}:${SITE}:ADC_MODE:w") {
 	field(ZNAM, "HS_256")
 	field(ONAM, "HR_512")
 	field(OMSL, "closed_loop")
-	field(DOL, "{UUT}:${SITE}:ADC_MODE")
-	field(OUT, "@/dev/acq400.${SITE}.knobs/hi_res_mode")
+	field(DOL,  "${UUT}:${SITE}:ADC_MODE")
+	field(OUT,  "@/dev/acq400.${SITE}.knobs/hi_res_mode")
 	field(FLNK, "${UUT}:${SITE}:ADC_MODE:c")
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:ADC_MODE:r.PACT")
@@ -33,7 +33,7 @@ record(bi, "${UUT}:${SITE}:ADC_MODE:r") {
 	field(DTYP,  "biAcqHost")
 	field(ZNAM, "HS_256")
 	field(ONAM, "HR_512")	
-	field(INP, "@/dev/acq400.${SITE}.knobs/hi_res_mode")
+	field(INP,  "@/dev/acq400.${SITE}.knobs/hi_res_mode")
 	field(SCAN, "1 second")
 	field(PINI, "YES")
 	field(FLNK, "${UUT}:${SITE}:ADC_MODE:s")
@@ -115,3 +115,8 @@ record(longout, "${UUT}:${SITE}:RTM_TRANSLEN:s") {
 	field(OMSL, "closed_loop")
 	field(OUT,  "${UUT}:${SITE}:RTM_TRANSLEN PP")
 }
+
+record(longout, "${UUT}:${SITE}:ACQ43X_SAMPLE_RATE") {
+	field(DTYP, "Soft Channel")
+}
+
