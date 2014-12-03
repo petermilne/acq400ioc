@@ -10,7 +10,7 @@ record (mbbo, "${UUT}:${SITE}:RANGE:ALL") {
 	field(THST, "10V")
 	field(FRST, "2V5")
 	field(FVST, "-2V5/7V5")
-	field(FLNK, "${UUT}:${SITE}:RANGE:COMMIT_ALL")
+#	field(FLNK, "${UUT}:${SITE}:RANGE:COMMIT_ALL")
 }
 
 record (longout, "${UUT}:${SITE}:INITRAW:ALL") {
@@ -26,10 +26,11 @@ record(bo, "${UUT}:${SITE}:RANGE:COMMIT") {
 	field(DISV, "1")
 }
 
-record(bo, "${UUT}:${SITE}:RANGE:COMMIT_ALL") {
-	field(DTYP, "stream")
-	field(OUT,  "@ao424.proto setCommit ${SPORT}")
-}
+#record(bo, "${UUT}:${SITE}:RANGE:COMMIT_ALL") {
+#	field(DTYP, "stream")
+#	field(OUT,  "@ao424.proto setCommit ${SPORT}")
+#}
+
 record(longout, "${UUT}:${SITE}:PLAYLOOP_LEN") {
 	field(DTYP, "Soft Channel")			
 	field(FLNK, "${UUT}:${SITE}:PLAYLOOP_LEN:w PP")	
