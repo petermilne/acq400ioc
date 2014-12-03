@@ -45,8 +45,8 @@ int state_not_idle; assign state_not_idle to "{uut}:MODE:TRANS_ACT:STATE_NOT_IDL
 
 int HS_MAX=50000;
 
-double S01_min = 16000000;
-double S01_max = 35000000;
+double S01_min = 18000000;
+double S01_max = 37000000;
  
 int adc_mode0;
 
