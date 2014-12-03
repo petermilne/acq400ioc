@@ -187,8 +187,10 @@ load_AO() {
 			do
 				if [ -e $kb ]; then
 					ix=${kb#*range}
-					ch=$ix				
-					echo 'dbLoadRecords("db/ao424_range.db","'${cprams}',CH='$ch',IX='$ix',KNOB='${kb}'")'
+					if [ "$ix" != "99" ]; then
+						ch=$ix									
+						echo 'dbLoadRecords("db/ao424_range.db","'${cprams}',CH='$ch',IX='$ix',KNOB='${kb}'")'
+					fi
 					has_range=1
 				fi		
 			done
