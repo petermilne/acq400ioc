@@ -37,6 +37,8 @@ int mclk_out;	assign mclk_out to "{uut}:0:SIG:SRC:CLK:1";
 int adc_clk_src; 	assign adc_clk_src to "{uut}:1:CLK";
 int adc_clk_src_dx; 	assign adc_clk_src_dx to "{uut}:1:CLK:DX";
 
+string info;	assign info to "{uut}:1:ACQ43X_SAMPLE_RATE:INFO";
+
 double clk_mb_set; assign clk_mb_set to "{uut}:0:SIG:CLK_MB:SET";
 
 int state_not_idle; assign state_not_idle to "{uut}:MODE:TRANS_ACT:STATE_NOT_IDLE";
@@ -95,19 +97,17 @@ ss rate_set
 			for (clkdiv = 1; (clk_mb_set = Fmod * clkdiv) < S01_min; 
 					++clkdiv){
 				;				
-			}		
-						
-			printf("acq43x_setSampleRate set:%.0f mode:%s clk_mb_set:%.0f clkdiv:%d\n",
-				Fs, adc_mode? "HR_512": "HS_256", 
-				clk_mb_set, clkdiv);
+			}			
 				
 		} state wait_fin
 	}
 			
 	state wait_fin {
 		when(fin < 1000000){
-			printf("acq43x_setSampleRate error needs Fin > 1M, currently %.1f\n",
-				fin);	
+			snprintf(info, 40, 
+				"ERROR needs Fin > 1M, currently %.1f", fin);
+			pvPut(info);
+			printf("acq43x_setSampleRate %s\n", info);
 			Fs = Fs0;
 			pvPut(Fs);
 		} state run
@@ -119,8 +119,13 @@ ss rate_set
 
 	state action {
 		when() {
-			printf("action: mode:%d clkdiv:%d mb:%.0f\n", 
-				adc_mode, clkdiv, clk_mb_set);
+			snprintf(info, 40,
+				"set:%.0f mode:%s clk_mb_set:%.0f clkdiv:%d",
+				Fs, adc_mode? "HR_512": "HS_256", 
+				clk_mb_set, clkdiv);
+			pvPut(info);
+			printf("acq43x_setSampleRate %s\n", info);
+				
 			pvPut(adc_mode);
 			pvPut(clkdiv);
 			pvPut(clk_mb_set);
@@ -130,7 +135,10 @@ ss rate_set
 	
 	state error {
 		when() {
-			printf("acq43x_setSampleRate: ERROR: unable to change ADC_MODE while running\n");
+			snprintf(info, 40, 
+				"ERROR: unable to change ADC_MODE while running");
+			pvPut(info);
+			printf("acq43x_setSampleRate: %s\n", info);
 			Fs = Fs0;
 			pvPut(Fs);
 		} state run		

@@ -120,3 +120,6 @@ record(longout, "${UUT}:${SITE}:ACQ43X_SAMPLE_RATE") {
 	field(DTYP, "Soft Channel")
 }
 
+record(stringin, "${UUT}:${SITE}:ACQ43X_SAMPLE_RATE:INFO") {
+	field(DTYP, "Soft Channel")
+}
