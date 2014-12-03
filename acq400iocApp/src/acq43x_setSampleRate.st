@@ -43,7 +43,7 @@ double clk_mb_set; assign clk_mb_set to "{uut}:0:SIG:CLK_MB:SET";
 
 int state_not_idle; assign state_not_idle to "{uut}:MODE:TRANS_ACT:STATE_NOT_IDLE";
 
-double fp_clk_user; assign fp_clk_user to "{uut}:0:SIG:FPCLK_USER";
+double fp_clk_user; assign fp_clk_user to "{uut}:0:SIG:USER_FPCLK";
 double clk_mb_fin;  assign clk_mb_fin to "{uut}:0:SIG:CLK_MB:FIN";
 
 int HS_MAX=50000;
@@ -57,6 +57,7 @@ double Fs0;
 
 monitor Fs; 
 monitor fin;
+monitor fp_mux;
 
 
 ss rate_set
@@ -100,17 +101,20 @@ ss rate_set
 			for (clkdiv = 1; (clk_mb_set = Fmod * clkdiv) < S01_min; 
 					++clkdiv){
 				;				
-			}			
-			pvGet(fp_mux);	
-		} state wait_fin
+			}						
+			printf("fp_mux:%d\n", fp_mux);
+		} state check_mux
 	}
 	
 	state check_mux {
-		when( fp_mux == 0) {
+		when(fp_mux == 0) {
 			snprintf(info, 40, "ERROR: FPMUX not set");
 			pvPut(info);
 			printf("acq43x_setSampleRate %s\n", info);
 		} state run
+		when(fp_mux != 0){
+			
+		} state wait_fin
 	}
 			
 	state wait_fin {			
