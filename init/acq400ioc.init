@@ -44,7 +44,7 @@ make_caput() {
 cat - >$VERB <<EOF
 #!/bin/sh
 PV=${PFX}:\$(basename \${0})
-if [ "$1" = "" ]; then
+if [ "\$1" = "" ]; then
 	VALUE=\$(caget -s \${PV})
 	if [ \$? -eq 0 ]; then
 			echo \${VALUE#${PFX}:}
