@@ -14,15 +14,24 @@ record(calc, "${UUT}:0:SIG:CLK_MB:set_kHz") {
 	field(EGU,  "kHz")
 	field(FLNK, "${UUT}:0:SIG:CLK_MB:w")
 }
+
+record(longout, "${UUT}:0:SIG:CLK_MB:FIN") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "best input frequency for MB_CLK if set")
+}
 record(calcout, "${UUT}:0:SIG:CLK_MB:w") {
 	field(INPA, "${UUT}:0:SIG:CLK_MB:set_kHz")
 	field(INPB, "${UUT}:0:SIG:CLK_EXT:FREQ")
-	field(CALC, "B/1000")
+	field(INPC, "${UUT}:0:SIG:CLK_MB:FIN")
+	field(CALC, "(C>1000000? C: B)/1000")
 	field(DTYP, "stream")
 	field(OUT,  "@mb.proto setMB() ${SPORT}")
 }
 
-
+field(longout, "${UUT}:0:SIG:FPCLK_USER") {
+	field(DTYP  "Soft Channel")
+	field(DESC, "user definition of front panel clock")
+}
 
 record(mbbi, "${UUT}:0:SPAD:MODE") {
 	field(DTYP, "Soft Channel")

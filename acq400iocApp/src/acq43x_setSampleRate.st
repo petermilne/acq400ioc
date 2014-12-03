@@ -43,6 +43,9 @@ double clk_mb_set; assign clk_mb_set to "{uut}:0:SIG:CLK_MB:SET";
 
 int state_not_idle; assign state_not_idle to "{uut}:MODE:TRANS_ACT:STATE_NOT_IDLE";
 
+double fp_clk_user; assign fp_clk_user to "{uut}:0:SIG:FPCLK_USER";
+double clk_mb_fin;  assign clk_mb_fin to "{uut}:0:SIG:CLK_MB:FIN";
+
 int HS_MAX=50000;
 
 double S01_min = 18000000;
@@ -98,11 +101,19 @@ ss rate_set
 					++clkdiv){
 				;				
 			}			
-				
+			pvGet(fp_mux);	
 		} state wait_fin
 	}
+	
+	state check_mux {
+		when( fp_mux == 0) {
+			snprintf(info, 40, "ERROR: FPMUX not set");
+			pvPut(info);
+			printf("acq43x_setSampleRate %s\n", info);
+		} state run
+	}
 			
-	state wait_fin {
+	state wait_fin {			
 		when(fin < 1000000){
 			snprintf(info, 40, 
 				"ERROR needs Fin > 1M, currently %.1f", fin);
@@ -113,10 +124,41 @@ ss rate_set
 		} state run
 		
 		when(fin >= 1000000){
-		
-		} state action		
+			
+		} state have_clock		
 	}
 
+	state have_clock {
+		when(fp_mux == 1){		/* XCLK */
+			if (fin > 32000000 && fin < 34000000) {
+				clk_mb_fin = 32768;
+			}else if (fin > 48000000 && fin < 50000000){
+				clk_mb_fin = 49157;
+			}else{
+				printf("WARNING: going with non standard XCLK %.1f\n", clk_mb_fin);
+			}
+		} state action
+		
+		when(fp_mux == 2){ 	/* FPCLK */
+			pvGet(fp_clk_user);
+			if (fp_clk_user >= 1000000){
+				printf("using user clock %.1f\n", fp_clk_user);
+				clk_mb_fin = fp_clk_user;
+			}else{
+				printf("going with FPCLK=%.1f\n", clk_mb_fin);
+				clk_mb_fin = fin;
+			}
+		} state action
+		
+		when (fp_mux == 3){ 	/* ZCLK */
+			if (fin > 33000000 && fin < 34000000){
+				clk_mb_fin = 33333000;
+			}else{
+				clk_mb_fin = fin;
+				printf("WARNING: strange ZCLK %.1f\n", clk_mb_fin);
+			}
+		} state action
+	}
 	state action {
 		when() {
 			snprintf(info, 40,
@@ -128,6 +170,7 @@ ss rate_set
 				
 			pvPut(adc_mode);
 			pvPut(clkdiv);
+			pvPut(clk_mb_fin, SYNC);
 			pvPut(clk_mb_set);
 			Fs0 = Fs;
 		} state run
