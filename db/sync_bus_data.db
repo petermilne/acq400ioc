@@ -25,15 +25,10 @@ record (bi, "${UUT}:0:SIG:SYNC_BUS:IN:CLK") {
 	field(PINI, "YES")	
 }
 
-record (bi, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DETn") {
+record (bi, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DET") {
 	field(DTYP, "biAcqHost")
 	field(INP,  "@/etc/acq400/0/sync_out_cable_det")
 	field(SCAN, "1 second")
 	field(PINI, "YES")
-	field(FLNK, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DET")	
 }
 
-record (calc, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DET") {	
-	field(INPA, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DETn")	
-	field(CALC, "A == 0")	
-}
