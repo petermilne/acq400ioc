@@ -200,6 +200,8 @@ load_AO() {
 		esac
 }
 
+HAS_ACQ43X=0
+
 load_400() {
 	site=$1
 	echo 1>&2 "load.records:load_400 $site"
@@ -222,6 +224,7 @@ load_400() {
 	esac
 	case $model in
 	2|3|6)	
+		HAS_ACQ43X=1
 		#ACQ435 .. nb HIRES makes it /2
 		echo 'dbLoadRecords("db/acq430fmc.db","'${cprams},LO=$LO'")'
 		echo 'dbLoadRecords("db/acq43x_rgm.db","'${cprams}'")'
@@ -410,7 +413,9 @@ load_mb_sync() {
 			echo 'dbLoadRecords("db/sig_event_src.db","'${CPRAMS},BIT=${dx}'")'
 	done
 	echo 'dbLoadRecords("db/sync_bus_data.db","'${CPRAMS}'")'
-	echo >>/tmp/st_post.cmd "seq acq43x_setSampleRate \"uut=${HOST}\""
+	if [ $HAS_ACQ43X -ne 0 ]; then
+		echo >>/tmp/st_post.cmd "seq acq43x_setSampleRate \"uut=${HOST}\""
+	fi
 }
 
 cat - <<EOF
