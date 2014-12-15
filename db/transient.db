@@ -107,3 +107,35 @@ record(longout, "${UUT}:MODE:TRANSIENT:DELAYMS") {
 	field(DESC, "delay before auto restart")
 	field(VAL,  "1000")
 }
+
+record(longin, "${UUT}:TRANSIENT:ACT:STATE") {
+	field(DTYP, "stream")
+	field(INP,  "@transient.proto read_state ${SPORTT}")
+	field(SCAN, "I/O Intr")
+}
+record(longin, "${UUT}:TRANSIENT:ACT:PRE") {
+	field(DTYP, "stream")
+	field(INP,  "@transient.proto read_pre ${SPORTT}")
+	field(SCAN, "I/O Intr")
+}
+record(longin, "${UUT}:TRANSIENT:ACT:POST") {
+	field(DTYP, "stream")
+	field(INP,  "@transient.proto read_post ${SPORTT}")
+	field(SCAN, "I/O Intr")
+}
+record(longin, "${UUT}:TRANSIENT:ACT:ELAPSED") {
+	field(DTYP, "stream")
+	field(INP,  "@transient.proto read_elapsed ${SPORTT}")
+	field(SCAN, "I/O Intr")
+}
+record(longin, "${UUT}:TRANSIENT:ACT:DEMUX") {
+	field(DTYP, "stream")
+	field(INP,  "@transient.proto read_demux ${SPORTT}")
+	field(SCAN, "I/O Intr")
+}
+record(stringin, "${UUT}:TRANSIENT:ACT:ERROR") {
+	field(DTYP, "stream")
+	field(INP,  "@transient.proto read_error ${SPORTT}")
+	field(SCAN, "I/O Intr")
+}
+

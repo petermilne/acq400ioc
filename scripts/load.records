@@ -359,7 +359,7 @@ load_mb_sites() {
 	echo 'dbLoadRecords("db/acq2006clktree.db","UUT='${HOST}'")'
 	echo 'dbLoadRecords("db/acq2006mb.db","UUT='${HOST}',SPORT=S0")'
 	if [ -e /etc/acq400/0/transient ]; then
-				echo 'dbLoadRecords("db/transient.db","UUT='${HOST}',SPORT=SS")'
+				echo 'dbLoadRecords("db/transient.db","UUT='${HOST}',SPORT=SS,SPORTT=ST")'
 	fi
 	if [ "$LOAD_INTMON" = "y" ]; then
 		# uses 1% cpu for monitoring. Not default
@@ -371,7 +371,8 @@ load_mb_sites() {
 	echo 'dbLoadRecords("db/asynRecord.db","P='${HOST}':,R=asyn:S0,PORT=S0,ADDR=0,IMAX=100,OMAX=100")'
 	echo 'drvAsynIPPortConfigure("SS", "127.0.0.1:4220")'
 	echo 'dbLoadRecords("db/asynRecord.db","P='${HOST}':,R=asyn:SS,PORT=SS,ADDR=0,IMAX=100,OMAX=100")'
-	
+	echo 'drvAsynIPPortConfigure("ST", "127.0.0.1:2235")'
+	echo 'dbLoadRecords("db/asynRecord.db","P='${HOST}':,R=asyn:ST,PORT=SS,ADDR=0,IMAX=100,OMAX=100")'
 }
 
 toLower() {
