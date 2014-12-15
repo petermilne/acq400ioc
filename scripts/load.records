@@ -15,8 +15,8 @@ source /etc/sysconfig/acq400.conf
 
 # gains are loaded last, as they tweak other WF records, must be there first..
 echo > /tmp/gains_last
-
 echo > /tmp/st_post.cmd
+
 
 # nchan deprecated, NCHAN preferred
 
@@ -225,6 +225,7 @@ load_400() {
 	case $model in
 	2|3|6)	
 		HAS_ACQ43X=1
+		echo 1>&2 "HAS_ACQ43X Detected: $HAS_ACQ43X"
 		#ACQ435 .. nb HIRES makes it /2
 		echo 'dbLoadRecords("db/acq430fmc.db","'${cprams},LO=$LO'")'
 		echo 'dbLoadRecords("db/acq43x_rgm.db","'${cprams}'")'
@@ -414,9 +415,14 @@ load_mb_sync() {
 			echo 'dbLoadRecords("db/sig_event_src.db","'${CPRAMS},BIT=${dx}'")'
 	done
 	echo 'dbLoadRecords("db/sync_bus_data.db","'${CPRAMS}'")'
+	
+	echo 1>&2 "HAS_ACQ43X $HAS_ACQ43X"
 	if [ $HAS_ACQ43X -ne 0 ]; then
 		echo >>/tmp/st_post.cmd "seq acq43x_setSampleRate \"uut=${HOST}\""
 	fi
+	
+	echo >>/tmp/st_post.cmd "seq onSetTransient \"uut=${HOST}\""
+	echo >>/tmp/st_post.cmd "seq autoRepeat \"uut=${HOST}\""
 }
 
 cat - <<EOF
@@ -446,9 +452,8 @@ load_mb() {
 		
 	load_mb_sites $KB $ns $mt
 	load_mb_sync $KB
+	make_AI_subrate		
 }
-
-load_mb
 
 
 for ACQ400 in /dev/acq400.[123456]
@@ -458,7 +463,8 @@ do
 	fi
 done
 
-make_AI_subrate
+load_mb
+
 
 cat /tmp/gains_last
 

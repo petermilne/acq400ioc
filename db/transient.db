@@ -66,8 +66,8 @@ record(mbbi, "${UUT}:MODE:TRANS_ACT:STATE") {
 	field(TWST, "RUN_PRE")
 	field(THST, "RUN_POST")
 	field(FRST, "POST_PROCESS")
-	field(INP,  "@mb.proto getState(${UUT}:MODE:TRANS_ACT) ${SPORT}")
-	field(SCAN, "1 second")
+	field(INP,  "@transient.proto read_state ${SPORTT}")
+	field(SCAN, "I/O Intr")		
 	field(FLNK, "${UUT}:MODE:TRANS_ACT:STATE_NOT_IDLE")
 }
 
@@ -76,16 +76,22 @@ record(calc, "${UUT}:MODE:TRANS_ACT:STATE_NOT_IDLE") {
 	field(CALC, "A == 0? 0: 1")
 }
 
-record(longin, "${UUT}:MODE:TRANS_ACT:PRE") {
-	field(DTYP, "Soft Channel")
+record(longin, "${UUT}:MODE:TRANS_ACT:PRE") {	
+	field(DTYP, "stream")
+	field(INP,  "@transient.proto read_pre ${SPORTT}")
+	field(SCAN, "I/O Intr")	
 }
 
 record(longin, "${UUT}:MODE:TRANS_ACT:POST") {
-	field(DTYP, "Soft Channel")
+	field(DTYP, "stream")
+	field(INP,  "@transient.proto read_post ${SPORTT}")
+	field(SCAN, "I/O Intr")
 }
 
-record(longin, "${UUT}:MODE:TRANS_ACT:TOTSAM") {
-	field(DTYP, "Soft Channel")
+record(longin, "${UUT}:MODE:TRANS_ACT:TOTSAM") {	
+	field(DTYP, "stream")
+	field(INP,  "@transient.proto read_elapsed ${SPORTT}")
+	field(SCAN, "I/O Intr")	
 }
 
 record (longin, "${UUT}:SHOT_COMPLETE") {
@@ -108,34 +114,14 @@ record(longout, "${UUT}:MODE:TRANSIENT:DELAYMS") {
 	field(VAL,  "1000")
 }
 
-record(longin, "${UUT}:TRANSIENT:ACT:STATE") {
-	field(DTYP, "stream")
-	field(INP,  "@transient.proto read_state ${SPORTT}")
-	field(SCAN, "I/O Intr")
-}
-record(longin, "${UUT}:TRANSIENT:ACT:PRE") {
-	field(DTYP, "stream")
-	field(INP,  "@transient.proto read_pre ${SPORTT}")
-	field(SCAN, "I/O Intr")
-}
-record(longin, "${UUT}:TRANSIENT:ACT:POST") {
-	field(DTYP, "stream")
-	field(INP,  "@transient.proto read_post ${SPORTT}")
-	field(SCAN, "I/O Intr")
-}
-record(longin, "${UUT}:TRANSIENT:ACT:ELAPSED") {
-	field(DTYP, "stream")
-	field(INP,  "@transient.proto read_elapsed ${SPORTT}")
-	field(SCAN, "I/O Intr")
-}
 record(longin, "${UUT}:TRANSIENT:ACT:DEMUX") {
 	field(DTYP, "stream")
 	field(INP,  "@transient.proto read_demux ${SPORTT}")
 	field(SCAN, "I/O Intr")
 }
-record(stringin, "${UUT}:TRANSIENT:ACT:ERROR") {
-	field(DTYP, "stream")
-	field(INP,  "@transient.proto read_error ${SPORTT}")
-	field(SCAN, "I/O Intr")
-}
+#record(stringin, "${UUT}:TRANSIENT:ACT:ERROR") {
+#	field(DTYP, "stream")
+#	field(INP,  "@transient.proto read_error ${SPORTT}")
+#	field(SCAN, "I/O Intr")
+#}
 
