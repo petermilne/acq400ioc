@@ -1,7 +1,7 @@
 /*************************************************************************\
 autoRepeat.st : repeat transient on termination
 \*************************************************************************/
-program autorepeat
+program autoRepeat
 option +r;
 
 int tstate;
