@@ -140,9 +140,10 @@ make_AI_subrate() {
 	done
 	
 	if [ -e /dev/acq400/data/.control ]; then
+		echo 1>&2 "load.records: control $(cat /dev/acq400/data/.control)"
 		source /dev/acq400/data/.control
 	else
-		NSAMPLES=0
+		NSAMPLES=4096
 		TYPE=short
 	fi
 	if [ "x$sites" != "x" ]; then
@@ -306,28 +307,9 @@ load_intmon() {
 		echo 'dbLoadRecords("db/intmon.db","UUT='${HOST}',SPORT=SI,irq='$irq',dt='$dt'")'
 	done	
 }
-load_mb_sites() {
-	KB=$1
-	NS=$2
-	echo 1>&2 "load.records:load_mb_sites $1 $2 $3"
-	CPRAMS="UUT=${HOST},SITE=0"
-	(
-		cd ${KB}
-		for counter in scount*
-		do
-			if [ "x${counter%_*}" = "xscount_CLK" ]; then
-				SCMAX=$CTR28
-				dt="1"
-			else
-				SCMAX=$CTR20
-				dt="1"
-				# dt=".1"   @@todo GOES MAD at 10Hz !
-			fi
-			CTPRAMS="${CPRAMS},CTRMAX=${SCMAX},DT=${dt}"
-			PRAMS="${CTPRAMS},lname=${counter#scount_*},pname=${counter}"
-			echo 'dbLoadRecords("db/counter.db","'${PRAMS}'")'
-		done
-	)
+
+load_mb_base() {
+	NS=$1
 	zynq_hwmon Z
 	
 	for SITE in $(seq 0 $NS)
@@ -356,7 +338,33 @@ load_mb_sites() {
 			VAP=0;VAN=0
 		fi
 		echo 'dbLoadRecords("db/acq2006psu.db","UUT='${HOST},vap=$VAP,van=$VAN'")'
-	fi
+	fi			
+}
+
+
+load_mb_sites() {
+	KB=$1
+	NS=$2
+	echo 1>&2 "load.records:load_mb_sites $1 $2 $3"
+	CPRAMS="UUT=${HOST},SITE=0"
+	(
+		cd ${KB}
+		for counter in scount*
+		do
+			if [ "x${counter%_*}" = "xscount_CLK" ]; then
+				SCMAX=$CTR28
+				dt="1"
+			else
+				SCMAX=$CTR20
+				dt="1"
+				# dt=".1"   @@todo GOES MAD at 10Hz !
+			fi
+			CTPRAMS="${CPRAMS},CTRMAX=${SCMAX},DT=${dt}"
+			PRAMS="${CTPRAMS},lname=${counter#scount_*},pname=${counter}"
+			echo 'dbLoadRecords("db/counter.db","'${PRAMS}'")'
+		done
+	)
+
 	echo 'dbLoadRecords("db/acq2006clktree.db","UUT='${HOST}'")'
 	echo 'dbLoadRecords("db/acq2006mb.db","UUT='${HOST}',SPORT=S0")'
 	if [ -e /etc/acq400/0/transient ]; then
@@ -440,7 +448,10 @@ load_mb() {
 	mb_model=$(basename ${devicetree_image%*.dtb})
 	case $mb_model in
 		acq2006)
-				load_mb_sites $KB 6 acq2006
+				load_mb_base $ns
+				if [ -e $KB ]; then
+					load_mb_sites $KB 6 acq2006
+				fi
 				return;;
 		acq2006b)
 				ns=6;mt=acq2006;;
@@ -449,12 +460,16 @@ load_mb() {
 		*)
 				ns=1;mt=acq1001;;
 	esac		
-		
-	load_mb_sites $KB $ns $mt
-	load_mb_sync $KB
-	make_AI_subrate		
+	
+	load_mb_base $ns
+	if [ -e $KB ]; then
+		load_mb_sites $KB $ns $mt
+		load_mb_sync $KB
+		make_AI_subrate
+	fi		
 }
 
+# execution starts here
 
 for ACQ400 in /dev/acq400.[123456]
 do
