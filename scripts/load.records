@@ -464,7 +464,9 @@ load_mb() {
 	load_mb_base $ns
 	if [ -e $KB ]; then
 		load_mb_sites $KB $ns $mt
-		load_mb_sync $KB
+		if [ -e /dev/acq400.0.knobs/sync_out_clk ]; then
+			load_mb_sync $KB
+		fi
 		make_AI_subrate
 	fi		
 }
