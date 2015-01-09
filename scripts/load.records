@@ -512,6 +512,9 @@ if [ "x$IOC_PREINIT" != "x" ]; then
 		source $IOC_PREINIT
 	fi
 fi
+if [ -e "/tmp/st_pre.cmd" ]; then
+	cat /tmp/st_pre.cmd
+fi
 
 echo 'iocInit()'
 
