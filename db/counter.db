@@ -28,9 +28,6 @@ record(calc, "${UUT}:${SITE}:SIG:${lname}:COUNT") {
 	field(INPB, "${UUT}:${SITE}:SIG:${lname}:COUNT.LA")
 	field(INPC, "${CTRMAX}")
 	field(INPD, "${UUT}:${SITE}:SIG:${lname}:ACTIVE")
-# reset on becoming active?
-# D == 0? VAL: D != LD? A - LA: (A==0 || B==0? 0: A > B? VAL+(A-B): VAL+(A+C-B))"	
-#ok	field(CALC, "J!=K? 0: (D!=0? (A==0||B==0? 0: A>B? VAL+(A-B): VAL+(A+C-B)): VAL)")
 	field(CALC, "A*B*D!=0 ? A>B? VAL+(A-B): VAL+(A+C-B): VAL")
 #                    01234567890012345678900123456789001234567890	
 	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:delta")
@@ -75,7 +72,7 @@ record(calc, "${UUT}:${SITE}:SIG:${lname}:FREQ") {
 	field(INPB, "${UUT}:${SITE}:SIG:${lname}:filter")	
 	field(INPK, "${DTC}")
 	field(INPL, "${UUT}:${SITE}:SIG:${lname}:filtercount")
-	field(CALC, "A==0? 0: (B/(L*K))")
+	field(CALC, "A==0?0: L<12? A/K: 0.25*B/(L*K)+0.75*VAL")
 #                    1234567890123456789012345678901234567890
 	field(PREC, "0")
 	field(EGU,  "Hz")
