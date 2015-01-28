@@ -7,6 +7,7 @@ FNAME=AI
 
 HSIZE=256
 
+CTR32=4294967296
 CTR28=268435456
 CTR16=65536
 CTR20=1048576
@@ -442,6 +443,15 @@ EOF
 
 KB=/dev/acq400.0.knobs
 
+
+load_mgt400() {
+	site=$1
+	cprams="UUT=${HOST},SITE=0"
+	ctprams="${cprams},CTRMAX=${$CTR32},DT=${1}"
+	prams="${ctprams},lname=${heartbeat},pname=${heartbeat}"
+	echo 'dbLoadRecords("db/counter.db","'${prams}'")'		
+}
+
 load_mb() {
 	echo 1>&2 "load.records:load_mb"
 	source /tmp/u-boot_env
@@ -468,7 +478,13 @@ load_mb() {
 			load_mb_sync $KB
 		fi
 		make_AI_subrate
-	fi		
+	fi
+	if [ -e /dev/acq400.12.knobs ]; then
+		load_mgt400 12
+	fi
+	if [ -e /dev/acq400.13.knobs ]; then
+		load_mgt400 13
+	fi 		
 }
 
 # execution starts here
