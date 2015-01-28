@@ -447,7 +447,7 @@ KB=/dev/acq400.0.knobs
 load_mgt400() {
 	site=$1
 	cprams="UUT=${HOST},SITE=0"
-	ctprams="${cprams},CTRMAX=${$CTR32},DT=${1}"
+	ctprams="${cprams},CTRMAX=${CTR32},DT=1"
 	prams="${ctprams},lname=${heartbeat},pname=${heartbeat}"
 	echo 'dbLoadRecords("db/counter.db","'${prams}'")'		
 }
