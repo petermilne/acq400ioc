@@ -47,21 +47,41 @@ record(calc, "${UUT}:${SITE}:SIG:${lname}:delta") {
 	field(INPB, "${UUT}:${SITE}:SIG:${lname}:delta.LA")
 	field(CALC, "A > B && B != 0 ? A-B: 0")
 	field(DESC, "computes count difference")
-	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:FREQ")	
+	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:filter")	
+}
+
+record(calc, "${UUT}:${SITE}:SIG:${lname}:filter") {
+	field(INPA, "${UUT}:${SITE}:SIG:${lname}:delta")
+	field(INPB, "${UUT}:${SITE}:SIG:${lname}:filter.LA")
+	field(INPC, "${UUT}:${SITE}:SIG:${lname}:filter.LB")
+	field(INPD, "${UUT}:${SITE}:SIG:${lname}:filter.LC")
+	field(INPE, "${UUT}:${SITE}:SIG:${lname}:filter.LD")
+	field(INPF, "${UUT}:${SITE}:SIG:${lname}:filter.LE")
+	field(INPG, "${UUT}:${SITE}:SIG:${lname}:filter.LF")
+	field(INPH, "${UUT}:${SITE}:SIG:${lname}:filter.LG")
+	field(INPI, "${UUT}:${SITE}:SIG:${lname}:filter.LH")
+	field(INPJ, "${UUT}:${SITE}:SIG:${lname}:filter.LI")
+	field(INPK, "${UUT}:${SITE}:SIG:${lname}:filter.LJ")
+	field(INPL, "${UUT}:${SITE}:SIG:${lname}:filter.LK")
+	field(CALC, "A+B+C+D+E+F+G+H+I+J+K+L")
+#                    1234567890123456789012345678901234567890	
+	field(DESC, "CLK FREQ ${lname} filter")
+	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:filtercount")
+}
+
+record(calc, "${UUT}:${SITE}:SIG:${lname}:filtercount") {
+	field(INPL, "${UUT}:${SITE}:SIG:${lname}:nzcount")
+	field(CALC, "L >= 12? 12: L")
+	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:FREQ")
 }
 
 record(calc, "${UUT}:${SITE}:SIG:${lname}:FREQ") {
 	field(INPA, "${UUT}:${SITE}:SIG:${lname}:delta")
-	field(INPB, "${UUT}:${SITE}:SIG:${lname}:FREQ.LA")
-	field(INPC, "${UUT}:${SITE}:SIG:${lname}:FREQ.LB")
-	field(INPD, "${UUT}:${SITE}:SIG:${lname}:FREQ.LC")
-	field(INPE, "${UUT}:${SITE}:SIG:${lname}:FREQ.LD")
-	field(INPF, "${UUT}:${SITE}:SIG:${lname}:FREQ.LE")
-	field(INPG, "${UUT}:${SITE}:SIG:${lname}:FREQ.LF")
-	field(INPH, "${UUT}:${SITE}:SIG:${lname}:FREQ.LG")
+	field(INPB, "${UUT}:${SITE}:SIG:${lname}:filter")	
 	field(INPK, "${DTC}")
-	field(INPL, "${UUT}:${SITE}:SIG:${lname}:nzcount")
-	field(CALC, "A==0? 0: (A+(L>8?B+C+D+E+F+G+H+8*VAL:0))/(L>8?16:1)/K")
+	field(INPL, "${UUT}:${SITE}:SIG:${lname}:filtercount")
+	field(CALC, "A==0? 0: (B/(L*K))")
+#                    1234567890123456789012345678901234567890
 	field(PREC, "0")
 	field(EGU,  "Hz")
 	field(DESC, "CLK FREQ ${lname}")

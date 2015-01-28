@@ -8,6 +8,7 @@ FNAME=AI
 HSIZE=256
 
 CTR32=4294967296
+CTR31=2147483648
 CTR28=268435456
 CTR16=65536
 CTR20=1048576
@@ -448,7 +449,7 @@ load_mgt400() {
 	site=$1
 	cprams="UUT=${HOST},SITE=${site}"
 	# count is scaled by 0.5
-	ctprams="${cprams},CTRMAX=${CTR32},DT=1,DTC=0.5"
+	ctprams="${cprams},CTRMAX=${CTR31},DT=1,DTC=0.5"
 	prams="${ctprams},lname=heartbeat,pname=heartbeat"
 	echo 'dbLoadRecords("db/counter.db","'${prams}'")'		
 }
