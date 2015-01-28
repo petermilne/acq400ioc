@@ -59,7 +59,7 @@ record(calc, "${UUT}:${SITE}:SIG:${lname}:FREQ") {
 	field(INPF, "${UUT}:${SITE}:SIG:${lname}:FREQ.LE")
 	field(INPG, "${UUT}:${SITE}:SIG:${lname}:FREQ.LF")
 	field(INPH, "${UUT}:${SITE}:SIG:${lname}:FREQ.LG")
-	field(INPK, "${DT}")
+	field(INPK, "${DTC}")
 	field(INPL, "${UUT}:${SITE}:SIG:${lname}:nzcount")
 	field(CALC, "A==0? 0: (A+(L>8?B+C+D+E+F+G+H+8*VAL:0))/(L>8?16:1)/K")
 	field(PREC, "0")

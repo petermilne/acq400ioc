@@ -242,7 +242,7 @@ load_400() {
 	
 	make_AI $site
 
-	CTPR="${cprams},CTRMAX=$CTR28,DT=1"
+	CTPR="${cprams},CTRMAX=$CTR28,DT=1,DTC=1"
 	echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=clk_count,pname=clk_count'")'
 	echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=sample_count,pname=sample_count'")'
 
@@ -360,7 +360,7 @@ load_mb_sites() {
 				dt="1"
 				# dt=".1"   @@todo GOES MAD at 10Hz !
 			fi
-			CTPRAMS="${CPRAMS},CTRMAX=${SCMAX},DT=${dt}"
+			CTPRAMS="${CPRAMS},CTRMAX=${SCMAX},DT=${dt},DTC=${dt}"
 			PRAMS="${CTPRAMS},lname=${counter#scount_*},pname=${counter}"
 			echo 'dbLoadRecords("db/counter.db","'${PRAMS}'")'
 		done
@@ -446,9 +446,10 @@ KB=/dev/acq400.0.knobs
 
 load_mgt400() {
 	site=$1
-	cprams="UUT=${HOST},SITE=0"
-	ctprams="${cprams},CTRMAX=${CTR32},DT=1"
-	prams="${ctprams},lname=${heartbeat},pname=${heartbeat}"
+	cprams="UUT=${HOST},SITE=${site}"
+	# count is scaled by 0.5
+	ctprams="${cprams},CTRMAX=${CTR32},DT=1,DTC=0.5"
+	prams="${ctprams},lname=heartbeat,pname=heartbeat"
 	echo 'dbLoadRecords("db/counter.db","'${prams}'")'		
 }
 
