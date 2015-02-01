@@ -1,0 +1,13 @@
+
+
+record(longin, "${UUT}:${chan}:FIFO:${ln}:COUNT {
+	field(DTYP, "stream")
+	field(INP,  @mgt400.proto getFifoStat(${pn}, "${UUT}:${chan}:FIFO:${ln}:FLAGS) ${SPORT}" )
+	field(SCAN, "1 second")
+	field(FLNK, "${UUT}:${chan}:FIFO:${ln}:FLAGS")
+}
+
+record(mbbi, "${UUT}:${chan}:FIFO:${ln}:FLAGS") {
+	field(DTYP, "stream")
+	field(NOBT, "4")
+}

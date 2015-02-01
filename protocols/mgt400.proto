@@ -1,0 +1,12 @@
+Terminator = LF;
+ExtraInput = Ignore;
+
+# dma_stat_desc_push
+# reply: count flags
+# 62 0
+
+getFifoStat {
+	out "\$1;
+	in "%d %(\$2)d";	
+}
+

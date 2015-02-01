@@ -19,6 +19,9 @@ source /etc/sysconfig/acq400.conf
 echo > /tmp/gains_last
 echo > /tmp/st_post.cmd
 
+if [ -e /dev/acq400.12.knobs ]; then
+	LOAD_INTMON=y
+fi
 
 # nchan deprecated, NCHAN preferred
 
@@ -370,7 +373,7 @@ load_mb_sites() {
 	echo 'dbLoadRecords("db/acq2006clktree.db","UUT='${HOST}'")'
 	echo 'dbLoadRecords("db/acq2006mb.db","UUT='${HOST}',SPORT=S0")'
 	if [ -e /etc/acq400/0/transient ]; then
-				echo 'dbLoadRecords("db/transient.db","UUT='${HOST}',SPORT=SS,SPORTT=ST")'
+		echo 'dbLoadRecords("db/transient.db","UUT='${HOST}',SPORT=SS,SPORTT=ST")'
 	fi
 	if [ "$LOAD_INTMON" = "y" ]; then
 		# uses 1% cpu for monitoring. Not default
@@ -445,14 +448,6 @@ EOF
 KB=/dev/acq400.0.knobs
 
 
-load_mgt400() {
-	site=$1
-	cprams="UUT=${HOST},SITE=${site}"
-	# count is scaled by 0.5
-	ctprams="${cprams},CTRMAX=${CTR31},DT=1,DTC=0.5"
-	prams="${ctprams},lname=heartbeat,pname=heartbeat"
-	echo 'dbLoadRecords("db/counter.db","'${prams}'")'		
-}
 
 load_mb() {
 	echo 1>&2 "load.records:load_mb"
@@ -482,11 +477,8 @@ load_mb() {
 		make_AI_subrate
 	fi
 	if [ -e /dev/acq400.12.knobs ]; then
-		load_mgt400 12
-	fi
-	if [ -e /dev/acq400.13.knobs ]; then
-		load_mgt400 13
-	fi 		
+		load.mgt400
+	fi	
 }
 
 # execution starts here

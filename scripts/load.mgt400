@@ -1,0 +1,49 @@
+# must be sourced from load.records
+
+MGTHSIZE=128
+
+load_mgt400() {
+	site=$1
+	
+	case $site in
+	12)
+		ab=B;;
+	13)
+		ab=A;;
+	*)
+		echo "# bad site $site";;
+	esac
+	
+	cprams="UUT=${HOST},SITE=${ab},chan=${ab}"
+	# count is scaled by 0.5
+	ctprams="${cprams},CTRMAX=${CTR31},DT=1,DTC=0.5"
+	prams="${ctprams},lname=MGT:HB,pname=heartbeat"
+	echo 'dbLoadRecords("db/counter.db","'${prams}'")'
+	
+	ctprams="${cprams},CTRMAX=${CTR32},DT=1,DTC=1"
+	prams="${ctprams},lname=MGT:PUSH:BUFS,pname=push_buffer_count"
+	echo 'dbLoadRecords("db/counter.db","'${prams}'")'
+
+	ctprams="${cprams},CTRMAX=${CTR32},DT=1,DTC=1"
+	prams="${ctprams},lname=MGT:PULL:BUFS,pname=pull_buffer_count"
+	echo 'dbLoadRecords("db/counter.db","'${prams}'")'		
+	
+	HPRAMS="${cprams},size=$MGTHSIZE,type=LONG"
+	echo 'dbLoadRecords("db/hgMgt400.db","'${HPRAMS}'")'
+	
+	for pn in dma_stat_data_pull  dma_stat_data_push  \
+		dma_stat_desc_pull  dma_stat_desc_push
+	do
+			ln=$(echo $typ | tr '[:lower:]' '[:upper:]')
+			mprams="${cprams},pn=${pn},ln=${ln}"
+			echo 'dbLoadRecords("db/mgt400.db","'${mprams}'")'
+	done
+}
+#tr '[:upper:]' '[:lower:]'
+
+if [ -e /dev/acq400.12.knobs ]; then
+	load_mgt400 12
+fi
+if [ -e /dev/acq400.13.knobs ]; then
+	load_mgt400 13
+fi
