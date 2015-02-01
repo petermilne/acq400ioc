@@ -477,7 +477,7 @@ load_mb() {
 		make_AI_subrate
 	fi
 	if [ -e /dev/acq400.12.knobs ]; then
-		load.mgt400
+		source /usr/local/epics/scripts/load.mgt400
 	fi	
 }
 

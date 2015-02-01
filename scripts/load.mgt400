@@ -2,8 +2,23 @@
 
 MGTHSIZE=128
 
+
+echo "load.mgt400: mgt400 hg hack" > /.control
+
+load_mgt400_fifo_stat()
+{ 
+	cprams=$1
+	for pn in dma_stat_data_pull  dma_stat_data_push  \
+		dma_stat_desc_pull  dma_stat_desc_push
+	do
+			ln=$(echo $pn | tr '[:lower:]' '[:upper:]')
+			mprams="${cprams},pn=${pn},ln=${ln},SPORT=${sport}"
+			echo 'dbLoadRecords("db/mgt400.db","'${mprams}'")'
+	done
+}
 load_mgt400() {
 	site=$1
+	
 	
 	case $site in
 	12)
@@ -11,8 +26,11 @@ load_mgt400() {
 	13)
 		ab=A;;
 	*)
-		echo "# bad site $site";;
+		echo "# bad site $site"
+		return;;		
 	esac
+	
+	sport="S${ab}"
 	
 	cprams="UUT=${HOST},SITE=${ab},chan=${ab}"
 	# count is scaled by 0.5
@@ -31,13 +49,11 @@ load_mgt400() {
 	HPRAMS="${cprams},size=$MGTHSIZE,type=LONG"
 	echo 'dbLoadRecords("db/hgMgt400.db","'${HPRAMS}'")'
 	
-	for pn in dma_stat_data_pull  dma_stat_data_push  \
-		dma_stat_desc_pull  dma_stat_desc_push
-	do
-			ln=$(echo $typ | tr '[:lower:]' '[:upper:]')
-			mprams="${cprams},pn=${pn},ln=${ln}"
-			echo 'dbLoadRecords("db/mgt400.db","'${mprams}'")'
-	done
+	load_mgt400_fifo_stat $cprams
+	let port="4220+$site"
+	
+	echo 'drvAsynIPPortConfigure("'${sport}'", "127.0.0.1:'${port}'")'
+	echo 'dbLoadRecords("db/asynRecord.db","P='${HOST}':,R=asyn:'${sport}',PORT='${sport}',ADDR=0,IMAX=100,OMAX=100")'
 }
 #tr '[:upper:]' '[:lower:]'
 
