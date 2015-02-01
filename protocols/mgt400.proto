@@ -5,8 +5,14 @@ ExtraInput = Ignore;
 # reply: count flags
 # 62 0
 
-getFifoStat {
-	out "\$1;
+# fails .. descr too long..
+getFifo {
+	out "\$1";
 	in "%d %(\$2)d";	
 }
 
+getFifoStatus {
+	out "\$1";
+	in "%*d %d";
+}
+	

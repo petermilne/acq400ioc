@@ -1,13 +1,16 @@
 
 
-record(longin, "${UUT}:${chan}:FIFO:${ln}:COUNT") {
-	field(DTYP, "stream")
-	field(INP,  "@mgt400.proto getFifoStat(${pn}, ${UUT}:${chan}:FIFO:${ln}:FLAGS) ${SPORT}" )
-	field(SCAN, "1 second")
-	field(FLNK, "${UUT}:${chan}:FIFO:${ln}:FLAGS")
-}
+#record(longin, "${UUT}:${chan}:FIFO:${ln}:COUNT") {
+#	field(DTYP, "stream")
+#	field(INP,  "@mgt400.proto getFifoStat(${pn}, ${UUT}:${chan}:FIFO:${ln}:FLAGS) ${SPORT}" )
+#	field(SCAN, "1 second")
+#	field(FLNK, "${UUT}:${chan}:FIFO:${ln}:FLAGS")
+#}
 
 record(mbbi, "${UUT}:${chan}:FIFO:${ln}:FLAGS") {
-	field(DTYP, "Soft Channel")
+	field(DTYP, "stream")
+#	field(DTYP, "Soft Channel")
+	field(INP,  "@mgt400.proto getFifoStatus(${pn}) ${SPORT}")
+	field(SCAN, "1 second")
 	field(NOBT, "4")
 }
