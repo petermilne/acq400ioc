@@ -1,0 +1,40 @@
+record(waveform, "${UUT}:MGT:HG:${chan}:PULL_DATA") {	
+	field(DTYP, "wfAcqHost")
+	field(INP, "@/dev/mgt400.${chan}.pull_data_hg")
+	field(SCAN, "10 second")		
+#	field(SCAN, "I/O Intr")	
+	field(DESC, "pull data fifo histogram")
+	field(NELM,"${size}")
+	field(FTVL,"${type}")	
+}
+
+record(waveform, "${UUT}:MGT:HG:${chan}:PULL_DESC") {	
+	field(DTYP, "wfAcqHost")
+	field(INP, "@/dev/mgt400.${chan}.pull_desc_hg")
+	field(SCAN, "10 second")		
+#	field(SCAN, "I/O Intr")	
+	field(DESC, "pull data fifo histogram")
+	field(NELM,"${size}")
+	field(FTVL,"${type}")	
+}
+
+record(waveform, "${UUT}:MGT:HG:${chan}:PUSH_DATA") {	
+	field(DTYP, "wfAcqHost")
+	field(INP, "@/dev/mgt400.${chan}.push_data_hg")
+	field(SCAN, "10 second")		
+#	field(SCAN, "I/O Intr")	
+	field(DESC, "pull data fifo histogram")
+	field(NELM,"${size}")
+	field(FTVL,"${type}")	
+}
+
+record(waveform, "${UUT}:MGT:HG:${chan}:PUSH_DESC") {	
+	field(DTYP, "wfAcqHost")
+	field(INP, "@/dev/mgt400.${chan}.push_desc_hg")
+	field(SCAN, "10 second")		
+#	field(SCAN, "I/O Intr")		
+	field(DESC, "pull data fifo histogram")
+	field(NELM,"${size}")
+	field(FTVL,"${type}")	
+}
+
