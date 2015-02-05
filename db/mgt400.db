@@ -14,3 +14,21 @@ record(mbbi, "${UUT}:${chan}:FIFO:${ln}:FLAGS") {
 	field(SCAN, "1 second")
 	field(NOBT, "4")
 }
+
+record(mbbi, "${UUT}:${chan}:AURORA:UP") {
+	field(DTYPE, "stream")
+	field(INP,   "@mgt400.proto getAuroraLaneUp ${SPORT}")
+	field(NOBT,  "2")	
+	field(SCAN,  "1 second")
+	field(ZRST,  "DOWN")
+	field(ONST,  "LANE UP")
+	field(TWST   "CHANNEL UP")
+	field(THST   "UP")
+}
+
+record(mbbi, "${UUT}:${chan}:AURORA:ERR") {
+	field(DTYPE, "stream")
+	field(INP,   "@mgt400.proto getAuroraErr ${SPORT}")
+	field(NOBT,  "4")
+	field(SCAN   "1 second")
+}

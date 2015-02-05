@@ -16,3 +16,13 @@ getFifoStatus {
 	in "%*d %d";
 }
 	
+getAuroraLaneUp {
+	out "aurora_lane_up";
+	in "%d";
+}
+
+getAuroraErr {
+	out "aurora_errors";
+	in "%d";
+}
+
