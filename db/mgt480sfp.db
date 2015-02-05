@@ -1,0 +1,13 @@
+record (bi, "${UUT}:MGT:SFP:${CH}:PRESENT") {
+	field(DTYP, "biAcqHost")	
+	field(INP,  "@/dev/gpio/MGT482/SFP${CH}/PRESENT")
+	field(SCAN, "1 second")
+	field(FLNK, "${UUT}:MGT:SFP:${CH}:LOS")	
+}
+
+record (bi, "${UUT}:MGT:SFP:${CH}:LOS") {
+	field(DTYP, "biAcqHost")	
+	field(INP,  "@/dev/gpio/MGT482/SFP${CH}/LOS")
+	field(DISV, "0")
+	field(SDIS, "${UUT}:MGT:SFP:${CH}:PRESENT")	
+}

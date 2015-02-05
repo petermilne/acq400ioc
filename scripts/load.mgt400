@@ -16,6 +16,16 @@ load_mgt400_fifo_stat()
 			echo 'dbLoadRecords("db/mgt400.db","'${mprams}'")'
 	done
 }
+
+load_mgt400_sfp() 
+{
+		sprams="UUT=${HOST}"
+		for ch in 1 2 3 4
+		do
+				echo 'dbLoadRecords("db/mgt480sfp.db","'${sprams},CH=${ch}'")'		
+		done	
+}
+
 load_mgt400() {
 	site=$1
 	
@@ -31,6 +41,8 @@ load_mgt400() {
 	esac
 	
 	sport="S${ab}"
+	
+	
 	
 	cprams="UUT=${HOST},SITE=${ab},chan=${ab}"
 	# count is scaled by 0.5
@@ -56,6 +68,8 @@ load_mgt400() {
 	echo 'dbLoadRecords("db/asynRecord.db","P='${HOST}':,R=asyn:'${sport}',PORT='${sport}',ADDR=0,IMAX=100,OMAX=100")'
 }
 #tr '[:upper:]' '[:lower:]'
+
+load_mgt400_sfp
 
 if [ -e /dev/acq400.12.knobs ]; then
 	load_mgt400 12
