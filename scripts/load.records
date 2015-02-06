@@ -314,29 +314,30 @@ load_intmon() {
 }
 
 load_mb_base() {
-	NS=$1
+	ns=$1
+	mt=$2
 	zynq_hwmon Z
 	
-	for SITE in $(seq 0 $NS)
+	for SITE in $(seq 0 $ns)
 	do
 		CPRAMS="UUT=${HOST},lname=${SITE}"
 		PRAMS="$CPRAMS,pname=/dev/hwmon/${SITE}/temp,scale=0.001,offset=0"
 		echo 'dbLoadRecords("db/hwmontemp.db","'${PRAMS}'")'
 	done
-	for SITE in $(seq 1 $NS)
+	for SITE in $(seq 1 $ns)
 	do
 		CPRAMS="UUT=${HOST},site=${SITE}"
 		echo 'dbLoadRecords("db/acq2006sites.db","'${CPRAMS}'")'
 	done
 	echo 'dbLoadRecords("db/hwmonvolts_common.db","UUT='${HOST}'")'
-	case $3 in
+	case $mt in
 	acq2106)
 			echo 'dbLoadRecords("db/hwmonvolts_2106.db","UUT='${HOST}'")';;
 	*)
 			echo 'dbLoadRecords("db/hwmonvolts.db","UUT='${HOST}'")';;
 	esac
-	case $3 in
-	acq2006|acq2006b)	
+	case $mt in
+	acq2106|acq2006|acq2006b)	
 		echo 'dbLoadRecords("db/acq2006leds.db","UUT='${HOST}'")' ;;
 	*)
 		echo 'dbLoadRecords("db/acq1001leds.db","UUT='${HOST}'")' ;;
@@ -461,20 +462,23 @@ load_mb() {
 	mb_model=$(basename ${devicetree_image%*.dtb})
 	case $mb_model in
 		acq2006)
-				load_mb_base $ns
+				load_mb_base $ns $mb_model
 				if [ -e $KB ]; then
 					load_mb_sites $KB 6 acq2006
 				fi
 				return;;
+		
+		acq2106|acq2106sfp)
+				ns=6; mt=acq2106;;
 		acq2006b)
-				ns=6;mt=acq2006;;
+				ns=6; mt=acq2006;;
 		acq1002)
-				ns=2;mt=acq1001;;
+				ns=2; mt=acq1001;;
 		*)
-				ns=1;mt=acq1001;;
+				ns=1; mt=acq1001;;
 	esac		
 	
-	load_mb_base $ns
+	load_mb_base $ns $mt
 	if [ -e $KB ]; then
 		load_mb_sites $KB $ns $mt
 		if [ -e /dev/acq400.0.knobs/sync_out_clk ]; then
