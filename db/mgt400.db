@@ -28,7 +28,12 @@ record(mbbi, "${UUT}:${chan}:AURORA:UP") {
 
 record(longin, "${UUT}:${chan}:AURORA:ERR") {
 	field(DTYP,  "stream")
-	field(INP,   "@mgt400.proto getAuroraErr ${SPORT}")
-	field(NOBT,  "4")
+	field(INP,   "@mgt400.proto getAuroraErr ${SPORT}")	
 	field(SCAN,  "1 second")
+}
+
+record (bo, "${UUT}:MGT:SFP:${chan}:CLRSTATS") {
+	field(DTYP, "boAcqHost")	
+	field(OUT,  "@/dev/acq400.${chan}.knobs/clear_stats")
+	field(HIGH, "1")
 }
