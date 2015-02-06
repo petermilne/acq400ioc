@@ -1,0 +1,49 @@
+record(ai, "${UUT}:SYS:vccaux") {
+        field(DTYP, "dsSysfsAi")
+        field(INP, "@/dev/hwmon/Z/in_voltage4_vccpaux_raw")
+        field(SCAN, "10 second")
+        field(DESC, "ZYNQ Rails")
+        field(ASLO, "0.000732421875")
+        field(LINR, "LINEAR")
+        field(EGU,  "V")
+        field(PINI, "YES")
+        field(HOPR, "3")
+        field(LOPR, "0")
+        field(LOW,  "1.75")
+        field(HIGH, "1.85")  
+        field(PREC, "3")      
+}
+
+record(ai, "${UUT}:SYS:vccbram") {
+        field(DTYP, "dsSysfsAi")
+        field(INP, "@/dev/hwmon/Z/in_voltage2_vccbram_raw")
+        field(SCAN, "10 second")
+        field(DESC, "ZYNQ Rails")
+        field(ASLO, "0.000732421875")
+        field(LINR, "LINEAR")
+        field(EGU,  "V")
+        field(PINI, "YES")
+        field(HOPR, "3")
+        field(LOPR, "0")
+        field(LOW,  "0.95")
+        field(HIGH, "1.05")
+        field(PREC, "3")             
+}
+
+
+record(ai, "${UUT}:SYS:vccint") {
+        field(DTYP, "dsSysfsAi")
+        field(INP, "@/dev/hwmon/Z/in_voltage0_vccint_raw")
+        field(SCAN, "10 second")
+        field(DESC, "ZYNQ Rails")
+        field(ASLO, "0.000732421875")
+        field(LINR, "LINEAR")
+        field(EGU,  "V")
+        field(PINI, "YES")
+        field(HOPR, "3")
+        field(LOPR, "0")
+        field(LOW,  "0.95")
+        field(HIGH, "1.05")
+        field(PREC, "3")                   
+}
+

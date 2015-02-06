@@ -328,7 +328,13 @@ load_mb_base() {
 		CPRAMS="UUT=${HOST},site=${SITE}"
 		echo 'dbLoadRecords("db/acq2006sites.db","'${CPRAMS}'")'
 	done
-	echo 'dbLoadRecords("db/hwmonvolts.db","UUT='${HOST}'")'
+	echo 'dbLoadRecords("db/hwmonvolts_common.db","UUT='${HOST}'")'
+	case $3 in
+	acq2106)
+			echo 'dbLoadRecords("db/hwmonvolts_2106.db","UUT='${HOST}'")';;
+	*)
+			echo 'dbLoadRecords("db/hwmonvolts.db","UUT='${HOST}'")';;
+	esac
 	case $3 in
 	acq2006|acq2006b)	
 		echo 'dbLoadRecords("db/acq2006leds.db","UUT='${HOST}'")' ;;

@@ -7,8 +7,8 @@ record(ai, "${UUT}:SYS:5VP") {
         field(INP, "@/dev/hwmon/0/5V_P")
         field(SCAN, "10 second")
         field(DESC, "ZYNQ Rails")
-# 3/1000        
-        field(ASLO, "0.003")
+# 4.012/1000        
+        field(ASLO, "0.00401")
         field(LINR, "LINEAR")
         field(EGU,  "V")
         field(PINI, "YES")
@@ -71,7 +71,7 @@ record(ai, "${UUT}:SYS:_van") {
 record(calc, "${UUT}:SYS:VAN") {
 	field(INPA, "${UUT}:SYS:VAP")
 	field(INPB, "${UUT}:SYS:_van")
-	field(CALC, "-(1.3*A - 2.3*B)")
+	field(CALC, "6.6*B - 18.48")
 	field(PREC, "1")	
 	field(DESC, "Analog Rail Neg")
         field(HOPR, "0")
