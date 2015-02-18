@@ -179,6 +179,7 @@ load_AO() {
 				echo "seq ao420_range_set \"UUT=$(hostname),SITE=${site},CID=$ch\"" >>/tmp/st_post.cmd
 			done
 			echo 'dbLoadRecords("db/aoALL.db","'${cprams}'")'
+			echo 'dbLoadRecords("db/ao420fmc.db","'${cprams},cid=32'")'
 			;;
 		41)
 			for ch in $(seq 1 32)
