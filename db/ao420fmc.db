@@ -33,7 +33,7 @@ record(bo, "${UUT}:${SITE}:AO:REF"){
 
 record(ao, "${UUT}:${SITE}:AWG:G:${cid}") {
 	field(DTYP, "dsSysfsAo")
-	field(OUT, "@/dev/shm/awg/G${cid}")
+	field(OUT, "@/dev/acq400.${SITE}.knobs/G${cid}")
 	field(SCAN, "Passive")
 	field(DESC, "AWG GAIN adjust")
         field(DRVL, "0.000")
@@ -50,13 +50,13 @@ record(ao, "${UUT}:${SITE}:AWG:G:${cid}") {
 
 record(ao, "${UUT}:${SITE}:AWG:D:${cid}") {
 	field(DTYP, "dsSysfsAo")
-	field(OUT, "@/dev/shm/awg/D${cid}")
+	field(OUT, "@/dev/acq400.${SITE}.knobs/D${cid}")
 	field(SCAN, "Passive")
 	field(DESC, "AWG DC adjust")
         field(DRVL, "-100.0")
         field(DRVH, "100.0")
         field(LINR, "LINEAR")
-        field(ESLO, "0.001525925")
+        field(ESLO, "0.003051851")
 	field(EOFF, "0")
         field(HOPR, "100.0")
         field(LOPR, "-100.0")
