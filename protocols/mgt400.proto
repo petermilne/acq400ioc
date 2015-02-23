@@ -30,3 +30,11 @@ getAggregator {
 	out "aggregator";
 	in "%x";
 }
+
+getAggregatorSites {
+	in "0x%*x %s %*s";		
+}
+
+getAggregatorEn {
+	in "0x%*x %*s %{off|on}";
+}

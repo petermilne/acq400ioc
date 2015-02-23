@@ -38,6 +38,20 @@ record(longin, "${UUT}:${chan}:AGGREGATOR") {
 	field(SCAN,  "1 second")
 	field(DESC,  "0-> DISABLED")
 }
+
+record(stringin, "${UUT}:${chan}:AGGREGATOR:SITES") {
+	field(DTYP,  "stream")
+	field(INP,   "@mgt400.proto getAggregatorSites ${SPORT}")
+	field(SCAN,  "I/O Intr")	
+}
+
+record(bi, "${UUT}:${chan}:AGGREGATOR:ON") {
+	field(DTYP,  "stream")
+	field(INP,   "@mgt400.proto getAggregatorEn ${SPORT}")
+	field(SCAN,  "I/O Intr")	
+}
+
+
 record (bo, "${UUT}:MGT:SFP:${chan}:CLRSTATS") {
 	field(DTYP, "boAcqHost")	
 	field(OUT,  "@/dev/acq400.${chan}.knobs/clear_stats")
