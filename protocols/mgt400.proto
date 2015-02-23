@@ -26,3 +26,7 @@ getAuroraErr {
 	in "%d";
 }
 
+getAggregator {
+	out "aggregator";
+	in "%x";
+}

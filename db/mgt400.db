@@ -32,6 +32,12 @@ record(longin, "${UUT}:${chan}:AURORA:ERR") {
 	field(SCAN,  "1 second")
 }
 
+record(longin, "${UUT}:${chan}:AGGREGATOR") {
+	field(DTYP,  "stream")
+	field(INP,   "@mgt400.proto getAggregator ${SPORT}")	
+	field(SCAN,  "1 second")
+	field(DESC,  "0-> DISABLED")
+}
 record (bo, "${UUT}:MGT:SFP:${chan}:CLRSTATS") {
 	field(DTYP, "boAcqHost")	
 	field(OUT,  "@/dev/acq400.${chan}.knobs/clear_stats")
