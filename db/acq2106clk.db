@@ -50,13 +50,24 @@ record (bo, "${UUT}:SYS:CLK:DIST_CLK_SRC") {
 
 record (bi, "${UUT}:SYS:CLK:LOL") {
 	field(DTYP, "biAcqHost")
-	field(INP,  "/dev/gpio/CLK/LOL")
+	field(INP,  "@/dev/gpio/CLK/LOL")
 	field(SCAN, "1 second")
 }
 
 record (bi, "${UUT}:SYS:CLK:C1B") {
 	field(DTYP, "biAcqHost")
-	field(INP,  "/dev/gpio/CLK/C1B")
+	field(INP,  "@/dev/gpio/CLK/C1B")
 	field(SCAN, "1 second")
 }
 
+record (bi, "${UUT}:SYS:CLK:C2B") {
+	field(DTYP, "biAcqHost")
+	field(INP,  "@/dev/gpio/CLK/C2B")
+	field(SCAN, "1 second")
+}
+
+record (bi, "${UUT}:SYS:CLK:Si570_OE") {
+	field(DTYP, "biAcqHost")
+	field(INP,  "@/dev/gpio/CLK/Si570_OE")
+	field(SCAN, "10 second")
+}
