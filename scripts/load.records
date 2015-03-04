@@ -117,8 +117,10 @@ make_AI_TR_records() {
 	
 	if [ $(cat /etc/acq400/$site/data32) -eq 1 ]; then
 			maxcode=8388608
+			TYPE=LONG
 	else
 			maxcode=32768
+			TYPE=SHORT
 	fi	
 	for ix in $(seq $i1 $i2)
 	do
@@ -333,7 +335,8 @@ load_mb_base() {
 	echo 'dbLoadRecords("db/hwmonvolts_common.db","UUT='${HOST}'")'
 	case $mt in
 	acq2106)
-			echo 'dbLoadRecords("db/hwmonvolts_2106.db","UUT='${HOST}'")';;
+			echo 'dbLoadRecords("db/hwmonvolts_2106.db","UUT='${HOST}'")'
+			echo 'dbLoadRecords("db/acq2106clk.db","UUT='${HOST}',SPORT=S0")';;			
 	*)
 			echo 'dbLoadRecords("db/hwmonvolts.db","UUT='${HOST}'")';;
 	esac

@@ -1,0 +1,9 @@
+Terminator = LF;
+ExtraInput = Ignore;
+
+
+
+getSi5326config {
+	out "si5326config";
+	in "%s";		
+}

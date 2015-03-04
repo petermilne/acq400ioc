@@ -1,0 +1,62 @@
+record (stringin, "${UUT}:SYS:CLK:CONFIG") {
+	field(DTYP, "stream")
+	field(INP,  "@acq2106clk.proto getSi5326config ${SPORT}")
+	field(SCAN, "1 second")
+}
+
+record (bo, "${UUT}:SYS:CLK:OE_CLK1_ELF1") {
+	field(DTYP, "boAcqHost")	
+	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ELF1")	
+}
+
+record (bo, "${UUT}:SYS:CLK:OE_CLK1_ELF2") {
+	field(DTYP, "boAcqHost")	
+	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ELF2")	
+}
+
+record (bo, "${UUT}:SYS:CLK:OE_CLK1_ELF3") {
+	field(DTYP, "boAcqHost")	
+	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ELF3")	
+}
+
+record (bo, "${UUT}:SYS:CLK:OE_CLK1_ELF4") {
+	field(DTYP, "boAcqHost")	
+	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ELF4")	
+}
+
+record (bo, "${UUT}:SYS:CLK:OE_CLK1_ELF5") {
+	field(DTYP, "boAcqHost")	
+	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ELF5")	
+}
+
+record (bo, "${UUT}:SYS:CLK:OE_CLK1_ELF6") {
+	field(DTYP, "boAcqHost")	
+	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ELF6")	
+}
+
+record (bo, "${UUT}:SYS:CLK:OE_CLK1_ZYNQ") {
+	field(DTYP, "boAcqHost")	
+	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ZYNQ")	
+}
+
+record (bo, "${UUT}:SYS:CLK:DIST_CLK_SRC") {
+	field(DTYP, "boAcqHost")	
+	field(OUT, "@/dev/gpio/CLK/DIST_CLK_HDMI")
+# NB inverted	
+	field(ZNAM, "HDMI")
+	field(ONAM, "Si5326")	
+}
+
+
+record (bi, "${UUT}:SYS:CLK:LOL") {
+	field(DTYP, "biAcqHost")
+	field(INP,  "/dev/gpio/CLK/LOL")
+	field(SCAN, "1 second")
+}
+
+record (bi, "${UUT}:SYS:CLK:C1B") {
+	field(DTYP, "biAcqHost")
+	field(INP,  "/dev/gpio/CLK/C1B")
+	field(SCAN, "1 second")
+}
+
