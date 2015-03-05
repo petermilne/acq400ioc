@@ -4,6 +4,11 @@ record (stringin, "${UUT}:SYS:CLK:CONFIG") {
 	field(SCAN, "1 second")
 }
 
+record (bi, "${UUT}:SYS:CLK:BYPASS" ) {
+	field(DTYP, "stream")
+	field(INP,  "@acq2106clk.proto getSi5326bypass ${SPORT}")
+	field(SCAN, "1 second")
+}
 record (bo, "${UUT}:SYS:CLK:OE_CLK1_ELF1") {
 	field(DTYP, "boAcqHost")	
 	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ELF1")	
@@ -52,6 +57,8 @@ record (bi, "${UUT}:SYS:CLK:LOL") {
 	field(DTYP, "biAcqHost")
 	field(INP,  "@/dev/gpio/CLK/LOL")
 	field(SCAN, "1 second")
+	field(SDIS, "${UUT}:SYS:CLK:BYPASS")
+	field(DISV, "1")
 }
 
 record (bi, "${UUT}:SYS:CLK:C1B") {

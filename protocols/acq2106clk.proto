@@ -7,3 +7,8 @@ getSi5326config {
 	out "si5326config";
 	in "%s";		
 }
+
+getSi5326bypass {
+	out "si5326bypass";
+	in "%d";
+}
