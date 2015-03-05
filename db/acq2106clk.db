@@ -53,12 +53,17 @@ record (bo, "${UUT}:SYS:CLK:DIST_CLK_SRC") {
 }
 
 
-record (bi, "${UUT}:SYS:CLK:LOL") {
+record (bi, "${UUT}:SYS:CLK:lol") {
 	field(DTYP, "biAcqHost")
 	field(INP,  "@/dev/gpio/CLK/LOL")
 	field(SCAN, "1 second")
-	field(SDIS, "${UUT}:SYS:CLK:BYPASS")
-	field(DISV, "1")
+	field(FLNK, "${UUT}:SYS:CLK:LOL")
+}
+
+record (calc, "${UUT}:SYS:CLK:LOL" ) {
+	field(INPA, "${UUT}:SYS:CLK:lol")
+	field(INPB, "${UUT}:SYS:CLK:BYPASS")
+	field(CALC, "B==0 && A!=0")
 }
 
 record (bi, "${UUT}:SYS:CLK:C1B") {
