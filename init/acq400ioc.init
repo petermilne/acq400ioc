@@ -4,7 +4,7 @@ ETOP=/usr/local/epics
 STCMD=/tmp/st.cmd
 PIDF=/var/run/acq400ioc.pid
 LOG=/var/log/epics.log
-
+NICE=5
 LG="logger -t acq400ioc.init"
 
 if [ -f /etc/profile.d/epics.sh ]; then
@@ -63,15 +63,23 @@ EOF
 	ln -s $VERB /etc/acq400/$3/$2
 }
 
+wait_ioc_ready() {
+	let pollcat=0;
+	while [ ! -e /tmp/records.dbl ]; do
+		let report=$pollcat%5
+		if [ $report -eq 0 ]; then
+			$LG wait_ioc_ready $pollcat
+		fi
+		sleep 1
+		let pollcat="$pollcat+1"
+	done	
+}
+
 make_epics_knobs() {
 	if [ -e /tmp/epics_knobs_done ]; then
 		return
 	fi
-	sleep 1
-	while [ ! -e /tmp/records.dbl ]; do
-		sleep 1
-	done
-	
+
 	mkdir -p /etc/acq400/S
 	for PV in $(egrep SYS:[5Vv]\|Z:TEMP /tmp/records.dbl)
 	do
@@ -103,12 +111,9 @@ make_epics_knobs() {
 make_stcmd() {
 	if [ ! -e ${STCMD} ]; then
 		echo "++ create EPICS db ${STCMD}" 
-		(cd ${ETOP}
-		./scripts/load.records >${STCMD})
-		touch /dev/shm/AI
-		echo "++ ai_monitor_all"
-		ai_monitor_all start
+		(cd ${ETOP}; ./scripts/load.records >${STCMD})		
 	fi
+	touch /dev/shm/AI
 }
 
 bump() 
@@ -116,44 +121,17 @@ bump()
 	echo X | tr X \\030 | acq4xx-epics-console >/dev/null
 }
 
-bump_on_first_start()
-{
-# ioc is prone to coming up with 100% cpu first boot. wait, then bump it.
-	while [ ! -e /tmp/records.dbl ]; do
-		$LG bump_on_first_start waits /tmp/records.dbl
-		sleep 1
-	done
-	$LG bump_on_first_start ioc started give it 5
-	sleep 5
-	$LG bump_on_first_start bump now
-	bump
-	echo done > /tmp/bump_on_first_start99	
-}
-
-
 start_ioc() {
-	wait_bump=0
-	if [ ! -e /tmp/records.dbl ] ; then
-		bump_on_first_start &
-		wait_bump=1
-	fi
 	/usr/local/bin/procServ \
 		-c ${ETOP} -p $PIDF -L $LOG \
 		2222 \
-	/usr/local/bin/acq400ioc ${STCMD}
+	/bin/nice -n $NICE /usr/local/bin/acq400ioc ${STCMD}
 	$LG start_ioc PID $(cat $PIDF)
-	if [ $wait_bump -ne 0 ]; then
-		while [ ! -e /tmp/bump_on_first_start99 ]; do
-			sleep 2
-			$LG start_ioc waiting for bump
-		done
-		rm /tmp/bump_on_first_start99
-		$LG start_ioc all done
-	fi
 }
 
 stop_ioc() {
 	if [ -r ${PIDF} ]; then
+		$LG stop_ioc PID $(cat $PIDF)
 		kill -s TERM $(cat ${PIDF})
 		rm ${PIDF}
 	fi
@@ -166,7 +144,10 @@ restart() {
 	make_stcmd
 	stop_ioc
 	start_ioc
-	make_epics_knobs 
+	wait_ioc_ready
+	stop_ioc
+	make_epics_knobs
+	start_ioc
 }
 
 
