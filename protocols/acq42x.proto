@@ -25,3 +25,8 @@ getModel {
 	out "MODEL";
 	in "%s";
 }
+
+getSerial {
+	out "SERIAL";
+	in "%s";
+}
