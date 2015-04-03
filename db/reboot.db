@@ -1,0 +1,5 @@
+record(longout, "${UUT}:SYS:REBOOT") {
+	field(DTYP, "stream")	
+	field(DESC, "force instant reboot on magic code")
+	field(OUT,  "@mb.proto setReboot ${SPORT}")
+}

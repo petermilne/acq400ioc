@@ -62,3 +62,7 @@ getState {
 	out "state";
 	in "%d %(\$1:PRE)d %(\$1:POST)d %(\$1:TOTSAM)d";
 }
+
+setReboot {
+	out "reboot=%d";
+}
