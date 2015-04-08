@@ -119,6 +119,7 @@ long raw_to_volts(aSubRecord *prec) {
 	float * cooked = (float *)prec->vala;
 	long rmax = *(long*)prec->b;
 	float vmax = *(float*)prec->c;
+	float aoff = prec->o? *(float*)prec->o: 0;
 	double ratio = vmax/rmax;
 	long* p_thresh = (long*)prec->d;
 	long* p_over_range = (long*)prec->valb;
@@ -161,7 +162,7 @@ long raw_to_volts(aSubRecord *prec) {
 		sum += raw[ii];
 
 		yy = raw[ii];
-		yy *= ratio;
+		yy = yy*ratio + aoff;
 		cooked[ii] = (float)yy;
 	}
 
