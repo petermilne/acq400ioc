@@ -120,7 +120,7 @@ long raw_to_volts(aSubRecord *prec) {
 	long rmax = *(long*)prec->b;
 	float vmax = *(float*)prec->c;
 	float aoff = prec->o? *(float*)prec->o: 0;
-	double ratio = vmax/rmax;
+	double aslo = vmax/rmax;
 	long* p_thresh = (long*)prec->d;
 	long* p_over_range = (long*)prec->valb;
 	float* p_min = (float*)prec->valc;
@@ -143,10 +143,10 @@ long raw_to_volts(aSubRecord *prec) {
 				len, alarm_threshold, p_over_range);
 	}
 	if (rmax == 0){
-		ratio = 10.0/(sizeof(T)==4? INT_MAX: SHRT_MAX);
+		aslo = 10.0/(sizeof(T)==4? INT_MAX: SHRT_MAX);
 
 		if (report_done < 2){
-			printf("cheating, hardcode vmax, rmax ratio %f\n", ratio);
+			printf("cheating, hardcode vmax, rmax ratio %f\n", aslo);
 		}
 	}
 
@@ -160,21 +160,19 @@ long raw_to_volts(aSubRecord *prec) {
 		if (raw[ii] < -alarm_threshold) over_range = -1;
 		if (compute_squares) sumsq += square<T>(raw[ii]);
 		sum += raw[ii];
-
-		yy = raw[ii];
-		yy = yy*ratio + aoff;
+		yy = raw[ii]*aslo + aoff;
 		cooked[ii] = (float)yy;
 	}
 
 	if (p_over_range){
 		*p_over_range = over_range;
 	}
-	if (p_max) 	*p_max = max_value * ratio;
-	if (p_min) 	*p_min = min_value * ratio;
-	if (p_mean) 	*p_mean = sum*ratio/len;
+	if (p_max) 	*p_max = max_value*aslo + aoff;
+	if (p_min) 	*p_min = min_value*aslo + aoff;
+	if (p_mean) 	*p_mean = (sum*aslo)/len + aoff;
 
-	if (p_rms)	*p_rms = sqrt((double)sumsq/len) * ratio;
-	if (p_stddev)	*p_stddev = sqrt(((double)sumsq - (double)sum*sum/len)/len) * ratio;
+	if (p_rms)	*p_rms = sqrt((double)sumsq/len)*aslo + aoff;
+	if (p_stddev)	*p_stddev = sqrt(((double)sumsq - (double)sum*sum/len)/len) * aslo;
 	return 0;
 }
 

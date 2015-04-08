@@ -24,6 +24,12 @@ record(longout, "${UUT}:${SITE}:AI:WF:${cid}:TH") {
 	field(DESC, "alarm threshold in bits")
 }
 
+# INPA : raw waveform
+# INPB : maxcode bits
+# INPC : vmax		: ALT: INPC=aslo, INPB=1
+# INPD : alarm threshold
+# INPO : aoff
+
 record(aSub, "${UUT}:${SITE}:AI:WF:${cid}:V") {	
 	field(SNAM, "raw_to_volts_${type}")
 	
@@ -45,7 +51,7 @@ record(aSub, "${UUT}:${SITE}:AI:WF:${cid}:V") {
 	
 	field(FTO,  "FLOAT")
 	field(NOO,  "1")
-	field(INPO, "0"}
+	field(INPO, "0")
 	
 	field(FTVA, "FLOAT")
 	field(NOVA, "${size}")
