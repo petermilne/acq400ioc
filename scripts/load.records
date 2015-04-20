@@ -397,7 +397,7 @@ load_mb_sites() {
 	echo 'dbLoadRecords("db/asynRecord.db","P='${HOST}':,R=asyn:S0,PORT=S0,ADDR=0,IMAX=100,OMAX=100")'
 	echo 'drvAsynIPPortConfigure("SS", "127.0.0.1:4220")'
 	echo 'dbLoadRecords("db/asynRecord.db","P='${HOST}':,R=asyn:SS,PORT=SS,ADDR=0,IMAX=100,OMAX=100")'
-	echo 'drvAsynIPPortConfigure("ST", "127.0.0.1:2235")'
+	echo 'drvAsynIPPortConfigure("ST", "127.0.0.1:'$(get-port-from-service acq4xx-transient-console)'")'
 	echo 'dbLoadRecords("db/asynRecord.db","P='${HOST}':,R=asyn:ST,PORT=SS,ADDR=0,IMAX=100,OMAX=100")'
 }
 
