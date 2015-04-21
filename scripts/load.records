@@ -116,7 +116,7 @@ make_AI_TR_records() {
 	let size=$4
 	
 	if [ $(cat /etc/acq400/$site/data32) -eq 1 ]; then
-			maxcode=8388608
+			maxcode=2147483648
 			TYPE=LONG
 	else
 			maxcode=32768
