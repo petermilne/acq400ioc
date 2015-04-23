@@ -554,5 +554,19 @@ if [ -e "/tmp/st_post.cmd" ]; then
 	cat /tmp/st_post.cmd
 fi
 
+mb_model=$(basename ${devicetree_image%*.dtb})
+case $mb_model in
+acq2006)	clk=XCLK;;
+acq1001)
+		if [ $(cat /dev/gpio/BV2) -eq 0 ]; then
+				clk=ZCLK;
+		else
+				clk=XCLK;
+		fi;;
+*)		clk=ZCLK;;
+esac
+
+system "logger -t ioc setting FPMUX default $clk"
+system "set.site 0 FPMUX $clk"
 echo 'dbl > /tmp/records.dbl'
 echo 1>&2 "load.records 99"

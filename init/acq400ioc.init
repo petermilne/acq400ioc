@@ -84,7 +84,7 @@ make_epics_knobs() {
 	for PV in $(egrep SYS:[5Vv]\|Z:TEMP /tmp/records.dbl)
 	do
 		NU=${PV#*:}
-		make_caget $PV ${NU#*:} S
+m	make_caget $PV ${NU#*:} S
 	done
 	
 	for PV in $(egrep FREQ\|COUNT\|GAIN /tmp/records.dbl | grep -v .[rsfw]$)
@@ -94,13 +94,20 @@ make_epics_knobs() {
 		make_caget $PV ${NU#*:} ${SITE}	
 	done
 	
-	
 	for PV in $(grep ACQ43X_SAMPLE_RATE /tmp/records.dbl)
 	do
 		NU=${PV#*:}
 		SITE=${NU:0:1}
 		make_caput $PV ${NU#*:} ${SITE}
 	done
+	# disconnect old way @@todo remove me
+	for PV in $(grep FPMUX /tmp/records.dbl)
+	do
+		NU=${PV#*:}
+		make_caput $PV $NU 0
+	done
+	(cd /etc/acq400/0/; rm -f fpmux)
+	
 	killall voltsmon
 	daemon /usr/local/bin/voltsmon.epics
 	echo make_epics_knobs_done >/tmp/epics_knobs_done
