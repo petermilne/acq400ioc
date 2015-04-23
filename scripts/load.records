@@ -566,7 +566,7 @@ acq1001)
 *)		clk=ZCLK;;
 esac
 
-system "logger -t ioc setting FPMUX default $clk"
-system "set.site 0 FPMUX $clk"
+system "logger -t ioc setting SYS:CLK:FPMUX default $clk"
+system "set.site 0 SYS:CLK:FPMUX $clk"
 echo 'dbl > /tmp/records.dbl'
 echo 1>&2 "load.records 99"
