@@ -384,7 +384,7 @@ load_mb_sites() {
 	echo 'dbLoadRecords("db/acq2006clktree.db","UUT='${HOST}'")'
 	echo 'dbLoadRecords("db/acq2006mb.db","UUT='${HOST}',SPORT=S0")'
 	[ -e /etc/acq400/0/transient ] && \
-		echo 'dbLoadRecords("db/transient.db","UUT='${HOST}',SPORT=SS,SPORTT=ST")'
+		echo 'dbLoadRecords("db/transient.db","UUT='${HOST}',SPORT=SS,SPORTT=ST,NPORT=NP")'
 	[ -e /etc/acq400/0/reboot ] && \
 		echo 'dbLoadRecords("db/reboot.db","UUT='${HOST}',SPORT=S0")'
 	if [ "$LOAD_INTMON" = "y" ]; then
@@ -395,6 +395,7 @@ load_mb_sites() {
 	fi
 	echo 'drvAsynIPPortConfigure("S0", "127.0.0.1:4220")'
 	echo 'dbLoadRecords("db/asynRecord.db","P='${HOST}':,R=asyn:S0,PORT=S0,ADDR=0,IMAX=100,OMAX=100")'
+	echo 'drvAsynIPPortConfigure("NP", "127.0.0.1:2226")'
 	echo 'drvAsynIPPortConfigure("SS", "127.0.0.1:4220")'
 	echo 'dbLoadRecords("db/asynRecord.db","P='${HOST}':,R=asyn:SS,PORT=SS,ADDR=0,IMAX=100,OMAX=100")'
 	echo 'drvAsynIPPortConfigure("ST", "127.0.0.1:'$(get-port-from-service acq4xx-transient-console)'")'
@@ -454,7 +455,7 @@ cat - <<EOF
 epicsEnvSet("STREAM_PROTOCOL_PATH","./protocols")
 dbLoadDatabase("dbd/acq400ioc.dbd",0,0)
 acq400ioc_registerRecordDeviceDriver(pdbbase)
-dbLoadRecords("db/system.db","UUT=${HOST}")
+dbLoadRecords("db/system.db","UUT=${HOST},SPORT=S0")
 EOF
 
 KB=/dev/acq400.0.knobs

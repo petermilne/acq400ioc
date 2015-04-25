@@ -1,3 +1,16 @@
+record(bo, "${UUT}:MODE:CONTINUOUS") {
+	field(DTYP, "stream")
+	field(DESC, "continuous stream start/stop")
+	field(ZNAM, "stop")
+	field(ONAM, "start")
+	field(OUT,  "@mb.proto setContinuous ${SPORT}")
+}
+
+record(stringin, "${UUT}:MODE:CONTINUOUS:STATUS") {
+	field(DTYP, "stream")
+	field(INP,  "@continuous.proto getContinuousStatus ${NPORT}")
+	field(SCAN, "I/O Intr")
+}
 record(longout, "${UUT}:MODE:TRANSIENT") {
 	field(DTYP, "stream")	
 	field(DESC, "set transient samples")

@@ -48,6 +48,10 @@ setTransient {
 	in;
 }
 
+setContinuous {
+	out "streamtonowhered %s";
+}
+
 setArm {
 	out "set_arm";
 	in;
@@ -65,4 +69,14 @@ getState {
 
 setReboot {
 	out "reboot=%d";
+}
+
+getSwVersion {
+	out "software_version";
+	in "%39c";
+}
+
+getFpgaVersion {
+	out "fpga_version";
+	in "%39c";
 }
