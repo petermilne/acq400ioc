@@ -118,8 +118,13 @@ record(longout, "${UUT}:${SITE}:RTM_TRANSLEN:s") {
 
 record(longout, "${UUT}:${SITE}:ACQ43X_SAMPLE_RATE") {
 	field(DTYP, "Soft Channel")
+	field(FLNK, "${UUT}:1:ACQ43X_DT")
 }
 
+record(calc, "${UUT}:1:ACQ43X_DT") {
+	field(INPA, "${UUT}:1:ACQ43X_SAMPLE_RATE")
+	field(CALC, "A!=0? 1/A: 1")	
+}
 record(stringin, "${UUT}:${SITE}:ACQ43X_SAMPLE_RATE:INFO") {
 	field(DTYP, "Soft Channel")
 }

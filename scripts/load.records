@@ -53,33 +53,39 @@ get_range() {
 	fi
 }
 
+FIRST_AI_WF_RECORDS=1
+
 make_AI() {
-	SITE=$1
-	TYPE=SHORT
-	MAXCODE=32768
-	if [ -e /etc/acq400/$SITE/data32 ]; then
-		if [ $(cat /etc/acq400/$SITE/data32) -eq 1 ]; then
-			TYPE=LONG
-			MAXCODE=2147483648
+	site=$1
+	type=SHORT
+	maxcode=32768
+	if [ -e /etc/acq400/$site/data32 ]; then
+		if [ $(cat /etc/acq400/$site/data32) -eq 1 ]; then
+			type=LONG
+			maxcode=2147483648
 		fi
 	else
 		echo # 
 	fi
-	NCHAN=$(get_nchan $SITE)
-	VMAX=$(get_range $SITE)
+	nchan=$(get_nchan $site)
+	vmax=$(get_range $site)
 
-	let ch=0; while [ $ch -lt $NCHAN ]; do
+	let ch=0; while [ $ch -lt $nchan ]; do
 		let ch=$ch+1
 		cid=$(printf "%02d" $ch)
 		let IDX=$ch
 
-		PRAMS="UUT=${HOST},SITE=${SITE},cid=$cid,idx=${IDX},fname=AI.${SITE}"
-		WPRAMS="${PRAMS},size=${SIZE},type=${TYPE}"
-		WPRAMS="${WPRAMS},maxcode=${MAXCODE},vmax=${VMAX}"
+		PRAMS="UUT=${HOST},SITE=${site},cid=$cid,idx=${IDX},fname=AI.${site}"
+		wprams="${PRAMS},size=${SIZE},type=${type}"
+		wprams="${wprams},maxcode=${maxcode},vmax=${vmax}"
 
-		echo dbLoadRecords\(\"db/wfAcqHost.db\",\"${WPRAMS}\"\)
+		echo dbLoadRecords\(\"db/wfAcqHost.db\",\"${wprams}\"\)
 	done
+	[ $FIRST_AI_WF_RECORDS -eq 1 ] && echo dbLoadRecords\(\"db/wfAcqHostTb.db\",\"${wprams}\"\)	
+	FIRST_AI_WF_RECORDS=0			
 }
+
+
 
 make_AI_records() {
 	site=$1
@@ -105,8 +111,11 @@ make_AI_records() {
 		PRAMS=$PRAMS",egul=-$vmax,eguf=$vmax,lopr=-$vmax,hopr=$vmax,eslo=$eslo"		
 		echo dbLoadRecords\(\"db/aiAcqHost.db\",\"$PRAMS\"\)		
 		let ch=$ch+1
-	done									
+	done
+				
 }
+
+FIRST_AI_TR_RECORDS=1
 
 make_AI_TR_records() {
 	site=$1
@@ -114,7 +123,7 @@ make_AI_TR_records() {
 	let i2=$i1+$3
 	let ch=1
 	let size=$4
-	
+	vmax=$(get_range $site)
 	if [ $(cat /etc/acq400/$site/data32) -eq 1 ]; then
 			maxcode=2147483648
 			TYPE=LONG
@@ -129,11 +138,12 @@ make_AI_TR_records() {
 		alt=$(printf "%02d" $ix1)
 		PRAMS="UUT=$HOST,SITE=${site},cid=$cid,ch=$ch,alt=$alt"
 		WPRAMS="${PRAMS},size=${size},type=${TYPE}"
-		WPRAMS="${WPRAMS},maxcode=${maxcode},vmax=${VMAX}"		
+		WPRAMS="${WPRAMS},maxcode=${maxcode},vmax=${vmax}"		
 		echo dbLoadRecords\(\"db/wfAcqHostTw.db\",\"$WPRAMS\"\)		
 		let ch=$ch+1
 	done
-	echo dbLoadRecords\(\"db/wfAcqHostTwTb.db\",\"$WPRAMS\"\)		
+	[ $FIRST_AI_TR_RECORDS -eq 1 ] && echo dbLoadRecords\(\"db/wfAcqHostTwTb.db\",\"$WPRAMS\"\)	
+	FIRST_AI_TR_RECORDS=0	
 }
 
 make_AI_subrate() {	
