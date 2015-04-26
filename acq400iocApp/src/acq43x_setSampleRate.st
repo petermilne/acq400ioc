@@ -75,14 +75,21 @@ ss rate_set
 	state run {
 		when(Fs != Fs0 && Fs != 0){
 			printf("acq43x_setSampleRate change detect\n");
-			if (Fs0 == 0){
+			pvGet(mclk_out);
+			pvGet(adc_clk_src);
+			pvGet(adc_clk_src_dx);
+			
+			if (Fs0 == 0 || mclk_out != 0){
 				mclk_out = 0;
 				pvPut(mclk_out, SYNC);
+			}
+			if (Fs0 == 0 || adc_clk_src != 1){
 				adc_clk_src = 1;	/* EXT */
-				pvPut(adc_clk_src, SYNC);
+				pvPut(adc_clk_src, SYNC);			
+			}
+			if (Fs0 == 0 || adc_clk_src_dx != 1){
 				adc_clk_src_dx = 1;	/* d1 : MCLK */
-				pvPut(adc_clk_src_dx, SYNC);				
-				printf("first time init done\n");
+				pvPut(adc_clk_src_dx, SYNC);								
 			}
 			printf("run %.0f != %.0f\n", Fs, Fs0);						
 			
