@@ -101,15 +101,11 @@ static int report_done;
 
 
 
-template <class T> long square(T raw) {
-	return raw*raw;
+template <class T> double square(T raw) {
+	double dr = static_cast<double>(raw);
+	return dr*dr;
 }
 
-// avoid overflow by truncation
-template<long> long square(long raw) {
-	raw >>= 16;
-	return raw*raw;
-}
 
 template <class T>
 long raw_to_volts(aSubRecord *prec) {
@@ -132,8 +128,8 @@ long raw_to_volts(aSubRecord *prec) {
 	long max_value;
 	long over_range = 0;
 	long alarm_threshold = rmax - (p_thresh? *p_thresh: OR_THRESHOLD);
-	long long sum = 0;
-	long long sumsq = 0;
+	double sum = 0;
+	double sumsq = 0;
 	bool compute_squares = p_stddev != 0 || p_rms != 0;
 
 	if (++report_done == 1){
@@ -171,8 +167,26 @@ long raw_to_volts(aSubRecord *prec) {
 	if (p_min) 	*p_min = min_value*aslo + aoff;
 	if (p_mean) 	*p_mean = (sum*aslo)/len + aoff;
 
-	if (p_rms)	*p_rms = sqrt((double)sumsq/len)*aslo + aoff;
-	if (p_stddev)	*p_stddev = sqrt(((double)sumsq - (double)sum*sum/len)/len) * aslo;
+	if (p_rms)	*p_rms = sqrt(sumsq/len)*aslo + aoff;
+	if (p_stddev)	*p_stddev = sqrt((sumsq - (sum*sum)/len)/len) * aslo;
+	return 0;
+}
+
+long timebase(aSubRecord *prec) {
+	long pre = *(long*)prec->a;
+	long post = *(long*)prec->b;
+	float dt = *(float*)prec->c;
+	float * tb = (float *)prec->vala;
+	long maxtb = prec->nova;
+	long len = pre + post;
+
+	if (len > maxtb){
+		printf("timebase ERROR maxtb:%ld len:%ld\n", maxtb, len);
+	}
+
+	for (int ii = 0; ii < len; ++ii){
+		tb[ii] = (ii - pre)*dt;
+	}
 	return 0;
 }
 
@@ -180,6 +194,7 @@ long raw_to_volts(aSubRecord *prec) {
        {"raw_to_uvolts", (REGISTRYFUNCTION) raw_to_uvolts},
        {"raw_to_volts_LONG",  (REGISTRYFUNCTION) raw_to_volts<long>},
        {"raw_to_volts_SHORT",  (REGISTRYFUNCTION) raw_to_volts<short>},
+       {"timebase", (REGISTRYFUNCTION) timebase},
  };
 
  static void raw_to_uvolts_Registrar(void) {

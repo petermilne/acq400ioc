@@ -132,8 +132,10 @@ make_AI_TR_records() {
 		WPRAMS="${WPRAMS},maxcode=${maxcode},vmax=${VMAX}"		
 		echo dbLoadRecords\(\"db/wfAcqHostTw.db\",\"$WPRAMS\"\)		
 		let ch=$ch+1
-	done		
-}	
+	done
+	echo dbLoadRecords\(\"db/wfAcqHostTwTb.db\",\"$WPRAMS\"\)		
+}
+
 make_AI_subrate() {	
 	for cc in $(cat /dev/acq400.0.knobs/aggregator)
 	do
