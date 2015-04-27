@@ -118,7 +118,7 @@ m	make_caget $PV ${NU#*:} S
 make_stcmd() {
 	if [ ! -e ${STCMD} ]; then
 		echo "++ create EPICS db ${STCMD}" 
-		(cd ${ETOP}; ./scripts/load.records | tee ${STCMD})		
+		(cd ${ETOP}; ./scripts/load.records > ${STCMD})		
 	fi
 	touch /dev/shm/AI
 }
