@@ -556,7 +556,7 @@ if [ -e "/tmp/st_pre.cmd" ]; then
 fi
 
 cat - <<EOF
-dbLoadRecords("/usr/local/epics/db/local-aliases.db")
+dbLoadRecords("db/local-aliases.db","UUT=${HOST}")
 iocInit()
 EOF
 
