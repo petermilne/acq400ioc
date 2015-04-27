@@ -70,7 +70,7 @@ record(bi, "${UUT}:${SITE}:PLAY") {
 }
 
 record(bi, "${UUT}:${SITE}:ODDS") {
-	field(DTYPE, "stream")
+	field(DTYP,  "stream")
 	field(INP,   "@ao424.proto getOdds ${SPORT}")
 	field(SCAN,  "1 second")
 	field(FLNK,  "${UUT}:${SITE}:FIXED_RANGE")
