@@ -84,7 +84,7 @@ make_epics_knobs() {
 	for PV in $(egrep SYS:[5Vv]\|Z:TEMP /tmp/records.dbl)
 	do
 		NU=${PV#*:}
-m	make_caget $PV ${NU#*:} S
+		make_caget $PV ${NU#*:} S
 	done
 	
 	for PV in $(egrep FREQ\|COUNT\|GAIN /tmp/records.dbl | grep -v .[rsfw]$)
@@ -123,6 +123,16 @@ make_stcmd() {
 	touch /dev/shm/AI
 }
 
+make_aliases_loop() {
+	while read PV
+	do
+		echo alias\(\"$PV\",\"$1:${PV#*:}\"\)
+	done
+}
+make_aliases() {
+	make_aliases_loop $1 </tmp/records.dbl >/usr/local/epics/db/local-aliases.db	 
+}
+
 bump() 
 {
 	echo X | tr X \\030 | acq4xx-epics-console >/dev/null
@@ -154,6 +164,7 @@ restart() {
 	wait_ioc_ready
 	stop_ioc
 	make_epics_knobs
+	[ "x$IOC_GLOBAL_ALIAS_PFX" != "x" ] && make_aliases $IOC_GLOBAL_ALIAS_PFX
 	start_ioc
 }
 

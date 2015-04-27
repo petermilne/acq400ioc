@@ -1,0 +1,3 @@
+#/usr/local/epics/db/local-aliases.db
+# placeholder .. this will be overwritten
+# alias("PVNAME","ALIASNAME")

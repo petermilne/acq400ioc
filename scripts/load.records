@@ -555,7 +555,10 @@ if [ -e "/tmp/st_pre.cmd" ]; then
 	cat /tmp/st_pre.cmd
 fi
 
-echo 'iocInit()'
+cat - <<EOF
+dbLoadRecords("/usr/local/epics/db/local-aliases.db")
+iocInit()
+EOF
 
 if [ "x$IOC_POSTINIT" != "x" ]; then
 	echo 1>&2 "load.records:$IOC_POSTINIT"
