@@ -178,11 +178,12 @@ long timebase(aSubRecord *prec) {
 	float dt = *(float*)prec->c;
 	float * tb = (float *)prec->vala;
 	long maxtb = prec->nova;
-	long len = pre + post;
+	long len = pre + post + 1;    // [pre .. 0 .. post]
 
-	if (len > maxtb){
+	if (len > maxtb+1){
 		printf("timebase ERROR maxtb:%ld len:%ld\n", maxtb, len);
 	}
+	if (len > maxtb) len = maxtb;
 
 	for (int ii = 0; ii < len; ++ii){
 		tb[ii] = (ii - pre)*dt;

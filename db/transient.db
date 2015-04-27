@@ -59,6 +59,8 @@ record(longout, "${UUT}:MODE:TRANSIENT:SET_ARM") {
 	field(LOPR, "0")
 	field(HOPR, "1")	
 	field(OUT,  "@mb.proto setArm ${SPORT}")
+	field(SDIS, "${UUT}:MODE:CONTINUOUS")
+	field(DISV, "1")
 }
 
 record(longout, "${UUT}:MODE:TRANSIENT:SET_ABORT") {

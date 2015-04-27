@@ -30,6 +30,12 @@ monitor shot_complete;
 
 int shot_complete0;
 
+int continuous;
+assign continuous to "{uut}:MODE:CONTINUOUS";
+monitor continuous;
+
+
+
 ss autorepeat
 {
 	state stop
@@ -111,5 +117,24 @@ ss autorepeat
 		when(tstate != 0){
 			printf("wait_run=>run\n");
 		} state run
+	}
+}
+
+
+/* avoid spurious restart last transient repeat when continuous is stopped */
+
+
+ss monitor_continuous 
+{
+	state mc1
+	{
+		when(continuous > 0){
+			pvGet(repeat);
+			if (repeat){
+				printf("continuous start detected, set repeat to zero to false restart\n");
+				repeat = 0;
+				pvPut(repeat);
+			}
+		} state mc1
 	}
 }
