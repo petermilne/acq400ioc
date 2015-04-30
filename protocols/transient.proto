@@ -14,4 +14,4 @@ read_elapsed 	{ in "%*d %*d %*d %d %*d"; }
 
 read_demux 	{ in "%*d %*d %*d %*d %d"; }
 
-read_error	{ in "ERROR %/(.*)/"; }
+read_error	{ in "ERROR %s"; }

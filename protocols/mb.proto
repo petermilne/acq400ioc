@@ -80,3 +80,11 @@ getFpgaVersion {
 	out "fpga_version";
 	in "%39c";
 }
+
+setPre {
+	out "live_pre %d";
+}
+
+setPost {
+	out "live_post %d";
+}

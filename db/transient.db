@@ -142,9 +142,48 @@ record(longin, "${UUT}:TRANSIENT:ACT:DEMUX") {
 	field(INP,  "@transient.proto read_demux ${SPORTT}")
 	field(SCAN, "I/O Intr")
 }
-#record(stringin, "${UUT}:TRANSIENT:ACT:ERROR") {
-#	field(DTYP, "stream")
-#	field(INP,  "@transient.proto read_error ${SPORTT}")
-#	field(SCAN, "I/O Intr")
-#}
+record(stringin, "${UUT}:TRANSIENT:ACT:ERROR") {
+	field(DTYP, "stream")
+	field(INP,  "@transient.proto read_error ${SPORTT}")
+	field(SCAN, "I/O Intr")
+}
+
+record(longout, "${UUT}:LIVE:LEN" ){
+	field(DTYP, "Soft Channel")
+	field(VAL,  "4096")
+	field(DESC,  "length of live plot WF (fixed)")
+	field(PINI,  "YES")
+}
+record(ao, "${UUT}:LIVE:PRE") {
+	field(DTYP, "stream")
+	field(SCAN, "Passive")
+	field(DRVL, "0")
+	field(DRVH, "4096")
+	field(EGUL, "0")
+	field(EGUF, "4096")
+	field(DESC, "delay samples")
+	field(FLNK, "${UUT}:LIVE:delay_calc")
+	field(OUT,  "@mb.proto setPre ${SPORT}")
+	field(PINI,  "YES")
+	field(LINR,  "LINEAR")
+}
+
+record(calcout, "${UUT}:LIVE:delay_calc") {
+	field(INPA,  "${UUT}:LIVE:LEN")
+	field(INPB,  "${UUT}:LIVE:PRE")
+	field(CALC,  "A-B")
+	field(FLNK,  "${UUT}:LIVE:POST")
+}
+record(ao, "${UUT}:LIVE:POST") {
+	field(DTYP,  "stream")
+	field(DOL,   "${UUT}:LIVE:delay_calc")
+	field(OMSL,  "closed_loop")
+	field(SCAN,  "Passive")
+	field(DRVL,  "0.00")
+	field(DRVH,  "4096")
+	field(OUT,   "@mb.proto setPost ${SPORT}")
+	field(PINI,  "YES")
+}
+
+
 
