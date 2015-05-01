@@ -1,7 +1,7 @@
 # /usr/local/epics/db/local-aliases.db
 # placeholder .. this will be overwritten
 # eg alias("PVNAME","ALIASNAME")
-record(stringin, "${UUT}:NOALIASES") {
+record(bo, "${UUT}:NOALIASES") {
 	field(DTYP, "Soft Channel")
 }
 
