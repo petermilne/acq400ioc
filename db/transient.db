@@ -154,18 +154,13 @@ record(longout, "${UUT}:LIVE:LEN" ){
 	field(DESC,  "length of live plot WF (fixed)")
 	field(PINI,  "YES")
 }
-record(ao, "${UUT}:LIVE:PRE") {
+record(longout, "${UUT}:LIVE:PRE") {
 	field(DTYP, "stream")
 	field(SCAN, "Passive")
-	field(DRVL, "0")
-	field(DRVH, "4096")
-	field(EGUL, "0")
-	field(EGUF, "4096")
 	field(DESC, "delay samples")
 	field(FLNK, "${UUT}:LIVE:delay_calc")
 	field(OUT,  "@mb.proto setPre ${SPORT}")
 	field(PINI,  "YES")
-	field(LINR,  "LINEAR")
 }
 
 record(calcout, "${UUT}:LIVE:delay_calc") {
@@ -174,15 +169,14 @@ record(calcout, "${UUT}:LIVE:delay_calc") {
 	field(CALC,  "A-B")
 	field(FLNK,  "${UUT}:LIVE:POST")
 }
-record(ao, "${UUT}:LIVE:POST") {
+record(longout, "${UUT}:LIVE:POST") {
 	field(DTYP,  "stream")
 	field(DOL,   "${UUT}:LIVE:delay_calc")
 	field(OMSL,  "closed_loop")
-	field(SCAN,  "Passive")
-	field(DRVL,  "0.00")
-	field(DRVH,  "4096")
 	field(OUT,   "@mb.proto setPost ${SPORT}")
 	field(PINI,  "YES")
+	field(FLNK,   "${UUT}:1:AI:WF:TB")
+	# @@todo other sites are out in the cold
 }
 
 
