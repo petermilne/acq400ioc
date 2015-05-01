@@ -16,4 +16,8 @@ record (stringin, "${UUT}:SYS:VERSION:FPGA" ) {
 	field(PINI, "YES")
 }
 
+record (bo, "${UUT}:NOALIASES") {
+	field(DTYP, "Soft Channel")
+}
+
 
