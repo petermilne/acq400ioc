@@ -1,6 +1,5 @@
 /*************************************************************************\
-ao420_range_set.st : repeat transient on termination
-rescale AO records depending on range.
+ao420_range_set.st : rescale AO records depending on range.
 \*************************************************************************/
 program ao420_range_set
 option +r;
