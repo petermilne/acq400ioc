@@ -33,7 +33,7 @@ record(bi, "${UUT}:${SITE}:ADC_MODE:r") {
 	field(DTYP, "stream")	
 	field(ZNAM, "HS_256")
 	field(ONAM, "HR_512")	
-	field(INP,  "acq43x.proto getHiResMode ${SPORT}")
+	field(INP,  "@acq43x.proto getHiResMode ${SPORT}")
 	field(SCAN, "1 second")
 	field(PINI, "YES")
 	field(FLNK, "${UUT}:${SITE}:ADC_MODE:s")
