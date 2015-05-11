@@ -27,6 +27,7 @@ cp -a ../base/bin/linux-arm/ca* opkg/usr/local/bin
 cp -a ../seq/lib/linux-arm/libpv.so ../seq/lib/linux-arm/libseq.so opkg/usr/local/lib
 
 tar cvzf release/${SEQ}-acq400ioc-${DC}.tgz -C opkg .
+git tag -a R${DC}
 ls -l release/${SEQ}-acq400ioc-${DC}.tgz
 rm -f ../../../PACKAGES/${SEQ}-acq400ioc*
 cp release/${SEQ}-acq400ioc-${DC}.tgz ../../../PACKAGES/
