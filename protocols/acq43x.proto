@@ -28,3 +28,11 @@ getDiv {
 	in "%*d,%d";
 }
 
+setHiResMode {
+	out "hi_res_mode %d";
+}
+
+getHiResMode {
+	out "hi_res_mode";
+	in "%d";
+}

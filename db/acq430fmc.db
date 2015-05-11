@@ -8,12 +8,12 @@ record (bo, "${UUT}:${SITE}:ADC_MODE") {
 }
 
 record (bo, "${UUT}:${SITE}:ADC_MODE:w") {
-	field(DTYP, "boAcqHost")
+	field(DTYP, "stream")	
 	field(ZNAM, "HS_256")
 	field(ONAM, "HR_512")
 	field(OMSL, "closed_loop")
 	field(DOL,  "${UUT}:${SITE}:ADC_MODE")
-	field(OUT,  "@/dev/acq400.${SITE}.knobs/hi_res_mode")
+	field(OUT,  "@acq43x.proto setHiResMode ${SPORT}")
 	field(FLNK, "${UUT}:${SITE}:ADC_MODE:c")
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:ADC_MODE:r.PACT")
@@ -30,10 +30,10 @@ record(calcout, "${UUT}:${SITE}:ADC_MODE:c") {
 }
 
 record(bi, "${UUT}:${SITE}:ADC_MODE:r") {
-	field(DTYP,  "biAcqHost")
+	field(DTYP, "stream")	
 	field(ZNAM, "HS_256")
 	field(ONAM, "HR_512")	
-	field(INP,  "@/dev/acq400.${SITE}.knobs/hi_res_mode")
+	field(INP,  "acq43x.proto getHiResMode ${SPORT}")
 	field(SCAN, "1 second")
 	field(PINI, "YES")
 	field(FLNK, "${UUT}:${SITE}:ADC_MODE:s")
