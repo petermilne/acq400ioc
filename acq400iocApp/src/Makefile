@@ -68,6 +68,7 @@ acq400ioc_SRCS_DEFAULT += acq400iocMain.cpp \
     devMbboAcqHost.cpp AcqMbboHostDescr.cpp \
     devWfAWGHost.cpp AcqWfAWGHostDescr.cpp \
     devBoAcqCommand.cpp AcqBoCommandDescr.cpp \
+    tinyxml2.cpp \
     FileMonitor.cpp VFile.cpp 
 acq400ioc_SRCS_vxWorks += -nil-
 
