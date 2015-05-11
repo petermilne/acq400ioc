@@ -289,7 +289,7 @@ load_400() {
 	echo 'dbLoadRecords("db/signal.db","'${cprams}',FNAM=EVENT0,FN=event0,ZNAM=disable,ONAM=enable")'
 	echo 'dbLoadRecords("db/acq420fmc99.db","'${cprams}'")'
 	echo 'drvAsynIPPortConfigure("S'${site}'", "127.0.0.1:422'${site}'")'
-	echo 'dbLoadRecords("db/asynRecord.db","P='${HOST}':,R=asyn:S'${site}',PORT=S0,ADDR=0,IMAX=100,OMAX=100")'
+	echo 'dbLoadRecords("db/asynRecord.db","P='${HOST}':,R=asyn:S'${site}',PORT=S'${SITE}',ADDR=0,IMAX=100,OMAX=100")'
 }
 
 load_421() {
