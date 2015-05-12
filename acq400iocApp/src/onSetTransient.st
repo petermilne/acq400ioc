@@ -26,7 +26,7 @@ int pre0;
 int cmode; assign cmode to "{uut}:MODE:CONTINUOUS";
 monitor cmode;
 
-int enable; assign enable to "{uut}::asyn:NP.ENBL";
+int enable; assign enable to "{uut}:asyn:NP.ENBL";
 
 ss onSetTransient {
 	state init {
@@ -59,10 +59,12 @@ ss onSetTransient {
 ss actOnContinuous {
 	state init {
 		when(cmode == 0){
+			printf("actOnContinuous DISABLE link\n");
 			enable = 0; pvPut(enable);
 		} state wait_run
 		
 		when(cmode == 1){
+			printf("actOnContinuous ENABLE link\n");
 			enable = 1; pvPut(enable);
 		} state wait_stop
 	}
