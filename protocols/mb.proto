@@ -88,3 +88,8 @@ setPre {
 setPost {
 	out "live_post %d";
 }
+
+get_live_mode {
+	out "get_live_mode";
+	in "%d";
+}
