@@ -569,6 +569,10 @@ dbLoadRecords("db/local-aliases.db","UUT=${HOST}")
 iocInit()
 EOF
 
+if [ -e "/tmp/st_post.cmd" ]; then
+	cat /tmp/st_post.cmd
+fi
+
 mb_model=$(basename ${devicetree_image%*.dtb})
 case $mb_model in
 acq2006)	clk=XCLK;;
@@ -592,9 +596,7 @@ else
 		echo "dbpf $HOST:1:ACQ43X_SAMPLE_RATE 43500"
 	fi
 fi
-if [ -e "/tmp/st_post.cmd" ]; then
-	cat /tmp/st_post.cmd
-fi
+
 
 
 echo 'dbl > /tmp/records.dbl'
