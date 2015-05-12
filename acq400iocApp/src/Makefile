@@ -36,6 +36,7 @@ acq400ioc_DBD += aoRangeSet.dbd
 acq400ioc_DBD += acq43x_setSampleRate.dbd
 acq400ioc_DBD += onSetTransient.dbd
 acq400ioc_DBD += mgtStopOnLinkDown.dbd
+acq400ioc_DBD += calmon.dbd
 
 # Add all the support libraries needed by this IOC
 acq400ioc_LIBS += acq2ioc
@@ -54,6 +55,7 @@ acq400ioc_SRCS += aoRangeSet424.st
 acq400ioc_SRCS += acq43x_setSampleRate.st
 acq400ioc_SRCS += onSetTransient.st
 acq400ioc_SRCS += mgtStopOnLinkDown.st
+acq400ioc_SRCS += calmon.st
 
 # Build the main IOC entry point on workstation OSs.
 acq400ioc_SRCS_DEFAULT += acq400iocMain.cpp \
@@ -68,6 +70,7 @@ acq400ioc_SRCS_DEFAULT += acq400iocMain.cpp \
     devMbboAcqHost.cpp AcqMbboHostDescr.cpp \
     devWfAWGHost.cpp AcqWfAWGHostDescr.cpp \
     devBoAcqCommand.cpp AcqBoCommandDescr.cpp \
+    acq400_caldata.cpp \
     tinyxml2.cpp \
     FileMonitor.cpp VFile.cpp 
 acq400ioc_SRCS_vxWorks += -nil-
