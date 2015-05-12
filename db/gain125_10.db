@@ -24,7 +24,7 @@ record (mbbi, "${UUT}:${SITE}:GAIN:${CH}:r") {
 	field(DTYP, "stream")
 	field(INP,  "@acq42x.proto getGain(${IX}) ${SPORT}")	
 	field(NOBT, "2")	
-	field(SCAN, "1 second")
+	field(SCAN, "5 second")
 	field(PINI, "YES")	
 	field(FLNK, "${UUT}:${SITE}:GAIN:${CH}:s")
 }
