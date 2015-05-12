@@ -10,6 +10,8 @@ record(stringin, "${UUT}:MODE:CONTINUOUS:STATUS") {
 	field(DTYP, "stream")
 	field(INP,  "@continuous.proto getContinuousStatus ${NPORT}")
 	field(SCAN, "I/O Intr")
+	field(SDIS, "${UUT}:MODE:CONTINUOUS")
+	field(DISV, "0")
 }
 record(longout, "${UUT}:MODE:TRANSIENT") {
 	field(DTYP, "stream")	
