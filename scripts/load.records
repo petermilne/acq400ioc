@@ -569,16 +569,6 @@ dbLoadRecords("db/local-aliases.db","UUT=${HOST}")
 iocInit()
 EOF
 
-if [ "x$IOC_POSTINIT" != "x" ]; then
-	echo 1>&2 "load.records:$IOC_POSTINIT"
-	if [ -e $IOC_POSTINIT ]; then
-		source $IOC_POSTINIT
-	fi
-fi
-if [ -e "/tmp/st_post.cmd" ]; then
-	cat /tmp/st_post.cmd
-fi
-
 mb_model=$(basename ${devicetree_image%*.dtb})
 case $mb_model in
 acq2006)	clk=XCLK;;
@@ -591,7 +581,21 @@ acq1001)
 *)		clk=ZCLK;;
 esac
 
+if [ "x$IOC_POSTINIT" != "x" ]; then
+	echo 1>&2 "load.records:$IOC_POSTINIT"
+	if [ -e $IOC_POSTINIT ]; then
+		source $IOC_POSTINIT
+	fi
+else
+	echo "dbpf $HOST:SYS:CLK:FPMUX $clk"
+	if [ "x$HAS_ACQ43X" != "x" ]; then
+		echo "dbpf $HOST:1:ACQ43X_SAMPLE_RATE 43500"
+	fi
+fi
+if [ -e "/tmp/st_post.cmd" ]; then
+	cat /tmp/st_post.cmd
+fi
 
-echo "dbpf $HOST:SYS:CLK:FPMUX $clk"
+
 echo 'dbl > /tmp/records.dbl'
 echo 1>&2 "load.records 99"
