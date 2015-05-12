@@ -245,12 +245,15 @@ load_400() {
 	esac
 	case $model in
 	2|3|6)	
-		HAS_ACQ43X=1
-		echo 1>&2 "HAS_ACQ43X Detected: $HAS_ACQ43X"
-		#ACQ435 .. nb HIRES makes it /2
-		echo 'dbLoadRecords("db/acq430fmc.db","'${cprams},LO=$LO'")'
-		echo 'dbLoadRecords("db/acq43x_rgm.db","'${cprams}'")'
-		let LO=$LO/256;;	
+		if [ "x${site}" = "x1" ]; then
+			HAS_ACQ43X=1
+			echo 1>&2 "HAS_ACQ43X Detected: $HAS_ACQ43X"
+			#ACQ435 .. nb HIRES makes it /2
+			mprams="UUT=${HOST},SITE=${site},SPORT=S1M"
+			echo 'dbLoadRecords("db/acq430fmc.db","'${mprams},LO=$LO'")'
+			echo 'dbLoadRecords("db/acq43x_rgm.db","'${mprams}'")'
+		fi
+		let LO=$LO/256;;				
 	40|41)
 		load_AO $site $model $cprams		
 		let LO=66000000;;	
@@ -290,6 +293,10 @@ load_400() {
 	echo 'dbLoadRecords("db/acq420fmc99.db","'${cprams}'")'
 	echo 'drvAsynIPPortConfigure("S'${site}'", "127.0.0.1:422'${site}'")'
 	echo 'dbLoadRecords("db/asynRecord.db","P='${HOST}':,R=asyn:S'${site}',PORT=S'${SITE}',ADDR=0,IMAX=100,OMAX=100")'
+	if [ "x${site}" = "x1" ]; then
+		echo 'drvAsynIPPortConfigure("S1M", "127.0.0.1:4221")'
+		echo 'dbLoadRecords("db/asynRecord.db","P='${HOST}':,R=asyn:S1M,PORT=S1M,ADDR=0,IMAX=100,OMAX=100")'
+	fi
 }
 
 load_421() {
