@@ -70,7 +70,13 @@ ss actOnContinuous {
 	}
 	
 	state wait_run {
-		when(cmode == 1){
+		when(cmode == 1 && delay(2)){
+			printf("actOnContinuous RUN detect .. delay\n");
+		} state wait_run_delay
+	}
+	
+	state wait_run_delay {
+		when(delay(3)){
 		
 		} state init
 	}
