@@ -90,6 +90,6 @@ setPost {
 }
 
 get_live_mode {
-	out "get_live_mode";
+	out "live_mode";
 	in "%d";
 }
