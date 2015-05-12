@@ -53,6 +53,13 @@ get_range() {
 	fi
 }
 
+create_asyn_channel() {
+		cat - <<EOF
+drvAsynIPPortConfigure("$1", "$2")
+dbLoadRecords("db/asynRecord.db","P=${HOST}:,R=asyn:$1,PORT=$1,ADDR=0,IMAX=100,OMAX=100")										
+EOF
+			
+}
 FIRST_AI_WF_RECORDS=1
 
 make_AI() {
@@ -291,11 +298,10 @@ load_400() {
 	echo 'dbLoadRecords("db/signal.db","'${cprams}',FNAM=EVENT1,FN=event1,ZNAM=disable,ONAM=enable")'
 	echo 'dbLoadRecords("db/signal.db","'${cprams}',FNAM=EVENT0,FN=event0,ZNAM=disable,ONAM=enable")'
 	echo 'dbLoadRecords("db/acq420fmc99.db","'${cprams}'")'
-	echo 'drvAsynIPPortConfigure("S'${site}'", "127.0.0.1:422'${site}'")'
-	echo 'dbLoadRecords("db/asynRecord.db","P='${HOST}':,R=asyn:S'${site}',PORT=S'${site}',ADDR=0,IMAX=100,OMAX=100")'
+	
+	create_asyn_channel S${site} 127.0.0.1:422${site}
 	if [ "x${site}" = "x1" ]; then
-		echo 'drvAsynIPPortConfigure("S1M", "127.0.0.1:4221")'
-		echo 'dbLoadRecords("db/asynRecord.db","P='${HOST}':,R=asyn:S1M,PORT=S1M,ADDR=0,IMAX=100,OMAX=100")'
+		create_asyn_channel S1M 127.0.0.1:4221
 	fi
 }
 
@@ -408,18 +414,13 @@ load_mb_sites() {
 		echo 'dbLoadRecords("db/reboot.db","UUT='${HOST}',SPORT=S0")'
 	if [ "$LOAD_INTMON" = "y" ]; then
 		# uses 1% cpu for monitoring. Not default
-		echo 'drvAsynIPPortConfigure("SI", "127.0.0.1:4239")'
-		echo 'dbLoadRecords("db/asynRecord.db","P='${HOST}':,R=asyn:SI,PORT=SI,ADDR=0,IMAX=100,OMAX=100")'				
+		create_asyn_channel SI 127.0.0.1:4239			
 		load_intmon
 	fi
-	echo 'drvAsynIPPortConfigure("S0", "127.0.0.1:4220")'
-	echo 'dbLoadRecords("db/asynRecord.db","P='${HOST}':,R=asyn:S0,PORT=S0,ADDR=0,IMAX=100,OMAX=100")'
-	echo 'drvAsynIPPortConfigure("NP", "127.0.0.1:2226")'
-	echo 'dbLoadRecords("db/asynRecord.db","P='${HOST}':,R=asyn:NP,PORT=NP,ADDR=0,IMAX=100,OMAX=100")'
-	echo 'drvAsynIPPortConfigure("SS", "127.0.0.1:4220")'
-	echo 'dbLoadRecords("db/asynRecord.db","P='${HOST}':,R=asyn:SS,PORT=SS,ADDR=0,IMAX=100,OMAX=100")'
-	echo 'drvAsynIPPortConfigure("ST", "127.0.0.1:'$(get-port-from-service acq4xx-transient-console)'")'
-	echo 'dbLoadRecords("db/asynRecord.db","P='${HOST}':,R=asyn:ST,PORT=SS,ADDR=0,IMAX=100,OMAX=100")'
+	create_asyn_channel S0 127.0.0.1:4220
+	create_asyn_channel NP 127.0.0.1:2226
+	create_asyn_channel SS 127.0.0.1:4220
+	create_asyn_channel ST 127.0.0.1:$(get-port-from-service acq4xx-transient-console)
 }
 
 toLower() {
