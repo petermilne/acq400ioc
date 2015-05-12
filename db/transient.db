@@ -181,5 +181,16 @@ record(longout, "${UUT}:LIVE:POST") {
 	# @@todo other sites are out in the cold
 }
 
+record(mbbi, "${UUT}:LIVE:MODE") {
+	field(DTYP, "mbbiAcqHost")
+	field(INP,  "@/etc/acq400/0/live_mode")
+	field(SCAN, "1 second")
+	field(PINI, "YES")
+	field(NOBT,  "2")	
+       	field(ZRST, "off")
+        field(ONST, "free-run")
+        field(TWST, "pre-post")	
+}
+
 
 
