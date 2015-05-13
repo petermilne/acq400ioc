@@ -59,6 +59,9 @@ monitor Fs;
 monitor fin;
 monitor fp_mux;
 
+int retry;
+int max_retry = 5;
+int Fmin = 1000000;
 
 ss rate_set
 {
@@ -120,14 +123,21 @@ ss rate_set
 			printf("acq43x_setSampleRate %s\n", info);
 		} state run
 		when(fp_mux != 0){
-			
+			retry = 0;
 		} state wait_fin
 	}
 			
-	state wait_fin {			
-		when(fin < 1000000){
+	state wait_fin {
+		when(fin < Fmin && ++retry < max_retry){
 			snprintf(info, 40, 
-				"ERROR needs Fin > 1M, currently %.1f", fin);
+				"WARNING needs Fin > %d, currently %.1f retry%d/%d", Fmin, fin, retry, max_retry);
+			pvPut(info);
+			printf("acq43x_setSampleRate %s\n", info);
+		} state wait_fin_retry
+		
+		when(fin < Fmin){
+			snprintf(info, 40, 
+				"ERROR needs Fin > %d, currently %.1f", Fmin, fin);
 			pvPut(info);
 			printf("acq43x_setSampleRate %s\n", info);
 			Fs = Fs0;
@@ -137,6 +147,12 @@ ss rate_set
 		when(fin >= 1000000){
 			
 		} state have_clock		
+	}
+	
+	state wait_fin_retry {
+		when(delay(1)){
+		
+		} state wait_fin
 	}
 
 	state have_clock {
