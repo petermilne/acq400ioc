@@ -3,6 +3,9 @@
 // seq calmon "uut=acq1001_064,site=2"
 // dbpr acq1001_064:1:ADC_MODE
 // dbpr acq1001_064:1:AI:CH:01 2
+// acq1001_064:1:AI:CH:01
+// acq1001_064:1:AI:TW:01:V
+// acq1001_064:1:AI:WF:01:V
 
 program calmon
 option +r;
@@ -14,15 +17,16 @@ int old_mode;
 
 int adc_cal_mode; assign adc_cal_mode to "{uut}:1:ADC_CAL";
 
-char* doc;
+
 float eslo[33];	assign eslo to {};	// index from 1
 float eoff[33]; 	assign eoff to {};
 float wf_eslo[33];	assign wf_eslo to {};
 float wf_eoff[33];	assign wf_eoff to {};
 float tw_eslo[33];      assign tw_eslo to {};
 float tw_eoff[33];	assign tw_eoff to {};
-char* SW[2] = { "0", "1" };
 
+char* SW[2] = { "0", "1" };
+char* doc;
 char fname[80];
 char* uut;
 char* site = "1";		// default site 1, should override 
@@ -45,20 +49,28 @@ ss calmon {
 			doc = acq400_openDoc(fname);
 			
 			for (ch = 1; ch <= 32; ++ch){				
-				snprintf(pvname, 80, "%s:%s:AI:CH:%02d", uut, site, ch);
-						
+				snprintf(pvname, 80, "%s:%s:AI:CH:%02d", uut, site, ch);						
 				snprintf(pvfield, 100, "%s.%s", pvname, "ESLO");
 				pvAssign(eslo[ch], pvfield);
 				snprintf(pvfield, 100, "%s.%s", pvname, "EOFF");
 				pvAssign(eoff[ch], pvfield);
 				
+				snprintf(pvname, 80, "%s:%s:AI:TW:%02d:V", uut, site, ch);
+				snprintf(pvfield, 100, "%s.%s", pvname, "INPS");
+				pvAssign(tw_eslo[ch], pvfield);		
+				
+				if (ch == 1) printf("pvAssign %s\n", pvfield);
+						
+				snprintf(pvfield, 100, "%s.%s", pvname, "INPO");
+				pvAssign(tw_eoff[ch], pvfield);
+				
+				if (ch == 1) printf("pvAssign %s\n", pvfield);
+								
+				snprintf(pvname, 80, "%s:%s:AI:WF:%02d:V", uut, site, ch);
 				snprintf(pvfield, 100, "%s.%s", pvname, "INPS");
 				pvAssign(wf_eslo[ch], pvfield);
-				pvAssign(tw_eslo[ch], pvfield);
-				
 				snprintf(pvfield, 100, "%s.%s", pvname, "INPO");
 				pvAssign(wf_eoff[ch], pvfield);
-				pvAssign(tw_eoff[ch], pvfield);
 			}
 		} state make_change
 	}
@@ -73,7 +85,7 @@ ss calmon {
 					
 						wf_eslo[ch] = tw_eslo[ch] = eslo[ch];
 						wf_eoff[ch] = tw_eoff[ch] = eoff[ch];
-					//printf("ch:%2d eslo:%.6e eoff:%.6e\n", ch, eslo[ch], eoff[ch]);
+						if (ch==1||ch==32) printf("ch:%2d eslo:%.6e eoff:%.6e\n", ch, eslo[ch], eoff[ch]);
 						pvPut(eslo[ch]);
 						pvPut(eoff[ch]);
 						pvPut(wf_eslo[ch]);
