@@ -90,10 +90,13 @@ make_AI() {
 
 		echo dbLoadRecords\(\"db/wfAcqHost.db\",\"${wprams}\"\)
 	done
-	[ $FIRST_AI_WF_RECORDS -eq 1 ] && echo dbLoadRecords\(\"db/wfAcqHostTb.db\",\"${wprams}\"\)	
-	FIRST_AI_WF_RECORDS=0			
+	if [ $FIRST_AI_WF_RECORDS -eq 1 ]; then		  
+		echo dbLoadRecords\(\"db/wfAcqHostTb.db\",\"${PRAMS}\"\)	
+		FIRST_AI_WF_RECORDS=0
+	fi	
+	let nchanp1="$nchan+1"  
+	echo dbLoadRecords\(\"db/cal.db\",\"${wprams},nchanp1=${nchanp1}\"\)		
 }
-
 
 
 make_AI_records() {

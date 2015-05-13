@@ -29,7 +29,7 @@
 #include "tinyxml2.h"
 
 extern "C" {
-	void* acq400_openDoc(const char* docfile);
+	void* acq400_openDoc(const char* docfile, int* nchan);
 	int acq400_getChannel(void *prv, int ch, const char* sw, float* eslo, float* eoff, int nocal);
 };
 
@@ -37,7 +37,7 @@ using namespace tinyxml2;
 
 #define RETNULL do { printf("ERROR %d\n", __LINE__); return 0; } while(0)
 
-void* acq400_openDoc(const char* docfile)
+void* acq400_openDoc(const char* docfile, int* nchan)
 {
 #define RETERRNULL(node2, node1, key) \
 	if (((node2) = (node1)->FirstChildElement(key)) == 0){\
@@ -62,9 +62,20 @@ void* acq400_openDoc(const char* docfile)
 	RETERRNULL(node, node, "SerialNum");
 
 	XMLText* snum = node->FirstChild()->ToText();
-	printf("Docfile:%s Serialnumber:%s\n", docfile, snum->Value());
 
-	return doc;
+
+	RETERRNULL(node, doc, "ACQ");
+	RETERRNULL(node, node, "AcqCalibration");
+	RETERRNULL(node, node, "Data");
+	rc = node->ToElement()->QueryIntAttribute("AICHAN", nchan);
+	if (rc == XML_NO_ERROR){
+		printf("Docfile:%s Serialnumber:%s AICHAN:%d\n",
+				docfile, snum->Value(), *nchan);
+		return doc;
+	}else{
+		printf("ERROR getting AICHAN %d\n", rc);
+		return 0;
+	}
 }
 
 static int set_values(XMLElement *chdef, float* eslo, float* eoff)

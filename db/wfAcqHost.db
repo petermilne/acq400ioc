@@ -8,6 +8,7 @@ record(waveform, "${UUT}:${SITE}:AI:WF:${cid}") {
 	field(FLNK,"${UUT}:${SITE}:AI:WF:${cid}:V")
 }
 
+
 record(bo, "${UUT}:${SITE}:AI:WF:${cid}:OVER") {
 	field(DTYP, "Soft Channel")
 	field(OMSL, "closed_loop")
@@ -85,5 +86,6 @@ record(aSub, "${UUT}:${SITE}:AI:WF:${cid}:V") {
 	field(NOVS, "1")
 	field(INPS, "${UUT}:${SITE}:AI:CH:${cid}.ESLO")
 }
+
 
 

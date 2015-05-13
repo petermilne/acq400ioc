@@ -20,8 +20,12 @@ monitor adc_cal_mode;
 int adc_cal_mode0;
 
 
+float ext_eslo[33]; 	assign ext_eslo to "{uut}:{site}:AI:CAL:ESLO";
+float ext_eoff[33]; 	assign ext_eoff to "{uut}:{site}:AI:CAL:EOFF";
+
 float eslo[33];		assign eslo to {};	// index from 1
 float eoff[33]; 	assign eoff to {};
+
 
 char* SW[2] = { "0", "1" };
 char* doc;
@@ -29,9 +33,10 @@ char fname[80];
 char* uut;
 char* site = "1";		// default site 1, should override 
 int ch;
+int nchan;
 char pvname[80];
 char pvfield[100];
-%%extern void* acq400_openDoc(const char* docfile);
+%%extern void* acq400_openDoc(const char* docfile, int* nchan);
 %%extern int acq400_getChannel(void *prv, int ch, const char* sw, float* eslo, float* eoff, int nocal);
 
 ss calmon {
@@ -44,8 +49,8 @@ ss calmon {
 			if (macValueGet("site") != 0){
 				site = macValueGet("site");
 			}
-			sprintf(fname, "/dev/sites/%s/caldef.xml",  site);
-			doc = acq400_openDoc(fname);
+			sprintf(fname, "/dev/sites/%s/caldef.xml",  site);			
+			doc = acq400_openDoc(fname, &nchan);
 		} state init2
 	}
 	state init2 {
@@ -54,7 +59,7 @@ ss calmon {
 		} state error
 		
 		when(doc != 0){
-			for (ch = 1; ch <= 32; ++ch){				
+			for (ch = 1; ch <= nchan; ++ch){				
 				snprintf(pvname, 80, "%s:%s:AI:CH:%02d", uut, site, ch);						
 				snprintf(pvfield, 100, "%s.%s", pvname, "ESLO");
 				pvAssign(eslo[ch], pvfield);
@@ -78,18 +83,23 @@ ss calmon {
 			pvGet(adc_cal_mode);
 			if (adc_cal_mode != 0){
 				printf("make_change site=%s %s\n", site, adc_cal_mode==1? "caldef": "calibrated");
-				for (ch = 1; ch <= 32; ++ch){		
+				for (ch = 1; ch <= nchan; ++ch){		
 					if (acq400_getChannel(doc, ch, SW[hi_res_mode], &eslo[ch], &eoff[ch], adc_cal_mode==1) == 1){
-						if (ch==1||ch==32){
+						if (ch==1){
 							printf("site:%s ch:%2d eslo:%.6e eoff:%.6e\n", 
 										site, ch, eslo[ch], eoff[ch]);
 						}
 						pvPut(eslo[ch]);
                                                 pvPut(eoff[ch]);
+                                                
+                                                ext_eslo[ch] = eslo[ch];
+                                                ext_eoff[ch] = eoff[ch];
 					}else{
 						printf("ERROR return from acq400_getChannel()\n");
 					}
 				}
+				pvPut(ext_eslo);
+				pvPut(ext_eoff);
 			}else{
 				printf("make_change: STUB\n");
 			}

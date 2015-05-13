@@ -1,0 +1,13 @@
+record(waveform, "${UUT}:${SITE}:AI:CAL:ESLO") {
+	field(DTYP, "Soft Channel")
+	field(NELM, "${nchanp1}")
+	field(FTVL, "FLOAT")
+	field(DESC, "Slope each channel 1..N, index from 0")
+}
+
+record(waveform, "${UUT}:${SITE}:AI:CAL:EOFF") {
+	field(DTYP, "Soft Channel")
+	field(NELM, "${nchanp1}")
+	field(FTVL, "FLOAT")
+	field(DESC, "Offset each channel 1..N, index from 0")	
+}
