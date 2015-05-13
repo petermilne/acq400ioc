@@ -66,10 +66,12 @@ make_AI() {
 	site=$1
 	type=SHORT
 	maxcode=32768
+	eslo=0.00030517578125
 	if [ -e /etc/acq400/$site/data32 ]; then
 		if [ $(cat /etc/acq400/$site/data32) -eq 1 ]; then
 			type=LONG
 			maxcode=2147483648
+			eslo=1.19209289551e-06
 		fi
 	else
 		echo # 
@@ -84,7 +86,7 @@ make_AI() {
 
 		PRAMS="UUT=${HOST},SITE=${site},cid=$cid,idx=${IDX},fname=AI.${site}"
 		wprams="${PRAMS},size=${SIZE},type=${type}"
-		wprams="${wprams},maxcode=${maxcode},vmax=${vmax}"
+		wprams="${wprams},maxcode=${maxcode},vmax=${vmax},eslo=${eslo}"
 
 		echo dbLoadRecords\(\"db/wfAcqHost.db\",\"${wprams}\"\)
 	done
@@ -133,10 +135,12 @@ make_AI_TR_records() {
 	vmax=$(get_range $site)
 	if [ $(cat /etc/acq400/$site/data32) -eq 1 ]; then
 			maxcode=2147483648
+			eslo=1.19209289551e-06
 			TYPE=LONG
 	else
 			maxcode=32768
 			TYPE=SHORT
+			eslo=0.00030517578125
 	fi	
 	for ix in $(seq $i1 $i2)
 	do
@@ -145,7 +149,7 @@ make_AI_TR_records() {
 		alt=$(printf "%02d" $ix1)
 		PRAMS="UUT=$HOST,SITE=${site},cid=$cid,ch=$ch,alt=$alt"
 		WPRAMS="${PRAMS},size=${size},type=${TYPE}"
-		WPRAMS="${WPRAMS},maxcode=${maxcode},vmax=${vmax}"		
+		WPRAMS="${WPRAMS},maxcode=${maxcode},vmax=${vmax},eslo=${eslo}"		
 		echo dbLoadRecords\(\"db/wfAcqHostTw.db\",\"$WPRAMS\"\)		
 		let ch=$ch+1
 	done

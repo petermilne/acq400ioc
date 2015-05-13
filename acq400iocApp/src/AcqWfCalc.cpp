@@ -87,6 +87,8 @@ static int report_done;
  * INPB : long maxcode
  * INPC : float vmax
  * INPD : long threshold (distance from rail for alarm)
+ * INPO : double AOFF if set
+ * INPS : double ASLO if set
  * OUTPUTS:
  * VALA : float* cooked
  * optional:
@@ -115,8 +117,8 @@ long raw_to_volts(aSubRecord *prec) {
 	float * cooked = (float *)prec->vala;
 	long rmax = *(long*)prec->b;
 	float vmax = *(float*)prec->c;
-	float aoff = prec->o? *(float*)prec->o: 0;
-	double aslo = vmax/rmax;
+	float aoff = *(float*)prec->o;
+	float aslo = *(float*)prec->s;
 	long* p_thresh = (long*)prec->d;
 	long* p_over_range = (long*)prec->valb;
 	float* p_min = (float*)prec->valc;
@@ -133,17 +135,12 @@ long raw_to_volts(aSubRecord *prec) {
 	bool compute_squares = p_stddev != 0 || p_rms != 0;
 
 	if (++report_done == 1){
+		printf("aoff count: %u value: %p type: %d\n", prec->noo, prec->o, prec->fto);
+		printf("aslo count: %u value: %p type: %d\n", prec->nos, prec->s, prec->fts);
 		printf("raw_to_volts() ->b %p rmax %ld\n", prec->b, rmax);
 		printf("raw_to_volts() ->c %p vmax %f\n", prec->c, vmax);
 		printf("raw_to_volts() len:%d th:%ld p_over:%p\n",
 				len, alarm_threshold, p_over_range);
-	}
-	if (rmax == 0){
-		aslo = 10.0/(sizeof(T)==4? INT_MAX: SHRT_MAX);
-
-		if (report_done < 2){
-			printf("cheating, hardcode vmax, rmax ratio %f\n", aslo);
-		}
 	}
 
 	min_value = raw[0];

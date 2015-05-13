@@ -80,6 +80,14 @@ record(aSub, "${UUT}:${SITE}:AI:WF:${cid}:V") {
 	field(FTVG, "FLOAT")
 	field(NOVG, "1")
 #	field(DESC, "RMS in volts")	
+
+	field(FTVO, "FLOAT")
+	field(NOVO, "1")
+	field(INPO, "0.0")
+	
+	field(FTVS, "FLOAT")
+	field(NOVS, "1")
+	field(INPS, "${eslo}")
 }
 
 
