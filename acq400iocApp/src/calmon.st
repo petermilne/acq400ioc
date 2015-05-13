@@ -12,6 +12,8 @@ int hi_res_mode; assign hi_res_mode to "{uut}:1:ADC_MODE";
 monitor hi_res_mode;
 int old_mode;
 
+int adc_cal_mode; assign adc_cal_mode to "{uut}:1:ADC_CAL";
+
 char* doc;
 float eslo[33];	assign eslo to {};	// index from 1
 float eoff[33]; assign eoff to {};
@@ -51,14 +53,20 @@ ss calmon {
 	
 	state make_change {
 		when() {
-			for (ch = 1; ch <= 32; ++ch){		
-				if (acq400_getChannel(doc, ch, SW[hi_res_mode], eslo+ch, eoff+ch, 0) == 1){ 
+			pvGet(adc_cal_mode);
+			if (adc_cal_mode != 0){
+				printf("make_change site=%s %s\n", site, adc_cal_mode==1? "caldef": "calibrated");
+				for (ch = 1; ch <= 32; ++ch){		
+					if (acq400_getChannel(doc, ch, SW[hi_res_mode], eslo+ch, eoff+ch, adc_cal_mode==1) == 1){ 
 					//printf("ch:%2d eslo:%.6e eoff:%.6e\n", ch, eslo[ch], eoff[ch]);
-					pvPut(eslo[ch]);
-					pvPut(eoff[ch]);
-				}else{
-					printf("ERROR return from acq400_getChannel()\n");
+						pvPut(eslo[ch]);
+						pvPut(eoff[ch]);
+					}else{
+						printf("ERROR return from acq400_getChannel()\n");
+					}
 				}
+			}else{
+				printf("make_change: STUB\n");
 			}
 		} state wait_change
 	}
