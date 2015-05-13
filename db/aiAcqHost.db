@@ -4,7 +4,7 @@ record(ai, "${UUT}:AI:CH:${cid}"){
 	field(DTYP, "aiAcqHost")
 	field(INP,  "@${fname} ${idx}")
 	field(SCAN, "I/O Intr")
-	field(LINR, "LINEAR")
+	field(LINR, "SLOPE")
 	field(EGU,  "V")
 	field(PREC,  "3")
 	field(EOFF, "0")
