@@ -47,7 +47,14 @@ ss calmon {
 			}
 			sprintf(fname, "/dev/sites/%s/caldef.xml",  site);
 			doc = acq400_openDoc(fname);
-			
+		} state init2
+	}
+	state init2 {
+		when(doc == 0) {
+			printf("ERROR failed to read caldef.xml\n");
+		} state error
+		
+		when(doc != 0){
 			for (ch = 1; ch <= 32; ++ch){				
 				snprintf(pvname, 80, "%s:%s:AI:CH:%02d", uut, site, ch);						
 				snprintf(pvfield, 100, "%s.%s", pvname, "ESLO");
@@ -72,7 +79,13 @@ ss calmon {
 				snprintf(pvfield, 100, "%s.%s", pvname, "INPO");
 				pvAssign(wf_eoff[ch], pvfield);
 			}
-		} state make_change
+		} state make_change		
+	}
+	
+	state error {	
+		when(delay(1000)) {
+		
+		} state error
 	}
 	
 	state make_change {
