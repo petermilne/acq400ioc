@@ -18,12 +18,12 @@ int old_mode;
 int adc_cal_mode; assign adc_cal_mode to "{uut}:1:ADC_CAL";
 
 
-float eslo[33];	assign eslo to {};	// index from 1
+float eslo[33];		assign eslo to {};	// index from 1
 float eoff[33]; 	assign eoff to {};
-float wf_eslo[33];	assign wf_eslo to {};
-float wf_eoff[33];	assign wf_eoff to {};
-float tw_eslo[33];      assign tw_eslo to {};
-float tw_eoff[33];	assign tw_eoff to {};
+double wf_eslo[33];	assign wf_eslo to {};
+double wf_eoff[33];	assign wf_eoff to {};
+double tw_eslo[33];     assign tw_eslo to {};
+double tw_eoff[33];	assign tw_eoff to {};
 
 char* SW[2] = { "0", "1" };
 char* doc;

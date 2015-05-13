@@ -56,13 +56,13 @@ record(aSub, "${UUT}:${SITE}:AI:TW:${cid}:V") {
 	field(NOVG, "1")
 #	field(DESC, "RMS in volts")
 
-	field(FTVO, "FLOAT")
+	field(FTVO, "DOUBLE")
 	field(NOVO, "1")
-	field(INPO, "0.0")
+	field(INPO, "${UUT}:${SITE}:AI:CH:${cid}.EOFF")
 	
-	field(FTVS, "FLOAT")
+	field(FTVS, "DOUBLE")
 	field(NOVS, "1")
-	field(INPS, "${eslo}")
+	field(INPS, "${UUT}:${SITE}:AI:CH:${cid}.ESLO")
 		
 }
 

@@ -117,8 +117,8 @@ long raw_to_volts(aSubRecord *prec) {
 	float * cooked = (float *)prec->vala;
 	long rmax = *(long*)prec->b;
 	float vmax = *(float*)prec->c;
-	float aoff = *(float*)prec->o;
-	float aslo = *(float*)prec->s;
+	double aoff = *(double*)prec->o;
+	double aslo = *(double*)prec->s;
 	long* p_thresh = (long*)prec->d;
 	long* p_over_range = (long*)prec->valb;
 	float* p_min = (float*)prec->valc;
@@ -143,17 +143,23 @@ long raw_to_volts(aSubRecord *prec) {
 				len, alarm_threshold, p_over_range);
 	}
 
+	if (strstr(prec->name, ":01") != 0){
+		printf("%s : aslo:%.6e aoff:%.6e\n", prec->name, aslo, aoff);
+	}
+
 	min_value = raw[0];
 	max_value = raw[0];
 
 	for (int ii=0; ii <len; ii++) {
-		if (raw[ii] > max_value) max_value = raw[ii];
-		if (raw[ii] < min_value) min_value = raw[ii];
-		if (raw[ii] > alarm_threshold) 	over_range = 1;
-		if (raw[ii] < -alarm_threshold) over_range = -1;
-		if (compute_squares) sumsq += square<T>(raw[ii]);
-		sum += raw[ii];
-		yy = raw[ii]*aslo + aoff;
+		T rx = raw [ii];
+		if (sizeof(T) == 4) rx >>= 8;
+		if (rx > max_value) max_value = rx;
+		if (rx < min_value) min_value = rx;
+		if (rx > alarm_threshold) 	over_range = 1;
+		if (rx < -alarm_threshold) over_range = -1;
+		if (compute_squares) sumsq += square<T>(rx);
+		sum += rx;
+		yy = rx*aslo + aoff;
 		cooked[ii] = (float)yy;
 	}
 
