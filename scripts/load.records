@@ -303,6 +303,8 @@ load_400() {
 	echo 'dbLoadRecords("db/signal.db","'${cprams}',FNAM=EVENT0,FN=event0,ZNAM=disable,ONAM=enable")'
 	echo 'dbLoadRecords("db/acq420fmc99.db","'${cprams}'")'
 	
+	echo >>/tmp/st_post.cmd "seq calmon \"uut=${HOST},site=${site}\""
+	
 	create_asyn_channel S${site} 127.0.0.1:422${site}
 	if [ "x${site}" = "x1" ]; then
 		create_asyn_channel S1M 127.0.0.1:4221
