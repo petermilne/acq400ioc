@@ -58,7 +58,7 @@ record(aSub, "${UUT}:${SITE}:AI:TW:${cid}:V") {
 
 	field(FTVO, "DOUBLE")
 	field(NOVO, "1")
-	field(INPO, "${UUT}:${SITE}:AI:CH:${cid}.EOFF")
+	field(INPO, "${UUT}:${SITE}:AI:CH:${cid}.EOFF")	
 	
 	field(FTVS, "DOUBLE")
 	field(NOVS, "1")
