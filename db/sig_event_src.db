@@ -3,7 +3,7 @@ record (mbbo, "${UUT}:0:SIG:EVENT_SRC:${BIT}") {
 	field(NOBT, "2")
 	field(ZRST, "TRG")
 	field(ONST, "GPG")
-	field(TWST, "HDMI")
+	field(TWST, "${HDMI}")
 	field(THST, "CELF")
 	field(FLNK, "${UUT}:0:SIG:EVENT_SRC:${BIT}:w PP")	
 	field(PINI, "YES")
