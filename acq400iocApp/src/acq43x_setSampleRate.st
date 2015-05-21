@@ -117,11 +117,21 @@ ss rate_set
 	}
 	
 	state check_mux {
-		when(fp_mux == 0) {
+		when(delay(1) && fp_mux == 0 && retry < max_retry) {
 			snprintf(info, 40, "ERROR: FPMUX not set");
 			pvPut(info);
 			printf("acq43x_setSampleRate %s\n", info);
-		} state run
+			++retry;
+		} state check_mux
+		
+		when (fp_mux == 0 && retry >= max_retry){
+			snprintf(info, 40, "set default FPMUX");
+			pvPut(info);
+			printf("acq43x_setSampleRate %s\n", info);
+			fp_mux = 3;	/* ZCLK */
+			pvPut(fp_mux);
+		} state check_mux
+		
 		when(fp_mux != 0){
 			retry = 0;
 		} state wait_fin
