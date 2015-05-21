@@ -1,0 +1,46 @@
+#!/bin/sh
+# set.sync_role MASTER|SLAVE clock-Hz
+
+
+master() {
+	set.site 0 SIG:SYNC_OUT:CLK CLK
+	set.site 0 SIG:SYNC_OUT:CLK:DX d1
+	set.site 0 SIG:SYNC_OUT:TRG TRG
+	set.site 0 SIG:SYNC_OUT:TRG:DX d0
+	set.site 0 SIG:SYNC_OUT:SYNC SYNC
+	set.site 0 SIG:SYNC_OUT:SYNC:DX d2
+
+	if [ "x$1" != "x" ]; then
+		if [ -e /etc/acq400/1/ACQ43X_SAMPLE_RATE ]; then
+			set.site 0 SYS:CLK:FPMUX ZCLK
+			set.site 1 ACQ43X_SAMPLE_RATE $1
+		else
+			echo NOT ACQ43X set own clock
+		fi
+	fi
+}
+
+slave() {
+	# sets clkdiv and output, input routing gets overwritten below
+	master $1
+
+	set.site 0 SIG:SRC:CLK:1 HDMI
+	set.site 0 SIG:SRC:TRG:0 HDMI
+	set.site 0 SIG:SRC:SYNC:0 HDMI
+	set.site 1 TRG enable
+	set.site 1 TRG:DX d0
+	set.site 1 CLK external
+	set.site 1 CLK:DX d1	
+	set.site 1 SYNC external
+	set.site 1 SYNC:DX d0
+}
+
+case $1 in
+MASTER)		master $2;;
+SLAVE)		slave $2;;
+*)
+		echo USAGE: set.sync_role {SLAVE|MASTER [clock-Hz]}
+		exit 1;;
+esac
+
+
