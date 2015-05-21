@@ -109,7 +109,7 @@ make_epics_knobs() {
 	do
 		NU=${PV#*:}
 		SITE=${NU:0:1}
-		make_caget $PV ${NU#*:} ${SITE}	
+		make_caput $PV ${NU#*:} ${SITE}	
 	done
 	for PV in $(egrep CAL:E /tmp/records.dbl | grep -v .[rsfw]$)
 	do
