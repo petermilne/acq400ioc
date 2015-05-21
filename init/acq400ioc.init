@@ -105,7 +105,7 @@ make_epics_knobs() {
 		make_caget $PV ${NU#*:} S
 	done
 	
-	for PV in $(egrep FREQ\|COUNT\|GAIN /tmp/records.dbl | grep -v .[rsfw]$)
+	for PV in $(egrep SIG\|GAIN /tmp/records.dbl | grep -v .[rsfw]$)
 	do
 		NU=${PV#*:}
 		SITE=${NU:0:1}
