@@ -468,7 +468,7 @@ load_mb_sync() {
 	done
 	for dx in 0 1 2 3 4 5 6 7
 	do
-			case dx in 
+			case $dx in 
 			0|4)	hdmi_src="HDMI_CLK";;
 			1|5)	hdmi_src="HDMI_GPIO";;
 			2|6)    hdmi_src="HDMI_TRG";;
