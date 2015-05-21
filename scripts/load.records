@@ -472,7 +472,7 @@ load_mb_sync() {
 			0|4)	hdmi_src="HDMI_CLK";;
 			1|5)	hdmi_src="HDMI_GPIO";;
 			2|6)    hdmi_src="HDMI_TRG";;
-			3|7)    hdmi_src="HDMI_SYNC;;
+			3|7)    hdmi_src="HDMI_SYNC";;
 			esac
 			echo 'dbLoadRecords("db/sig_event_src.db","'${CPRAMS},BIT=${dx},HDMI=${hdmi_src}'")'
 	done
