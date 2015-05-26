@@ -4,7 +4,7 @@ record (mbbo, "${UUT}:0:SIG:SRC:${FUN}:${BIT}") {
 	field(ZRST, "${ZRST}")
 	field(ONST, "HDMI")
 	field(TWST, "${TWST}")
-	field(THST, "nc")
+	field(THST, "${THST}")
 	field(FLNK, "${UUT}:0:SIG:SRC:${FUN}:${BIT}:w PP")	
 	field(PINI, "YES")
 }

@@ -442,17 +442,31 @@ load_mb_sync() {
 	for FUN in SYNC TRG CLK
 	do		 
 		lprams="FUN=${FUN},fun=$(toLower ${FUN})"
+		# d0
 		case $FUN in
-		CLK)	nobt=1; twst="nc";;
-		*)		nobt=2; twst="CELF";;
+		CLK)	nobt=1; twst="nc";	thst="nc";;
+		TRG)	nobt=2; twst="nc";  thst="GPG0";;
+		SYNC)	nobt=1; twst="nc";	thst="nc";;
 		esac
-		echo 'dbLoadRecords("db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=0,ZRST=EXT,TWST=${twst},NOBT=${nobt}'")'
+		echo 'dbLoadRecords("db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=0,ZRST=EXT,TWST=${twst},THST=${thst},NOBT=${nobt}'")'
+		
+		# d1
 		case $FUN in
-		TRG) 	zrst=STRIG;;
-		SYNC) 	zrst=EXT;;
+		TRG) 	nobt=2; zrst=STRIG; twst="nc"; thst="GPG1";;
+		SYNC) 	nobt=1; zrst=EXT;;
 		*) 		zrst=MCLK;;
 		esac
 		echo 'dbLoadRecords("db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=1,ZRST=${zrst},TWST=${twst},NOBT=${nobt}'")'
+	done
+	for FUN in GPIO SYNC TRG
+	do
+		case $FUN in 
+		GPIO)	fprams="onst=EVT0,twst=EVT1,thst=EVT7";;
+		SYNC)	fprams="onst=SYNC0,twst=SYNC1,thst=SYNC7";;
+		TRG)	fprams="onst=TRG0,twst=TRG1,thst=TRG7";;
+		esac
+		lprams="FUN=${FUN},fun=$(toLower ${FUN})"
+		echo 'dbLoadRecords("db/fpctl.db","'${CPRAMS},${lprams},${fprams}'")'		
 	done
 	for FUN in SYNC TRG GPIO CLK
 	do
