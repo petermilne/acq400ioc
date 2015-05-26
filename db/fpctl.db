@@ -6,7 +6,7 @@ record (mbbo, "${UUT}:0:SIG:FP:${FUN}") {
 	field(ONST, "${onst}")
 	field(ONVL, "8")
 	field(TWST, "${twst}")
-	field(TWVL, "9"
+	field(TWVL, "9")
 	field(THST, "${thst}")
 	field(THVL, "15")
 	field(FLNK, "${UUT}:0:SIG:FP:${FUN}:w PP")	

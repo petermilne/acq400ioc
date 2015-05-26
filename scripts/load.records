@@ -453,10 +453,10 @@ load_mb_sync() {
 		# d1
 		case $FUN in
 		TRG) 	nobt=2; zrst=STRIG; twst="nc"; thst="GPG1";;
-		SYNC) 	nobt=1; zrst=EXT;;
-		*) 		zrst=MCLK;;
+		SYNC) 	nobt=1; zrst=EXT;   twst="nc"; thst="nc";;
+		*) 		nobt=1; zrst=MCLK;  twst="nc"; thst="nc";;
 		esac
-		echo 'dbLoadRecords("db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=1,ZRST=${zrst},TWST=${twst},NOBT=${nobt}'")'
+		echo 'dbLoadRecords("db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=1,ZRST=${zrst},TWST=${twst},THST=${thst},NOBT=${nobt}'")'
 	done
 	for FUN in GPIO SYNC TRG
 	do
