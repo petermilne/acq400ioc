@@ -1,0 +1,25 @@
+	# gpg_mode
+	# gpg_enable		
+
+record(mbbi, "${UUT}:0:GPG:DBG:STATE"){
+	field(DTYP, "stream")
+	field(INP,  "@mb.proto get_gpg_state(${UUT}) ${SPORT}")
+	field(SCAN, ".1 second")
+	field(NOBT, "3")
+	field(ZRST, "IDLE")
+	field(ONST, "RESET_CNT")
+	field(TWST, "WAIT_TRG")
+	field(THST, "WAIT_SYN")
+	field(FRST, "RUN_GPG")
+	field(FVST, "LAST_ADDR")
+	field(SXST, "LOOP_CHK")
+	field(SVST, "RESTART")	
+}
+
+record(longin, "${UUT}:0:GPG:DBG:PTR"){
+	field(DTYP, "Soft Channel")
+}
+
+record(longin, "${UUT}:0:GPG:DBG:CTR"){
+	field(DTYP, "Soft Channel")	
+}

@@ -93,3 +93,8 @@ get_live_mode {
 	out "live_mode";
 	in "%d";
 }
+
+get_gpg_state {
+	out "gpg_debug";
+	in "%d,%(\$1:0:GPG:DBG:PTR)d,%(\$1:0:GPG:DBG:CTR)d";
+}

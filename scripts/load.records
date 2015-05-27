@@ -305,7 +305,7 @@ load_400() {
 	echo 'dbLoadRecords("db/signal.db","'${cprams}',FNAM=EVENT1,FN=event1,ZNAM=disable,ONAM=enable")'
 	echo 'dbLoadRecords("db/signal.db","'${cprams}',FNAM=EVENT0,FN=event0,ZNAM=disable,ONAM=enable")'
 	echo 'dbLoadRecords("db/acq420fmc99.db","'${cprams}'")'
-	
+		
 	echo >>/tmp/st_post.cmd "seq calmon \"uut=${HOST},site=${site}\""
 	
 	create_asyn_channel S${site} 127.0.0.1:422${site}
@@ -350,6 +350,14 @@ load_intmon() {
 	done	
 }
 
+load_gpg() {
+	PRAMS="UUT=${HOST},SITE=0,SPORT=S0,ZNAM=internal,ONAM=external"
+	echo 'dbLoadRecords("db/gpg.db","UUT='${HOST}',SPORT=S0")'	
+	echo 'dbLoadRecords("db/signal.db","'${PRAMS},FNAM=GPG_CLK,FN=gpg_clk'")'	
+	echo 'dbLoadRecords("db/signal.db","'${PRAMS},FNAM=GPG_TRG,FN=gpg_trg'")'
+	echo 'dbLoadRecords("db/signal.db","'${PRAMS},FNAM=GPG_SYNC,FN=gpg_sync'")'
+		
+}
 load_mb_base() {
 	ns=$1
 	mt=$2
@@ -388,7 +396,9 @@ load_mb_base() {
 			VAP=0;VAN=0
 		fi
 		echo 'dbLoadRecords("db/acq2006psu.db","UUT='${HOST},vap=$VAP,van=$VAN'")'
-	fi			
+	fi	
+	load_gpg
+
 }
 
 
