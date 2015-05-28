@@ -121,10 +121,10 @@ get_gpg_top {
 }
 
 set_fpctl {
-	out "fpctl_\$1=%(RVAL)d";
+	out "fpctl_\$1=%(RVAL)x";
 }
 
 get_fpctl {
 	out "fpctl_\$1";
-	in "%(RVAL)d";
+	in "%(RVAL)x";
 }

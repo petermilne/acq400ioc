@@ -15,19 +15,27 @@ record (mbbo, "${UUT}:0:SIG:FP:${FUN}") {
 
 record (mbbo, "${UUT}:0:SIG:FP:${FUN}:w") {
 	field(DTYP, "stream")
-	field(NOBT, "2")
+	field(NOBT, "4")
 	field(OUT,  "@mb.proto set_fpctl(${fun}) ${SPORT}")	
 	field(PINI, "YES")	
 	field(DISV, "1")
 	field(SDIS, "${UUT}:0:SIG:FP:${FUN}:s.PACT")
 	field(OMSL, "closed_loop")
-	field(DOL,  "${UUT}:0:SIG:FP:${FUN}")	
+	field(DOL,  "${UUT}:0:SIG:FP:${FUN}.RVAL")	
 }
 
 record (mbbi, "${UUT}:0:SIG:FP:${FUN}:r") {
 	field(DTYP, "stream")
-	field(NOBT, "2")	
-	field(INP,  "@mb.proto set_fpctl(${fun}) ${SPORT}")
+	field(NOBT, "4")
+	field(ZRST, "INPUT")
+	field(ZRVL, "0")
+	field(ONST, "${onst}")
+	field(ONVL, "8")
+	field(TWST, "${twst}")
+	field(TWVL, "9")
+	field(THST, "${thst}")
+	field(THVL, "15")	
+	field(INP,  "@mb.proto get_fpctl(${fun}) ${SPORT}")
 	field(SCAN, "1 second")
 	field(PINI, "YES")
 	field(FLNK, "${UUT}:0:SIG:FP:${FUN}:s")	
@@ -35,7 +43,7 @@ record (mbbi, "${UUT}:0:SIG:FP:${FUN}:r") {
 
 record (mbbo, "${UUT}:0:SIG:FP:${FUN}:s") {
 	field(DTYP,  "Soft Channel")
-	field(NOBT,  "2")
+	field(NOBT,  "4")
 	field(OMSL,  "closed_loop")
 	field(DOL,   "${UUT}:0:SIG:FP:${FUN}:r NPP")
 	field(OUT,   "${UUT}:0:SIG:FP:${FUN} PP")
