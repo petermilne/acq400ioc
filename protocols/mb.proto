@@ -119,3 +119,12 @@ get_gpg_top {
 	out "gpg_top";
 	in "%d";
 }
+
+set_fpctl {
+	out "fpctl_\$1=%(RVAL)d";
+}
+
+get_fpctl {
+	out "fpctl_\$1";
+	in "%(RVAL)d";
+}

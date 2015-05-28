@@ -448,7 +448,7 @@ toLower() {
 
 load_mb_sync() {
 # and acq2006 R2 with HDMI
-	CPRAMS="UUT=${HOST},SITE=0"
+	CPRAMS="UUT=${HOST},SITE=0,SPORT=S0"
 	for FUN in SYNC TRG CLK
 	do		 
 		lprams="FUN=${FUN},fun=$(toLower ${FUN})"

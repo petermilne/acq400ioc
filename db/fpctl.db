@@ -14,9 +14,9 @@ record (mbbo, "${UUT}:0:SIG:FP:${FUN}") {
 }
 
 record (mbbo, "${UUT}:0:SIG:FP:${FUN}:w") {
-	field(DTYP, "mbboAcqHost")
+	field(DTYP, "stream")
 	field(NOBT, "2")
-	field(OUT,  "@/dev/acq400.0.knobs/fpctl_${fun}")	
+	field(OUT,  "@mb.proto set_fpctl(${fun}) ${SPORT}")	
 	field(PINI, "YES")	
 	field(DISV, "1")
 	field(SDIS, "${UUT}:0:SIG:FP:${FUN}:s.PACT")
@@ -25,9 +25,9 @@ record (mbbo, "${UUT}:0:SIG:FP:${FUN}:w") {
 }
 
 record (mbbi, "${UUT}:0:SIG:FP:${FUN}:r") {
-	field(DTYP, "mbbiAcqHost")
+	field(DTYP, "stream")
 	field(NOBT, "2")	
-	field(INP,  "@/dev/acq400.0.knobs/fpctl_${fun}")
+	field(INP,  "@mb.proto set_fpctl(${fun}) ${SPORT}")
 	field(SCAN, "1 second")
 	field(PINI, "YES")
 	field(FLNK, "${UUT}:0:SIG:FP:${FUN}:s")	
