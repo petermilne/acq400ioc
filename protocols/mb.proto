@@ -120,6 +120,10 @@ get_gpg_top {
 	in "%d";
 }
 
+get_pulse_def {
+	out "pulse_def";
+	in "%39c";
+}
 set_fpctl {
 	out "fpctl_\$1=%(RVAL)x";
 }
@@ -128,3 +132,7 @@ get_fpctl {
 	out "fpctl_\$1";
 	in "%(RVAL)x";
 }
+
+
+
+

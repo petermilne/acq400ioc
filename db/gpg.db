@@ -107,3 +107,11 @@ record(longin, "${UUT}:0:GPG:DBG:PTR"){
 record(longin, "${UUT}:0:GPG:DBG:CTR"){
 	field(DTYP, "Soft Channel")	
 }
+# CNT PULSE1 PULSE2 SMS
+record(stringin, "${UUT}:0:GPG:DBG:DEF"){
+	field(DTYP, "stream")
+	field(INP,  "@mb.proto get_pulse_def ${SPORT}")
+	field(SCAN, "5 second")
+}
+
+
