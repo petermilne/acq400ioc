@@ -1,10 +1,94 @@
 	# gpg_mode
 	# gpg_enable		
 
-record(mbbi, "${UUT}:0:GPG:DBG:STATE"){
+record (bo, "${UUT}:0:GPG:ENABLE")	{
+	field(DTYP, "Soft Channel")
+	field(ZNAM, "disabled")
+	field(ONAM, "enabled")
+	field(FLNK, "${UUT}:0:GPG:ENABLE:w PP")
+}
+
+record (mbbo, "${UUT}:0:GPG:ENABLE:w")	{
+	field(DTYP, "stream")
+	field(OUT,  "@mb.proto set_gpg_enable() ${SPORT}")	
+	field(NOBT, "2")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:0:GPG:ENABLE:s.PACT")
+	field(OMSL, "closed_loop")
+	field(DOL, "${UUT}:0:GPG:ENABLE PP")		
+}
+
+record (mbbi, "${UUT}:0:GPG:ENABLE:r") {
+	field(DTYP, "stream")
+	field(INP,  "@mb.proto get_gpg_enable() ${SPORT}")	
+	field(NOBT, "2")	
+	field(SCAN, "1 second")
+	field(PINI, "YES")	
+	field(FLNK, "${UUT}:0:GPG:ENABLE:s")
+}
+
+record (mbbo, "${UUT}:0:GPG:ENABLE:s") {
+	field(DTYP, "Soft Channel")
+	field(NOBT, "2")
+	field(OMSL, "closed_loop")	
+	field(DOL, "${UUT}:0:GPG:ENABLE:r NPP")	
+	field(OUT, "${UUT}:0:GPG:ENABLE PP")	
+}
+
+record (mbbo, "${UUT}:0:GPG:MODE")	{
+	field(DTYP, "Soft Channel")
+	field(NOBT, "2")	
+	field(ZRST, "ONCE")
+	field(ONST, "n/a")
+	field(TWST, "LOOP")
+	field(THST, "LOOPWAIT")        
+	field(FLNK, "${UUT}:0:GPG:MODE:w PP")
+}
+
+record (mbbo, "${UUT}:0:GPG:MODE:w")	{
+	field(DTYP, "stream")
+	field(OUT,  "@mb.proto set_gpg_mode() ${SPORT}")	
+	field(NOBT, "2")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:0:GPG:MODE:s.PACT")
+	field(OMSL, "closed_loop")
+	field(DOL, "${UUT}:0:GPG:MODE PP")		
+}
+
+record (mbbi, "${UUT}:0:GPG:MODE:r") {
+	field(DTYP, "stream")
+	field(INP,  "@mb.proto get_gpg_mode() ${SPORT}")	
+	field(NOBT, "2")	
+	field(SCAN, "1 second")
+	field(PINI, "YES")	
+	field(FLNK, "${UUT}:0:GPG:MODE:s")
+}
+
+record (mbbo, "${UUT}:0:GPG:MODE:s") {
+	field(DTYP, "Soft Channel")
+	field(NOBT, "2")
+	field(OMSL, "closed_loop")	
+	field(DOL, "${UUT}:0:GPG:MODE:r NPP")	
+	field(OUT, "${UUT}:0:GPG:MODE PP")	
+}
+
+record(longin, "${UUT}:0:GPG:DBG:GPGTOP") {
+	field(DTYP, "stream")
+	field(INP,  "@mb.proto get_gpg_top ${SPORT}")
+	field(SCAN, "1 second")
+}
+
+record(longin, "${UUT}:0:GPG:DBG:RSTATE"){
 	field(DTYP, "stream")
 	field(INP,  "@mb.proto get_gpg_state(${UUT}) ${SPORT}")
-	field(SCAN, ".1 second")
+	# for max responsiveness
+	# dbpf ${UUT}:0:GPG:DBG:RSTATE.SCAN ".1 second"
+	field(SCAN, "1 second")
+	field(FLNK, "${UUT}:0:GPG:DBG:STATE")	
+}
+record(mbbi, "${UUT}:0:GPG:DBG:STATE"){
+	field(DTYP, "Soft Channel")
+	field(INP,  "${UUT}:0:GPG:DBG:RSTATE")	
 	field(NOBT, "3")
 	field(ZRST, "IDLE")
 	field(ONST, "RESET_CNT")
