@@ -23,12 +23,7 @@ record (longout, "${UUT}:${SITE}:INTCLK_HZ") {
 	field(EGU,  "Hz")
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:CLK")
-	field(FLNK, "${UUT}:${SITE}:INTCLK_HZ:f")                
-}
-
-record (fanout, "${UUT}:${SITE}:INTCLK_HZ:f") {
-	field(LNK1, "${UUT}:${SITE}:INTCLK_calc")
-	field(LNK2, "${UUT}:1:ACQ42X_DT")	
+	field(FLNK, "${UUT}:1:ACQ42X_DT")               
 }
 
 record(calc, "${UUT}:1:ACQ42X_DT") {
@@ -40,6 +35,13 @@ record(calc, "${UUT}:1:ACQ42X_DT") {
 record(calc, "${UUT}:1:DT") {
 	field(INPA, "${UUT}:1:ACQ42X_DT")
 	field(CALC, "A")
+	field(FLNK, "${UUT}:1:DT:f") 
+}
+
+record (fanout, "${UUT}:1:DT:f") {
+	field(LNK1, "${UUT}:${SITE}:INTCLK_calc")	
+	field(LNK2, "${UUT}:${SITE}:AI:WF:TB")
+	field(LNK3, "${UUT}:${SITE}:AI:TW:TB")
 }
 
 record(longout, "${UUT}:${SITE}:LO"){
