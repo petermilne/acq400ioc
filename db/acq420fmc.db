@@ -39,9 +39,10 @@ record(calc, "${UUT}:1:DT") {
 }
 
 record (fanout, "${UUT}:1:DT:f") {
-	field(LNK1, "${UUT}:${SITE}:INTCLK_calc")	
-	field(LNK2, "${UUT}:${SITE}:AI:WF:TB")
-	field(LNK3, "${UUT}:${SITE}:AI:TW:TB")
+	field(SELM, "All")
+	field(LNK1, "${UUT}:1:INTCLK_calc")	
+	field(LNK2, "${UUT}:1:AI:WF:TB")
+	field(LNK3, "${UUT}:1:AI:TW:TB")
 }
 
 record(longout, "${UUT}:${SITE}:LO"){

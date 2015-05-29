@@ -141,9 +141,9 @@ record(calc, "${UUT}:1:DT") {
 	field(FLNK, "${UUT}:1:DT:f") 
 }
 record (fanout, "${UUT}:1:DT:f") {
-	field(LNK1, "${UUT}:${SITE}:ACQ43X_SAMPLE_RATE:INFO")	
-	field(LNK2, "${UUT}:${SITE}:AI:WF:TB")
-	field(LNK3, "${UUT}:${SITE}:AI:TW:TB")
+	field(LNK1, "${UUT}:1:ACQ43X_SAMPLE_RATE:INFO")	
+	field(LNK2, "${UUT}:1:AI:WF:TB")
+	field(LNK3, "${UUT}:1:AI:TW:TB")
 }
 
 record(stringin, "${UUT}:${SITE}:ACQ43X_SAMPLE_RATE:INFO") {
