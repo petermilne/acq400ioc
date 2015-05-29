@@ -26,6 +26,17 @@ record (longout, "${UUT}:${SITE}:INTCLK_HZ") {
 	field(SDIS, "${UUT}:${SITE}:CLK")                
 }
 
+record(calc, "${UUT}:1:ACQ42X_DT") {
+	field(INPA, "${UUT}:1:INTCLK_HZ")
+	field(CALC, "A!=0? 1/A: 1")
+	field(FLNK, "${UUT}:1:DT")
+}
+
+record(calc, "${UUT}:1:DT") {
+	field(INPA, "${UUT}:1:ACQ42X_DT")
+	field(CALC, "A")
+}
+
 record(longout, "${UUT}:${SITE}:LO"){
 	field(DTYP, "Soft Channel")
 	field(VAL,  "${LO}")

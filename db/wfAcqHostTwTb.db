@@ -13,7 +13,7 @@ record(aSub, "${UUT}:${SITE}:AI:TW:TB") {
 	
 	field(FTC,  "FLOAT")
 	field(NOC,  "1")
-	field(INPC,  "${UUT}:1:ACQ43X_DT")
+	field(INPC,  "${UUT}:1:DT")
 	
 	field(FTVA, "FLOAT")
 	field(NOVA, "${size}")

@@ -91,7 +91,7 @@ make_AI() {
 		echo dbLoadRecords\(\"db/wfAcqHost.db\",\"${wprams}\"\)
 	done
 	if [ $FIRST_AI_WF_RECORDS -eq 1 ]; then		  
-		echo dbLoadRecords\(\"db/wfAcqHostTb.db\",\"${PRAMS}\"\)	
+		echo dbLoadRecords\(\"db/wfAcqHostTb.db\",\"${PRAMS},size=${SIZE}\"\)	
 		FIRST_AI_WF_RECORDS=0
 	fi	
 	let nchanp1="$nchan+1"  
@@ -266,11 +266,13 @@ load_400() {
 			mprams="UUT=${HOST},SITE=${site},SPORT=S1M"
 			echo 'dbLoadRecords("db/acq430fmc.db","'${mprams},LO=$LO'")'
 			echo 'dbLoadRecords("db/acq43x_rgm.db","'${mprams}'")'
+			echo >>/tmp/st_post.cmd "seq calmon \"uut=${HOST},site=${site}\""
 		fi
 		let LO=$LO/256;;				
 	40|41)
 		load_AO $site $model $cprams		
-		let LO=66000000;;	
+		let LO=66000000;;
+#	@@todo : different flavour of calmon for SAR ADC needed
 	esac
 	
 	HPRAMS="${cprams},size=$HSIZE,type=LONG,fname=HG.${site}"
@@ -305,8 +307,6 @@ load_400() {
 	echo 'dbLoadRecords("db/signal.db","'${cprams}',FNAM=EVENT1,FN=event1,ZNAM=disable,ONAM=enable")'
 	echo 'dbLoadRecords("db/signal.db","'${cprams}',FNAM=EVENT0,FN=event0,ZNAM=disable,ONAM=enable")'
 	echo 'dbLoadRecords("db/acq420fmc99.db","'${cprams}'")'
-		
-	echo >>/tmp/st_post.cmd "seq calmon \"uut=${HOST},site=${site}\""
 	
 	create_asyn_channel S${site} 127.0.0.1:422${site}
 	if [ "x${site}" = "x1" ]; then

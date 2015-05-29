@@ -77,6 +77,7 @@ static long raw_to_uvolts(aSubRecord *prec) {
    }
 
 static int report_done;
+static int verbose;
 
 
 #define OR_THRESHOLD 32
@@ -134,7 +135,9 @@ long raw_to_volts(aSubRecord *prec) {
 	double sumsq = 0;
 	bool compute_squares = p_stddev != 0 || p_rms != 0;
 
-	if (++report_done == 1){
+
+
+	if (::verbose && ++report_done == 1){
 		printf("aoff count: %u value: %p type: %d\n", prec->noo, prec->o, prec->fto);
 		printf("aslo count: %u value: %p type: %d\n", prec->nos, prec->s, prec->fts);
 		printf("raw_to_volts() ->b %p rmax %ld\n", prec->b, rmax);
@@ -143,8 +146,16 @@ long raw_to_volts(aSubRecord *prec) {
 				len, alarm_threshold, p_over_range);
 	}
 
-	if (strstr(prec->name, ":01") != 0){
+	if (::verbose && strstr(prec->name, ":01") != 0){
 		printf("%s : aslo:%.6e aoff:%.6e\n", prec->name, aslo, aoff);
+	}
+
+	if (aslo*rmax > vmax*.8){
+		aslo = vmax/rmax;
+		if (report_done == 1){
+			printf("%s range change overrides cal change aslo to %f\n",
+					prec->name, aslo);
+		}
 	}
 
 	min_value = raw[0];
@@ -202,7 +213,10 @@ long timebase(aSubRecord *prec) {
  };
 
  static void raw_to_uvolts_Registrar(void) {
-       registryFunctionRefAdd(my_asub_Ref, NELEMENTS(my_asub_Ref));
+	 const char* vs = getenv("ACQWFCALC_VERBOSE");
+	 if (vs) verbose = atoi(vs);
+
+	 registryFunctionRefAdd(my_asub_Ref, NELEMENTS(my_asub_Ref));
  }
 
  epicsExportRegistrar(raw_to_uvolts_Registrar);
