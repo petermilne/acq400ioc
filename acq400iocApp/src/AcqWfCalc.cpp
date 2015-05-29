@@ -109,6 +109,8 @@ template <class T> double square(T raw) {
 	return dr*dr;
 }
 
+template <class T> T scale(T raw) { return raw; }
+template <long> long scale(long raw) { return raw >> 8; }
 
 template <class T>
 long raw_to_volts(aSubRecord *prec) {
@@ -135,8 +137,6 @@ long raw_to_volts(aSubRecord *prec) {
 	double sumsq = 0;
 	bool compute_squares = p_stddev != 0 || p_rms != 0;
 
-
-
 	if (::verbose && ++report_done == 1){
 		printf("aoff count: %u value: %p type: %d\n", prec->noo, prec->o, prec->fto);
 		printf("aslo count: %u value: %p type: %d\n", prec->nos, prec->s, prec->fts);
@@ -150,7 +150,7 @@ long raw_to_volts(aSubRecord *prec) {
 		printf("%s : aslo:%.6e aoff:%.6e\n", prec->name, aslo, aoff);
 	}
 
-	if (aslo*rmax > vmax*.8){
+	if (aslo*scale<T>(rmax) > vmax*.8){
 		aslo = vmax/rmax;
 		if (report_done == 1){
 			printf("%s range change overrides cal change aslo to %f\n",
@@ -162,8 +162,8 @@ long raw_to_volts(aSubRecord *prec) {
 	max_value = raw[0];
 
 	for (int ii=0; ii <len; ii++) {
-		T rx = raw [ii];
-		if (sizeof(T) == 4) rx >>= 8;
+		T rx = scale<T>(raw[ii]);
+
 		if (rx > max_value) max_value = rx;
 		if (rx < min_value) min_value = rx;
 		if (rx > alarm_threshold) 	over_range = 1;
