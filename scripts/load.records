@@ -46,10 +46,14 @@ get_range() {
 	else
 	VSPEC=""
 	fi
+	model=$(cat /dev/acq400.${site}.knobs/module_type)
 	if [ "x$VR" != "x" ]; then
 		echo $VR
 	else
-		echo 10
+		case $model in
+		4)	echo 10.24;;
+		*)	echo 10;;
+		esac
 	fi
 }
 
