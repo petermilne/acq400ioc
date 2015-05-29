@@ -19,11 +19,16 @@ record (longout, "${UUT}:${SITE}:INTCLK_HZ") {
 	field(VAL,  "500000")
 	field(DESC, "Internal FCLK [Hz]")
 	field(LOPR, "10000")
-	field(HOPR, "${MAXHZ}")
-	field(FLNK, "${UUT}:${SITE}:INTCLK_calc")
+	field(HOPR, "${MAXHZ}")	
 	field(EGU,  "Hz")
 	field(DISV, "1")
-	field(SDIS, "${UUT}:${SITE}:CLK")                
+	field(SDIS, "${UUT}:${SITE}:CLK")
+	field(FLNK, "${UUT}:${SITE}:INTCLK_HZ:f")                
+}
+
+record (fanout, "${UUT}:${SITE}:INTCLK_HZ:f") {
+	field(LNK1, "${UUT}:${SITE}:INTCLK_calc")
+	field(LNK2, "${UUT}:1:ACQ42X_DT")	
 }
 
 record(calc, "${UUT}:1:ACQ42X_DT") {
