@@ -1,0 +1,12 @@
+#!/bin/sh
+
+HN=$(hostname)
+PV=${HN}:0:GPG:DBG:RSTATE
+
+case $1 in
+1)	RATE=".1 second";;
+*)	RATE="1 second";;
+esac
+
+echo "dbpf ${PV}.SCAN \"${RATE}\"" | acq4xx-epics-console
+
