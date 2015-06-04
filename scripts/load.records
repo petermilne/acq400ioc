@@ -254,13 +254,10 @@ load_400() {
 	fi
 	cprams="UUT=${HOST},SITE=${site},SPORT=S${site}"
 	
-	echo 'dbLoadRecords("db/acq420fmc.db","'${cprams},'LO='${LO}',MAXHZ='${maxhz}'")'
+	
 	
 	gain_file_pfx="db/gain"
 	
-	case $model in
-	6)	gain_file_pfx="db/gain125_10";;	
-	esac
 	case $model in
 	2|3|6)	
 		if [ "x${site}" = "x1" ]; then
@@ -272,13 +269,19 @@ load_400() {
 			echo 'dbLoadRecords("db/acq43x_rgm.db","'${mprams}'")'
 			echo >>/tmp/st_post.cmd "seq calmon \"uut=${HOST},site=${site}\""
 		fi
-		let LO=$LO/256;;				
+		if [ $model = 6	]; then
+				gain_file_pfx="db/gain125_10"		
+		fi		
+		let LO=$LO/256;;
+	4)	LO=66000000;;			
 	40|41)
 		load_AO $site $model $cprams		
 		let LO=66000000;;
 #	@@todo : different flavour of calmon for SAR ADC needed
 	esac
 	
+	echo 'dbLoadRecords("db/acq420fmc.db","'${cprams},'LO='${LO}',MAXHZ='${maxhz}'")'
+		
 	HPRAMS="${cprams},size=$HSIZE,type=LONG,fname=HG.${site}"
 	echo 'dbLoadRecords("db/hgAcqHost.db","'${HPRAMS}'")'
 	

@@ -87,7 +87,8 @@ record (calcout, "${UUT}:${SITE}:INTCLK_calc:r") {
 	field(OUT, "${UUT}:${SITE}:INTCLK_HZ PP")
 	field(OOPT, "On Change")
 	field(DISV, "1")
-	field(SDIS, "${UUT}:${SITE}:CLK")		
+	field(SDIS, "${UUT}:${SITE}:CLK")
+	field(FLNK, "${UUT}:${SITE}:clkdiv:ir")		
 }
 
 # Clkdiv with external clock - go direct.
@@ -98,7 +99,7 @@ record (longout, "${UUT}:${SITE}:CLKDIV") {
 	field(LOPR, "1")
 	field(HOPR, "65535")
 	field(VAL,  "1")
-	field(PINI, "YES")	
+	field(PINI, "YES")		
 }
 
 record (longout, "${UUT}:${SITE}:clkdiv:e") {
@@ -110,6 +111,16 @@ record (longout, "${UUT}:${SITE}:clkdiv:e") {
 	field(SDIS, "${UUT}:${SITE}:CLK")	
 }
 
+# but record correct value when internal ..
+
+record (longout, "${UUT}:${SITE}:clkdiv:ir") {
+	field(DTYP, "Soft Channel")
+	field(DOL,  "${UUT}:${SITE}:clkdiv:r")
+	field(OUT, "${UUT}:${SITE}:CLKDIV")
+	field(OMSL, "closed_loop")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:CLK")	
+}
 
 record(bo, "${UUT}:${SITE}:simulate") {
 	field(DTYP, "boAcqHost")
