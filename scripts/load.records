@@ -646,4 +646,5 @@ fi
 
 
 echo 'dbl > /tmp/records.dbl'
+echo 'dbpf ${UUT}:IOC_READY.VAL 1' 
 echo 1>&2 "load.records 99"

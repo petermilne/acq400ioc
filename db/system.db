@@ -20,4 +20,10 @@ record (bo, "${UUT}:NOALIASES") {
 	field(DTYP, "Soft Channel")
 }
 
+record (bo, "${UUT}:IOC_READY") {
+	field(DTYP, "Soft Channel")
+	field(VAL,  "0")
+	field(PINI, "YES")
+}
+
 

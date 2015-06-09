@@ -116,7 +116,7 @@ set_gpg_mode {
 }
 
 get_gpg_top {
-	out "gpg_top";
+	out "gpg_top_count";
 	in "%d";
 }
 
