@@ -462,14 +462,14 @@ load_mb_sync() {
 		# d0
 		case $FUN in
 		CLK)	nobt=1; twst="nc";	thst="nc";;
-		TRG)	nobt=2; twst="nc";  thst="GPG0";;
+		TRG)	nobt=2; twst="HDMI_GPIO";  thst="GPG0";;
 		SYNC)	nobt=1; twst="nc";	thst="nc";;
 		esac
 		echo 'dbLoadRecords("db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=0,ZRST=EXT,TWST=${twst},THST=${thst},NOBT=${nobt}'")'
 		
 		# d1
 		case $FUN in
-		TRG) 	nobt=2; zrst=STRIG; twst="nc"; thst="GPG1";;
+		TRG) 	nobt=2; zrst=STRIG; twst="HDMI_GPIO"; thst="GPG1";;
 		SYNC) 	nobt=1; zrst=EXT;   twst="nc"; thst="nc";;
 		*) 		nobt=1; zrst=MCLK;  twst="nc"; thst="nc";;
 		esac
