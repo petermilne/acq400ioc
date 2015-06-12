@@ -133,6 +133,15 @@ get_fpctl {
 	in "%(RVAL)x";
 }
 
+set_zclk_src {
+	out "zclk_src=%(RVAL)x";
+}
+
+get_zclk_src {
+	out "zclk_src";
+	in "%(RVAL)x";
+}
+
 
 
 

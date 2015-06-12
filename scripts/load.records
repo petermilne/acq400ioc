@@ -485,6 +485,7 @@ load_mb_sync() {
 		lprams="FUN=${FUN},fun=$(toLower ${FUN})"
 		echo 'dbLoadRecords("db/fpctl.db","'${CPRAMS},${lprams},${fprams}'")'		
 	done
+	echo 'dbLoadRecords("db/zclk.db","'${CPRAMS}'")'
 	for FUN in SYNC TRG GPIO CLK
 	do
 		lprams="FUN=${FUN},fun=$(toLower ${FUN})"
