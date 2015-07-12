@@ -186,6 +186,35 @@ long raw_to_volts(aSubRecord *prec) {
 	return 0;
 }
 
+
+/* ARGS:
+ * INPUTS:
+ * INPA : const unsigned I,Q
+ * OUTPUTS:
+ * VALA : float* radius
+ * optional:
+ * VALB : float* theta
+ */
+
+#define RAD2DEG	(180/M_PI)
+
+long cart2pol(aSubRecord *prec) {
+	unsigned *raw = (unsigned *)prec->a;
+	int len = prec->noa;
+	float * radius = (float *)prec->vala;
+	float * theta = (float *)prec->valb;
+	short* raw16 = reinterpret_cast<short*>(raw);
+
+	for (int ii = 0; ii < len; ++ii){
+		float I = raw16[ii*2+1];
+		float Q = raw16[ii*2+0];
+		radius[ii] = sqrtf(I*I + Q*Q);
+		theta[ii] = atan2f(I, Q) * RAD2DEG;
+	}
+	return 0;
+}
+
+
 long timebase(aSubRecord *prec) {
 	long pre = *(long*)prec->a;
 	long post = *(long*)prec->b;
@@ -209,6 +238,7 @@ long timebase(aSubRecord *prec) {
        {"raw_to_uvolts", (REGISTRYFUNCTION) raw_to_uvolts},
        {"raw_to_volts_LONG",  (REGISTRYFUNCTION) raw_to_volts<long>},
        {"raw_to_volts_SHORT",  (REGISTRYFUNCTION) raw_to_volts<short>},
+       {"cart2pol", (REGISTRYFUNCTION) cart2pol },
        {"timebase", (REGISTRYFUNCTION) timebase},
  };
 

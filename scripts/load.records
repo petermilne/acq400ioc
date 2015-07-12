@@ -392,7 +392,7 @@ load_mb_base() {
 	case $mt in
 	acq2106|acq2006|acq2006b)	
 		echo 'dbLoadRecords("db/acq2006leds.db","UUT='${HOST}'")' ;;
-	*)
+	acq1001|acq1002)
 		echo 'dbLoadRecords("db/acq1001leds.db","UUT='${HOST}'")' ;;
 	esac
 	
@@ -432,8 +432,13 @@ load_mb_sites() {
 		done
 	)
 
-	echo 'dbLoadRecords("db/acq2006clktree.db","UUT='${HOST}'")'
-	echo 'dbLoadRecords("db/acq2006mb.db","UUT='${HOST}',SPORT=S0")'
+	case $mb_model in
+		kmcu)
+			;;
+		*)
+			echo 'dbLoadRecords("db/acq2006clktree.db","UUT='${HOST}'")'
+			echo 'dbLoadRecords("db/acq2006mb.db","UUT='${HOST}',SPORT=S0")';;
+	esac
 	[ -e /etc/acq400/0/transient ] && \
 		echo 'dbLoadRecords("db/transient.db","UUT='${HOST}',SPORT=SS,SPORTT=ST,NPORT=NP")'
 	[ -e /etc/acq400/0/reboot ] && \
@@ -548,6 +553,8 @@ load_mb() {
 				ns=6; mt=acq2006;;
 		acq1002)
 				ns=2; mt=acq1001;;
+		kmcu)
+				ns=2; mt=kmcu;;
 		*)
 				ns=1; mt=acq1001;;
 	esac		
