@@ -5,22 +5,7 @@ record(waveform, "${UUT}:${SITE}:AI:WF:${cid}") {
 	field(FLNK,"${UUT}:${SITE}:AI:WF:${cid}:V")
 }
 
-
-record(bo, "${UUT}:${SITE}:AI:WF:${cid}:OVER") {
-	field(DTYP, "Soft Channel")
-	field(OMSL, "closed_loop")
-	field(DOL, "${UUT}:${SITE}:AI:WF:${cid}:V.VALB")
-	#field(OUT, "${UUT}:${SITE}:B8:${cid}")
-	field(PINI, "YES")
-	
-}
-
-record(longout, "${UUT}:${SITE}:AI:WF:${cid}:TH") {
-	field(DTYP, "Soft Channel")
-	field(VAL,  "512")
-	field(PINI, "YES")
-	field(DESC, "alarm threshold in bits")
-}
+#acq1001_083:1:AI:WF:04
 
 # INPA : raw waveform
 # INPB : maxcode bits

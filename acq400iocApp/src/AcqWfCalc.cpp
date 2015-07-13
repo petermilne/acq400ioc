@@ -189,7 +189,8 @@ long raw_to_volts(aSubRecord *prec) {
 
 /* ARGS:
  * INPUTS:
- * INPA : const unsigned I,Q
+ * INPA : const short I
+ * INPB : const short Q
  * OUTPUTS:
  * VALA : float* radius
  * optional:
@@ -199,15 +200,15 @@ long raw_to_volts(aSubRecord *prec) {
 #define RAD2DEG	(180/M_PI)
 
 long cart2pol(aSubRecord *prec) {
-	unsigned *raw = (unsigned *)prec->a;
+	short *raw_i = reinterpret_cast<short*>(prec->a);
+	short *raw_q = reinterpret_cast<short*>(prec->b);
 	int len = prec->noa;
 	float * radius = (float *)prec->vala;
 	float * theta = (float *)prec->valb;
-	short* raw16 = reinterpret_cast<short*>(raw);
 
 	for (int ii = 0; ii < len; ++ii){
-		float I = raw16[ii*2+1];
-		float Q = raw16[ii*2+0];
+		float I = raw_i[ii];;
+		float Q = raw_q[ii];
 		radius[ii] = sqrtf(I*I + Q*Q);
 		theta[ii] = atan2f(I, Q) * RAD2DEG;
 	}
