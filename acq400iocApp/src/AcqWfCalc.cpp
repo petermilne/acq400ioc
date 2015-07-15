@@ -265,7 +265,7 @@ class Spectrum {
 		}
 		fillWindowTriangle();
 	}
-	void windowFunction(short* re, short* im, float* window)
+	void windowFunction(short* re, short* im)
 	{
 		for (int ii = 0; ii < N; ++ii){
 			in[ii][0] = re[ii] * window[ii];
@@ -277,7 +277,8 @@ class Spectrum {
 		for (int ii = 0; ii < N; ++ii){
 			float I = out[ii][0];
 			float Q = out[ii][1];
-			mag[ii] = log10f((I*I + Q*Q)/MAXS)/2;
+			// db = 20 * log10(sqrt(abs)) .. save the sqrt
+			mag[ii] = 10*log10f((I*I + Q*Q)/MAXS);
 			theta[ii] = atan2f(I, Q) * RAD2DEG;
 		}
 	}
@@ -294,9 +295,9 @@ public:
 		fftwf_free(out);
 	}
 
-	void exec (short* re, short* im, float* window, float* mag, float* theta)
+	void exec (short* re, short* im, float* mag, float* theta)
 	{
-		windowFunction(re, im, window);
+		windowFunction(re, im);
 		fftwf_execute(plan);
 		powerSpectrum(mag, theta);
 	}
@@ -315,7 +316,7 @@ long spectrum(aSubRecord *prec)
 	if (!spectrum){
 		spectrum = new Spectrum(len, window);
 	}
-	spectrum->exec(raw_i, raw_q, window, mag, theta);
+	spectrum->exec(raw_i, raw_q, mag, theta);
 	return 0;
 }
 
