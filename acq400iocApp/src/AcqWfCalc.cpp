@@ -235,12 +235,97 @@ long timebase(aSubRecord *prec) {
 	return 0;
 }
 
- static registryFunctionRef my_asub_Ref[] = {
+//#include <complex.h>
+#include "fftw3.h"
+
+#define MAXS	32768   // normalize /32768
+class Spectrum {
+	const int N;
+	fftwf_complex *in, *out;
+	fftwf_plan plan;
+	float* window;
+
+	void fillWindowTriangle() {
+		printf("filling default triangle window");
+		int n2 = N/2;
+		for (int ii = 0; ii < n2; ++ii){
+			window[ii] = window[N-ii-1] = (float)ii/n2;
+		}
+	}
+	void fillWindow()
+	{
+		FILE *fp = fopen("/dev/shm/window", "r");
+		if (fp != 0){
+			int nread = fread(window, sizeof(float), N, fp);
+			fclose(fp);
+			if (nread == N){
+				printf("filled window from /dev/shm/window");
+				return;
+			}
+		}
+		fillWindowTriangle();
+	}
+	void windowFunction(short* re, short* im, float* window)
+	{
+		for (int ii = 0; ii < N; ++ii){
+			in[ii][0] = re[ii] * window[ii];
+			in[ii][1] = im[ii] * window[ii];
+		}
+	}
+	void powerSpectrum(float* mag, float* theta)
+	{
+		for (int ii = 0; ii < N; ++ii){
+			float I = out[ii][0];
+			float Q = out[ii][1];
+			mag[ii] = log10f((I*I + Q*Q)/MAXS)/2;
+			theta[ii] = atan2f(I, Q) * RAD2DEG;
+		}
+	}
+public:
+	Spectrum(int _N, float* _window) : N(_N), window(_window) {
+		fillWindow();
+		in = (fftwf_complex*) fftwf_malloc(sizeof(fftwf_complex) * N);
+		out = (fftwf_complex*) fftwf_malloc(sizeof(fftwf_complex) * N);
+		plan = fftwf_plan_dft_1d(N, in, out, FFTW_FORWARD, FFTW_ESTIMATE);
+	}
+	virtual ~Spectrum() {
+		fftwf_destroy_plan(plan);
+		fftwf_free(in);
+		fftwf_free(out);
+	}
+
+	void exec (short* re, short* im, float* window, float* mag, float* theta)
+	{
+		windowFunction(re, im, window);
+		fftwf_execute(plan);
+		powerSpectrum(mag, theta);
+	}
+};
+long spectrum(aSubRecord *prec)
+{
+	short *raw_i = reinterpret_cast<short*>(prec->a);
+	short *raw_q = reinterpret_cast<short*>(prec->b);
+	int len = prec->noa;
+
+	float* mag = reinterpret_cast<float*>(prec->vala);
+	float* theta = reinterpret_cast<float*>(prec->valb);
+	float *window = reinterpret_cast<float*>(prec->valc);
+
+	static Spectrum *spectrum;
+	if (!spectrum){
+		spectrum = new Spectrum(len, window);
+	}
+	spectrum->exec(raw_i, raw_q, window, mag, theta);
+	return 0;
+}
+
+static registryFunctionRef my_asub_Ref[] = {
        {"raw_to_uvolts", (REGISTRYFUNCTION) raw_to_uvolts},
        {"raw_to_volts_LONG",  (REGISTRYFUNCTION) raw_to_volts<long>},
        {"raw_to_volts_SHORT",  (REGISTRYFUNCTION) raw_to_volts<short>},
        {"cart2pol", (REGISTRYFUNCTION) cart2pol },
        {"timebase", (REGISTRYFUNCTION) timebase},
+       {"spectrum", (REGISTRYFUNCTION) spectrum},
  };
 
  static void raw_to_uvolts_Registrar(void) {
