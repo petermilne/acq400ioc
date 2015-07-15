@@ -239,6 +239,10 @@ long timebase(aSubRecord *prec) {
 #include "fftw3.h"
 
 #define MAXS	32768   // normalize /32768
+
+#define RE	0
+#define IM	1
+
 class Spectrum {
 	const int N;
 	fftwf_complex *in, *out;
@@ -268,15 +272,15 @@ class Spectrum {
 	void windowFunction(short* re, short* im)
 	{
 		for (int ii = 0; ii < N; ++ii){
-			in[ii][0] = re[ii] * window[ii];
-			in[ii][1] = im[ii] * window[ii];
+			in[ii][RE] = re[ii] * window[ii];
+			in[ii][IM] = im[ii] * window[ii];
 		}
 	}
 	void powerSpectrum(float* mag, float* theta)
 	{
 		for (int ii = 0; ii < N; ++ii){
-			float I = out[ii][0];
-			float Q = out[ii][1];
+			float I = out[ii][RE];
+			float Q = out[ii][IM];
 			// db = 20 * log10(sqrt(abs)) .. save the sqrt
 			mag[ii] = 10*log10f((I*I + Q*Q)/MAXS);
 			theta[ii] = atan2f(I, Q) * RAD2DEG;
