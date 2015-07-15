@@ -263,7 +263,7 @@ class Spectrum {
 			int nread = fread(window, sizeof(float), N, fp);
 			fclose(fp);
 			if (nread == N){
-				printf("filled window from /dev/shm/window");
+				printf("filled window from /dev/shm/window\n");
 				return;
 			}
 		}
@@ -283,7 +283,10 @@ class Spectrum {
 			float Q = out[ii][IM];
 			// db = 20 * log10(sqrt(abs)) .. save the sqrt
 			mag[ii] = 10*log10f((I*I + Q*Q)/MAXS);
-			theta[ii] = atan2f(I, Q) * RAD2DEG;
+			//theta[ii] = atan2f(I, Q) * RAD2DEG;
+		}
+		for (int ii = 0; ii < N/2; ++ii){
+			theta[ii] = mag[ii] + mag[N-1-ii];
 		}
 	}
 public:
