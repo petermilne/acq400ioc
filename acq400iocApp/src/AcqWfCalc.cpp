@@ -242,6 +242,8 @@ long timebase(aSubRecord *prec) {
 // avoid sqrt() function by dividing by 2 in log domain
 #define LOGSQRT(n)	((n)/2)
 
+#define DDC_ATTENUATION_FACTOR 20	// DDC attenuation in dB
+
 #define RE	0
 #define IM	1
 
@@ -311,12 +313,14 @@ class Spectrum {
 public:
 	Spectrum(int _N, float* _window, float* _bins) :
 		N(_N), window(_window), bins(_bins), R(new float[_N]), f0(0) {
+
+		printf("Spectrum B1001\n");
 		fillWindow();
 		in = (fftwf_complex*) fftwf_malloc(sizeof(fftwf_complex) * N);
 		out = (fftwf_complex*) fftwf_malloc(sizeof(fftwf_complex) * N);
 		plan = fftwf_plan_dft_1d(N, in, out, FFTW_FORWARD, FFTW_ESTIMATE);
 		// full scale I+Q Say all one bin 2 * 4096 ..
-		db0 = 20 * log10(N*2);
+		db0 = 20 * log10(N*2) - DDC_ATTENUATION_FACTOR;
 	}
 	virtual ~Spectrum() {
 		fftwf_destroy_plan(plan);

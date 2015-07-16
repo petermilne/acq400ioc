@@ -4,7 +4,7 @@ make_AI() {
 	maxcode=32768
 	eslo=0.00030517578125
 
-	let nchan=$(cat /etc/acq400/$SITE/NCHAN)*2
+	let nchan=$(cat /etc/acq400/$SITE/NCHAN)
 	vmax=10
 
 	let ch=0; while [ $ch -lt $nchan ]; do
