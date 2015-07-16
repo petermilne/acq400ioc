@@ -249,6 +249,7 @@ long timebase(aSubRecord *prec) {
 
 class Spectrum {
 	const int N;
+	const int N2;
 	fftwf_complex *in, *out;
 	fftwf_plan plan;
 	float* window;
@@ -258,10 +259,12 @@ class Spectrum {
 	float db0;
 
 	void binFreqs(float fs) {
-		if (bins != 0 && floorf(fs/1000) != floorf(f0/1000)){
+		if (bins != 0 && floorf(fs/100) != floorf(f0/100)){
 			float fx = 0;
-			float delta = fs/N/2;
-			for (int ii = 0; ii != N/2; ++ii){
+			float nyquist = fs/2;
+			float delta = nyquist/N2;
+
+			for (int ii = 0; ii != N2; ++ii){
 				bins[ii] = fx;
 				fx += delta;
 			}
@@ -270,8 +273,8 @@ class Spectrum {
 	}
 	void fillWindowTriangle() {
 		printf("filling default triangle window\n");
-		for (int ii = 0; ii < N/2; ++ii){
-			window[ii] = window[N-ii-1] = (float)ii/N/2;
+		for (int ii = 0; ii < N2; ++ii){
+			window[ii] = window[N-ii-1] = (float)ii/N2;
 		}
 	}
 	void fillWindow()
@@ -305,16 +308,16 @@ class Spectrum {
 			R[ii] = (I*I + Q*Q);
 		}
 		// now fold the negative spectrum into the positive, -> db
-		for (int ii = 0; ii < N/2; ++ii){
+		for (int ii = 0; ii < N2; ++ii){
 			float fold = (R[ii] + R[N-1-ii])/2;
 			mag[ii] = LOGSQRT(20*log10(fold)) - db0;
 		}
 	}
 public:
 	Spectrum(int _N, float* _window, float* _bins) :
-		N(_N), window(_window), bins(_bins), R(new float[_N]), f0(0) {
+		N(_N), N2(_N/2), window(_window), bins(_bins), R(new float[_N]), f0(0) {
 
-		printf("Spectrum B1001\n");
+		printf("Spectrum B1002\n");
 		fillWindow();
 		in = (fftwf_complex*) fftwf_malloc(sizeof(fftwf_complex) * N);
 		out = (fftwf_complex*) fftwf_malloc(sizeof(fftwf_complex) * N);

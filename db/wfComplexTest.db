@@ -65,8 +65,8 @@ record(waveform, "${UUT}:3:AI:WF:${cid}") {
 
 record(calc, "${UUT}:${SITE}:AI:WF:FDDC" ) {
 	field(INPA, "${UUT}:0:SIG:CLK_S1:FREQ")
-	field(INPB,  "32")
-	field(CALC, "1000*FLOOR(A/1000)/B")	
+	field(INPB,  "16")
+	field(CALC, "100*FLOOR(A/100)/B")	
 	field(DESC,  "Fout from DDC")
 }
 
