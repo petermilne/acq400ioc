@@ -91,7 +91,7 @@ record(aSub, "${UUT}:${SITE}:AI:WF:PS:${cid}") {
 	field(NOVA, "${size2}")
 	field(DESC, "complex PS in polar A=R B=T C=Window")
 	
-# BINS - placeholder
+# BINS - 
 	field(FTVB, "FLOAT")
 	field(NOVB, "${size2}")
 #window		

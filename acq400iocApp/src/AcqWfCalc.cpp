@@ -239,6 +239,8 @@ long timebase(aSubRecord *prec) {
 #include "fftw3.h"
 
 #define MAXS	32768   // normalize /32768
+// avoid sqrt() function by dividing by 2 in log domain
+#define LOGSQRT(n)	((n)/2)
 
 #define RE	0
 #define IM	1
@@ -255,10 +257,9 @@ class Spectrum {
 
 	void binFreqs(float fs) {
 		if (bins != 0 && floorf(fs/1000) != floorf(f0/1000)){
-			int n2 = N/2;
 			float fx = 0;
-			float delta = fs/n2;
-			for (int ii = 0; ii != n2; ++ii){
+			float delta = fs/N/2;
+			for (int ii = 0; ii != N/2; ++ii){
 				bins[ii] = fx;
 				fx += delta;
 			}
@@ -267,9 +268,8 @@ class Spectrum {
 	}
 	void fillWindowTriangle() {
 		printf("filling default triangle window\n");
-		int n2 = N/2;
-		for (int ii = 0; ii < n2; ++ii){
-			window[ii] = window[N-ii-1] = (float)ii/n2;
+		for (int ii = 0; ii < N/2; ++ii){
+			window[ii] = window[N-ii-1] = (float)ii/N/2;
 		}
 	}
 	void fillWindow()
@@ -294,17 +294,18 @@ class Spectrum {
 	}
 	void powerSpectrum(float* mag)
 	{
+		// first calc magnitude of every bin
 		for (int ii = 0; ii < N; ++ii){
 			float I = out[ii][RE];
 			float Q = out[ii][IM];
 			I /= MAXS;
 			Q /= MAXS;
-			// db = 20 * log10(sqrt(abs)) .. save the sqrt
 			R[ii] = (I*I + Q*Q);
 		}
+		// now fold the negative spectrum into the positive, -> db
 		for (int ii = 0; ii < N/2; ++ii){
-			// db = 20 log10(sqrt(abs)) /2 for the sqrt.
-			mag[ii] = 10*log10((R[ii] + R[N-1-ii])/2) - db0;
+			float fold = (R[ii] + R[N-1-ii])/2;
+			mag[ii] = LOGSQRT(20*log10(fold)) - db0;
 		}
 	}
 public:
