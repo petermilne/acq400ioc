@@ -1,10 +1,19 @@
 # waveform shows DDC output; AI:WF MUST be data32 type
 
+
 record(aSub, "${UUT}:${SITE}:AI:WF:${cid2}:V") {
-	field(FLNK,"${UUT}:${SITE}:AI:WF:POLAR:${cid}")
+	field(FLNK, "${UUT}:${SITE}:AI:WF:cplx:${cid}")
 }
 
-#acq1001_083:1:AI:WF:04
+record(fanout, "${UUT}:${SITE}:AI:WF:cplx:${cid}") {
+	field(LNK1, "${UUT}:${SITE}:AI:WF:POLAR:${cid}")
+	field(LNK2, "${UUT}:${SITE}:AI:WF:FDDC")	
+	field(LNK3, "${UUT}:4:AI:WF:TB")
+	field(LNK4, "${UUT}:${SITE}:AI:WF:PS:${cid}")
+}
+
+
+# LNK1
 
 # INPA : raw waveform
 # INPB : maxcode bits
@@ -45,45 +54,65 @@ record(waveform, "${UUT}:3:AI:WF:${cid}") {
 	field(DTYP, "Soft Channel")
 	field(FTVL, "FLOAT")
 	field(NELM, "${size}")
-	field(INP,  "${UUT}:${SITE}:AI:WF:POLAR:${cid}.VALB")
-	field(FLNK,  "${UUT}:${SITE}:AI:WF:PS:${cid}")
+	field(INP,  "${UUT}:${SITE}:AI:WF:POLAR:${cid}.VALB")	
 }
+
+
+
+
+
+# LNK2
+
+record(calc, "${UUT}:${SITE}:AI:WF:FDDC" ) {
+	field(INPA, "${UUT}:0:SIG:CLK_S1:FREQ")
+	field(INPB,  "32")
+	field(CALC, "1000*FLOOR(A/1000)/B")	
+	field(DESC,  "Fout from DDC")
+}
+
 
 record(aSub, "${UUT}:${SITE}:AI:WF:PS:${cid}") {
 	field(SNAM, "spectrum")
-	
+# I	
 	field(FTA,  "SHORT")
 	field(NOA,  "${size}")
 	field(INPA, "${UUT}:${SITE}:AI:WF:${rawi}")
-
+# Q
 	field(FTB,  "SHORT")
 	field(NOB,  "${size}")
 	field(INPB, "${UUT}:${SITE}:AI:WF:${rawq}")	
+# Fs
+	field(FTC,  "FLOAT")
+	field(NOC,  "1")
+	field(INPC, "${UUT}:${SITE}:AI:WF:FDDC")	
 
+# single sided power spectrum
 	field(FTVA, "FLOAT")
-	field(NOVA, "${size}")
+	field(NOVA, "${size2}")
 	field(DESC, "complex PS in polar A=R B=T C=Window")
 	
+# BINS - placeholder
 	field(FTVB, "FLOAT")
-	field(NOVB, "${size}")
-		
+	field(NOVB, "${size2}")
+#window		
 	field(FTVC,  "FLOAT")
 	field(NOVC,  "${size}")	
-	
+
 	field(FLNK,  "${UUT}:4:AI:WF:${cid}")	
+}
+
+
+record(waveform, "${UUT}:4:AI:WF:TB") {
+	field(DTYP, "Soft Channel")
+	field(FTVL, "FLOAT")
+	field(NELM, "${size2}")
+	field(INP,  "${UUT}:${SITE}:AI:WF:PS:01.VALB")	
 }
 
 record(waveform, "${UUT}:4:AI:WF:${cid}") {
 	field(DTYP, "Soft Channel")
 	field(FTVL, "FLOAT")
-	field(NELM, "${size}")
-	field(INP,  "${UUT}:${SITE}:AI:WF:PS:${cid}.VALA")
-	field(FLNK, "${UUT}:5:AI:WF:${cid}")
+	field(NELM, "${size2}")
+	field(INP,  "${UUT}:${SITE}:AI:WF:PS:${cid}.VALA")	
 }
 
-record(waveform, "${UUT}:5:AI:WF:${cid}") {
-	field(DTYP, "Soft Channel")
-	field(FTVL, "FLOAT")
-	field(NELM, "${size}")
-	field(INP,  "${UUT}:${SITE}:AI:WF:PS:${cid}.VALB")	
-}

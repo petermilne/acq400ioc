@@ -248,9 +248,25 @@ class Spectrum {
 	fftwf_complex *in, *out;
 	fftwf_plan plan;
 	float* window;
+	float* bins;		/* x_axis bins in Hz */
+	float* R;		/* local array computes R (magnitude) */
+	float f0;		/* previous frequency .. do we have to recalc the bins? */
+	float db0;
 
+	void binFreqs(float fs) {
+		if (bins != 0 && floorf(fs/1000) != floorf(f0/1000)){
+			int n2 = N/2;
+			float fx = 0;
+			float delta = fs/n2;
+			for (int ii = 0; ii != n2; ++ii){
+				bins[ii] = fx;
+				fx += delta;
+			}
+			f0 = fs;
+		}
+	}
 	void fillWindowTriangle() {
-		printf("filling default triangle window");
+		printf("filling default triangle window\n");
 		int n2 = N/2;
 		for (int ii = 0; ii < n2; ++ii){
 			window[ii] = window[N-ii-1] = (float)ii/n2;
@@ -276,25 +292,30 @@ class Spectrum {
 			in[ii][IM] = im[ii] * window[ii];
 		}
 	}
-	void powerSpectrum(float* mag, float* theta)
+	void powerSpectrum(float* mag)
 	{
 		for (int ii = 0; ii < N; ++ii){
 			float I = out[ii][RE];
 			float Q = out[ii][IM];
+			I /= MAXS;
+			Q /= MAXS;
 			// db = 20 * log10(sqrt(abs)) .. save the sqrt
-			mag[ii] = 10*log10f((I*I + Q*Q)/MAXS);
-			//theta[ii] = atan2f(I, Q) * RAD2DEG;
+			R[ii] = (I*I + Q*Q);
 		}
 		for (int ii = 0; ii < N/2; ++ii){
-			theta[ii] = mag[ii] + mag[N-1-ii];
+			// db = 20 log10(sqrt(abs)) /2 for the sqrt.
+			mag[ii] = 10*log10((R[ii] + R[N-1-ii])/2) - db0;
 		}
 	}
 public:
-	Spectrum(int _N, float* _window) : N(_N), window(_window) {
+	Spectrum(int _N, float* _window, float* _bins) :
+		N(_N), window(_window), bins(_bins), R(new float[_N]), f0(0) {
 		fillWindow();
 		in = (fftwf_complex*) fftwf_malloc(sizeof(fftwf_complex) * N);
 		out = (fftwf_complex*) fftwf_malloc(sizeof(fftwf_complex) * N);
 		plan = fftwf_plan_dft_1d(N, in, out, FFTW_FORWARD, FFTW_ESTIMATE);
+		// full scale I+Q Say all one bin 2 * 4096 ..
+		db0 = 20 * log10(N*2);
 	}
 	virtual ~Spectrum() {
 		fftwf_destroy_plan(plan);
@@ -302,28 +323,30 @@ public:
 		fftwf_free(out);
 	}
 
-	void exec (short* re, short* im, float* mag, float* theta)
+	void exec (short* re, short* im, float* mag, float fs)
 	{
 		windowFunction(re, im);
 		fftwf_execute(plan);
-		powerSpectrum(mag, theta);
+		powerSpectrum(mag);
+		binFreqs(fs);
 	}
 };
 long spectrum(aSubRecord *prec)
 {
 	short *raw_i = reinterpret_cast<short*>(prec->a);
 	short *raw_q = reinterpret_cast<short*>(prec->b);
+	float *fs = reinterpret_cast<float*>(prec->c);
 	int len = prec->noa;
 
 	float* mag = reinterpret_cast<float*>(prec->vala);
-	float* theta = reinterpret_cast<float*>(prec->valb);
+	float* freqs = prec->nob>1? reinterpret_cast<float*>(prec->valb): 0;
 	float *window = reinterpret_cast<float*>(prec->valc);
 
 	static Spectrum *spectrum;
 	if (!spectrum){
-		spectrum = new Spectrum(len, window);
+		spectrum = new Spectrum(len, window, freqs);
 	}
-	spectrum->exec(raw_i, raw_q, mag, theta);
+	spectrum->exec(raw_i, raw_q, mag, *fs);
 	return 0;
 }
 
