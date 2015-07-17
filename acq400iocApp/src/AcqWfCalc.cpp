@@ -264,7 +264,6 @@ class Spectrum {
 			float fx = -nyquist;
 			float delta = nyquist/N2;
 
-
 			for (int ii = 0; ii != N; ++ii){
 				bins[ii] = fx;
 				fx += delta;
@@ -308,6 +307,12 @@ class Spectrum {
 			Q /= MAXS;
 			R[ii] = (I*I + Q*Q);
 			mag[ii] = LOGSQRT(20*log10(R[ii])) - db0;
+		}
+		// FFTW presents the spectrum 0..-F,+F..0 ? fix that
+		for (int ii = 0; ii < N2; ++ii){
+			float t;
+			SWAP(mag[ii],    mag[N2-ii-1], t);
+			SWAP(mag[N2+ii], mag[N-1-ii],  t);
 		}
 	}
 public:
