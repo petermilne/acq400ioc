@@ -27,7 +27,7 @@
 
 #define IN_RANGE(xx,ll,rr)      ((xx)>=(ll)&&(xx)<=(rr))
 #define CLAMP(xx,ll,rr)         ((xx) = (xx)<(ll)? (ll): (xx)>(rr)? (rr): (xx))
-#define SWAP(aa,bb,tt)  ( tt = aa, aa = bb, bb = tt )
+//#define SWAP(aa,bb,tt)  ( tt = aa, aa = bb, bb = tt )
 
 #define MAX(aa,bb)      ((aa)>=(bb)?(aa):(bb))
 #define MIN(aa,bb)      ((aa)<=(bb)?(aa):(bb))

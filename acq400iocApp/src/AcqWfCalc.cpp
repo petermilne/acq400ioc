@@ -246,6 +246,8 @@ long timebase(aSubRecord *prec) {
 
 #define RE	0
 #define IM	1
+//#define SWAP(aa,bb,tt)  ( tt = aa, aa = bb, bb = tt )
+#define SWAP(x, y) do { typeof(x) SWAP = x; x = y; y = SWAP; } while (0)
 
 class Spectrum {
 	const int N;
@@ -299,27 +301,31 @@ class Spectrum {
 	}
 	void powerSpectrum(float* mag)
 	{
-		// first calc magnitude of every bin
+		float *mn = mag;	// neg freqs
+		float *mp = mag+N2;	// pos freqs
+
+		// calc magnitude of every bin
 		for (int ii = 0; ii < N; ++ii){
 			float I = out[ii][RE];
 			float Q = out[ii][IM];
 			I /= MAXS;
 			Q /= MAXS;
 			R[ii] = (I*I + Q*Q);
-			mag[ii] = LOGSQRT(20*log10(R[ii])) - db0;
-		}
-		// FFTW presents the spectrum 0..-F,+F..0 ? fix that
-		for (int ii = 0; ii < N2; ++ii){
-			float t;
-			SWAP(mag[ii],    mag[N2-ii-1], t);
-			SWAP(mag[N2+ii], mag[N-1-ii],  t);
+			float M = LOGSQRT(20*log10(R[ii])) - db0;
+
+			// FFTW presents the spectrum 0..-F,+F..0 ? fix that
+			if (ii < N2){
+				mn[N2-ii-1] = M;
+			}else{
+				mp[N-ii-1] = M;
+			}
 		}
 	}
 public:
 	Spectrum(int _N, float* _window, float* _bins) :
 		N(_N), N2(_N/2), window(_window), bins(_bins), R(new float[_N]), f0(0) {
 
-		printf("Spectrum B1003\n");
+		printf("Spectrum B1013\n");
 		fillWindow();
 		in = (fftwf_complex*) fftwf_malloc(sizeof(fftwf_complex) * N);
 		out = (fftwf_complex*) fftwf_malloc(sizeof(fftwf_complex) * N);
