@@ -7,8 +7,7 @@ record(aSub, "${UUT}:${SITE}:AI:WF:${cid2}:V") {
 
 record(fanout, "${UUT}:${SITE}:AI:WF:cplx:${cid}") {
 	field(LNK1, "${UUT}:${SITE}:AI:WF:POLAR:${cid}")
-	field(LNK2, "${UUT}:${SITE}:AI:WF:FDDC")	
-	field(LNK3, "${UUT}:4:AI:WF:TB")
+	field(LNK2, "${UUT}:${SITE}:AI:WF:FDDC")		
 	field(LNK4, "${UUT}:${SITE}:AI:WF:PS:${cid}")
 }
 
@@ -48,7 +47,7 @@ record(waveform, "${UUT}:2:AI:WF:${cid}") {
 	field(NELM, "${size}")
 	field(INP,  "${UUT}:${SITE}:AI:WF:POLAR:${cid}.VALA")
 	field(FLNK, "${UUT}:3:AI:WF:${cid}")
-	field(DESC, "I value for Site 1
+	field(DESC, "I value for Site 1")
 }
 
 record(waveform, "${UUT}:3:AI:WF:${cid}") {

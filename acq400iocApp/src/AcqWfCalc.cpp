@@ -262,7 +262,7 @@ class Spectrum {
 		if (bins != 0 && floorf(fs/100) != floorf(f0/100)){
 			float nyquist = fs/2;
 			float fx = -nyquist;
-			float delta = nyquist/N;
+			float delta = nyquist/N2;
 
 
 			for (int ii = 0; ii != N; ++ii){
