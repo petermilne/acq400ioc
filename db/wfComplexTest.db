@@ -69,6 +69,14 @@ record(calc, "${UUT}:${SITE}:AI:WF:FDDC" ) {
 	field(INPB,  "16")
 	field(CALC, "100*FLOOR(A/100)/B")	
 	field(DESC,  "Fout from DDC")
+	field(FLNK,  "${UUT}:${SITE}:AI:WF:FMIXER")
+}
+
+record(calc, "${UUT}:${SITE}:AI:WF:FMIXER") {
+	field(INPA, "${UUT}:0:SIG:CLK_S1:FREQ")
+	field(INPB, "4")
+	field(CALC, "100*FLOOR(A/100)/B")
+	field(DESC, "DDC Mixer (center) frequency")
 }
 
 
