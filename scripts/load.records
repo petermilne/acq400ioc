@@ -273,6 +273,12 @@ load_400() {
 				gain_file_pfx="db/gain125_10"		
 		fi		
 		let LO=$LO/256;;
+	8)
+		mprams="UUT=${HOST},SITE=${site},SPORT=S${site}"
+		for ic in $(seq 1 8); do
+			ch=$(printf "%02d" $ic)
+			echo 'dbLoadRecords("db/acq480fmc.db","'${mprams},CH=${ch}'")'
+		done;;
 	4)	LO=66000000;;			
 	40|41)
 		load_AO $site $model $cprams		
