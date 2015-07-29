@@ -1,0 +1,9 @@
+#!/bin/sh
+HN=$(hostname)
+
+caput ${HN}:SYS:CLK:DIST_CLK_SRC Si5326
+for site in 1 2 3 4 5 6; do
+	caput ${HN}:SYS:CLK:OE_CLK1_ELF${site} 1
+done
+
+

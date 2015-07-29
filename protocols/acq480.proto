@@ -1,0 +1,25 @@
+Terminator = LF;
+ExtraInput = Ignore;
+
+setInvert {
+	out "acq480_setInvert \$1 %d";	
+}
+
+
+setGain {
+	out "acq480_setGain \$1 %d";	
+}
+
+setHPF {
+# channel enable K   enable = K!=0
+	out "acq480_setHiPassFilter \$1 %d %d";	
+}
+
+setLFNS {
+	out "acq480_setLFNS \$1 %d";
+}
+
+setFIR {
+	# odd-chan for Custom : TODO. Custom: TODO
+	out "acq480_setDecimationFilter \$1 %d 0";
+}
