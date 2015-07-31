@@ -1,0 +1,4 @@
+
+DDC:
+/mnt/local/sysconfig/epics.sh
+export IOC_PREINIT=./scripts/load.ddc
