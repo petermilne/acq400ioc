@@ -1,7 +1,7 @@
 
 record(mbbo, "${UUT}:${SITE}:ANATRG:${CH}:M")	{
 	field(DTYP, "stream")
-	field(OUT,  "@anatrg.proto setAnaTrg(${UUT}:${SITE}:ANATRG,${CH}) ${SPORT}")
+	field(OUT,  "@anatrg.proto setAnaTrg(${UUT}:${SITE}:ANATRG:${CH},${CH}) ${SPORT}")
 	field(DTYP, "stream")
 	field(NOBT, "3")	
 	field(ZRST, "none")
@@ -13,21 +13,24 @@ record(mbbo, "${UUT}:${SITE}:ANATRG:${CH}:M")	{
 
 record(longout, "${UUT}:${SITE}:ANATRG:${CH}:L1") {	
 	field(DTYP, "stream")
-	field(OUT,  "@anatrg.proto setAnaTrg(${UUT}:${SITE}:ANATRG,${CH}) ${SPORT}")
+	field(OUT,  "@anatrg.proto setAnaTrg(${UUT}:${SITE}:ANATRG:${CH},${CH}) ${SPORT}")
 	field(DRVH, "127")
 	field(DRVL, "-127")
+	field(HOPR, "127")
+	field(LOPR, "-127")
 }
 
-record(longout, "${UUT}:${SITE}:ANATRG:${CH}:L1") {	
+record(longout, "${UUT}:${SITE}:ANATRG:${CH}:L2") {	
 	field(DTYP, "stream")
-	field(OUT,  "@anatrg.proto setAnaTrg(${UUT}:${SITE}:ANATRG,${CH}) ${SPORT}")
+	field(OUT,  "@anatrg.proto setAnaTrg(${UUT}:${SITE}:ANATRG:${CH},${CH}) ${SPORT}")
 	field(DRVH, "127")
-	field(DRVL, "-127")	
+	field(DRVL, "-127")
+	field(HOPR, "127")
+	field(LOPR, "-127")		
 }
 
-record(longout, "${UUT}:${SITE}:ANATRG:${CH}:H") {
+record(mbbo, "${UUT}:${SITE}:ANATRG:${CH}:H") {
 	field(DTYP, "stream")
-	field(OUT,  "@anatrg.proto setAnaTrg(${UUT}:${SITE}:ANATRG,${CH}) ${SPORT}")
-	field(DRVH, "127")
-	field(DRVL, "-127")	
+	field(OUT,  "@anatrg.proto setAnaTrg(${UUT}:${SITE}:ANATRG:${CH},${CH}) ${SPORT}")
+	field(NOBT, "4")
 }

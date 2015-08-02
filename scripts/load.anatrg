@@ -11,7 +11,7 @@ make_anatrg() {
 		let ch=$ch+1
 		cid=$(printf "%02d" $ch)
 
-		PRAMS="UUT=${HOST},SITE=${site},CH=${cid}"
+		PRAMS="UUT=${HOST},SITE=${site},CH=${cid},SPORT=S${site}"
 
 		echo dbLoadRecords\(\"db/anatrg.db\",\"${PRAMS}\"\)
 	done	
