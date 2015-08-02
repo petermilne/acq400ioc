@@ -1,4 +1,8 @@
 
+To trace streamdevice operation:
+./scripts/set.epics-trace
+
+
 DDC:
 /mnt/local/sysconfig/epics.sh
 export IOC_PREINIT=./scripts/load.ddc
