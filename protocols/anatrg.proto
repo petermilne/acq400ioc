@@ -3,5 +3,5 @@ ExtraInput = Ignore;
 ReplyTimeout = 2500;
 
 setAnaTrg {
-	out "anatrg_\$2 -H %(\$1:H)d %(\$1:M)s %(\$1:L1)d %(\$1:L2)d";	
+	out "anatrg_\$2 -H %(\$1:H)d -- %(\$1:M)s %(\$1:L1)d %(\$1:L2)d";	
 }
