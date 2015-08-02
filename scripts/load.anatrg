@@ -11,10 +11,11 @@ make_anatrg() {
 		let ch=$ch+1
 		cid=$(printf "%02d" $ch)
 
-		PRAMS="UUT=${HOST},SITE=${site},CH=${cid},SPORT=S${site}"
+		PRAMS="UUT=${HOST},SITE=${site},CH=${cid},SPORT=SA${site}"
 
 		echo dbLoadRecords\(\"db/anatrg.db\",\"${PRAMS}\"\)
-	done	
+	done
+	create_asyn_channel SA${site} 127.0.0.1:422${site}	
 }
 
 
