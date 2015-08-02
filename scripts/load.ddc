@@ -35,4 +35,9 @@ make_AI() {
 }
 
 
-make_AI 1
+for ACQ400 in /dev/acq400.[123456]
+do
+	if [ -e $ACQ400 ]; then
+		make_AI ${ACQ400##*.}
+	fi
+done

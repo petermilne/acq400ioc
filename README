@@ -2,3 +2,8 @@
 DDC:
 /mnt/local/sysconfig/epics.sh
 export IOC_PREINIT=./scripts/load.ddc
+
+ANALOG TRIGGER
+export IOC_PREINIT=./scripts/load.anatrg
+
+

@@ -1,0 +1,33 @@
+
+record(mbbo, "${UUT}:${SITE}:ANATRG:${CH}:M")	{
+	field(DTYP, "stream")
+	field(OUT,  "@anatrg.proto setAnaTrg(${UUT}:${SITE}:ANATRG,${CH}) ${SPORT}")
+	field(DTYP, "stream")
+	field(NOBT, "3")	
+	field(ZRST, "none")
+	field(ONST, "rising")
+	field(TWST, "falling")
+	field(THST, "inside")
+	field(FRST, "outside")        	
+}
+
+record(longout, "${UUT}:${SITE}:ANATRG:${CH}:L1") {	
+	field(DTYP, "stream")
+	field(OUT,  "@anatrg.proto setAnaTrg(${UUT}:${SITE}:ANATRG,${CH}) ${SPORT}")
+	field(DRVH, "127")
+	field(DRVL, "-127")
+}
+
+record(longout, "${UUT}:${SITE}:ANATRG:${CH}:L1") {	
+	field(DTYP, "stream")
+	field(OUT,  "@anatrg.proto setAnaTrg(${UUT}:${SITE}:ANATRG,${CH}) ${SPORT}")
+	field(DRVH, "127")
+	field(DRVL, "-127")	
+}
+
+record(longout, "${UUT}:${SITE}:ANATRG:${CH}:H") {
+	field(DTYP, "stream")
+	field(OUT,  "@anatrg.proto setAnaTrg(${UUT}:${SITE}:ANATRG,${CH}) ${SPORT}")
+	field(DRVH, "127")
+	field(DRVL, "-127")	
+}

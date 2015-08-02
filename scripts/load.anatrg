@@ -1,0 +1,26 @@
+make_anatrg() {
+	site=$1
+	echo "# make_anatrg site=$site"
+
+
+	let nchan=$(cat /etc/acq400/$site/NCHAN)
+
+	echo "#nchan $nchan"
+
+	let ch=0; while [ $ch -lt $nchan ]; do
+		let ch=$ch+1
+		cid=$(printf "%02d" $ch)
+
+		PRAMS="UUT=${HOST},SITE=${site},CH=${cid}"
+
+		echo dbLoadRecords\(\"db/anatrg.db\",\"${PRAMS}\"\)
+	done	
+}
+
+
+for ACQ400 in /dev/acq400.[123456]
+do
+	if [ -e $ACQ400 ]; then
+		make_anatrg ${ACQ400##*.}
+	fi
+done
