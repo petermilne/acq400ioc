@@ -5,3 +5,16 @@ ReplyTimeout = 2500;
 setAnaTrg {
 	out "anatrg_\$2 -H %(\$1:H)d -- %(\$1:M)s %(\$1:L1)d %(\$1:L2)d";	
 }
+
+setAnaTrgOr {
+	out "atd_OR %(\$1:1)04x%(\$1:0)04x";
+}
+
+setAnaTrgAnd {
+	out "atd_AND %(\$1:1)04x%(\$1:0)04x";
+}
+
+getAnaTrgSrc {
+	out "atd_triggered";
+	in "%x";
+}

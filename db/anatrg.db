@@ -49,13 +49,43 @@ record(mbbo, "${UUT}:${SITE}:ANATRG:${CH}:H") {
 	field(ZRST, "0")
 	field(ONST, "1")
 	field(TWST, "2")
-	field(THST, "3")
-	field(FRST, "4")
-	field(FVST, "5")
-	field(SXST, "6")
-	field(SVST, "7")
-	field(EIST, "8")
+	field(THST, "5")
+	field(FRST, "10")
+	field(FVST, "20")
+	field(ZRVL, "0")
+	field(ONVL, "1")
+	field(TWVL, "2")
+	field(THVL, "5")
+	field(FRVL, "10")
+	field(FVVL, "20")
 	field(DESC, "analog trigger hysterisis")
 	field(PINI, "YES")
 	field(VAL,  "1")
 }
+
+record(mbboDirect, "${UUT}:${SITE}:ANATRG:OR:0") {
+	field(DTYP, "stream")
+	field(OUT,  "@anatrg.proto setAnaTrgOr(${UUT}:${SITE}:ANATRG:OR) ${SPORT}")
+}
+
+record(mbboDirect, "${UUT}:${SITE}:ANATRG:OR:1") {
+	field(DTYP, "stream")
+	field(OUT,  "@anatrg.proto setAnaTrgOr(${UUT}:${SITE}:ANATRG:OR) ${SPORT}")
+}
+
+record(mbboDirect, "${UUT}:${SITE}:ANATRG:AND:0") {
+	field(DTYP, "stream")
+	field(OUT,  "@anatrg.proto setAnaTrgAnd(${UUT}:${SITE}:ANATRG:AND) ${SPORT}")
+}
+
+record(mbboDirect, "${UUT}:${SITE}:ANATRG:AND:1") {
+	field(DTYP, "stream")
+	field(OUT,  "@anatrg.proto setAnaTrgAnd(${UUT}:${SITE}:ANATRG:AND) ${SPORT}")
+}
+
+record(longin, "${UUT}:${SITE}:ANATRG:SRC") {
+	field(DTYP, "stream")
+	field(INP,  "@anatrg.proto getAnaTrgSrc ${SPORT}")
+	field(SCAN, "1 second")
+}
+
