@@ -135,6 +135,13 @@ ss monitor_continuous
 				repeat = 0;
 				pvPut(repeat);
 			}
+		} state mc2
+	}
+	
+	state mc2
+	{
+		when(continuous == 0){
+			;
 		} state mc1
 	}
 }
