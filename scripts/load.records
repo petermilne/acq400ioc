@@ -575,7 +575,7 @@ load_mb() {
 		fi
 		make_AI_subrate
 	fi
-	if [ -e /dev/acq400.12.knobs ]; then
+	if [ -e /dev/acq400.1[23].knobs ]; then
 		source /usr/local/epics/scripts/load.mgt400
 		echo "seq mgtStopOnLinkDown \"uut=$(hostname)\"" >>/tmp/st_post.cmd
 	fi	
