@@ -467,26 +467,37 @@ toLower() {
 }
 
 load_mb_sync() {
+	KB=$1 
+	mb_model=$2
 # and acq2006 R2 with HDMI
 	CPRAMS="UUT=${HOST},SITE=0,SPORT=S0"
 	for FUN in SYNC TRG CLK
 	do		 
 		lprams="FUN=${FUN},fun=$(toLower ${FUN})"
 		# d0
+		zrst="EXT";
+		
 		case $FUN in
-		CLK)	nobt=1; twst="nc";	thst="nc";;
-		TRG)	nobt=2; twst="HDMI_GPIO";  thst="GPG0";;
-		SYNC)	nobt=1; twst="nc";	thst="nc";;
+		CLK)	nobt=1; onst="HDMI"; 	twst="nc";			thst="nc";;
+		TRG)	nobt=2; onst="HDMI";    twst="HDMI_GPIO";  	thst="GPG0";;
+		SYNC)	nobt=1; onst="HDMI"; 	twst="nc";			thst="nc";;
 		esac
-		echo 'dbLoadRecords("db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=0,ZRST=EXT,TWST=${twst},THST=${thst},NOBT=${nobt}'")'
+		echo 'dbLoadRecords("db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=0,ZRST=${zrst},ONST=${onst},TWST=${twst},THST=${thst},NOBT=${nobt}'")'
 		
 		# d1
 		case $FUN in
-		TRG) 	nobt=2; zrst=STRIG; twst="HDMI_GPIO"; thst="GPG1";;
-		SYNC) 	nobt=1; zrst=EXT;   twst="nc"; thst="nc";;
-		*) 		nobt=1; zrst=MCLK;  twst="nc"; thst="nc";;
+		TRG) 	
+				case $mb_model in
+				acq2106|acq2106sfp)
+					ns=6; mt=acq2106;;
+					nobt=2; zrst=STRIG; onst="HOSTA"; twst="HOSTB"; 	thst="GPG1";;
+				*)
+					nobt=2; zrst=STRIG; onst="HDMI";  twst="HDMI_GPIO"; thst="GPG1";;
+				esac;;				
+		SYNC) 	nobt=1; zrst=EXT;   onst="HDMI";  twst="nc"; thst="nc";;
+		*) 		nobt=1; zrst=MCLK;  onst="HDMI";  twst="nc"; thst="nc";;
 		esac
-		echo 'dbLoadRecords("db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=1,ZRST=${zrst},TWST=${twst},THST=${thst},NOBT=${nobt}'")'
+		echo 'dbLoadRecords("db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=1,ZRST=${zrst},ONST=${onst},TWST=${twst},THST=${thst},NOBT=${nobt}'")'
 	done
 	for FUN in GPIO SYNC TRG
 	do
@@ -571,7 +582,7 @@ load_mb() {
 	if [ -e $KB ]; then
 		load_mb_sites $KB $ns $mt
 		if [ -e /dev/acq400.0.knobs/sync_out_clk ]; then
-			load_mb_sync $KB
+			load_mb_sync $KB $mb_model
 		fi
 		make_AI_subrate
 	fi
