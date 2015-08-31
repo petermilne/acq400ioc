@@ -488,14 +488,13 @@ load_mb_sync() {
 		case $FUN in
 		TRG) 	
 				case $mb_model in
-				acq2106|acq2106sfp)
-					ns=6; mt=acq2106;;
-					nobt=2; zrst=STRIG; onst="HOSTA"; twst="HOSTB"; 	thst="GPG1";;
+				acq2106|acq2106sfp)					
+					nobt=2; zrst="STRIG"; onst="HOSTA"; twst="HOSTB"; 	thst="GPG1";;
 				*)
-					nobt=2; zrst=STRIG; onst="HDMI";  twst="HDMI_GPIO"; thst="GPG1";;
+					nobt=2; zrst="STRIG"; onst="HDMI";  twst="HDMI_GPIO"; thst="GPG1";;
 				esac;;				
-		SYNC) 	nobt=1; zrst=EXT;   onst="HDMI";  twst="nc"; thst="nc";;
-		*) 		nobt=1; zrst=MCLK;  onst="HDMI";  twst="nc"; thst="nc";;
+		SYNC) 	nobt=1; zrst="EXT";   onst="HDMI";  twst="nc"; thst="nc";;
+		*) 		nobt=1; zrst="MCLK";  onst="HDMI";  twst="nc"; thst="nc";;
 		esac
 		echo 'dbLoadRecords("db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=1,ZRST=${zrst},ONST=${onst},TWST=${twst},THST=${thst},NOBT=${nobt}'")'
 	done
