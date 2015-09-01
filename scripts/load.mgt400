@@ -70,7 +70,7 @@ load_mgt400() {
 #tr '[:upper:]' '[:lower:]'
 
 # kmcu sfp gpio do no exist
-[ "x$mt" != "kmcu"] && load_mgt400_sfp
+[ "x$mt" != "kmcu" ] && load_mgt400_sfp
 
 
 if [ -e /dev/acq400.12.knobs ]; then
