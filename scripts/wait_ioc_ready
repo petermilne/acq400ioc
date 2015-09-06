@@ -1,0 +1,18 @@
+#!/bin/sh
+
+set +e
+
+
+PV=$(hostname):IOC_READY
+
+
+
+RDY=""
+
+while [ "x$RDY" != "x1" ]; do
+	echo wait_ioc_ready $PV 010
+	RDY=$(caget -nt $PV)
+done
+
+echo $PV all good now $RDY
+
