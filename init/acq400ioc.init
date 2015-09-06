@@ -123,12 +123,16 @@ make_epics_knobs() {
 		SITE=${NU:0:1}
 		make_caput $PV ${NU#*:} ${SITE}
 	done
-	# disconnect old way @@todo remove me
-	for PV in $(grep FPMUX /tmp/records.dbl)
+	
+	for 
+	
+	for PV in $(grep $(hostname):SYS:CLK /tmp/records.dbl | grep -v [a-z]$)	
 	do
 		NU=${PV#*:}
 		make_caput $PV $NU 0
 	done
+	
+	
 	(cd /etc/acq400/0/; rm -f fpmux)
 	
 	killall voltsmon
