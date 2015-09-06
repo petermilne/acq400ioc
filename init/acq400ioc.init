@@ -124,8 +124,6 @@ make_epics_knobs() {
 		make_caput $PV ${NU#*:} ${SITE}
 	done
 	
-	for 
-	
 	for PV in $(grep $(hostname):SYS:CLK /tmp/records.dbl | grep -v [a-z]$)	
 	do
 		NU=${PV#*:}
