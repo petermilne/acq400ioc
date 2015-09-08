@@ -85,7 +85,19 @@ record(aSub, "${UUT}:${SITE}:AI:WF:${cid}:V") {
 	field(FTVS, "DOUBLE")
 	field(NOVS, "1")
 	field(INPS, "${UUT}:${SITE}:AI:CH:${cid}.ESLO")
+	
+	field(FLNK, "${UUT}:${SITE}:AI:WF:${cid}:ACTIVE")
 }
 
-
+record(ao, "${UUT}:ACTIVITY_THRESHOLD") {
+	field(DTYP, "Soft Channel")
+	field(HOPR, "10")
+	field(LOPR, "0")
+}
+	
+record(calc, "${UUT}:${SITE}:AI:WF:${cid}:ACTIVE") {
+	field(INPA, "${UUT}:${SITE}:AI:WF:${cid}:V.VALG")
+	field(INPB, "${UUT}:ACTIVITY_THRESHOLD")
+	field(CALC, "A > B")
+}
 
