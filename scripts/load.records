@@ -664,10 +664,15 @@ if [ "x$IOC_POSTINIT" != "x" ]; then
 		source $IOC_POSTINIT
 	fi
 else
-	echo "dbpf $HOST:SYS:CLK:FPMUX $clk"
-	if [ "x$HAS_ACQ43X" != "x" ]; then
-		echo "dbpf $HOST:1:ACQ43X_SAMPLE_RATE 43500"
-	fi
+	case $mb_model in
+	acq2106|acq2106sfp)
+		;;
+	*)
+		echo "dbpf $HOST:SYS:CLK:FPMUX $clk"
+		if [ "x$HAS_ACQ43X" != "x" ]; then
+			echo "dbpf $HOST:1:ACQ43X_SAMPLE_RATE 43500"
+		fi;;
+	esac
 fi
 
 
