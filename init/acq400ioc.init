@@ -131,7 +131,8 @@ make_epics_knobs() {
 	
 	for PV in $(grep :1:CLK /tmp/records.dbl | grep -v [a-z]$)
 	do
-		make_caput $PV ${PV##*:} 1
+		pv1=${PV#*:}
+		make_caput $PV ${pv1#*:} 1
 	done
 	
 	(cd /etc/acq400/0/; rm -f fpmux)
