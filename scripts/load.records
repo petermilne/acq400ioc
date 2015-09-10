@@ -536,7 +536,12 @@ load_mb_sync() {
 	
 	echo 1>&2 "HAS_ACQ43X $HAS_ACQ43X"
 	if [ $HAS_ACQ43X -ne 0 ]; then
-		echo >>/tmp/st_post.cmd "seq acq43x_setSampleRate \"uut=${HOST}\""
+			case $mb_model in
+			acq2106|acq2106sfp)
+				;;
+			*)
+				echo >>/tmp/st_post.cmd "seq acq43x_setSampleRate \"uut=${HOST}\"";;
+			esac
 	fi
 	
 	echo >>/tmp/st_post.cmd "seq onSetTransient \"uut=${HOST}\""
