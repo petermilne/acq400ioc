@@ -10,7 +10,8 @@ record(longin, "${UUT}:${SITE}:SIG:${lname}:rawcount") {
 record(calc, "${UUT}:${SITE}:SIG:${lname}:ACTIVE") {
 	field(INPA, "${UUT}:${SITE}:SIG:${lname}:rawcount")
 	field(INPB, "${UUT}:${SITE}:SIG:${lname}:ACTIVE.LA")
-	field(CALC, "(A-B) ? 1: 0")
+	field(INPL, "4294967296")
+	field(CALC, "A:=A<0?L+A:A; (A-B) ? 1: 0")
 	field(PREC, "1")
 	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:nzcount")
 	field(DESC, "True is signal changed from last")
