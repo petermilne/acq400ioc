@@ -43,7 +43,7 @@ record(longin, "${UUT}:${chan}:AGGREGATOR") {
 record(stringin, "${UUT}:${chan}:AGGREGATOR:SITES") {
 	field(DTYP,  "stream")
 	field(INP,   "@mgt400.proto getAggregatorSites ${SPORT}")
-	field(SCAN,  "I/O Intr")	
+	field(SCAN,  "1 second")	
 	field(FLNK,  "${UUT}:${chan}:AGGREGATOR:ON")
 }
 

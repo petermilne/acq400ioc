@@ -32,6 +32,7 @@ getAggregator {
 }
 
 getAggregatorSites {
+	out "aggregator";
 	in "0x%*x %s %*s";		
 }
 

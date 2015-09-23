@@ -58,12 +58,23 @@ record(calc, "${UUT}:${SITE}:SIG:${lname}:filter") {
 	field(CALC, "A+B+C+D+E+F+G+H+I+J+K+L")
 #                    1234567890123456789012345678901234567890	
 	field(DESC, "CLK FREQ ${lname} filter")
-	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:filtercount")
+	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:smoocount")
 }
 
-record(calc, "${UUT}:${SITE}:SIG:${lname}:filtercount") {
-	field(INPL, "${UUT}:${SITE}:SIG:${lname}:nzcount")
-	field(CALC, "L >= 12? 12: L")
+# reject filter if change > 25%
+record(calc, "${UUT}:${SITE}:SIG:${lname}:smoocount") {
+	field(INPA, "${UUT}:${SITE}:SIG:${lname}:delta")
+	field(INPB, "${UUT}:${SITE}:SIG:${lname}:smoo.LA")	
+	field(CALC, "MIN(ABS(A-B)/MIN(A,B)>0.25?1 VAL+1)")
+#                    1234567890123456789012345678901234567890	
+	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:filcount")
+}
+# limit filter count to 12 smooth, nz values.
+record(calc, "${UUT}:${SITE}:SIG:${lname}:filcount") {
+	field(INPK, "${UUT}:${SITE}:SIG:${lname}:smoocount")
+	field(INPL, "${UUT}:${SITE}:SIG:${lname}:nzcount")	
+	field(CALC, "MIN(MIN(L,K),12)")
+#                    1234567890123456789012345678901234567890	
 	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:FREQ")
 }
 
@@ -71,7 +82,7 @@ record(calc, "${UUT}:${SITE}:SIG:${lname}:FREQ") {
 	field(INPA, "${UUT}:${SITE}:SIG:${lname}:delta")
 	field(INPB, "${UUT}:${SITE}:SIG:${lname}:filter")	
 	field(INPK, "${DTC}")
-	field(INPL, "${UUT}:${SITE}:SIG:${lname}:filtercount")
+	field(INPL, "${UUT}:${SITE}:SIG:${lname}:filcount")
 	field(CALC, "A==0?0: L<12? A/K: 0.25*B/(L*K)+0.75*VAL")
 #                    1234567890123456789012345678901234567890
 	field(PREC, "0")
