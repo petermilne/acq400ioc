@@ -59,11 +59,11 @@ load_mgt400() {
 	echo 'dbLoadRecords("db/counter.db","'${prams}'")'		
 	
 	ctprams="${cprams},CTRMAX=${CTR32},DT=1,DTC=1"
-	prams="${ctprams},lname=MGT:PUSH:LW,pname="push_buffer_count_lw"
+	prams="${ctprams},lname=MGT:PUSH:BYTES,pname=push_buffer_count_lw"
 	echo 'dbLoadRecords("db/counter.db","'${prams}'")'	
 	
 	ctprams="${cprams},CTRMAX=${CTR32},DT=1,DTC=1"
-	prams="${ctprams},lname=MGT:PULL:LW,pname="pull_buffer_count_lw"
+	prams="${ctprams},lname=MGT:PULL:BYTES,pname=pull_buffer_count_lw"
 	echo 'dbLoadRecords("db/counter.db","'${prams}'")'	
 		
 	HPRAMS="${cprams},size=$MGTHSIZE,type=LONG"

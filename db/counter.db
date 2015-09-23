@@ -37,7 +37,9 @@ record(calc, "${UUT}:${SITE}:SIG:${lname}:COUNT") {
 record(calc, "${UUT}:${SITE}:SIG:${lname}:delta") {
 	field(INPA, "${UUT}:${SITE}:SIG:${lname}:COUNT")
 	field(INPB, "${UUT}:${SITE}:SIG:${lname}:delta.LA")
-	field(CALC, "A > B && B != 0 ? A-B: 0")
+# C=SCALE could be scaled up ..	
+	field(INPC, "1")
+	field(CALC, "C*(A > B && B != 0 ? A-B: 0)")
 	field(DESC, "computes count difference")
 	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:filter")	
 }
@@ -65,7 +67,7 @@ record(calc, "${UUT}:${SITE}:SIG:${lname}:filter") {
 record(calc, "${UUT}:${SITE}:SIG:${lname}:smoocount") {
 	field(INPA, "${UUT}:${SITE}:SIG:${lname}:delta")
 	field(INPB, "${UUT}:${SITE}:SIG:${lname}:smoo.LA")	
-	field(CALC, "MIN(ABS(A-B)/MIN(A,B)>0.25?1 VAL+1)")
+	field(CALC, "MIN(ABS(A-B)/MIN(A,B)>0.25?1: VAL+1)")
 #                    1234567890123456789012345678901234567890	
 	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:filcount")
 }

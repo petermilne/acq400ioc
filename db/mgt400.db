@@ -59,3 +59,12 @@ record (bo, "${UUT}:MGT:SFP:${chan}:CLRSTATS") {
 	field(OUT,  "@/dev/acq400.${chan}.knobs/clear_stats")
 	field(HIGH, "1")
 }
+
+record(calc, "${UUT}:{chan}:SIG:MGT:PUSH:BYTES:delta") {
+# sizeof int
+	field(INPC, "4")
+}
+record(calc, "${UUT}:{chan}:SIG:MGT:PULL:BYTES:delta") {
+# sizeof int
+	field(INPC, "4")
+}
