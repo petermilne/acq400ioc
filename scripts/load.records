@@ -253,12 +253,12 @@ load_400() {
 		let maxhz="$(cat /etc/acq400/$site/MAX_KHZ) * 1000"
 	fi
 	cprams="UUT=${HOST},SITE=${site},SPORT=S${site}"
-	
-	
-	
 	gain_file_pfx="db/gain"
 	
+	is_adc=0
 	case $model in
+	1|A1|4|5|A5)
+		is_adc=1;;	
 	2|3|6)	
 		if [ "x${site}" = "x1" ]; then
 			HAS_ACQ43X=1
@@ -267,13 +267,14 @@ load_400() {
 			mprams="UUT=${HOST},SITE=${site},SPORT=S1M"
 			echo 'dbLoadRecords("db/acq430fmc.db","'${mprams},LO=$LO'")'
 			echo 'dbLoadRecords("db/acq43x_rgm.db","'${mprams}'")'
-			echo >>/tmp/st_post.cmd "seq calmon \"uut=${HOST},site=${site}\""
+			
 		fi
 		if [ $model = 6	]; then
 				gain_file_pfx="db/gain125_10"		
 		fi		
 		let LO=$LO/256;;
 	8)
+		is_adc=1		
 		create_asyn_channel S${site}_480 127.0.0.1:422${site}
 		mprams="UUT=${HOST},SITE=${site},SPORT=S${site}_480"
 		for ic in $(seq 1 8); do
@@ -288,6 +289,12 @@ load_400() {
 #	@@todo : different flavour of calmon for SAR ADC needed
 	esac
 	
+	if [ $is_adc -ne 0 ]; then		
+		if [ "x$HAS_ACQ43X" != "x1" ]; then
+			echo 'dbLoadRecords("db/adc.db","UUT='${HOST}',SITE='${site}'")'				
+		fi
+		echo >>/tmp/st_post.cmd "seq calmon \"uut=${HOST},site=${site}\"" 	
+	fi
 	echo 'dbLoadRecords("db/acq420fmc.db","'${cprams},'LO='${LO}',MAXHZ='${maxhz}'")'
 		
 	HPRAMS="${cprams},size=$HSIZE,type=LONG,fname=HG.${site}"
