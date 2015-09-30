@@ -11,37 +11,51 @@ record (bi, "${UUT}:SYS:CLK:BYPASS" ) {
 }
 record (bo, "${UUT}:SYS:CLK:OE_CLK1_ELF1") {
 	field(DTYP, "boAcqHost")	
-	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ELF1")	
+	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ELF1")
+	field(PINI, "YES")
+	field(VAL,  "0")	
 }
 
 record (bo, "${UUT}:SYS:CLK:OE_CLK1_ELF2") {
 	field(DTYP, "boAcqHost")	
-	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ELF2")	
+	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ELF2")
+	field(PINI, "YES")
+	field(VAL,  "0")		
 }
 
 record (bo, "${UUT}:SYS:CLK:OE_CLK1_ELF3") {
 	field(DTYP, "boAcqHost")	
-	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ELF3")	
+	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ELF3")
+	field(PINI, "YES")
+	field(VAL,  "0")
 }
 
 record (bo, "${UUT}:SYS:CLK:OE_CLK1_ELF4") {
 	field(DTYP, "boAcqHost")	
-	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ELF4")	
+	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ELF4")
+	field(PINI, "YES")
+	field(VAL,  "0")		
 }
 
 record (bo, "${UUT}:SYS:CLK:OE_CLK1_ELF5") {
 	field(DTYP, "boAcqHost")	
-	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ELF5")	
+	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ELF5")
+	field(PINI, "YES")
+	field(VAL,  "0")		
 }
 
 record (bo, "${UUT}:SYS:CLK:OE_CLK1_ELF6") {
 	field(DTYP, "boAcqHost")	
-	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ELF6")	
+	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ELF6")
+	field(PINI, "YES")
+	field(VAL,  "0")		
 }
 
 record (bo, "${UUT}:SYS:CLK:OE_CLK1_ZYNQ") {
 	field(DTYP, "boAcqHost")	
-	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ZYNQ")	
+	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ZYNQ")
+	field(PINI, "YES")
+	field(VAL,  "0")	
 }
 
 record (bo, "${UUT}:SYS:CLK:DIST_CLK_SRC") {
