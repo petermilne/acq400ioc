@@ -398,9 +398,10 @@ load_mb_base() {
 	done
 	echo 'dbLoadRecords("db/hwmonvolts_common.db","UUT='${HOST}'")'
 	case $mt in
-	acq2106)
+	acq2106)			
 			echo 'dbLoadRecords("db/hwmonvolts_2106.db","UUT='${HOST}'")'
-			echo 'dbLoadRecords("db/acq2106clk.db","UUT='${HOST}',SPORT=S0")';;			
+			acq2106b=$(cat /sys/module/acq420fmc/parameters/is_acq2106B)
+			echo 'dbLoadRecords("db/acq2106clk.db","UUT='${HOST}',acq2106b='${acq2106b}',SPORT=S0")';;			
 	*)
 			echo 'dbLoadRecords("db/hwmonvolts.db","UUT='${HOST}'")';;
 	esac
