@@ -18,6 +18,7 @@ cp profile.d/* opkg/etc/profile.d
 rm -f opkg/usr/local/lib/*
 cp lib/linux-arm/*.so opkg/usr/local/lib
 rm -f opkg/usr/local/epics/dbd/acq400ioc.dbd
+cp README opkg/usr/local/epics/
 cp dbd/acq400ioc.dbd opkg/usr/local/epics/dbd
 cp db/* opkg/usr/local/epics/db
 cp protocols/* opkg/usr/local/epics/protocols
