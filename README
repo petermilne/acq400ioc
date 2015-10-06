@@ -10,4 +10,5 @@ export IOC_PREINIT=./scripts/load.ddc
 ANALOG TRIGGER
 export IOC_PREINIT=./scripts/load.anatrg
 
-
+# allow more than 80 "channels" per module eg for LIA
+export ACQ400IOC_IDX_GT32=1

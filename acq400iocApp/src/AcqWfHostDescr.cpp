@@ -107,7 +107,13 @@ public:
 	ConcreteAcqWfHostDescr(int cid, AcqWfHostDevice* _dev, char* blockname):
 		AcqWfHostDescr(), dev(_dev), error_reported(false)
 	{
-		int idx = ((cid-1)&(32-1)) + 1;
+		int idx;
+
+		if (getenv("ACQ400IOC_IDX_GT32") && atoi(getenv("ACQ400IOC_IDX_GT32"))){
+			idx = cid;
+		}else{
+			idx = ((cid-1)&(32-1)) + 1;
+		}
 		char local_fname[128];
 		int len = sprintf(local_fname, "%s/%s/CH%02d", \
 						AcqHostDevice::ROOT, blockname, idx);
