@@ -274,7 +274,8 @@ load_400() {
 		fi		
 		let LO=$LO/256;;
 	8)
-		is_adc=1		
+		is_adc=1
+		maxhz=80000000		
 		create_asyn_channel S${site}_480 127.0.0.1:422${site}
 		mprams="UUT=${HOST},SITE=${site},SPORT=S${site}_480"
 		for ic in $(seq 1 8); do
