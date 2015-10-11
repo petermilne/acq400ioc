@@ -27,6 +27,7 @@ record(mbbo, "${UUT}:${SITE}:ACQ480:GAIN:${CH}") {
 	field(TVST, "12 dB")
 }
 
+
 record(mbbo, "${UUT}:${SITE}:ACQ480:HPF:${CH}") {
 	field(DTYP, "stream")
 	field(OUT,  "@acq480.proto setHPF(${CH}) ${SPORT}")	
@@ -66,5 +67,22 @@ record(mbbo, "${UUT}:${SITE}:ACQ480:FIR:${CH}") {
 	field(EIST, "CUSTOM_D4")
 	field(NIST, "CUSTOM_D8")
 	field(TEST, "CUSTOM_D1")	
+}
+
+record(dfanout, "${UUT}:${SITE}:ACQ480:FIR:01:fanout") {
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:${SITE}:ACQ480:FIR:01")
+	field(OUTA, "")
+	field(OUTB, "${UUT}:${SITE}:ACQ480:FIR:02")
+	field(OUTC, "${UUT}:${SITE}:ACQ480:FIR:03")
+	field(OUTD, "${UUT}:${SITE}:ACQ480:FIR:04")
+	field(OUTE, "${UUT}:${SITE}:ACQ480:FIR:05")
+	field(OUTF, "${UUT}:${SITE}:ACQ480:FIR:06")
+	field(OUTG, "${UUT}:${SITE}:ACQ480:FIR:07")
+	field(OUTH, "${UUT}:${SITE}:ACQ480:FIR:08")
+}
+
+record(mbbo, "${UUT}:${SITE}:ACQ480:FIR:01") {
+	field(FLNK, "${UUT}:${SITE}:ACQ480:FIR:01:fanout")
 }
 
