@@ -45,3 +45,8 @@ getAXIF {
 getAXIC {
 	in "ngets=%*u nputs=%*u axi64=%*u,%*u,%u";
 }
+
+getBLEN {
+	out "bufferlen";
+	in "%u";
+}
