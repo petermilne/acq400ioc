@@ -22,3 +22,26 @@ getSigDx {
 getSigSense {
 	in "\$1=%*d,%*d,%d";
 }
+
+#ngets=0 nputs=0 axi64=0,0,0
+
+getNGETS {
+	out "stats";
+	in "ngets=%u nputs=%*u axi64=%*u,%*u,%*u";
+}
+
+getNPUTS {
+	in "ngets=%*u nputs=%u axi64=%*u,%*u,%*u";
+}
+
+getAXIW {
+	in "ngets=%*u nputs=%*u axi64=%u,%*u,%*u";
+}
+
+getAXIF {
+	in "ngets=%*u nputs=%*u axi64=%*u,%u,%*u";
+}
+
+getAXIC {
+	in "ngets=%*u nputs=%*u axi64=%*u,%*u,%u";
+}

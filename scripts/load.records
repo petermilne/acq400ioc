@@ -422,7 +422,6 @@ load_mb_base() {
 		echo 'dbLoadRecords("db/acq2006psu.db","UUT='${HOST},vap=$VAP,van=$VAN'")'
 	fi	
 	load_gpg
-
 }
 
 
@@ -557,6 +556,18 @@ load_mb_sync() {
 	echo >>/tmp/st_post.cmd "seq autoRepeat \"uut=${HOST}\""
 }
 
+load_mb_stats()
+{
+	cprams="UUT=${HOST},SITE=0,SPORT=S0S,SIG=STAT"
+	echo 'dbLoadRecords("db/blockcounter.db","'${cprams}'")'
+	for stat in GETS PUTS AXI64:W AXI64:F AXI64:C
+	do
+		echo 'dbLoadRecords("db/_counter.db","'${cprams},lname=${stat}'")'
+	done
+	create_asyn_channel S0S 127.0.0.1:4220	
+}
+
+
 cat - <<EOF
 epicsEnvSet("STREAM_PROTOCOL_PATH","./protocols")
 dbLoadDatabase("dbd/acq400ioc.dbd",0,0)
@@ -593,6 +604,7 @@ load_mb() {
 	esac		
 	
 	load_mb_base $ns $mt
+	load_mb_stats
 	if [ -e $KB ]; then
 		load_mb_sites $KB $ns $mt
 		if [ -e /dev/acq400.0.knobs/sync_out_clk ]; then
