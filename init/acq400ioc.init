@@ -105,19 +105,19 @@ make_epics_knobs() {
 		make_caget $PV ${NU#*:} S
 	done
 	
-	for PV in $(egrep SIG\|GAIN /tmp/records.dbl | grep -v .[rsfw]$)
+	for PV in $(egrep SIG\|GAIN /tmp/records.dbl | grep -v .[a-z]$)
 	do
 		NU=${PV#*:}
 		SITE=${NU:0:1}
 		make_caput $PV ${NU#*:} ${SITE}	
 	done
-	for PV in $(egrep CAL:E /tmp/records.dbl | grep -v .[rsfw]$)
+	for PV in $(egrep CAL:E /tmp/records.dbl | grep -v .[a-z]$)
 	do
 		NU=${PV#*:}
 		SITE=${NU:0:1}
 		make_caget_w $PV ${NU#*:} ${SITE}	
 	done	
-	for PV in $(grep ACQ43X_SAMPLE_RATE /tmp/records.dbl)
+	for PV in $(grep ACQ4.X_SAMPLE_RATE /tmp/records.dbl)
 	do
 		NU=${PV#*:}
 		SITE=${NU:0:1}
