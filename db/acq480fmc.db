@@ -73,6 +73,7 @@ record(dfanout, "${UUT}:${SITE}:ACQ480:FIR:01:fanout") {
 	field(OMSL, "closed_loop")
 	field(DOL,  "${UUT}:${SITE}:ACQ480:FIR:01")
 	field(OUTA, "")
+	field(SELM, "All")
 	field(OUTB, "${UUT}:${SITE}:ACQ480:FIR:02")
 	field(OUTC, "${UUT}:${SITE}:ACQ480:FIR:03")
 	field(OUTD, "${UUT}:${SITE}:ACQ480:FIR:04")
