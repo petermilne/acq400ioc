@@ -560,9 +560,11 @@ load_mb_stats()
 {
 	cprams="UUT=${HOST},SITE=0,SPORT=S0S,SIG=STAT"
 	echo 'dbLoadRecords("db/blockcounter.db","'${cprams}'")'
+	
+	sprams="${cprams},CTRMAX=$CTR28,DT=1,DTC=1"
 	for stat in GETS PUTS AXI64:W AXI64:F AXI64:C
 	do
-		echo 'dbLoadRecords("db/_counter.db","'${cprams},lname=${stat}'")'
+		echo 'dbLoadRecords("db/_counter.db","'${sprams},lname=${stat}'")'
 	done
 	create_asyn_channel S0S 127.0.0.1:4220	
 }
