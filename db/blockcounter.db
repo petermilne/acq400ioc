@@ -15,7 +15,7 @@ record(longin, "${UUT}:${SITE}:STAT:GETS:rc") {
 }
 
 record(calc, "${UUT}:${SITE}:STAT:GETS:MBYTES") {
-	field(INPA, "${UUT}:${SITE}:STAT:BLEN"
+	field(INPA, "${UUT}:${SITE}:STAT:BLEN")
 	field(INPB, "${UUT}:${SITE}:STAT:GETS:COUNT")
 	field(CALC, "A*B/1000000")
 	field(FLNK, "${UUT}:${SITE}:STAT:GETS:MBPS")
@@ -47,7 +47,7 @@ record(longin, "${UUT}:${SITE}:STAT:AXI64:W:rc") {
 	field(INP,  "@signal.proto getAXIW ${SPORT}")
 #		    "1234567890123456789012345678901234567890"	
 	field(DESC, "buffer GETS count")	
-	field(FLNK, "${UUT}:${SITE}:STAT:AXI64:F:ACTIVE")	
+	field(FLNK, "${UUT}:${SITE}:STAT:AXI64:W:ACTIVE")	
 }
 
 record(longin, "${UUT}:${SITE}:STAT:AXI64:F:rc") {
