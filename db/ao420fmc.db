@@ -45,7 +45,8 @@ record(ao, "${UUT}:${SITE}:AWG:G:${cid}") {
         field(PINI, "YES")
         field(HOPR, "100.0")
         field(LOPR, "0.000")
-        field(EGU,  "%")	
+        field(EGU,  "%")
+        field(VAL,  "100.0")	
 }
 
 record(ao, "${UUT}:${SITE}:AWG:D:${cid}") {
