@@ -210,7 +210,7 @@ load_AO() {
 				echo 'dbLoadRecords("db/ao420fmc.db","'${cprams},cid=$ch'")'
 				echo "seq ao420_range_set \"UUT=${HOST},SITE=${site},CID=$ch\"" >>/tmp/st_post.cmd
 				# PINI fails to set VAL on AO record. set GAIN (attenuation) to 100%
-				echo "dbpf "${HOST}:${site}:AWG:G:${ch} 100" >> /tmp/st_post.cmd
+				echo "dbpf ${HOST}:${site}:AWG:G:${ch} 100" >> /tmp/st_post.cmd
 			done
 			echo 'dbLoadRecords("db/aoALL.db","'${cprams}'")'			
 			#echo 'dbLoadRecords("db/ao420fmc.db","'${cprams},cid=32'")'
