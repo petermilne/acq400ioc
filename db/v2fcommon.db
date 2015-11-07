@@ -43,6 +43,7 @@ record(longout, "${UUT}:${SITE}:V2F:SRC:4") {
 }
 
 record(calcout, "${UUT}:${SITE}:V2F:SRC:x") {
+	field (DTYP, "stream")
 	field(INPA, "${UUT}:${SITE}:V2F:SRC:1")
 	field(INPB, "${UUT}:${SITE}:V2F:SRC:2")
 	field(INPC, "${UUT}:${SITE}:V2F:SRC:3")
