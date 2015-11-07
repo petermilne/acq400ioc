@@ -11,5 +11,5 @@ setHF {
 }
 
 setSrcMap {
-	out chan_sel "%(A)d %(B)d %(C)d %(D)d";
+	out "chan_sel %(A)d,%(B)d,%(C)d,%(D)d";
 }
