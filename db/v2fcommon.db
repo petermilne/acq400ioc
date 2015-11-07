@@ -1,7 +1,7 @@
 record(mbbo, "${UUT}:${SITE}:V2F:FREQ_OFFSET") {
 	field(DTYP, "stream")
 	field(OUT,  "@v2f.proto setFreqOffset ${SPORT}")
-	field(NOBT, "2");
+	field(NOBT, "2")
 }
 
 record(bo, "${UUT}:${SITE}:V2F:HIGH_FREQ") {
@@ -15,7 +15,7 @@ record(longout, "${UUT}:${SITE}:V2F:SRC:1") {
 	field(DRVL, "1")
 	field(DRVH, "${NCHAN}")
 	field(VAL,  "1")
-	field(FLNK, "${UUT}:${SITE}:V2F:SRC:x")
+	field(FLNK, "${UUT}:${SITE}:V2F:SRC:x PP")
 }
 
 record(longout, "${UUT}:${SITE}:V2F:SRC:2") {
@@ -42,10 +42,11 @@ record(longout, "${UUT}:${SITE}:V2F:SRC:4") {
 	field(FLNK, "${UUT}:${SITE}:V2F:SRC:x")	
 }
 
-field(calcout, "${UUT}:${SITE}:V2F:SRC:x") {
+record(calcout, "${UUT}:${SITE}:V2F:SRC:x") {
 	field(INPA, "${UUT}:${SITE}:V2F:SRC:1")
 	field(INPB, "${UUT}:${SITE}:V2F:SRC:2")
 	field(INPC, "${UUT}:${SITE}:V2F:SRC:3")
 	field(INPD, "${UUT}:${SITE}:V2F:SRC:4")
 	field(OUT,  "@v2f.proto setSrcMap ${SPORT}")
+	field(CALC,  "A+B+C+D")
 }
