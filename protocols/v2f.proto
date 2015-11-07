@@ -1,0 +1,15 @@
+Terminator = LF;
+ExtraInput = Ignore;
+ReplyTimeout = 2500;
+
+setFreqOffset {
+	out "freq_offset %d";
+}
+
+setHF {
+	out "hf %d";
+}
+
+setSrcMap {
+	out chan_sel "%(A)d %(B)d %(C)d %(D)d";
+}

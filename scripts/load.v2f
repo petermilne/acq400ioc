@@ -1,0 +1,19 @@
+#!/bin/sh
+
+HOST=${1:-$(hostname)}
+SITE=${2:-2}
+
+source ./scripts/record_support.sh
+
+if [ $SITE -ne 2 ]; then
+	echo "# ERROR v2f is ONLY valid for site 2 with M in site 1 
+fi
+
+NCHAN=$(cat /etc/acq400/1/NCHAN)
+
+mprams="UUT=${HOST},SITE=${site},NCHAN=${NCHAN},SPORT=SV2F"
+
+echo 'dbLoadRecords("db/v2fcommon.db","'${mprams}'")'
+
+
+create_asyn_channel SV2F 127.0.0.1:422${SITE}
