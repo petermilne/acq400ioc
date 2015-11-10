@@ -10,8 +10,7 @@ record (stringin, "${UUT}:${SITE}:MODEL") {
 record (longin, "${UUT}:${SITE}:NCHAN") {
 	field(DTYP, "stream")
 	field(INP, "@acq42x.proto getNchan ${SPORT}")
-	field(PINI, "YES")
-	field(SCAN, "1 second")	
+	field(PINI, "YES")	
 }
 
 record (stringin, "${UUT}:${SITE}:SERIAL") {

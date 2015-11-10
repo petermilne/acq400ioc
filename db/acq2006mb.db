@@ -33,6 +33,13 @@ record(longout, "${UUT}:0:SIG:USER_FPCLK") {
 	field(DESC, "user definition of front panel clock")
 }
 
+record (longin, "${UUT}:0:NCHAN") {
+	field(DTYP, "stream")
+	field(INP, "@acq42x.proto getNchan ${SPORT}")
+	field(PINI, "YES")
+	field(SCAN, "1 second")	
+}
+
 record(mbbi, "${UUT}:0:SPAD:MODE") {
 	field(DTYP, "Soft Channel")
 	field(NOBT, "3")
