@@ -168,9 +168,9 @@ ss rate_set
 	state have_clock {
 		when(fp_mux == 1){		/* XCLK */
 			if (fin > 32000000 && fin < 34000000) {
-				clk_mb_fin = 32768;
+				clk_mb_fin = 32768000;
 			}else if (fin > 48000000 && fin < 50000000){
-				clk_mb_fin = 49157;
+				clk_mb_fin = 49157000;
 			}else{
 				printf("WARNING: going with non standard XCLK %.1f\n", clk_mb_fin);
 			}
