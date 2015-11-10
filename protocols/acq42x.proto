@@ -31,3 +31,8 @@ getSerial {
 	out "SERIAL";
 	in "%s";
 }
+
+getNchan {
+	out "NCHAN";
+	in "%d";
+}
