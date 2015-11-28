@@ -26,10 +26,10 @@ setFIR {
 
 # T50R_[1-8] or T50R (global) value 0 or 1
 setT50R {
-	out \$1 %d";
+	out "T50R\$1 %d";
 }
 
 getT50R {
-	out \$1;
-	in %d;
+	out "T50R\$1";
+	in "%d";
 }
