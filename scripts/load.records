@@ -246,8 +246,9 @@ load_400() {
 		for ic in $(seq 1 8); do
 			ch=$(printf "%02d" $ic)
 			echo 'dbLoadRecords("db/acq480fmc.db","'${mprams},CH=${ch}'")'
-		done;;
-		
+			echo 'dbLoadRecords("db/acq480fmc50R.db","'${mprams},CH=${ch}'")'
+		done
+		echo 'dbLoadRecords("db/acq480fmc50R.db","'${mprams},CH='")';;		
 	4)	LO=66000000;;			
 	40|41)
 		load_AO $site $model $cprams		

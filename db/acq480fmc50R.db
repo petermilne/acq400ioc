@@ -1,0 +1,30 @@
+record(bo, "${UUT}:${SITE}:ACQ480:T50R${CH}") {
+	field(DTYP, "Shot Channel")
+	field(ZNAM, "0")
+	field(ONAM, "1")
+	field(FLNK, "${UUT}:${SITE}:ACQ480:T50R{$CH}:w PP")
+}
+
+record(bo, "${UUT}:${SITE}:ACQ480:T50R${CH}:w") {
+	field(DTYP, "stream")
+	field(OUT,  "@acq480.proto setT50R(${CH}) ${SPORT}")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:${SITE}:ACQ480:T50R${CH}")	
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:ACQ480:T50R${CH}:r.PACT")
+}
+
+record(bi, "${UUT}:${SITE}:ACQ480:T50R${CH}:r") {
+	field(DTYP, "stream")
+	field(INP,  "acq480.proto getT50R(${CH}) ${SPORT}")
+	field(SCAN, "10 second")
+	field(PINI, "YES")
+	field(FLNK, "${UUT}:${SITE}:ACQ480:T50R${CH}:s")
+}
+
+record(bo, "${UUT}:${SITE}:ACQ480:T50R${CH}:s") {
+	field(DTYP, "Soft Channel")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:${SITE}:ACQ480:T50R${CH}:r NPP")
+	field(OUT,  "${UUT}:${SITE}:ACQ480:T50R${CH} PP")	
+}
