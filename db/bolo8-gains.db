@@ -14,6 +14,7 @@ record (fanout, "${HS}:B8:GAIN:${CH}:_cx"){
 	field(LNK1, "${HS}:B8:GAIN:${CH}:_c0")
 	field(LNK2, "${HS}:B8:GAIN:${CH}:_c1")
 	field(LNK3, "${HS}:B8:GAIN:${CH}_f")
+	field(LNK4, "${HS}:GAIN_CHANGES")
 }
 
 

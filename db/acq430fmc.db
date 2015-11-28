@@ -7,14 +7,6 @@ record (bo, "${UUT}:${SITE}:ADC_MODE") {
 	field(FLNK, "${UUT}:${SITE}:ADC_MODE:w PP")
 }
 
-record (mbbo, "${UUT}:${SITE}:ADC_CAL") {
-	field(DTYP, "Soft Channel")
-	field(NOBT, "2")
-        field(ZRST, "default")
-        field(ONST, "caldef")
-        field(TWST, "calibrated")
-        field(VAL,  "2")	
-}
 record (bo, "${UUT}:${SITE}:ADC_MODE:w") {
 	field(DTYP, "stream")	
 	field(ZNAM, "HS_256")

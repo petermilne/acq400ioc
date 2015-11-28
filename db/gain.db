@@ -17,7 +17,8 @@ record (mbbo, "${UUT}:${SITE}:GAIN:${CH}:w")	{
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:GAIN:${CH}:s.PACT")
 	field(OMSL, "closed_loop")
-	field(DOL, "${UUT}:${SITE}:GAIN:${CH} PP")		
+	field(DOL, "${UUT}:${SITE}:GAIN:${CH} PP")
+	field(FLNK, "${UUT}:${SITE}:GAIN_CHANGES")		
 }
 
 record (mbbi, "${UUT}:${SITE}:GAIN:${CH}:r") {

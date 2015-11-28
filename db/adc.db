@@ -1,7 +1,10 @@
 record (bo, "${UUT}:${SITE}:ADC_MODE") {
-        field(DTYP, "Soft Channel")        
-        field(ONAM, "SAR ADC")
-        field(VAL,  "1")        
+        field(DTYP, "Soft Channel")            
+}
+
+record (bo, ${UUT}:${SITE}:HAS_CH_GAINS") {
+	field(DTYP, "Soft Channel")
+	field(VAL,  "${CHG}")
 }
 
 record (mbbo, "${UUT}:${SITE}:ADC_CAL") {

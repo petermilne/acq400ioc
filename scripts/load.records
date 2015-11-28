@@ -221,10 +221,25 @@ load_400() {
 	gain_file_pfx="db/gain"
 	
 	is_adc=0
+	has_ch_gains=0
+	
 	case $model in
 	1|A1|4|5|A5)
-		is_adc=1;;	
-	2|3|6)	
+		is_adc=1
+		case $model in
+		1|A1|5|A5)
+			has_ch_gains=1;;
+		4)
+			LO=66000000;;
+		esac;;	
+	2|3|6)
+		is_adc=1
+		case $model in
+		6)
+			has_ch_gains=1;;
+		esac
+		
+		
 		if [ "x${site}" = "x1" ]; then
 			HAS_ACQ43X=1
 			echo 1>&2 "HAS_ACQ43X Detected: $HAS_ACQ43X"
@@ -240,6 +255,7 @@ load_400() {
 		let LO=$LO/256;;
 	8)
 		is_adc=1
+		// gains are digital.
 		maxhz=80000000		
 		create_asyn_channel S${site}_480 127.0.0.1:422${site}
 		mprams="UUT=${HOST},SITE=${site},SPORT=S${site}_480"
@@ -249,7 +265,6 @@ load_400() {
 			echo 'dbLoadRecords("db/acq480fmc50R.db","'${mprams},CH=:${ch},RAW=_${ic}'")'
 		done
 		echo 'dbLoadRecords("db/acq480fmc50R.db","'${mprams},CH=,RAW='")';;		
-	4)	LO=66000000;;			
 	40|41)
 		load_AO $site $model $cprams		
 		let LO=66000000;;
@@ -259,10 +274,8 @@ load_400() {
 		return;;
 	esac
 	
-	if [ $is_adc -ne 0 ]; then		
-		if [ "x$HAS_ACQ43X" != "x1" ]; then
-			echo 'dbLoadRecords("db/adc.db","UUT='${HOST}',SITE='${site}'")'				
-		fi
+	if [ $is_adc -ne 0 ]; then				
+		echo 'dbLoadRecords("db/adc.db","UUT='${HOST}',SITE='${site},CHG=${has_ch_gains}'")'						
 		echo >>/tmp/st_post.cmd "seq calmon \"uut=${HOST},site=${site}\"" 	
 	fi
 	echo 'dbLoadRecords("db/acq420fmc.db","'${cprams},'LO='${LO}',MAXHZ='${maxhz}'")'

@@ -26,8 +26,13 @@ float ext_eoff[33]; 	assign ext_eoff to "{uut}:{site}:AI:CAL:EOFF";
 float eslo[33];		assign eslo to {};	// index from 1
 float eoff[33]; 	assign eoff to {};
 
+int has_ch_gains;	assign has_ch_gains to "{uut}:{site}:HAS_CH_GAINS";
 
-char* SW[2] = { "0", "1" };
+int gain_changes;	assign gain_changes to "";
+int gain_changes0;
+
+int gains[33];		assign gains to {};	/* "${UUT}:${SITE}:GAIN:${CH}" */
+
 char* doc;
 char fname[80];
 char* uut;
@@ -39,12 +44,24 @@ char pvfield[100];
 %%extern void* acq400_openDoc(const char* docfile, int* nchan);
 %%extern int acq400_getChannel(void *prv, int ch, const char* sw, float* eslo, float* eoff, int nocal);
 
+%{
+char* getKey(int hrm, int gain) 
+{ 
+	static char key[8];
+	
+	snprintf(key, 8, "%d,%d", hrm, gain);
+	
+	return key; 
+}
+}%
+
 ss calmon {
 	state init {
 		when() {
 			printf("calmon R1000 site:%s\n", site);
 			pvGet(hi_res_mode);  hi_res_mode0 = hi_res_mode;
 			pvGet(adc_cal_mode); adc_cal_mode0 = adc_cal_mode;
+			pvGet(has_ch_gains);
 			uut = macValueGet("uut"); 
 			if (macValueGet("site") != 0){
 				site = macValueGet("site");
@@ -68,6 +85,16 @@ ss calmon {
 				snprintf(pvfield, 100, "%s.%s", pvname, "EOFF");
 				pvAssign(eoff[ch], pvfield);
 				if (ch==1) printf("assign %s\n",pvfield);
+				
+				if (has_ch_gains){
+					snprintf(pvname, 80, "%s:%s:GAIN:%02d", uut, site, ch);
+					pvAssign(gains[ch], pvname);
+				}
+			}
+			if (has_ch_gains){
+				snprintf(pvname, 80, "%s:%s:GAIN_CHANGES", uut, site);
+				pvAssign(gain_changes, pvname);			
+				pvMonitor(gain_changes);
 			}
 		} state make_change		
 	}
@@ -83,8 +110,12 @@ ss calmon {
 			pvGet(adc_cal_mode);
 			if (adc_cal_mode != 0){
 				printf("make_change site=%s %s\n", site, adc_cal_mode==1? "caldef": "calibrated");
-				for (ch = 1; ch <= nchan; ++ch){		
-					if (acq400_getChannel(doc, ch, SW[hi_res_mode], &eslo[ch], &eoff[ch], adc_cal_mode==1) == 1){
+				for (ch = 1; ch <= nchan; ++ch){
+					if (has_ch_gains){
+						pvGet(gains[ch]);
+					}		
+					if (acq400_getChannel(doc, ch, getKey(hi_res_mode, gains[ch]), 
+								&eslo[ch], &eoff[ch], adc_cal_mode==1) == 1){
 						if (ch==1){
 							printf("site:%s ch:%2d eslo:%.6e eoff:%.6e\n", 
 										site, ch, eslo[ch], eoff[ch]);
@@ -107,7 +138,7 @@ ss calmon {
 	}
 	
 	state wait_change {
-		when(hi_res_mode != hi_res_mode0 || adc_cal_mode != adc_cal_mode0){
+		when(hi_res_mode != hi_res_mode0 || adc_cal_mode != adc_cal_mode0 || gain_changes != gain_changes0){
 			if (hi_res_mode != hi_res_mode0){		
 				printf("change detected hi_res_mode=>%d\n", hi_res_mode);
 				hi_res_mode0 = hi_res_mode;				
@@ -115,7 +146,11 @@ ss calmon {
 			if (adc_cal_mode != adc_cal_mode0){
 				printf("cal mode changed=>%d\n", adc_cal_mode);
 				adc_cal_mode0 = adc_cal_mode;
-			}			 
+			}
+			if (gain_changes != gain_changes0){
+				printf("gain change %d\n", gain_changes);
+				gain_changes0 = gain_changes;
+			}		 			
 		} state make_change
 	}
 }

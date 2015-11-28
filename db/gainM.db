@@ -7,5 +7,10 @@ record (mbbo, "${UUT}:${SITE}:GAIN:${CH}") {
 	field(ZRST, "10V")
 	field(ONST, "5V")
 	field(TWST, "2V5")
-	field(THST, "1V25")        	
+	field(THST, "1V25")
+	field(FLNK, "${UUT}:${SITE}:GAIN_CHANGES")    	
+}
+
+record (calc, "${UUT}:${SITE}:GAIN_CHANGES") {
+	field(calc, "1 + ${UUT}:${SITE}:GAIN_CHANGES.LA")
 }
