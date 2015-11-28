@@ -220,12 +220,12 @@ load_400() {
 	cprams="UUT=${HOST},SITE=${site},SPORT=S${site}"
 	gain_file_pfx="db/gain"
 	
-	is_adc=0
+	is_adc="no"
 	has_ch_gains=0
 	
 	case $model in
 	1|A1|4|5|A5)
-		is_adc=1
+		is_adc="sar"
 		case $model in
 		1|A1|5|A5)
 			has_ch_gains=1;;
@@ -233,7 +233,7 @@ load_400() {
 			LO=66000000;;
 		esac;;	
 	2|3|6)
-		is_adc=2
+		is_adc="ds"
 		case $model in
 		6)
 			has_ch_gains=1;;
@@ -254,7 +254,7 @@ load_400() {
 		fi		
 		let LO=$LO/256;;
 	8)
-		is_adc=1
+		is_adc="sar"
 		// gains are digital.
 		maxhz=80000000		
 		create_asyn_channel S${site}_480 127.0.0.1:422${site}
@@ -274,18 +274,9 @@ load_400() {
 		return;;
 	esac
 	
-	if [ $is_adc -ne 0 ]; then
-		if [ $is_adc -lt 2 ]; then
-			# SAR
-			ADCTYPE=longout
-			ADCM=-1
-		else
-			# DS
-			ADCTYPE=bo
-			ADCM=0
-		fi
-		aprams="UUT=${HOST},SITE=${site},CHG=${has_ch_gains},ADCTYPE=${adctype},ADCM=${adcm}"
-		echo 'dbLoadRecords("db/adc.db","'$aprams'")'						
+	if [ "$is_adc" != "no" ]; then
+		aprams="UUT=${HOST},SITE=${site},CHG=${has_ch_gains}"
+		echo 'dbLoadRecords("db/adc-'${is_adc}'.db","'$aprams'")'						
 		echo >>/tmp/st_post.cmd "seq calmon \"uut=${HOST},site=${site}\"" 	
 	fi
 	echo 'dbLoadRecords("db/acq420fmc.db","'${cprams},'LO='${LO}',MAXHZ='${maxhz}'")'

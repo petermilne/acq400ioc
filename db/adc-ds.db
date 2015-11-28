@@ -1,6 +1,8 @@
-record (${ADCTYPE}, "${UUT}:${SITE}:ADC_MODE") {
+# common file for delta-sigma adc
+
+record (bo, "${UUT}:${SITE}:ADC_MODE") {
         field(DTYP, "Soft Channel")
-        field(VAL,  "${ADCM}")  
+        field(VAL,  "0")  
 }
 
 record (bo, "${UUT}:${SITE}:HAS_CH_GAINS") {

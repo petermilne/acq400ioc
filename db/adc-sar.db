@@ -1,0 +1,19 @@
+# common file for SAR adc.
+record (longout, "${UUT}:${SITE}:ADC_MODE") {
+        field(DTYP, "Soft Channel")
+        field(VAL,  "-1")  
+}
+
+record (bo, "${UUT}:${SITE}:HAS_CH_GAINS") {
+	field(DTYP, "Soft Channel")
+	field(VAL,  "${CHG}")
+}
+
+record (mbbo, "${UUT}:${SITE}:ADC_CAL") {
+        field(DTYP, "Soft Channel")
+        field(NOBT, "2")
+        field(ZRST, "default")
+        field(ONST, "caldef")
+        field(TWST, "calibrated")
+        field(VAL,  "2")
+}
