@@ -1,8 +1,9 @@
-record (bo, "${UUT}:${SITE}:ADC_MODE") {
-        field(DTYP, "Soft Channel")            
+record (${ADCTYPE}, "${UUT}:${SITE}:ADC_MODE") {
+        field(DTYP, "Soft Channel")
+        field(VAL,  "${ADCM}")  
 }
 
-record (bo, ${UUT}:${SITE}:HAS_CH_GAINS") {
+record (bo, "${UUT}:${SITE}:HAS_CH_GAINS") {
 	field(DTYP, "Soft Channel")
 	field(VAL,  "${CHG}")
 }

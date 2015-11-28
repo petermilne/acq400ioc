@@ -49,7 +49,11 @@ char* getKey(int hrm, int gain)
 { 
 	static char key[8];
 	
-	snprintf(key, 8, "%d,%d", hrm, gain);
+	if (hrm >= 0){
+		snprintf(key, 8, "%d,%d", hrm, gain);
+	}else{
+		snprintf(key, 8, "%d", gain);
+	}
 	
 	return key; 
 }
