@@ -74,13 +74,13 @@ record(dfanout, "${UUT}:${SITE}:ACQ480:FIR:01:fanout") {
 	field(DOL,  "${UUT}:${SITE}:ACQ480:FIR:01")
 	field(OUTA, "")
 	field(SELM, "All")
-	field(OUTB, "${UUT}:${SITE}:ACQ480:FIR:02")
-	field(OUTC, "${UUT}:${SITE}:ACQ480:FIR:03")
-	field(OUTD, "${UUT}:${SITE}:ACQ480:FIR:04")
-	field(OUTE, "${UUT}:${SITE}:ACQ480:FIR:05")
-	field(OUTF, "${UUT}:${SITE}:ACQ480:FIR:06")
-	field(OUTG, "${UUT}:${SITE}:ACQ480:FIR:07")
-	field(OUTH, "${UUT}:${SITE}:ACQ480:FIR:08")
+	field(OUTB, "${UUT}:${SITE}:ACQ480:FIR:02 PP")
+	field(OUTC, "${UUT}:${SITE}:ACQ480:FIR:03 PP")
+	field(OUTD, "${UUT}:${SITE}:ACQ480:FIR:04 PP")
+	field(OUTE, "${UUT}:${SITE}:ACQ480:FIR:05 PP")
+	field(OUTF, "${UUT}:${SITE}:ACQ480:FIR:06 PP")
+	field(OUTG, "${UUT}:${SITE}:ACQ480:FIR:07 PP")
+	field(OUTH, "${UUT}:${SITE}:ACQ480:FIR:08 PP")
 }
 
 record(mbbo, "${UUT}:${SITE}:ACQ480:FIR:01") {
