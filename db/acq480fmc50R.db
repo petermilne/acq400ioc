@@ -1,5 +1,5 @@
 record(bo, "${UUT}:${SITE}:ACQ480:T50R${CH}") {
-	field(DTYP, "Shot Channel")
+	field(DTYP, "Soft Channel")
 	field(ZNAM, "0")
 	field(ONAM, "1")
 	field(FLNK, "${UUT}:${SITE}:ACQ480:T50R${CH}:w PP")
@@ -11,6 +11,7 @@ record(bo, "${UUT}:${SITE}:ACQ480:T50R${CH}:w") {
 	field(OMSL, "closed_loop")
 	field(DOL,  "${UUT}:${SITE}:ACQ480:T50R${CH}")	
 	field(DISV, "1")
+	
 	field(SDIS, "${UUT}:${SITE}:ACQ480:T50R${CH}:r.PACT")
 }
 
