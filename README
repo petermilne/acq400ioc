@@ -2,9 +2,12 @@
 To trace streamdevice operation:
 ./scripts/set.epics-trace
 
+REAL SPECTRUM:
+/mnt/local/sysconfig/epics.sh:
+export IOC_PREINIT=./scripts/load.SpecReal
 
 DDC:
-/mnt/local/sysconfig/epics.sh
+/mnt/local/sysconfig/epics.sh:
 export IOC_PREINIT=./scripts/load.ddc
 
 ANALOG TRIGGER

@@ -1,0 +1,51 @@
+# waveform shows REAL SPECTRUM
+
+
+record(calc, "${UUT}:0:SIG:CLK_S1:FREQ") {
+	field(FLNK, "${UUT}:${SITE}:AI:WF:FS")
+}
+record(aSub, "${UUT}:${SITE}:AI:WF:${cid}:V") {
+	field(FLNK, "${UUT}:${SITE}:AI:WF:PS:${cid}")
+}
+
+
+# LNK2
+
+record(calc, "${UUT}:${SITE}:AI:WF:FS") {
+	field(INPA, "${UUT}:0:SIG:CLK_S1:FREQ")
+	field(INPB, "1")
+# decimate filter could set B?	
+	field(CALC, "1000*FLOOR(A/1000)/1")
+	field(DESC, "DDC Mixer (center) frequency")
+}
+
+
+record(aSub, "${UUT}:${SITE}:AI:WF:PS:${cid}") {
+	field(SNAM, "spectrum")
+# I	
+	field(FTA,  "SHORT")
+	field(NOA,  "${size}")
+	field(INPA, "${UUT}:${SITE}:AI:WF:${cid}")
+# Q
+	field(FTB,  "SHORT")
+	field(NOB,  "${size}")
+	field(INPB, "${UUT}:${SITE}:AI:WF:${cid}")	
+# Fs
+	field(FTC,  "FLOAT")
+	field(NOC,  "1")
+	field(INPC, "${UUT}:${SITE}:AI:WF:FS")	
+
+# single sided power spectrum
+	field(FTVA, "FLOAT")
+	field(NOVA, "${size}")
+	field(DESC, "complex PS in polar A=R B=T C=Window")
+	
+# BINS - 
+	field(FTVB, "FLOAT")
+	field(NOVB, "${size}")
+#window		
+	field(FTVC,  "FLOAT")
+	field(NOVC,  "${size}")	
+}
+
+

@@ -255,7 +255,7 @@ load_400() {
 		let LO=$LO/256;;
 	8)
 		is_adc="sar"
-		// gains are digital.
+		# gains are digital.
 		maxhz=80000000		
 		create_asyn_channel S${site}_480 127.0.0.1:422${site}
 		mprams="UUT=${HOST},SITE=${site},SPORT=S${site}_480"

@@ -1,0 +1,28 @@
+make_AI() {
+	site=$1
+	type=SHORT
+	maxcode=32768
+	eslo=0.00030517578125
+
+	let nchan=$(cat /etc/acq400/$SITE/NCHAN)
+	vmax=10
+
+	let ch=0; while [ $ch -lt $nchan ]; do
+		let ch=$ch+1
+		cid=$(printf "%02d" $ch)
+		let IDX=$ch
+		
+		PRAMS="UUT=${HOST},SITE=${site},idx=${IDX},fname=AI.${site}"
+		wprams="${PRAMS},size=${SIZE},type=${type},cid=${cid}"
+		wprams="${wprams},maxcode=${maxcode},vmax=${vmax},eslo=${eslo}"
+		echo dbLoadRecords\(\"db/wfSpecReal.db\",\"${wprams}\"\)
+	done	
+}
+
+
+for ACQ400 in /dev/acq400.[123456]
+do
+	if [ -e $ACQ400 ]; then
+		make_AI ${ACQ400##*.}
+	fi
+done
