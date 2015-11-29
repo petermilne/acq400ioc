@@ -19,6 +19,10 @@ record(calc, "${UUT}:${SITE}:AI:WF:FS") {
 	field(DESC, "DDC Mixer (center) frequency")
 }
 
+record(calc, "${UUT}:${SITE}:AI:WF:FMIXER") {
+	field(INPA, "0")
+	field(DESC, "DDC Mixer (center) frequency")
+}
 
 record(aSub, "${UUT}:${SITE}:AI:WF:PS:${cid}") {
 	field(SNAM, "spectrum")
