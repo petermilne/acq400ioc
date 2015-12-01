@@ -249,6 +249,7 @@ long timebase(aSubRecord *prec) {
 //#define SWAP(aa,bb,tt)  ( tt = aa, aa = bb, bb = tt )
 #define SWAP(x, y) do { typeof(x) SWAP = x; x = y; y = SWAP; } while (0)
 
+template <class T>
 class Spectrum {
 	const int N;
 	const int N2;
@@ -292,7 +293,7 @@ class Spectrum {
 		}
 		fillWindowTriangle();
 	}
-	void windowFunction(short* re, short* im)
+	void windowFunction(T* re, T* im)
 	{
 		for (int ii = 0; ii < N; ++ii){
 			in[ii][RE] = re[ii] * window[ii];
@@ -339,7 +340,7 @@ public:
 		fftwf_free(out);
 	}
 
-	void exec (short* re, short* im, float* mag, float fs)
+	void exec (T* re, T* im, float* mag, float fs)
 	{
 		windowFunction(re, im);
 		fftwf_execute(plan);
@@ -347,10 +348,12 @@ public:
 		binFreqs(fs);
 	}
 };
+
+template <class T>
 long spectrum(aSubRecord *prec)
 {
-	short *raw_i = reinterpret_cast<short*>(prec->a);
-	short *raw_q = reinterpret_cast<short*>(prec->b);
+	T *raw_i = reinterpret_cast<T*>(prec->a);
+	T *raw_q = reinterpret_cast<T*>(prec->b);
 	float *fs = reinterpret_cast<float*>(prec->c);
 	int len = prec->noa;
 
@@ -358,9 +361,9 @@ long spectrum(aSubRecord *prec)
 	float* freqs = prec->nob>1? reinterpret_cast<float*>(prec->valb): 0;
 	float *window = reinterpret_cast<float*>(prec->valc);
 
-	static Spectrum *spectrum;
+	static Spectrum<T> *spectrum;
 	if (!spectrum){
-		spectrum = new Spectrum(len, window, freqs);
+		spectrum = new Spectrum<T>(len, window, freqs);
 	}
 	spectrum->exec(raw_i, raw_q, mag, *fs);
 	return 0;
@@ -372,7 +375,9 @@ static registryFunctionRef my_asub_Ref[] = {
        {"raw_to_volts_SHORT",  (REGISTRYFUNCTION) raw_to_volts<short>},
        {"cart2pol", (REGISTRYFUNCTION) cart2pol },
        {"timebase", (REGISTRYFUNCTION) timebase},
-       {"spectrum", (REGISTRYFUNCTION) spectrum},
+       {"spectrum", (REGISTRYFUNCTION) spectrum<short>},
+       {"spectrum_LONG", (REGISTRYFUNCTION) spectrum<long>},
+       {"spectrum_SHORT", (REGISTRYFUNCTION) spectrum<short>},
  };
 
  static void raw_to_uvolts_Registrar(void) {
