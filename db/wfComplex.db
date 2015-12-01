@@ -8,14 +8,14 @@
 # ${RS}	  SHORT | LONG
 # ${LEN}  waveform LENgth (was size)
 
-record(aSub, "${PFX}:Q") {
+record(waveform, "${PFX}:Q") {
 	field(FLNK, "${UUT}:${SITE}:AI:WF:cplx:${cid}")
 }
 
 record(fanout, "${UUT}:${SITE}:AI:WF:cplx:${cid}") {
 	field(LNK1, "${PFX}:POLAR")
 	field(LNK2, "${PFX}:FDDC")		
-	field(LNK4, "${PFX}:PS")
+	field(FLNK, "${PFX}:PS")
 }
 
 
