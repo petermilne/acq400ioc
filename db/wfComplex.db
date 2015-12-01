@@ -13,9 +13,9 @@ record(aSub, "${PFX}:Q") {
 }
 
 record(fanout, "${UUT}:${SITE}:AI:WF:cplx:${cid}") {
-	field(LNK1, "${PFX}:POLAR:${cid}")
+	field(LNK1, "${PFX}:POLAR")
 	field(LNK2, "${PFX}:FDDC")		
-	field(LNK4, "${PFX}:PS:${cid}")
+	field(LNK4, "${PFX}:PS")
 }
 
 
@@ -28,7 +28,7 @@ record(fanout, "${UUT}:${SITE}:AI:WF:cplx:${cid}") {
 # INPO : aoff
 
 record(aSub, "${PFX}:POLAR:${cid}") {	
-	field(SNAM, "cart2pol")
+	field(SNAM, "cart2pol_${RS}")
 	
 	field(FTA,  "${RS}")
 	field(NOA,  "${LEN}")
@@ -87,8 +87,8 @@ record(calc, "${PFX}:FMIXER") {
 }
 
 
-record(aSub, "${PFX}:PS:${cid}") {
-	field(SNAM, "spectrum")
+record(aSub, "${PFX}:PS") {
+	field(SNAM, "spectrum_${RS}")
 # I	
 	field(FTA,  "${RS}")
 	field(NOA,  "${LEN}")
@@ -115,4 +115,4 @@ record(aSub, "${PFX}:PS:${cid}") {
 	field(NOVC,  "${LEN}")	
 }
 
-
+alias("${PFX}:PS", "${UUT}:${SITE}:AI:WF:PS:${cid}")
