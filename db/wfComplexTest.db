@@ -1,5 +1,8 @@
-# waveform shows DDC output; AI:WF MUST be data32 type
+# waveform shows DDC output; AI:WF MUST be ?data32? type
+# ?data32? ... loks like shorts to me ..
 
+# ${PFX}  eg $HN:1:CH%02d:REF%d:
+# ${IQ}   eg I or Q
 
 record(aSub, "${UUT}:${SITE}:AI:WF:${cid2}:V") {
 	field(FLNK, "${UUT}:${SITE}:AI:WF:cplx:${cid}")

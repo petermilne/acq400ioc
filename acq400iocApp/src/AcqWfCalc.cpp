@@ -187,10 +187,10 @@ long raw_to_volts(aSubRecord *prec) {
 }
 
 
-/* ARGS:
+/* ARGS:  T: short or long
  * INPUTS:
- * INPA : const short I
- * INPB : const short Q
+ * INPA : const T I
+ * INPB : const T Q
  * OUTPUTS:
  * VALA : float* radius
  * optional:
@@ -199,9 +199,10 @@ long raw_to_volts(aSubRecord *prec) {
 
 #define RAD2DEG	(180/M_PI)
 
+template <class T>
 long cart2pol(aSubRecord *prec) {
-	short *raw_i = reinterpret_cast<short*>(prec->a);
-	short *raw_q = reinterpret_cast<short*>(prec->b);
+	T *raw_i = reinterpret_cast<T*>(prec->a);
+	T *raw_q = reinterpret_cast<T*>(prec->b);
 	int len = prec->noa;
 	float * radius = (float *)prec->vala;
 	float * theta = (float *)prec->valb;
@@ -373,7 +374,9 @@ static registryFunctionRef my_asub_Ref[] = {
        {"raw_to_uvolts", (REGISTRYFUNCTION) raw_to_uvolts},
        {"raw_to_volts_LONG",  (REGISTRYFUNCTION) raw_to_volts<long>},
        {"raw_to_volts_SHORT",  (REGISTRYFUNCTION) raw_to_volts<short>},
-       {"cart2pol", (REGISTRYFUNCTION) cart2pol },
+       {"cart2pol", (REGISTRYFUNCTION) cart2pol},
+       {"cart2pol_LONG", (REGISTRYFUNCTION) cart2pol<long>},
+       {"cart2pol_SHORT", (REGISTRYFUNCTION) cart2pol<short>},
        {"timebase", (REGISTRYFUNCTION) timebase},
        {"spectrum", (REGISTRYFUNCTION) spectrum<short>},
        {"spectrum_LONG", (REGISTRYFUNCTION) spectrum<long>},
