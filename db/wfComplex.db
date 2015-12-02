@@ -7,6 +7,7 @@
 # ${PFX}  eg $HN:1:CH%02d:REF%d:
 # ${RS}	  SHORT | LONG
 # ${LEN}  waveform LENgth (was size)
+# ${FSB}  frequency div eg DDC=16, LIA=128
 
 record(waveform, "${PFX}:Q") {
 	field(FLNK, "${UUT}:${SITE}:AI:WF:cplx:${cid}")
@@ -73,7 +74,7 @@ record(waveform, "${UUT}:3:AI:WF:${cid}") {
 
 record(calc, "${PFX}:FDDC" ) {
 	field(INPA, "${UUT}:0:SIG:CLK_S1:FREQ")
-	field(INPB,  "16")
+	field(INPB,  "${FSB}")
 	field(CALC, "100*FLOOR(A/100)/B")	
 	field(DESC,  "Fout from DDC")
 	field(FLNK,  "${PFX}:FMIXER")
