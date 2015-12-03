@@ -15,7 +15,7 @@ record(waveform, "${PFX}:Q") {
 
 record(fanout, "${UUT}:${SITE}:AI:WF:cplx:${cid}") {
 	field(LNK1, "${PFX}:POLAR")
-	field(LNK2, "${PFX}:FDDC")		
+	field(LNK2, "${UUT}:${SITE}:AI:WF:FOUT")		
 	field(FLNK, "${PFX}:PS")
 }
 
@@ -70,21 +70,15 @@ record(waveform, "${UUT}:3:AI:WF:${cid}") {
 
 
 
-# LNK2
+# LNK2 : FDDC : only one per site?. 
+# This is correct for DDC, and LIA with ONE REF
+# With N REFS, there's N of these.
 
-record(calc, "${PFX}:FDDC" ) {
+record(calc, "${UUT}:${SITE}:AI:WF:FOUT" ) {
 	field(INPA, "${UUT}:0:SIG:CLK_S1:FREQ")
 	field(INPB,  "${FSB}")
 	field(CALC, "100*FLOOR(A/100)/B")	
 	field(DESC,  "Fout from DDC")
-	field(FLNK,  "${PFX}:FMIXER")
-}
-
-record(calc, "${PFX}:FMIXER") {
-	field(INPA, "${UUT}:0:SIG:CLK_S1:FREQ")
-	field(INPB, "4")
-	field(CALC, "100*FLOOR(A/100)/B")
-	field(DESC, "DDC Mixer (center) frequency")
 }
 
 
@@ -101,7 +95,7 @@ record(aSub, "${PFX}:PS") {
 # Fs
 	field(FTC,  "FLOAT")
 	field(NOC,  "1")
-	field(INPC, "${PFX}:FDDC")	
+	field(INPC, "${UUT}:${SITE}:AI:WF:FOUT")
 
 # single sided power spectrum
 	field(FTVA, "FLOAT")
