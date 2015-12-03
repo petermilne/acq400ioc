@@ -28,7 +28,7 @@ record(fanout, "${UUT}:${SITE}:AI:WF:cplx:${cid}") {
 # INPD : alarm threshold
 # INPO : aoff
 
-record(aSub, "${PFX}:POLAR:${cid}") {	
+record(aSub, "${PFX}:POLAR") {	
 	field(SNAM, "cart2pol_${RS}")
 	
 	field(FTA,  "${RS}")
