@@ -1,0 +1,24 @@
+# clkstatus.db : simple site 1 clk indicators
+
+record(bo, "${UUT}:${SITE}:${FNAM}:s") {
+	field(FLNK, "${UUT}:${SITE}:CLK_IS_INTERNAL")
+}
+
+record(calc, "${UUT}:${SITE}:CLK_IS_INTERNAL") {
+	field(INPA, "${UUT}:${SITE}:${FNAM}")
+	field(CALC, "A==0")
+	field(FLNK, "${UUT}:${SITE}:CLK_IS_EXT_D0")
+}
+
+record(calc, "${UUT}:${SITE}:CLK_IS_EXT_D0") {
+	field(INPA, "${UUT}:${SITE}:${FNAM}")
+	field(INPB, "${UUT}:${SITE}:${FNAM}:DX")
+	field(CALC, "A==0 && B==0")
+	field(FLNK, "${UUT}:${SITE}:CLK_IS_EXT_D1")
+}
+
+record(calc, "${UUT}:${SITE}:CLK_IS_EXT_D1") {
+	field(INPA, "${UUT}:${SITE}:${FNAM}")
+	field(INPB, "${UUT}:${SITE}:${FNAM}:DX")
+	field(CALC, "A==0 && B==1")
+}
