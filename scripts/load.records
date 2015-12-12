@@ -310,7 +310,7 @@ load_400() {
 	echo 'dbLoadRecords("db/signal.db","'${cprams}',FNAM=TRG,FN=trg,ZNAM=none,ONAM=enable")'	
 	echo 'dbLoadRecords("db/signal.db","'${cprams}',FNAM=CLK,FN=clk,ZNAM=internal,ONAM=external")'
 	if [ $site -eq 1 ]; then
-		echo 'dbLoadRecords("db/clkstatus.db","FNAM=CLK,FN=clk")'
+		echo 'dbLoadRecords("db/clkstatus.db","'${cprams}',FNAM=CLK,FN=clk")'
 	fi
 	echo 'dbLoadRecords("db/signal.db","'${cprams}',FNAM=SYNC,FN=sync,ZNAM=internal,ONAM=external")'
 	echo 'dbLoadRecords("db/signal.db","'${cprams}',FNAM=EVENT1,FN=event1,ZNAM=disable,ONAM=enable")'
