@@ -12,5 +12,6 @@ record (mbbo, "${UUT}:${SITE}:GAIN:${CH}") {
 }
 
 record (calc, "${UUT}:${SITE}:GAIN_CHANGES") {
-	field(calc, "1 + ${UUT}:${SITE}:GAIN_CHANGES.LA")
+	field(INPA, "${UUT}:${SITE}:GAIN_CHANGES.LA")
+	field(CALC, "A+1")
 }
