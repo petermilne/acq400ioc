@@ -472,7 +472,13 @@ load_mb_sync() {
 		zrst="EXT";
 		
 		case $FUN in
-		CLK)	nobt=2; onst="HDMI"; 	twst="HDMI";		thst="COMM_A";;
+		CLK)	nobt=2; onst="HDMI"; 	twst="HDMI";		
+                        case $mb_model in
+                        acq2106|acq2106sfp)
+				thst="COMM_A";;
+			*)
+				thst="nc";;
+			esac;;
 		TRG)	nobt=2; onst="HDMI";    twst="HDMI_GPIO";  	thst="GPG0";;
 		SYNC)	nobt=1; onst="HDMI"; 	twst="nc";		thst="nc";;
 		esac
@@ -481,15 +487,21 @@ load_mb_sync() {
 		# d1
 		case $FUN in
 		TRG) 	
-				case $mb_model in
-				acq2106|acq2106sfp)					
-					nobt=2; zrst="STRIG"; onst="HOSTA"; twst="HOSTB"; 	thst="GPG1";;
-				*)
-					nobt=2; zrst="STRIG"; onst="HDMI";  twst="HDMI_GPIO"; thst="GPG1";;
-				esac;;				
+			case $mb_model in
+			acq2106|acq2106sfp)					
+				nobt=2; zrst="STRIG"; onst="HOSTA"; twst="HOSTB"; 	thst="GPG1";;
+			*)
+				nobt=2; zrst="STRIG"; onst="HDMI";  twst="HDMI_GPIO"; thst="GPG1";;
+			esac;;				
 		SYNC) 	nobt=1; zrst="EXT";   onst="HDMI";  twst="nc"; thst="nc";;
-		CLK)	nobt=2; onst="HDMI"; 	twst="HDMI";		thst="COMM_B";;
-		*) 		nobt=1; zrst="MCLK";  onst="HDMI";  twst="nc"; thst="nc";;
+		CLK)	nobt=2; onst="HDMI"; 	twst="HDMI";
+			case $mb_model in
+			acq2106|acq2106sfp)
+				thst="COMM_B";;
+			*)
+				thst="nc";
+			esac;;
+		*) 	nobt=1; zrst="MCLK";  onst="HDMI";  twst="nc"; thst="nc";;
 		esac
 		echo 'dbLoadRecords("db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=1,ZRST=${zrst},ONST=${onst},TWST=${twst},THST=${thst},NOBT=${nobt}'")'
 	done
