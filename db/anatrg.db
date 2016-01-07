@@ -74,24 +74,17 @@ record(mbbo, "${UUT}:${SITE}:ANATRG:${CH}:H") {
 record(mbboDirect, "${UUT}:${SITE}:ANATRG:OR:0") {
 	field(DTYP, "stream")
 	field(OUT,  "@anatrg.proto setAnaTrgOr(${UUT}:${SITE}:ANATRG:OR) ${SPORT}")
-}
-
-record(mbboDirect, "${UUT}:${SITE}:ANATRG:OR:1") {
-	field(DTYP, "stream")
-	field(OUT,  "@anatrg.proto setAnaTrgOr(${UUT}:${SITE}:ANATRG:OR) ${SPORT}")
+	field(PINI, "YES")
 }
 
 record(mbboDirect, "${UUT}:${SITE}:ANATRG:AND:0") {
 	field(DTYP, "stream")
 	field(OUT,  "@anatrg.proto setAnaTrgAnd(${UUT}:${SITE}:ANATRG:AND) ${SPORT}")
+	field(PINI, "YES")
 }
 
-record(mbboDirect, "${UUT}:${SITE}:ANATRG:AND:1") {
-	field(DTYP, "stream")
-	field(OUT,  "@anatrg.proto setAnaTrgAnd(${UUT}:${SITE}:ANATRG:AND) ${SPORT}")
-}
 
-record(longin, "${UUT}:${SITE}:ANATRG:SRC") {
+record(mbbiDirect, "${UUT}:${SITE}:ANATRG:SRC") {
 	field(DTYP, "stream")
 	field(INP,  "@anatrg.proto getAnaTrgSrc ${SPORT}")
 	field(SCAN, "1 second")
