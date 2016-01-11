@@ -541,7 +541,9 @@ load_mb_sync() {
 	echo 'dbLoadRecords("db/sync_bus_data.db","'${CPRAMS}'")'
 	
 	echo 1>&2 "HAS_ACQ43X $HAS_ACQ43X"
-	if [ $HAS_ACQ43X -ne 0 ]; then
+	ACQ43X_SET_SAMPLE_RATE=${ACQ43X_SET_SAMPLE_RATE:-1}
+	
+	if [ $HAS_ACQ43X -ne 0 ] && [ $ACQ43X_SET_SAMPLE_RATE -ge 0 ]; then
 			case $mb_model in
 			acq2106|acq2106sfp)
 				;;

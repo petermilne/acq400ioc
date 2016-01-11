@@ -15,3 +15,6 @@ export IOC_PREINIT=./scripts/load.anatrg
 
 # allow more than 80 "channels" per module eg for LIA
 export ACQ400IOC_IDX_GT32=1
+
+# stop this seq running
+export ACQ43X_SET_SAMPLE_RATE=-1
