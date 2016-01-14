@@ -80,23 +80,5 @@ record(ai, "${UUT}:SYS:${SITE}:3V3P") {
 	field(LOPR, "0")              
 	field(LOW,  "2.4")
 	field(HIGH, "2.6")            
-	field(PREC, "2")
-	field(FLNK,  "${UUT}:SYS:${SITE}:T")  
-}
-
-
-record(ai, "${UUT}:SYS:${SITE}:T") {
-	field(DTYP, "dsSysfsAi")   
-	field(INP, "@/dev/hwmon/${SITE}/temp")
-	field(DESC, "Module temperature")       
-# C/1000                                
-	field(ASLO, "0.001")     
-	field(LINR, "LINEAR")           
-	field(EGU,  "C")         
-	field(PINI, "YES")   	
-	field(HOPR, "75")              
-	field(LOPR, "0")              
-	field(LOW,  "10")
-	field(HIGH, "60")            
-	field(PREC, "2")  
+	field(PREC, "2") 
 }
