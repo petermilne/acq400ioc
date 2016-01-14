@@ -284,7 +284,7 @@ load_400() {
 	fi
 	
 	if [ -e db/hwmon_${name}.db ]; then
-		echo 'dbLoadRecords("db/hwmon_${name}.db",'${cprams}'")'
+		echo 'dbLoadRecords("db/hwmon_'${name}'.db",'${cprams}'")'
 	fi
 	echo 'dbLoadRecords("db/acq420fmc.db","'${cprams},'LO='${LO}',MAXHZ='${maxhz}'")'
 		
