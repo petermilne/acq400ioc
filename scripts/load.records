@@ -233,7 +233,6 @@ load_400() {
 		1|A1|5|A5)
 			has_ch_gains=1;;
 		4)
-			site_hwmon="
 			LO=66000000;;
 		esac;;	
 	2|3|6)

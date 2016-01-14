@@ -46,6 +46,6 @@ nameFromMT() {
 	$MT_V2F)		echo "v2f";;
 	$MT_AO420)		echo "ao420";;
 	$MT_AO424)		echo "ao424";;
-	*)
+	# no default	
 	esac					
 }
