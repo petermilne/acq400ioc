@@ -1,0 +1,152 @@
+
+# set up as a chain triggered on 10s scan .. avoids parallel access ?
+# but also ensures that VAN processes last with valid data
+
+record(ai, "${UUT}:SYS:5VP") {
+        field(DTYP, "dsSysfsAi")
+        field(INP, "@/dev/hwmon/0/5V_P")
+        field(SCAN, "10 second")
+        field(DESC, "Digital 5V Rail")
+# 3/1000        
+        field(ASLO, "0.004")
+        field(LINR, "LINEAR")
+        field(EGU,  "V")
+        field(PINI, "YES")
+        field(FLNK,  "${UUT}:SYS:2V5P_REF")
+        field(HOPR, "15")
+        field(LOPR, "0")
+        field(LOW,  "4.95")
+        field(HIGH, "5.05")
+        field(PREC, "2")                
+}
+
+# Note this comes from hwmon/0 and says VADJ but is actually 2V5_REF
+
+record(ai, "${UUT}:SYS:2V5P_REF") {
+        field(DTYP, "dsSysfsAi")
+        field(INP, "@/dev/hwmon/0/VADJ")        
+        field(DESC, "Reference Voltage 2.5V")
+# 2/1000        
+        field(ASLO, "0.002")
+        field(LINR, "LINEAR")
+        field(EGU,  "V")
+        field(PINI, "YES")
+        field(FLNK,  "${UUT}:SYS:VAP")
+        field(HOPR, "3")
+        field(LOPR, "0")
+        field(LOW,  "2.4")
+        field(HIGH, "2.6")
+        field(PREC, "2")         
+}
+
+
+record(ai, "${UUT}:SYS:VAP") {
+        field(DTYP, "dsSysfsAi")
+        field(INP, "@/dev/hwmon/0/15VA_P")        
+        field(DESC, "Analog Rail Pos")
+# 11/1000        
+        field(ASLO, "0.011")
+        field(LINR, "LINEAR")
+        field(EGU,  "V")
+        field(PINI, "YES")
+        field(FLNK,  "${UUT}:SYS:2V5P")
+        field(HOPR, "15")
+        field(LOPR, "0")
+        field(LOW,  "5")
+        field(HIGH, "7") 
+        field(PREC, "2")                
+}
+
+record(ai, "${UUT}:SYS:2V5P") {
+        field(DTYP, "dsSysfsAi")   
+        field(INP, "@/dev/hwmon/1/in1")
+        field(DESC, "Digital 2.5V Rail")       
+# 2/1000                                
+        field(ASLO, "0.002")     
+        field(LINR, "LINEAR")           
+        field(EGU,  "V")         
+        field(PINI, "YES")   
+        field(FLNK,  "${UUT}:SYS:3V3P")
+        field(HOPR, "5")              
+        field(LOPR, "0")              
+        field(LOW,  "2.4")
+        field(HIGH, "2.6")            
+        field(PREC, "2")  
+}
+
+record(ai, "${UUT}:SYS:3V3P") {        
+        field(DTYP, "dsSysfsAi")      
+        field(INP, "@/dev/hwmon/1/in2")
+        field(DESC, "Digital 3.3V Rail")
+# 2/1000                                 
+        field(ASLO, "0.002")            
+        field(LINR, "LINEAR")           
+        field(EGU,  "V")                
+        field(PINI, "YES")              
+        field(FLNK,  "${UUT}:SYS:1V8P")  
+        field(HOPR, "5")                
+        field(LOPR, "0")                 
+        field(LOW,  "3.2")              
+        field(HIGH, "3.4")              
+        field(PREC, "2")                
+} 
+
+record(ai, "${UUT}:SYS:1V8P") {        
+        field(DTYP, "dsSysfsAi")      
+        field(INP, "@/dev/hwmon/1/in3")
+        field(DESC, "Digital 1.8V Rail")
+# 2/1000                                 
+        field(ASLO, "0.002")            
+        field(LINR, "LINEAR")           
+        field(EGU,  "V")                
+        field(PINI, "YES")              
+        field(FLNK,  "${UUT}:SYS:5VP_REF")  
+        field(HOPR, "5")                
+        field(LOPR, "0")                 
+        field(LOW,  "1.6")              
+        field(HIGH, "2.0")              
+        field(PREC, "2")                
+}
+
+record(ai, "${UUT}:SYS:5VP_REF") {
+        field(DTYP, "dsSysfsAi")      
+        field(INP, "@/dev/hwmon/1/in4")
+        field(DESC, "Reference Voltage 5V")
+# 4/1000                                 
+        field(ASLO, "0.004")            
+        field(LINR, "LINEAR")           
+        field(EGU,  "V")                
+        field(PINI, "YES")              
+        field(FLNK,  "${UUT}:SYS:_van")  
+        field(HOPR, "15")                
+        field(LOPR, "0")                 
+        field(LOW,  "4.9")              
+        field(HIGH, "5.1")              
+        field(PREC, "2")                
+} 
+
+record(ai, "${UUT}:SYS:_van") {              
+        field(DTYP, "dsSysfsAi")             
+        field(INP, "@/dev/hwmon/0/15VA_N")   
+        field(DESC, "raw result")            
+# scale only                                 
+        field(ASLO, ".001")                  
+        field(LINR, "LINEAR")                
+        field(EGU,  "V")                     
+        field(PINI, "YES")                   
+        field(FLNK,  "${UUT}:SYS:VAN")       
+        field(PREC, "2")                     
+}                                            
+                                             
+record(calc, "${UUT}:SYS:VAN") {             
+        field(INPA, "${UUT}:SYS:3V3P")     
+        field(INPB, "${UUT}:SYS:_van")    
+        field(CALC, "(6.6*B - 5.6*A)")    
+        field(PREC, "1")                  
+        field(DESC, "Analog Rail Neg")    
+        field(HOPR, "0")                  
+        field(LOPR, "-15")                
+        field(LOW,  "-7")                 
+        field(HIGH, "-5")                 
+}                                         
+    
