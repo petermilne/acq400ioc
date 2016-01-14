@@ -213,7 +213,7 @@ load_400() {
 	echo 1>&2 "load.records:load_400 $site"
 	# since driver B2.457, module_type printed in hex
 	model=$(cat /dev/acq400.${site}.knobs/module_type)
-	name=$(nameFromMt $model)
+	name=$(nameFromMT $model)
 	LO=100000000
 	maxhz=1000000	
 		
