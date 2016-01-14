@@ -26,6 +26,7 @@ fi
 
 
 source ./scripts/record_support.sh
+source ./scripts/mtype.sh
 
 FIRST_AI_WF_RECORDS=1
 
@@ -208,9 +209,11 @@ HAS_ACQ43X=0
 
 load_400() {
 	site=$1
+	
 	echo 1>&2 "load.records:load_400 $site"
 	# since driver B2.457, module_type printed in hex
 	model=$(cat /dev/acq400.${site}.knobs/module_type)
+	name=$(nameFromMt $model)
 	LO=100000000
 	maxhz=1000000	
 		
@@ -230,6 +233,7 @@ load_400() {
 		1|A1|5|A5)
 			has_ch_gains=1;;
 		4)
+			site_hwmon="
 			LO=66000000;;
 		esac;;	
 	2|3|6)
@@ -278,6 +282,10 @@ load_400() {
 		aprams="UUT=${HOST},SITE=${site},CHG=${has_ch_gains}"
 		echo 'dbLoadRecords("db/adc-'${is_adc}'.db","'$aprams'")'						
 		echo >>/tmp/st_post.cmd "seq calmon \"uut=${HOST},site=${site}\"" 	
+	fi
+	
+	if [ -e db/hwmon_${name}.db ]; then
+		echo 'dbLoadRecords("db/hwmon_${name}.db",'${cprams}'")'
 	fi
 	echo 'dbLoadRecords("db/acq420fmc.db","'${cprams},'LO='${LO}',MAXHZ='${maxhz}'")'
 		
