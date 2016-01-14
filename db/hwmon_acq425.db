@@ -1,4 +1,7 @@
 
+# hwmon_acq425.db
+# created and tested by pgm. 
+
 record(ai, "${UUT}:SYS:${SITE}:_van") {
 	field(DTYP, "dsSysfsAi")
 	field(INP, "@/dev/hwmon/${SITE}/in1") 

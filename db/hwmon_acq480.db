@@ -1,6 +1,6 @@
 
-# hwmon_acq424.db
-# created by pgm, believed good, but needs test
+# hwmon_acq480.db
+# created by pgm, STUB needs actual values
 
 record(ai, "${UUT}:SYS:${SITE}:_van") {
 	field(DTYP, "dsSysfsAi")
