@@ -1,0 +1,89 @@
+
+# hwmon_bolo8
+# created by pgm, STUB needs actual values
+# easiest way is to keep the new record names but copy content from
+# bolo8-main.db
+
+record(ai, "${UUT}:SYS:${SITE}:_van") {
+	field(DTYP, "dsSysfsAi")
+	field(INP, "@/dev/hwmon/${SITE}/in1") 
+	field(SCAN, "5 second")     
+	field(DESC, "raw result")
+# scale only
+	field(ASLO, ".001")
+	field(LINR, "LINEAR")
+	field(EGU,  "V")
+	field(PINI, "YES")
+	field(FLNK,  "${UUT}:SYS:${SITE}:VAP")
+	field(PREC, "2") 
+}
+
+record(ai, "${UUT}:SYS:${SITE}:VAP") {
+	field(DTYP, "dsSysfsAi")
+	field(INP, "@/dev/hwmon/${SITE}/in2")        
+	field(DESC, "Analog Rail Pos")
+# 11/1000        
+	field(ASLO, "0.011")
+	field(LINR, "LINEAR")
+	field(EGU,  "V")
+	field(PINI, "YES")
+	field(FLNK,  "${UUT}:SYS:${SITE}:VAN")
+	field(HOPR, "15")
+	field(LOPR, "0")
+	field(LOW,  "5")
+	field(HIGH, "7") 
+	field(PREC, "2")                
+}
+
+
+record(calc, "${UUT}:SYS:${SITE}:VAN") {
+#	field(INPA, "${UUT}:SYS:VAP")
+	field(INPB, "${UUT}:SYS:_van")
+	field(CALC, "6.6*B - 18.48")
+	field(PREC, "1")	
+	field(DESC, "Analog Rail Neg")
+	field(HOPR, "0")
+	field(LOPR, "-15")
+	field(LOW,  "-7")
+	field(HIGH, "-5")
+	field(FLNK, "${UUT}:SYS:${SITE}:5VP")
+}
+
+
+record(ai, "${UUT}:SYS:${SITE}:5VP") {
+	field(DTYP, "dsSysfsAi")   
+	field(INP, "@/dev/hwmon/${SITE}/in3")
+        
+	field(DESC, "Digital 5V Rail")       
+# 4.012/1000                                
+	field(ASLO, "0.004012")     
+	field(LINR, "LINEAR")           
+	field(EGU,  "V")         
+	field(PINI, "YES")   	
+	field(HOPR, "5")              
+	field(LOPR, "0")              
+	field(LOW,  "2.4")
+	field(HIGH, "2.6")            
+	field(PREC, "2")
+	field(FLNK,  "${UUT}:SYS:${SITE}:3V3P")  
+}
+
+
+
+
+record(ai, "${UUT}:SYS:${SITE}:3V3P") {
+	field(DTYP, "dsSysfsAi")   
+	field(INP, "@/dev/hwmon/${SITE}/in4")
+	field(DESC, "Digital 3.3V Rail")       
+# 2/1000                                
+	field(ASLO, "0.002")     
+	field(LINR, "LINEAR")           
+	field(EGU,  "V")         
+	field(PINI, "YES")   
+	
+	field(HOPR, "5")              
+	field(LOPR, "0")              
+	field(LOW,  "2.4")
+	field(HIGH, "2.6")            
+	field(PREC, "2") 
+}
