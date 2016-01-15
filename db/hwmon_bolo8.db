@@ -6,7 +6,7 @@
 
 record(ai, "${UUT}:SYS:${SITE}:_van") {
 	field(DTYP, "dsSysfsAi")
-	field(INP, "@/dev/hwmon/${SITE}/in1") 
+	field(INP, "@/dev/hwmon/${HMB}/in1") 
 	field(SCAN, "5 second")     
 	field(DESC, "raw result")
 # scale only
@@ -20,7 +20,7 @@ record(ai, "${UUT}:SYS:${SITE}:_van") {
 
 record(ai, "${UUT}:SYS:${SITE}:VAP") {
 	field(DTYP, "dsSysfsAi")
-	field(INP, "@/dev/hwmon/${SITE}/in2")        
+	field(INP, "@/dev/hwmon/${HMB}/in2")        
 	field(DESC, "Analog Rail Pos")
 # 11/1000        
 	field(ASLO, "0.011")
@@ -52,7 +52,7 @@ record(calc, "${UUT}:SYS:${SITE}:VAN") {
 
 record(ai, "${UUT}:SYS:${SITE}:5VP") {
 	field(DTYP, "dsSysfsAi")   
-	field(INP, "@/dev/hwmon/${SITE}/in3")
+	field(INP, "@/dev/hwmon/${HMB}/in3")
         
 	field(DESC, "Digital 5V Rail")       
 # 4.012/1000                                
@@ -73,7 +73,7 @@ record(ai, "${UUT}:SYS:${SITE}:5VP") {
 
 record(ai, "${UUT}:SYS:${SITE}:3V3P") {
 	field(DTYP, "dsSysfsAi")   
-	field(INP, "@/dev/hwmon/${SITE}/in4")
+	field(INP, "@/dev/hwmon/${HMB}/in4")
 	field(DESC, "Digital 3.3V Rail")       
 # 2/1000                                
 	field(ASLO, "0.002")     
