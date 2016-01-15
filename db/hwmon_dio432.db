@@ -2,49 +2,40 @@
 # hwmon_dio432.db
 # created by pgm, STUB needs actual values
 
-record(ai, "${UUT}:SYS:${SITE}:_van") {
-	field(DTYP, "dsSysfsAi")
-	field(INP, "@/dev/hwmon/${HMB}/in1") 
-	field(SCAN, "5 second")     
-	field(DESC, "raw result")
-# scale only
-	field(ASLO, ".001")
-	field(LINR, "LINEAR")
-	field(EGU,  "V")
-	field(PINI, "YES")
-	field(FLNK,  "${UUT}:SYS:${SITE}:VAP")
-	field(PREC, "2") 
-}
 
-record(ai, "${UUT}:SYS:${SITE}:VAP") {
+record(ai, "${UUT}:SYS:${SITE}:VADJ") {
 	field(DTYP, "dsSysfsAi")
-	field(INP, "@/dev/hwmon/${HMB}/in2")        
-	field(DESC, "Analog Rail Pos")
-# 11/1000        
-	field(ASLO, "0.011")
+	field(INP, "@/dev/hwmon/${HMB}/in1")   
+	field(SCAN, "5 second")      
+	field(DESC, "Digital VADJ Rail")
+# 2/1000        
+	field(ASLO, "0.002")
 	field(LINR, "LINEAR")
 	field(EGU,  "V")
 	field(PINI, "YES")
-	field(FLNK,  "${UUT}:SYS:${SITE}:VAN")
-	field(HOPR, "15")
+	field(FLNK,  "${UUT}:SYS:${SITE}:3V3P")
+	field(HOPR, "5")
 	field(LOPR, "0")
-	field(LOW,  "5")
-	field(HIGH, "7") 
+	field(LOW,  "1.7")
+	field(HIGH, "3.4") 
 	field(PREC, "2")                
 }
 
-
-record(calc, "${UUT}:SYS:${SITE}:VAN") {
-#	field(INPA, "${UUT}:SYS:VAP")
-	field(INPB, "${UUT}:SYS:_van")
-	field(CALC, "6.6*B - 18.48")
-	field(PREC, "1")	
-	field(DESC, "Analog Rail Neg")
-	field(HOPR, "0")
-	field(LOPR, "-15")
-	field(LOW,  "-7")
-	field(HIGH, "-5")
-	field(FLNK, "${UUT}:SYS:${SITE}:5VP")
+record(ai, "${UUT}:SYS:${SITE}:3V3P") {
+	field(DTYP, "dsSysfsAi")
+	field(INP, "@/dev/hwmon/${HMB}/in2")        
+	field(DESC, "Digital 3.3V Rail")
+# 2/1000        
+	field(ASLO, "0.002")
+	field(LINR, "LINEAR")
+	field(EGU,  "V")
+	field(PINI, "YES")
+	field(FLNK,  "${UUT}:SYS:${SITE}:5VP")
+	field(HOPR, "5")
+	field(LOPR, "0")
+	field(LOW,  "3.2")
+	field(HIGH, "3.4") 
+	field(PREC, "2")                
 }
 
 
@@ -58,30 +49,27 @@ record(ai, "${UUT}:SYS:${SITE}:5VP") {
 	field(LINR, "LINEAR")           
 	field(EGU,  "V")         
 	field(PINI, "YES")   	
-	field(HOPR, "5")              
+	field(HOPR, "15")              
 	field(LOPR, "0")              
-	field(LOW,  "2.4")
-	field(HIGH, "2.6")            
+	field(LOW,  "4.9")
+	field(HIGH, "5.1")            
 	field(PREC, "2")
-	field(FLNK,  "${UUT}:SYS:${SITE}:3V3P")  
+	field(FLNK,  "${UUT}:SYS:${SITE}:1V8P")  
 }
 
 
-
-
-record(ai, "${UUT}:SYS:${SITE}:3V3P") {
+record(ai, "${UUT}:SYS:${SITE}:1V8P") {
 	field(DTYP, "dsSysfsAi")   
 	field(INP, "@/dev/hwmon/${HMB}/in4")
-	field(DESC, "Digital 3.3V Rail")       
+	field(DESC, "Digital 1.8V Rail")       
 # 2/1000                                
 	field(ASLO, "0.002")     
 	field(LINR, "LINEAR")           
 	field(EGU,  "V")         
 	field(PINI, "YES")   
-	
 	field(HOPR, "5")              
 	field(LOPR, "0")              
-	field(LOW,  "2.4")
-	field(HIGH, "2.6")            
+	field(LOW,  "1.7")
+	field(HIGH, "1.9")            
 	field(PREC, "2") 
 }

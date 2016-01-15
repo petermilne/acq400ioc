@@ -25,7 +25,7 @@ record(ai, "${UUT}:SYS:${SITE}:VAP") {
 	field(LINR, "LINEAR")
 	field(EGU,  "V")
 	field(PINI, "YES")
-	field(FLNK,  "${UUT}:SYS:${SITE}:VAN")
+	field(FLNK,  "${UUT}:SYS:${SITE}:3V3P")
 	field(HOPR, "15")
 	field(LOPR, "0")
 	field(LOW,  "5")
@@ -33,46 +33,10 @@ record(ai, "${UUT}:SYS:${SITE}:VAP") {
 	field(PREC, "2")                
 }
 
-
-record(calc, "${UUT}:SYS:${SITE}:VAN") {
-#	field(INPA, "${UUT}:SYS:VAP")
-	field(INPB, "${UUT}:SYS:_van")
-	field(CALC, "6.6*B - 18.48")
-	field(PREC, "1")	
-	field(DESC, "Analog Rail Neg")
-	field(HOPR, "0")
-	field(LOPR, "-15")
-	field(LOW,  "-7")
-	field(HIGH, "-5")
-	field(FLNK, "${UUT}:SYS:${SITE}:5VP")
-}
-
-
-record(ai, "${UUT}:SYS:${SITE}:5VP") {
-	field(DTYP, "dsSysfsAi")   
-	field(INP, "@/dev/hwmon/${HMB}/in3")
-        
-	field(DESC, "Digital 5V Rail")       
-# 4.012/1000                                
-	field(ASLO, "0.004012")     
-	field(LINR, "LINEAR")           
-	field(EGU,  "V")         
-	field(PINI, "YES")   	
-	field(HOPR, "5")              
-	field(LOPR, "0")              
-	field(LOW,  "2.4")
-	field(HIGH, "2.6")            
-	field(PREC, "2")
-	field(FLNK,  "${UUT}:SYS:${SITE}:3V3P")  
-}
-
-
-
-
 record(ai, "${UUT}:SYS:${SITE}:3V3P") {
 	field(DTYP, "dsSysfsAi")   
-	field(INP, "@/dev/hwmon/${HMB}/in4")
-	field(DESC, "Digital 3.3V Rail")       
+	field(INP, "@/dev/hwmon/${HMB}/in3")
+	field(DESC, "Analogue 3.3V Rail")       
 # 2/1000                                
 	field(ASLO, "0.002")     
 	field(LINR, "LINEAR")           
@@ -81,7 +45,39 @@ record(ai, "${UUT}:SYS:${SITE}:3V3P") {
 	
 	field(HOPR, "5")              
 	field(LOPR, "0")              
-	field(LOW,  "2.4")
-	field(HIGH, "2.6")            
+	field(LOW,  "3.2")
+	field(HIGH, "3.4")            
 	field(PREC, "2") 
+	field(FLNK,  "${UUT}:SYS:${SITE}:VAN")  
+}
+
+record(calc, "${UUT}:SYS:${SITE}:VAN") {
+	field(INPA, "${UUT}:SYS:${SITE}:3V3P")
+	field(INPB, "${UUT}:SYS:${SITE}:_van")
+	field(CALC, "6.6*B - 5.6*A")
+	field(PREC, "1")	
+	field(DESC, "Analog Rail Neg")
+	field(HOPR, "0")
+	field(LOPR, "-15")
+	field(LOW,  "-7")
+	field(HIGH, "-5")
+	field(FLNK, "${UUT}:SYS:${SITE}:1V8P")
+}
+
+
+record(ai, "${UUT}:SYS:${SITE}:1V8P") {
+	field(DTYP, "dsSysfsAi")   
+	field(INP, "@/dev/hwmon/${HMB}/in4")
+        
+	field(DESC, "Digital 1.8V Rail")       
+# 2/1000                                
+	field(ASLO, "0.002")     
+	field(LINR, "LINEAR")           
+	field(EGU,  "V")         
+	field(PINI, "YES")   	
+	field(HOPR, "5")              
+	field(LOPR, "0")              
+	field(LOW,  "1.7")
+	field(HIGH, "1.9")            
+	field(PREC, "2")
 }

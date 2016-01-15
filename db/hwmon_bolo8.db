@@ -37,8 +37,8 @@ record(ai, "${UUT}:SYS:${SITE}:VAP") {
 
 
 record(calc, "${UUT}:SYS:${SITE}:VAN") {
-#	field(INPA, "${UUT}:SYS:VAP")
-	field(INPB, "${UUT}:SYS:_van")
+#	field(INPA, "${UUT}:SYS:${SITE}:VAP")
+	field(INPB, "${UUT}:SYS:${SITE}:_van")
 	field(CALC, "6.6*B - 18.48")
 	field(PREC, "1")	
 	field(DESC, "Analog Rail Neg")
@@ -60,21 +60,19 @@ record(ai, "${UUT}:SYS:${SITE}:5VP") {
 	field(LINR, "LINEAR")           
 	field(EGU,  "V")         
 	field(PINI, "YES")   	
-	field(HOPR, "5")              
+	field(HOPR, "15")              
 	field(LOPR, "0")              
-	field(LOW,  "2.4")
-	field(HIGH, "2.6")            
+	field(LOW,  "4.9")
+	field(HIGH, "5.1")            
 	field(PREC, "2")
-	field(FLNK,  "${UUT}:SYS:${SITE}:3V3P")  
+	field(FLNK,  "${UUT}:SYS:${SITE}:2V5P")  
 }
 
 
-
-
-record(ai, "${UUT}:SYS:${SITE}:3V3P") {
+record(ai, "${UUT}:SYS:${SITE}:2V5P") {
 	field(DTYP, "dsSysfsAi")   
 	field(INP, "@/dev/hwmon/${HMB}/in4")
-	field(DESC, "Digital 3.3V Rail")       
+	field(DESC, "Digital 2.5V Rail")       
 # 2/1000                                
 	field(ASLO, "0.002")     
 	field(LINR, "LINEAR")           
