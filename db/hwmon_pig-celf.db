@@ -1,0 +1,105 @@
+
+# hwmon_pig-celf.db
+# created by pj
+# assumes hwmon at site 2 0x28 is hwmon/3
+# and	hwmon at site 2 0x29 is hwmon/4
+# so need to check this
+
+record(ai, "${UUT}:SYS:${SITE}:_van") {
+	field(DTYP, "dsSysfsAi")
+	field(INP, "@/dev/hwmon/4/in1") 
+	field(SCAN, "5 second")     
+	field(DESC, "raw result")
+# scale only
+	field(ASLO, ".001")
+	field(LINR, "LINEAR")
+	field(EGU,  "V")
+	field(PINI, "YES")
+	field(FLNK,  "${UUT}:SYS:${SITE}:VAP")
+	field(PREC, "2") 
+}
+
+record(ai, "${UUT}:SYS:${SITE}:VAP") {
+	field(DTYP, "dsSysfsAi")
+	field(INP, "@/dev/hwmon/4/in2")        
+	field(DESC, "Analog Rail Pos")
+# 11/1000        
+	field(ASLO, "0.011")
+	field(LINR, "LINEAR")
+	field(EGU,  "V")
+	field(PINI, "YES")
+	field(FLNK,  "${UUT}:SYS:${SITE}:3V3P")
+	field(HOPR, "15")
+	field(LOPR, "0")
+	field(LOW,  "5")
+	field(HIGH, "7") 
+	field(PREC, "2")                
+}
+
+record(ai, "${UUT}:SYS:${SITE}:9VP_AUX") {
+	field(DTYP, "dsSysfsAi")   
+	field(INP, "@/dev/hwmon/4/in3")
+	field(DESC, "Auxiliary 9V Rail")       
+# 11/1000                                
+	field(ASLO, "0.011")     
+	field(LINR, "LINEAR")           
+	field(EGU,  "V")         
+	field(PINI, "YES")   
+	
+	field(HOPR, "15")              
+	field(LOPR, "0")              
+	field(LOW,  "8")
+	field(HIGH, "10")            
+	field(PREC, "2") 
+	field(FLNK,  "${UUT}:SYS:${SITE}:VAN")  
+}
+
+record(calc, "${UUT}:SYS:${SITE}:VAN") {
+#	field(INPA, "${UUT}:SYS:${SITE}:3V3P")
+	field(INPB, "${UUT}:SYS:${SITE}:_van")
+	field(CALC, "6.6*B - 18.48")
+	field(PREC, "1")	
+	field(DESC, "Analog Rail Neg")
+	field(HOPR, "0")
+	field(LOPR, "-15")
+	field(LOW,  "-7")
+	field(HIGH, "-5")
+	field(FLNK, "${UUT}:SYS:${SITE}:5VP_AUX")
+}
+
+
+record(ai, "${UUT}:SYS:${SITE}:5VP_AUX") {
+	field(DTYP, "dsSysfsAi")   
+	field(INP, "@/dev/hwmon/3/in3")
+        
+	field(DESC, "Auxiliary 5V Raill")       
+# 3/1000                                
+	field(ASLO, "0.003")     
+	field(LINR, "LINEAR")           
+	field(EGU,  "V")         
+	field(PINI, "YES")   	
+	field(HOPR, "15")              
+	field(LOPR, "0")              
+	field(LOW,  "4.9")
+	field(HIGH, "5.1")            
+	field(PREC, "2")
+	field(FLNK, "${UUT}:SYS:${SITE}:VADJ")
+}
+
+
+record(ai, "${UUT}:SYS:${SITE}:VADJ") {
+	field(DTYP, "dsSysfsAi")   
+	field(INP, "@/dev/hwmon/3/in4")
+        
+	field(DESC, "Digital VADJ Raill")       
+# 2/1000                                
+	field(ASLO, "0.002")     
+	field(LINR, "LINEAR")           
+	field(EGU,  "V")         
+	field(PINI, "YES")   	
+	field(HOPR, "5")              
+	field(LOPR, "0")              
+	field(LOW,  "1.7")
+	field(HIGH, "3.4")            
+	field(PREC, "2")
+}
