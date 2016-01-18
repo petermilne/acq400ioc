@@ -278,7 +278,6 @@ load_400() {
 	esac
 	
 	if [ "$is_adc" != "no" ]; then
-		let hmb=$site+1
 		aprams="UUT=${HOST},SITE=${site},CHG=${has_ch_gains}"
 		echo 'dbLoadRecords("db/adc-'${is_adc}'.db","'$aprams'")'						
 		echo >>/tmp/st_post.cmd "seq calmon \"uut=${HOST},site=${site}\"" 	
@@ -286,6 +285,7 @@ load_400() {
 	
 	hwmondb=db/hwmon_${name}.db
 	if [ -e ${hwmondb} ]; then
+		let hmb=$site+1
 		echo 'dbLoadRecords("'${hwmondb}'","'${cprams},HMB=${hmb}'")'
 	fi
 
