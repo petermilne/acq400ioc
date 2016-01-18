@@ -27,6 +27,8 @@ fi
 
 source ./scripts/record_support.sh
 source ./scripts/mtype.sh
+source /tmp/u-boot_env
+MB_MODEL=$(basename ${devicetree_image%*.dtb})
 
 FIRST_AI_WF_RECORDS=1
 
@@ -285,7 +287,11 @@ load_400() {
 	
 	hwmondb=db/hwmon_${name}.db
 	if [ -e ${hwmondb} ]; then
-		let hmb=$site+1
+		let hmb=$site
+		case $MB_MODEL in
+		kmcu)
+			let hmb=$hmb+1;;
+		esac		
 		echo 'dbLoadRecords("'${hwmondb}'","'${cprams},HMB=${hmb}'")'
 	fi
 
@@ -446,7 +452,7 @@ load_mb_sites() {
 		done
 	)
 
-	case $mb_model in
+	case $MB_MODEL in
 		kmcu)
 			;;
 		*)
@@ -474,7 +480,7 @@ toLower() {
 
 load_mb_sync() {
 	KB=$1 
-	mb_model=$2
+	
 # and acq2006 R2 with HDMI
 	CPRAMS="UUT=${HOST},SITE=0,SPORT=S0"
 	for FUN in SYNC TRG CLK
@@ -485,12 +491,12 @@ load_mb_sync() {
 		
 		case $FUN in
 		CLK)	nobt=2; onst="HDMI"; 	twst="HDMI";		
-                        case $mb_model in
-                        acq2106|acq2106sfp)
-				thst="COMM_A";;
-			*)
-				thst="nc";;
-			esac;;
+                case $MB_MODEL in
+                acq2106|acq2106sfp)
+						thst="COMM_A";;
+				*)
+						thst="nc";;
+				esac;;
 		TRG)	nobt=2; onst="HDMI";    twst="HDMI_GPIO";  	thst="GPG0";;
 		SYNC)	nobt=1; onst="HDMI"; 	twst="nc";		thst="nc";;
 		esac
@@ -498,21 +504,20 @@ load_mb_sync() {
 		
 		# d1
 		case $FUN in
-		TRG) 	
-			case $mb_model in
-			acq2106|acq2106sfp)					
-				nobt=2; zrst="STRIG"; onst="HOSTA"; twst="HOSTB"; 	thst="GPG1";;
-			*)
-				nobt=2; zrst="STRIG"; onst="HDMI";  twst="HDMI_GPIO"; thst="GPG1";;
-			esac;;				
+		TRG)	case $MB_MODEL in
+				acq2106|acq2106sfp)					
+					nobt=2; zrst="STRIG"; onst="HOSTA"; twst="HOSTB"; 	thst="GPG1";;
+				*)
+					nobt=2; zrst="STRIG"; onst="HDMI";  twst="HDMI_GPIO"; thst="GPG1";;
+				esac;;				
 		SYNC) 	nobt=1; zrst="EXT";   onst="HDMI";  twst="nc"; thst="nc";;
 		CLK)	nobt=2; onst="HDMI"; 	twst="HDMI";
-			case $mb_model in
-			acq2106|acq2106sfp)
-				thst="COMM_B";;
-			*)
-				thst="nc";
-			esac;;
+				case $MB_MODEL in
+				acq2106|acq2106sfp)
+					thst="COMM_B";;
+				*)
+					thst="nc";
+				esac;;
 		*) 	nobt=1; zrst="MCLK";  onst="HDMI";  twst="nc"; thst="nc";;
 		esac
 		echo 'dbLoadRecords("db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=1,ZRST=${zrst},ONST=${onst},TWST=${twst},THST=${thst},NOBT=${nobt}'")'
@@ -556,7 +561,7 @@ load_mb_sync() {
 	ACQ43X_SET_SAMPLE_RATE=${ACQ43X_SET_SAMPLE_RATE:-1}
 	
 	if [ $HAS_ACQ43X -ne 0 ] && [ $ACQ43X_SET_SAMPLE_RATE -ge 0 ]; then
-			case $mb_model in
+			case $MB_MODEL in
 			acq2106|acq2106sfp)
 				;;
 			*)
@@ -595,9 +600,8 @@ KB=/dev/acq400.0.knobs
 
 load_mb() {
 	echo 1>&2 "load.records:load_mb"
-	source /tmp/u-boot_env
-	mb_model=$(basename ${devicetree_image%*.dtb})
-	case $mb_model in
+	
+	case $MB_MODEL in
 		acq2106|acq2106sfp)
 				ns=6; mt=acq2106;;
 		acq2006|acq2006b)
@@ -615,7 +619,7 @@ load_mb() {
 	if [ -e $KB ]; then
 		load_mb_sites $KB $ns $mt
 		if [ -e /dev/acq400.0.knobs/sync_out_clk ]; then
-			load_mb_sync $KB $mb_model
+			load_mb_sync $KB
 		fi
 		make_AI_subrate
 	fi
@@ -679,8 +683,7 @@ if [ -e "/tmp/st_post.cmd" ]; then
 	cat /tmp/st_post.cmd
 fi
 
-mb_model=$(basename ${devicetree_image%*.dtb})
-case $mb_model in
+case $MB_MODEL in
 acq2006)	clk=XCLK;;
 acq1001)
 		if [ $(cat /dev/gpio/BV2) -eq 0 ]; then
@@ -697,7 +700,7 @@ if [ "x$IOC_POSTINIT" != "x" ]; then
 		source $IOC_POSTINIT
 	fi
 else
-	case $mb_model in
+	case $MB_MODEL in
 	acq2106|acq2106sfp)
 		;;
 	*)
