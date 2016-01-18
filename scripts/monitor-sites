@@ -1,6 +1,6 @@
 #!/bin/sh
 
-for pv in $(grep 'SYS:[12]:[^_]' /tmp/records.dbl|sort)
+for pv in $(grep 'SYS:[1-6]:[^_]' /tmp/records.dbl|sort)
 do
 	caget $pv
 done
