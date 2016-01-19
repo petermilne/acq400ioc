@@ -212,7 +212,12 @@ HAS_ACQ43X=0
 load_400() {
 	site=$1
 	
-	echo 1>&2 "load.records:load_400 $site"
+	if [ $site -ge 1 ] && [ $site -le 6 ]; then 
+		echo 1>&2 "load.records:load_400 $site"
+	else
+		echo 1>&2 "load.records:error site:$site"
+		exit 1	
+	fi
 	# since driver B2.457, module_type printed in hex
 	model=$(cat /dev/acq400.${site}.knobs/module_type)
 	name=$(nameFromMT $model)
@@ -248,11 +253,6 @@ load_400() {
 		if [ "x${site}" = "x1" ]; then
 			HAS_ACQ43X=1
 			echo 1>&2 "HAS_ACQ43X Detected: $HAS_ACQ43X"
-			#ACQ435 .. nb HIRES makes it /2
-			mprams="UUT=${HOST},SITE=${site},SPORT=S1M"
-			echo 'dbLoadRecords("db/acq430fmc.db","'${mprams},LO=$LO'")'
-			echo 'dbLoadRecords("db/acq43x_rgm.db","'${mprams}'")'
-			
 		fi
 		if [ $model = 6	]; then
 				gain_file_pfx="db/gain125_10"		
@@ -296,11 +296,20 @@ load_400() {
 	fi
 
 	echo 'dbLoadRecords("db/acq420fmc.db","'${cprams},'LO='${LO}',MAXHZ='${maxhz}'")'
-		
+
+	if [ ${site} -eq 1 ] && [ $HAS_ACQ43X -eq 1 ]; then
+		# MUST  be AFTER acq420fmc.d to hook the right DT0			
+		echo 1>&2 "HAS_ACQ43X Detected: $HAS_ACQ43X"
+		#ACQ435 .. nb HIRES makes it /2
+		mprams="UUT=${HOST},SITE=${site},SPORT=S1M"
+		echo 'dbLoadRecords("db/acq430fmc.db","'${mprams},LO=$LO'")'
+		echo 'dbLoadRecords("db/acq43x_rgm.db","'${mprams}'")'			
+	fi	
+				
 	HPRAMS="${cprams},size=$HSIZE,type=LONG,fname=HG.${site}"
 	echo 'dbLoadRecords("db/hgAcqHost.db","'${HPRAMS}'")'
 	
-	make_AI $site
+	[ "$is_adc" != "no" ] && make_AI $site
 
 	CTPR="${cprams},CTRMAX=$CTR28,DT=1,DTC=1"
 	echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=clk_count,pname=clk_count'")'
