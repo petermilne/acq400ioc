@@ -403,11 +403,7 @@ load_mb_base() {
 		PRAMS="$CPRAMS,pname=/dev/hwmon/${SITE}/temp,scale=0.001,offset=0"
 		echo 'dbLoadRecords("db/hwmontemp.db","'${PRAMS}'")'
 	done
-	for SITE in $(seq 1 $ns)
-	do
-		CPRAMS="UUT=${HOST},site=${SITE}"
-		echo 'dbLoadRecords("db/acq2006sites.db","'${CPRAMS}'")'
-	done
+
 	echo 'dbLoadRecords("db/hwmonvolts_common.db","UUT='${HOST}'")'
 	case $mt in
 	acq2106)			
@@ -420,9 +416,21 @@ load_mb_base() {
 			echo 'dbLoadRecords("db/hwmonvolts.db","UUT='${HOST}'")';;
 	esac
 	case $mt in
-	acq2106|acq2006|acq2006b)	
+	acq2106|acq2006|acq2006b)
+		for site in $(seq 1 $ns)
+		do
+			cprams="UUT=${HOST},site=${site}"
+			echo 'dbLoadRecords("db/acq2006sites.db","'${cprams}'")'
+		done
 		echo 'dbLoadRecords("db/acq2006leds.db","UUT='${HOST}'")' ;;
 	acq1001|acq1002)
+		for site in $(seq 1 $ns)
+		do
+			# handles special case of v2f biscuit, no SITE LEDs.
+			cprams="UUT=${HOST},site=${site}"
+			[ -e /dev/gpio/LED/FMC${site}_G ] && \
+				echo 'dbLoadRecords("db/acq2006sites.db","'${cprams}'")'
+		done
 		echo 'dbLoadRecords("db/acq1001leds.db","UUT='${HOST}'")' ;;
 	esac
 	
