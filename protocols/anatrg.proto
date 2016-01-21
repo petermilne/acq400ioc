@@ -20,5 +20,5 @@ getAnaTrgSrc {
 }
 
 setDelTrg {
-	out "anatrg_\$2 %d";
+	out "anatrg_\$1 %d";
 }
