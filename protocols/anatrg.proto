@@ -18,3 +18,7 @@ getAnaTrgSrc {
 	out "atd_triggered";
 	in "%x";
 }
+
+setDelTrg {
+	out "anatrg_\$2 %d";
+}

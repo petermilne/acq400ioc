@@ -1,0 +1,34 @@
+record(mbbo, "${UUT}:${SITE}:DELTRG:${CH}:EDGE") {
+	field(DTYP, "Soft Channel")
+	field(NOBT, "2")
+	field(ZRST, "OFF")
+	field(ONST, "RISING")
+	field(TWST, "FALLING")
+	field(THST, "OFF")
+	field(FLNK, "${UUT}:${SITE}:DELTRG:${CH}:_calc")		
+}
+
+record(ao, "${UUT}:${SITE}:DELTRG:${CH}:THRSH") {
+	field(DTYP, "Soft Channel")
+	field(DRVH, "10")
+	field(DRVL, "0")
+	field(EGU,  "V")
+	field(EGUF, "10")
+	field(EGUL, "0")
+	field(ESLO, "3276"
+	field(ASLO, "1")
+	field(FLNK, "${UUT}:${SITE}:DELTRG:${CH}:_calc")	
+}
+
+record(calc, "${UUT}:${SITE}:DELTRG:${CH}:_calc")
+	field(INPA, "${UUT}:${SITE}:DELTRG:${CH}:EDGE")
+	field(INPB, "${UUT}:${SITE}:DELTRG:${CH}:THRSH")
+	field(INPC, "65536")
+	field(CALC, "A==1? B*C: A==2? -B*C: 0")
+	field(FLNK, "${UUT}:${SITE}:DELTRG:${CH}:_w")
+}
+
+record (longout, "${UUT}:${SITE}:DELTRG:${CH}:_w")
+	field(DTYP, "stream")
+	field(OUT,  "@anatrg.proto setDelTrg(${CH}) ${SPORT}")
+}	
