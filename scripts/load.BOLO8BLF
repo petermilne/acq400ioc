@@ -6,6 +6,10 @@ echo "#records added by load.BOLO8BLF $HOST $SITE"
 
 HS=$HOST:$SITE
 
+# not sure why this has become necessary. REMOVE ME
+mkdir -p /dev/acq400/data/$SITE
+
+
 # LEDS
 
 for led in /dev/bolo8/$SITE/LED?

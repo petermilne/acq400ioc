@@ -170,7 +170,7 @@ load_AO() {
 		cprams=$3
 		
 		case $mtype in
-		40)			
+		$MT_AO420)			
 			for ch in $(seq 1 4)
 			do
 				echo 'dbLoadRecords("db/ao420fmc.db","'${cprams},cid=$ch'")'
@@ -181,7 +181,7 @@ load_AO() {
 			echo 'dbLoadRecords("db/aoALL.db","'${cprams}'")'			
 			#echo 'dbLoadRecords("db/ao420fmc.db","'${cprams},cid=32'")'
 			;;
-		41)
+		$MT_AO424)
 			for ch in $(seq 1 32)
 			do
 				cid=$(printf "%02d" $ch)
@@ -212,15 +212,16 @@ HAS_ACQ43X=0
 load_400() {
 	site=$1
 	
-	if [ $site -ge 1 ] && [ $site -le 6 ]; then 
-		echo 1>&2 "load.records:load_400 $site"
-	else
+	if [ $site -lt 1 ] || [ $site -gt 6 ]; then 
 		echo 1>&2 "load.records:error site:$site"
 		exit 1	
 	fi
 	# since driver B2.457, module_type printed in hex
 	model=$(cat /dev/acq400.${site}.knobs/module_type)
 	name=$(nameFromMT $model)
+	
+	echo 1>&2 "load.records:load_400 site:$site model:$model name:$name"
+	
 	LO=100000000
 	maxhz=1000000	
 		
@@ -234,18 +235,18 @@ load_400() {
 	has_ch_gains=0
 	
 	case $model in
-	1|A1|4|5|A5)
+	$MT_ACQ420|$MT_ACQ420F|$MT_ACQ424|$MT_ACQ425|$MT_ACQ425F|$MT_BOLO8|$MT_BOLO8B)
 		is_adc="sar"
 		case $model in
-		1|A1|5|A5)
-			has_ch_gains=1;;
-		4)
+		$MT_ACQ424)
 			LO=66000000;;
+		*)
+			has_ch_gains=1;;						
 		esac;;	
-	2|3|6)
+	$MT_ACQ435|$MT_ACQ430|$MT_ACQ437)
 		is_adc="ds"
 		case $model in
-		6)
+		$MT_ACQ437)
 			has_ch_gains=1;;
 		esac
 		
@@ -258,7 +259,7 @@ load_400() {
 				gain_file_pfx="db/gain125_10"		
 		fi		
 		let LO=$LO/256;;
-	8)
+	$MT_ACQ480)
 		is_adc="sar"
 		# gains are digital.
 		maxhz=80000000		
@@ -270,16 +271,19 @@ load_400() {
 			echo 'dbLoadRecords("db/acq480fmc50R.db","'${mprams},CH=:${ch},RAW=_${ic}'")'
 		done
 		echo 'dbLoadRecords("db/acq480fmc50R.db","'${mprams},CH=,RAW='")';;		
-	40|41)
+	$MT_AO420|$MT_AO424)
 		load_AO $site $model $cprams		
 		let LO=66000000;;
 #	@@todo : different flavour of calmon for SAR ADC needed
-	67)
+	$MT_V2F)
 		./scripts/load.v2f $HOST $site
 		return;;
 	esac
 	
+	echo 1>&2 "is_adc $is_adc"
+	
 	if [ "$is_adc" != "no" ]; then
+		make_AI $site
 		aprams="UUT=${HOST},SITE=${site},CHG=${has_ch_gains}"
 		echo 'dbLoadRecords("db/adc-'${is_adc}'.db","'$aprams'")'						
 		echo >>/tmp/st_post.cmd "seq calmon \"uut=${HOST},site=${site}\"" 	
@@ -309,7 +313,7 @@ load_400() {
 	HPRAMS="${cprams},size=$HSIZE,type=LONG,fname=HG.${site}"
 	echo 'dbLoadRecords("db/hgAcqHost.db","'${HPRAMS}'")'
 	
-	[ "$is_adc" != "no" ] && make_AI $site
+	
 
 	CTPR="${cprams},CTRMAX=$CTR28,DT=1,DTC=1"
 	echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=clk_count,pname=clk_count'")'
