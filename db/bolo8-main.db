@@ -5,26 +5,32 @@
 #AIN4	Power	+2V5	I	Analogue input for +2V5 monitoring			=input_in_V*2
 
 
-record(ai, "${HS}:B8:SYS:N13VA") {
-        field(DTYP, "dsSysfsAi")
-        field(INP, "@/dev/hwmon/${SITE}/in1")
-        field(SCAN, "10 second")
-        field(DESC, "Bolo Negative Analog Rail")
-# RAW: 0..2500 mv
-# Output_N13VA [V] = (2.5 * Input [V]) - 18
-# val = raw * ESLO + EOFF 
-# val = raw * 2.5/1000 - 18
-	field(ASLO, "1")
-	field(ESLO, "0.0025")
-	field(EOFF, "-18")
-        field(LINR, "LINEAR")
-        field(EGU,  "V")
-        field(PINI, "YES")
-        field(FLNK,  "${HS}:B8:SYS:P13VA")
-        field(HOPR, "0")
-        field(LOPR, "-15")        
-        field(LOW,  "-14")
-        field(HIGH, "-12")           
+record(ai, "${HS}:B8:SYS:_n13va") {
+	field(DTYP, "dsSysfsAi")
+	field(INP, "@/dev/hwmon/${SITE}/in1") 
+	field(SCAN, "5 second")     
+	field(DESC, "raw result")
+# scale only
+	field(ASLO, ".001")
+	field(LINR, "LINEAR")
+	field(EGU,  "V")
+	field(PINI, "YES")
+	field(FLNK,  "${HS}:B8:SYS:N13VA")
+	field(PREC, "2") 
+}
+
+record(calc, "${HS}:B8:SYS:N13VA") {
+	field(INPA, "${HS}:B8:SYS:_n13va")
+	field(CALC, "6.6*A - 18.48")
+	field(PREC, "1")	
+	field(DESC, "Bolo Negative Analog Rail")
+	field(HOPR, "0")
+	field(LOPR, "-15")
+	field(LOW,  "-14")
+	field(HIGH, "-12")
+	field(FLNK, "${HS}:B8:SYS:P13VA")
+	field(EGU,  "V")
+	field(PINI, "YES")
 }
 
 record(ai, "${HS}:B8:SYS:P13VA") {
