@@ -60,11 +60,11 @@ record (bo, "${UUT}:MGT:SFP:${chan}:CLRSTATS") {
 	field(HIGH, "1")
 }
 
-record(calc, "${UUT}:${chan}:SIG:MGT:PUSH:BYTES:delta") {
+record(calc, "${UUT}:${chan}:SIG:MGT:PUSH:BYTES:COUNT") {
 # sizeof int
 	field(INPC, "4")
 }
-record(calc, "${UUT}:${chan}:SIG:MGT:PULL:BYTES:delta") {
+record(calc, "${UUT}:${chan}:SIG:MGT:PULL:BYTES:COUNT") {
 # sizeof int
 	field(INPC, "4")
 }
