@@ -31,7 +31,7 @@ record(ao, "${UUT}:${SITE}:DELTRG:${CH}:THRSH") {
 record(calc, "${UUT}:${SITE}:DELTRG:${CH}:calc") {
 	field(INPA, "${UUT}:${SITE}:DELTRG:${CH}:EDGE")
 	field(INPB, "${UUT}:${SITE}:DELTRG:${CH}:THRSH.RVAL")
-	field(INPC, "65536")
+	field(INPC, "1")
 	field(CALC, "A==1? B*C: A==2? -B*C: 0")
 	field(FLNK, "${UUT}:${SITE}:DELTRG:${CH}:w")
 }

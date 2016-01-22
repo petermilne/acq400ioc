@@ -298,9 +298,11 @@ load_400() {
 		esac		
 		echo 'dbLoadRecords("'${hwmondb}'","'${cprams},HMB=${hmb}'")'
 		if [ -e /dev/acq400.${site}.knobs/anatrg_01 ]; then
-			./scripts/load.anatrg ${site}
+			[ "x$ANATRG_LOADED" = "x" ] && source ./scripts/load.anatrg
+			make_anatrg ${site}
 		elif [ -e /dev/acq400.${site}.knobs/deltrg_01 ]; then
-			./scripts/load.deltrg ${site}
+			[ "x$DELTRG_LOADED" = "x" ] && source ./scripts/load.deltrg 
+			make_deltrg ${site}
 		fi
 	fi
 

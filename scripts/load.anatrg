@@ -19,4 +19,4 @@ make_anatrg() {
 }
 
 
-make_anatrg $1
+ANATRG_LOADED=1

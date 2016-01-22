@@ -19,4 +19,4 @@ make_deltrg() {
 }
 
 
-make_deltrg $1
+DELTRG_LOADED=1
