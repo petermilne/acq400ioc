@@ -297,6 +297,11 @@ load_400() {
 			let hmb=$hmb+1;;
 		esac		
 		echo 'dbLoadRecords("'${hwmondb}'","'${cprams},HMB=${hmb}'")'
+		if [ -e /dev/acq400.${site}.knobs/anatrg_01 ]; then
+			./scripts/load.anatrg ${site}
+		elif [ -e /dev/acq400.${site}.knobs/deltrg_01 ]; then
+			./scripts/load.deltrg ${site}
+		fi
 	fi
 
 	echo 'dbLoadRecords("db/acq420fmc.db","'${cprams},'LO='${LO}',MAXHZ='${maxhz}'")'

@@ -19,9 +19,4 @@ make_anatrg() {
 }
 
 
-for ACQ400 in /dev/acq400.[123456]
-do
-	if [ -e $ACQ400 ]; then
-		make_anatrg ${ACQ400##*.}
-	fi
-done
+make_anatrg $1

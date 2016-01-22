@@ -10,11 +10,11 @@ DDC:
 /mnt/local/sysconfig/epics.sh:
 export IOC_PREINIT=./scripts/load.ddc
 
-ATD : ANALOG THRESHOLD DETECT (TRIGGER)
-export IOC_PREINIT=./scripts/load.anatrg
+ATD : ANALOG THRESHOLD DETECT (TRIGGER) : automated
+#was export IOC_PREINIT=./scripts/load.anatrg
 
-DTD : DELTA TRIGGER DETECT
-export IOC_PREINIT=./scripts/load.deltrg
+DTD : DELTA TRIGGER DETECT : automated
+#was export IOC_PREINIT=./scripts/load.deltrg
 
 # allow more than 80 "channels" per module eg for LIA
 export ACQ400IOC_IDX_GT32=1

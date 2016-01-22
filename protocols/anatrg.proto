@@ -20,5 +20,9 @@ getAnaTrgSrc {
 }
 
 setDelTrg {
-	out "anatrg_\$1 %d";
+	out "deltrg_\$1 %d";
+}
+
+setDelZN {
+	out "dtd_ZN %d";
 }

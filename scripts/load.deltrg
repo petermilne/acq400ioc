@@ -1,6 +1,6 @@
-make_anatrg() {
+make_deltrg() {
 	site=$1
-	echo "# make_anatrg site=$site"
+	echo "# make_deltrg site=$site"
 
 
 	let nchan=$(cat /etc/acq400/$site/NCHAN)
@@ -19,9 +19,4 @@ make_anatrg() {
 }
 
 
-for ACQ400 in /dev/acq400.[123456]
-do
-	if [ -e $ACQ400 ]; then
-		make_anatrg ${ACQ400##*.}
-	fi
-done
+make_deltrg $1
