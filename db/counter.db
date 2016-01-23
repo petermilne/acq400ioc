@@ -29,7 +29,7 @@ record(calc, "${UUT}:${SITE}:SIG:${lname}:rawc64") {
 	field(INPB, "${UUT}:${SITE}:SIG:${lname}:rawc64.LA")
 	field(INPC, "${CTRMAX}")
 	field(INPD, "${UUT}:${SITE}:SIG:${lname}:ACTIVE")
-	field(CALC, "A*B*D!=0?A>B?VAL+(A-B):VAL+(A+C-B):VAL")
+	field(CALC, "VAL + (A*B*D!=0?A>B?(A-B):(A+C-B):0)")
 #                    01234567890012345678900123456789001234567890	
 	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:COUNT")
 	field(DESC, "64 bit count corrects HW rollover")
