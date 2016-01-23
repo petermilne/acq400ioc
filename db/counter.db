@@ -1,3 +1,8 @@
+record(bo, "${UUT}:${SITE}:SIG:${lname}:RESET") {
+	field(DTYP, "Soft Channel")
+	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:rawc64")
+}
+
 record(longin, "${UUT}:${SITE}:SIG:${lname}:rawcount") {
 	field(SCAN, "${DT} second")
 	field(DTYP, "longinAcqHost")
@@ -6,6 +11,7 @@ record(longin, "${UUT}:${SITE}:SIG:${lname}:rawcount") {
 	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:ACTIVE")
 	field(PRIO, "HIGH")
 }
+
 
 record(calc, "${UUT}:${SITE}:SIG:${lname}:ACTIVE") {
 	field(INPA, "${UUT}:${SITE}:SIG:${lname}:rawcount")
@@ -16,6 +22,7 @@ record(calc, "${UUT}:${SITE}:SIG:${lname}:ACTIVE") {
 	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:nzcount")
 	field(DESC, "True is signal changed from last")
 }
+
 
 record(calcout, "${UUT}:${SITE}:SIG:${lname}:nzcount") {
 	field(INPA, "${UUT}:${SITE}:SIG:${lname}:ACTIVE")
@@ -29,7 +36,8 @@ record(calc, "${UUT}:${SITE}:SIG:${lname}:rawc64") {
 	field(INPB, "${UUT}:${SITE}:SIG:${lname}:rawc64.LA")
 	field(INPC, "${CTRMAX}")
 	field(INPD, "${UUT}:${SITE}:SIG:${lname}:ACTIVE")
-	field(CALC, "VAL + (A*B*D!=0?A>B?(A-B):(A+C-B):0)")
+	field(INPE, "${UUT}:${SITE}:SIG:${lname}:RESET")
+	field(CALC, "E? 0: VAL + (A*B*D!=0?A>B?(A-B):(A+C-B):0)")
 #                    01234567890012345678900123456789001234567890	
 	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:COUNT")
 	field(DESC, "64 bit count corrects HW rollover")
