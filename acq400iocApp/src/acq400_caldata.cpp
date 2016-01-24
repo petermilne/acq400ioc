@@ -37,13 +37,14 @@ using namespace tinyxml2;
 
 #define RETNULL do { printf("ERROR %d\n", __LINE__); return 0; } while(0)
 
-void* acq400_openDoc(const char* docfile, int* nchan)
-{
 #define RETERRNULL(node2, node1, key) \
 	if (((node2) = (node1)->FirstChildElement(key)) == 0){\
 		printf("acq400_openDoc() ERROR:%d\n", __LINE__); \
 		return 0;\
 	}
+
+void* acq400_openDoc(const char* docfile, int* nchan)
+{
 	printf("acq400_openDoc(%s)\n", docfile);
 
 
@@ -114,10 +115,8 @@ int acq400_getChannel(void *prv, int ch, const char* sw, float* eslo, float* eof
 	RETERRNULL(node, node, "Data");
 	for (XMLNode *range = node->FirstChildElement("Range"); range;
 			range = range->NextSibling()){
-		if (!range) RETNULL;
 		const char* findkey = range->ToElement()->Attribute("sw");
-		if (!sw) RETNULL;
-		if (strcmp(sw, findkey) == 0){
+		if (sw == 0 || findkey == 0 || strcmp(sw, findkey) == 0){
 			return _acq400_getChannel(range, ch, eslo, eoff, nocal);
 		}
 	}
