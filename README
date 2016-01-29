@@ -21,3 +21,6 @@ export ACQ400IOC_IDX_GT32=1
 
 # stop this seq running
 export ACQ43X_SET_SAMPLE_RATE=-1
+
+# set a default sample rate
+export ACQ43X_SET_SAMPLE_RATE=10000
