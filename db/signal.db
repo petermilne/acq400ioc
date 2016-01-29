@@ -105,6 +105,6 @@ record(calcout, "${UUT}:${SITE}:_${FN}") {
 	field(DTYP, "stream")
 # refuse to update in the RUN state	
 	field(SDIS, "${UUT}:${SITE}:RUN")
-	field(DISV, "1")
+	field(DISV, "${DISV}")
 	field(OUT,  "@signal.proto setSig(${FN}) ${SPORT}")
 }
