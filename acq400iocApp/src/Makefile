@@ -56,6 +56,8 @@ acq400ioc_SRCS += acq43x_setSampleRate.st
 acq400ioc_SRCS += onSetTransient.st
 acq400ioc_SRCS += mgtStopOnLinkDown.st
 acq400ioc_SRCS += calmon.st
+acq400ioc_SRCS += calmon42x.st
+acq400ioc_SRCS += calmon480.st
 
 # Build the main IOC entry point on workstation OSs.
 acq400ioc_SRCS_DEFAULT += acq400iocMain.cpp \

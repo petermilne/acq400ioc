@@ -7,13 +7,8 @@
 // acq1001_064:1:AI:TW:01:V
 // acq1001_064:1:AI:WF:01:V
 
-program calmon
+program calmon42x
 option +r;
-
-// nb : always site 1. That's a consequence of Master/Slave
-int hi_res_mode; assign hi_res_mode to "{uut}:1:ADC_MODE";
-monitor hi_res_mode;
-int hi_res_mode0;
 
 int adc_cal_mode; assign adc_cal_mode to "{uut}:1:ADC_CAL";
 monitor adc_cal_mode;
@@ -45,15 +40,11 @@ char pvfield[100];
 %%extern int acq400_getChannel(void *prv, int ch, const char* sw, float* eslo, float* eoff, int nocal);
 
 %{
-static char* getKey(int hrm, int gain) 
+static char* getKey(int gain) 
 { 
 	static char key[8];
 	
-	if (hrm >= 0){
-		snprintf(key, 8, "%d,%d", hrm, gain);
-	}else{
-		snprintf(key, 8, "%d", gain);
-	}
+	snprintf(key, 8, "%d,%d", 0, gain);
 	
 	return key; 
 }
@@ -62,8 +53,7 @@ static char* getKey(int hrm, int gain)
 ss calmon {
 	state init {
 		when() {
-			printf("calmon R1000 site:%s\n", site);
-			pvGet(hi_res_mode);  hi_res_mode0 = hi_res_mode;
+			printf("calmon R1000 site:%s\n", site);			
 			pvGet(adc_cal_mode); adc_cal_mode0 = adc_cal_mode;
 			pvGet(has_ch_gains);
 			uut = macValueGet("uut"); 
@@ -118,7 +108,7 @@ ss calmon {
 					if (has_ch_gains){
 						pvGet(gains[ch]);
 					}		
-					if (acq400_getChannel(doc, ch, getKey(hi_res_mode, gains[ch]), 
+					if (acq400_getChannel(doc, ch, getKey(gains[ch]), 
 								&eslo[ch], &eoff[ch], adc_cal_mode==1) == 1){
 						if (ch==1){
 							printf("site:%s ch:%2d eslo:%.6e eoff:%.6e\n", 
@@ -142,11 +132,7 @@ ss calmon {
 	}
 	
 	state wait_change {
-		when(hi_res_mode != hi_res_mode0 || adc_cal_mode != adc_cal_mode0 || gain_changes != gain_changes0){
-			if (hi_res_mode != hi_res_mode0){		
-				printf("change detected hi_res_mode=>%d\n", hi_res_mode);
-				hi_res_mode0 = hi_res_mode;				
-			}
+		when(adc_cal_mode != adc_cal_mode0 || gain_changes != gain_changes0){
 			if (adc_cal_mode != adc_cal_mode0){
 				printf("cal mode changed=>%d\n", adc_cal_mode);
 				adc_cal_mode0 = adc_cal_mode;

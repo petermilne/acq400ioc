@@ -224,10 +224,12 @@ load_400() {
 	
 	is_adc="no"
 	has_ch_gains=0
+	calmon="calmon"
 	
 	case $model in
 	$MT_ACQ420|$MT_ACQ420F|$MT_ACQ424|$MT_ACQ425|$MT_ACQ425F|$MT_BOLO8|$MT_BOLO8B)
 		is_adc="sar"
+		calmon=calmon42x
 		case $model in
 		$MT_ACQ424)
 			LO=66000000;;
@@ -253,7 +255,8 @@ load_400() {
 	$MT_ACQ480)
 		is_adc="sar"
 		# gains are digital.
-		maxhz=80000000		
+		maxhz=80000000
+		calmon=calmon480
 		create_asyn_channel S${site}_480 127.0.0.1:422${site}
 		mprams="UUT=${HOST},SITE=${site},SPORT=S${site}_480"
 		for ic in $(seq 1 8); do
@@ -277,7 +280,7 @@ load_400() {
 		make_AI $site
 		aprams="UUT=${HOST},SITE=${site},CHG=${has_ch_gains}"
 		echo 'dbLoadRecords("db/adc-'${is_adc}'.db","'$aprams'")'						
-		echo >>/tmp/st_post.cmd "seq calmon \"uut=${HOST},site=${site}\"" 	
+		echo >>/tmp/st_post.cmd "seq ${calmon} \"uut=${HOST},site=${site}\"" 	
 	fi
 	
 	hwmondb=db/hwmon_${name}.db
