@@ -28,14 +28,14 @@ getAuroraErr {
 
 getAggregator {
 	out "aggregator";
-	in "%x";
+	in "reg=%x";
 }
 
 getAggregatorSites {
 	out "aggregator";
-	in "0x%*x %s %*s";		
+	in "reg=0x%*x %s %*s";		
 }
 
 getAggregatorEn {
-	in "0x%*x %*s %{off|on}";
+	in "reg=0x%*x %*s %{off|on}";
 }
