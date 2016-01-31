@@ -46,7 +46,7 @@ char pvfield[100];
 #include <math.h>
 float gainFromDb(int db)
 {
-	return 20 * log10(db);
+	return pow(10.0, (double)db/20);
 }
 }%
 
@@ -110,12 +110,13 @@ ss calmon {
 					}		
 					if (acq400_getChannel(doc, ch, 0, 
 								&eslo[ch], &eoff[ch], adc_cal_mode==1) == 1){
-						eslo[ch] *= gainFromDb(gains[ch]);
+						
 												
-						if (ch==1){
-							printf("site:%s ch:%2d eslo:%.6e eoff:%.6e\n", 
-										site, ch, eslo[ch], eoff[ch]);
+						if (ch==1 || ch==5){
+							printf("site:%s ch:%2d eslo:%.6e=>%.6e eoff:%.6e\n", 
+										site, ch, eslo[ch], eslo[ch]*gainFromDb(gains[ch]), eoff[ch]);
 						}
+						eslo[ch] *= gainFromDb(gains[ch]);
 						pvPut(eslo[ch]);
                                                 pvPut(eoff[ch]);
                                                 

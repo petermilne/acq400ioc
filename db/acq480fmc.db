@@ -27,8 +27,13 @@ record(mbbo, "${UUT}:${SITE}:ACQ480:GAIN:${CH}") {
 	field(TEST, "10 dB")
 	field(ELST, "11 dB")
 	field(TVST, "12 dB")
+	field(FLNK, "${UUT}:${SITE}:GAIN_CHANGES")
 }
 
+record (calc, "${UUT}:${SITE}:GAIN_CHANGES") {
+	field(INPA, "${UUT}:${SITE}:GAIN_CHANGES")
+	field(CALC, "A+1")
+}
 
 record(mbbo, "${UUT}:${SITE}:ACQ480:HPF:${CH}") {
 	field(DTYP, "stream")
