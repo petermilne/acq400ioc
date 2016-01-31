@@ -24,9 +24,8 @@ if [ -e /dev/acq400.12.knobs ]; then
 fi
 
 
-
-source ./scripts/record_support.sh
 source ./scripts/mtype.sh
+source ./scripts/record_support.sh
 source /tmp/u-boot_env
 MB_MODEL=$(basename ${devicetree_image%*.dtb})
 
@@ -40,14 +39,12 @@ make_AI() {
 	if [ -e /etc/acq400/$site/data32 ]; then
 		if [ $(cat /etc/acq400/$site/data32) -eq 1 ]; then
 			type=LONG
-			maxcode=2147483648
-			eslo=1.19209289551e-06
+			maxcode=32768			
 		fi
-	else
-		echo # 
 	fi
 	nchan=$(get_nchan $site)
 	vmax=$(get_range $site)
+	eslo=$(echo $vmax $maxcode | awk '{ print $1/$2 }')
 
 	let ch=0; while [ $ch -lt $nchan ]; do
 		let ch=$ch+1
@@ -105,16 +102,17 @@ make_AI_TR_records() {
 	let i2=$i1+$3
 	let ch=1
 	let size=$4
-	vmax=$(get_range $site)
+	
 	if [ $(cat /etc/acq400/$site/data32) -eq 1 ]; then
-			maxcode=2147483648
-			eslo=1.19209289551e-06
+			maxcode=8388608			
 			TYPE=LONG
 	else
 			maxcode=32768
-			TYPE=SHORT
-			eslo=0.00030517578125
-	fi	
+			TYPE=SHORT			
+	fi
+	vmax=$(get_range $site)	
+	eslo=$(echo $vmax $maxcode | awk '{ print $1/$2 }')
+		
 	for ix in $(seq $i1 $i2)
 	do
 		cid=$(printf "%02d" $ch)
@@ -313,8 +311,6 @@ load_400() {
 	HPRAMS="${cprams},size=$HSIZE,type=LONG,fname=HG.${site}"
 	echo 'dbLoadRecords("db/hgAcqHost.db","'${HPRAMS}'")'
 	
-	
-
 	CTPR="${cprams},CTRMAX=$CTR28,DT=1,DTC=1"
 	echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=clk_count,pname=clk_count'")'
 	echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=sample_count,pname=sample_count'")'

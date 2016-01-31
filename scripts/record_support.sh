@@ -14,20 +14,20 @@ get_nchan() {
 }
 
 get_range() {
-	SITE=$1
-	if [ -e /etc/acq400/$SITE/PART_NUM ]; then
-	VSPEC=$(tr -s -- -\  \\n   </etc/acq400/$SITE/PART_NUM | grep V)
-	VR=${VSPEC%*V}
-	else
-	VSPEC=""
+	site=$1
+	if [ -e /etc/acq400/${site}/PART_NUM ]; then
+		VSPEC=$(tr -s -- -\  \\n   </etc/acq400/${site}/PART_NUM | grep V)
+		VR=${VSPEC%*V}
 	fi
-	model=$(cat /dev/acq400.${site}.knobs/module_type)
+	
 	if [ "x$VR" != "x" ]; then
 		echo $VR
 	else
+		model=$(cat /dev/acq400.${site}.knobs/module_type)
 		case $model in
-		4)	echo 10.24;;
-		*)	echo 10;;
+		$MT_ACQ424)	echo 10.24;;
+		$MT_ACQ480) echo 2.5;;
+		*)			echo 10;;
 		esac
 	fi
 }
