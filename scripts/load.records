@@ -141,7 +141,7 @@ make_AI_subrate() {
 	fi
 
 	eval $(cat /dev/acq400.0.knobs/aggregator)
-	OIFS=$IFS;  IFS=,
+	sites=$(echo $sites | tr , \  )
 	if [ "x$sites" != "x" ]; then
 		let i1=0
 		for site in $sites
@@ -154,7 +154,6 @@ make_AI_subrate() {
 			let i1=$i1+$nc
 	 	done
 	fi
-	IFS=$OIFS
 }
 
 
