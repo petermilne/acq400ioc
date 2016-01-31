@@ -6,6 +6,8 @@ record(bo, "${UUT}:${SITE}:ACQ480:INVERT:${CH}") {
 	field(OUT,  "@acq480.proto setInvert(${CH}) ${SPORT}")
 	field(ZNAM, "REG")
 	field(ONAM, "INV")
+	field(PINI, "YES")
+	field(VAL,  "0")
 }
 
 record(mbbo, "${UUT}:${SITE}:ACQ480:GAIN:${CH}") {
@@ -50,6 +52,8 @@ record(bo, "${UUT}:${SITE}:ACQ480:LFNS:${CH}") {
 	field(OUT,  "@acq480.proto setLFNS(${CH}) ${SPORT}")
 	field(ZNAM, "OFF")
 	field(ONAM, "ON")
+	field(PINI, "YES")
+	field(VAL,  "0")
 }
 
 record(mbbo, "${UUT}:${SITE}:ACQ480:FIR:${CH}") {
