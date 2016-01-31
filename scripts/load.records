@@ -130,28 +130,21 @@ make_AI_TR_records() {
 	FIRST_AI_TR_RECORDS=0	
 }
 
-make_AI_subrate() {	
-	for cc in $(cat /dev/acq400.0.knobs/aggregator)
-	do
-		echo $cc | grep -q sites=
-		if [ $? -eq 0 ]; then
-			eval $cc
-			if [ "$sites" != "none" ]; then
-				sites2=$(echo $sites | tr , \  )
-			fi
-		fi
-	done
-	
-	if [ -e /dev/acq400/data/.control ]; then
-		echo 1>&2 "load.records: control $(cat /dev/acq400/data/.control)"
-		source /dev/acq400/data/.control
+make_AI_subrate() {
+	kctrl=/dev/acq400/data/.control
+	if [ -e $kctrl ]; then
+		echo 1>&2 "load.records: control $(cat $kctrl)"
+		source $kctrl
 	else
 		NSAMPLES=4096
 		TYPE=short
 	fi
+
+	eval $(cat /dev/acq400.0.knobs/aggregator)
+	OIFS=$IFS;  IFS=,
 	if [ "x$sites" != "x" ]; then
 		let i1=0
-		for site in $sites2
+		for site in $sites
 		do
 			nc=$(get.site $site NCHAN)
 			make_AI_records $site $i1 $nc-1
@@ -161,6 +154,7 @@ make_AI_subrate() {
 			let i1=$i1+$nc
 	 	done
 	fi
+	IFS=$OIFS
 }
 
 
