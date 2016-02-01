@@ -35,12 +35,11 @@ make_AI() {
 	site=$1
 	type=SHORT
 	maxcode=32768
-	eslo=0.00030517578125
-	if [ -e /etc/acq400/$site/data32 ]; then
-		if [ $(cat /etc/acq400/$site/data32) -eq 1 ]; then
+	
+	if [ -e /etc/acq400/$site/data32 ] && 
+			[ $(cat /etc/acq400/$site/data32) -eq 1 ]; then
 			type=LONG
-			maxcode=32768			
-		fi
+			maxcode=2147483648
 	fi
 	nchan=$(get_nchan $site)
 	vmax=$(get_range $site)
@@ -104,7 +103,7 @@ make_AI_TR_records() {
 	let size=$4
 	
 	if [ $(cat /etc/acq400/$site/data32) -eq 1 ]; then
-			maxcode=8388608			
+			maxcode=2147483648		
 			TYPE=LONG
 	else
 			maxcode=32768
