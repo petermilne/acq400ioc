@@ -44,9 +44,10 @@ char pvfield[100];
 
 %{
 #include <math.h>
-float gainFromDb(int db)
+float voltsFromDb(int db)
 {
-	return pow(10.0, (double)db/20);
+	// higher gain, smaller volts
+	return pow(10.0, -(double)db/20);
 }
 }%
 
@@ -114,9 +115,9 @@ ss calmon {
 												
 						if (ch==1 || ch==5){
 							printf("site:%s ch:%2d eslo:%.6e=>%.6e eoff:%.6e\n", 
-										site, ch, eslo[ch], eslo[ch]*gainFromDb(gains[ch]), eoff[ch]);
+										site, ch, eslo[ch], eslo[ch]*voltsFromDb(gains[ch]), eoff[ch]);
 						}
-						eslo[ch] *= gainFromDb(gains[ch]);
+						eslo[ch] *= voltsFromDb(gains[ch]);
 						pvPut(eslo[ch]);
                                                 pvPut(eoff[ch]);
                                                 
