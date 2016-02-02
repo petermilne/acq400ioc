@@ -10,4 +10,5 @@ record(ao, "${HS}:B8:OFF:${CH}") {
         field(HOPR, "2.5")
         field(LOPR, "-2.5")
         field(EGU,  "V")
+	field(PINI, "YES")
 }
