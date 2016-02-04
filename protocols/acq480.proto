@@ -33,3 +33,8 @@ getT50R {
 	out "T50R\$1";
 	in "%d";
 }
+
+getJC {
+	out "JC_\$1";
+	in "%d";
+}

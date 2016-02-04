@@ -96,3 +96,14 @@ record(mbbo, "${UUT}:${SITE}:ACQ480:FIR:01") {
 	field(FLNK, "${UUT}:${SITE}:ACQ480:FIR:01:fanout")
 }
 
+record(bi, "${UUT}:${SITE}:ACQ480:JC:LOS") {
+	field(DTYP, "stream")
+	field(SCAN, "1 second")
+	field(INP,  "@acq480.proto getJC(LOS) ${SPORT}")
+	field(FLNK, "${UUT}:${SITE}:ACQ480:JC:LOL")
+}
+
+record(bi, "${UUT}:${SITE}:ACQ480:JC:LOL") {
+	field(DTYP, "stream")
+	field(INP,  "@acq480.proto getJC(LOL) ${SPORT}")
+}
