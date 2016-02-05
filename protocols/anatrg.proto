@@ -15,7 +15,7 @@ setAnaTrgAnd {
 }
 
 getAnaTrgSrc {
-	out "atd_triggered";
+	out "atd_triggered_display";
 	in "%x";
 }
 

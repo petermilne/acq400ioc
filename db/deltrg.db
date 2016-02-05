@@ -26,6 +26,7 @@ record(ao, "${UUT}:${SITE}:DELTRG:${CH}:THRSH") {
 	field(ESLO, "0.00030525")
 	field(ASLO, "1")
 	field(FLNK, "${UUT}:${SITE}:DELTRG:${CH}:calc")
+	field(PINI, "YES")
 }
 
 record(calc, "${UUT}:${SITE}:DELTRG:${CH}:calc") {
