@@ -107,3 +107,18 @@ record(bi, "${UUT}:${SITE}:ACQ480:JC:LOL") {
 	field(DTYP, "stream")
 	field(INP,  "@acq480.proto getJC(LOL) ${SPORT}")
 }
+
+record(mbbi, "${UUT}:${SITE}:ACQ480:TRAIN") {
+	field(DTYP, "stream")
+	field(INP,  "@acq480.proto getTrain ${SPORT}")
+	field(NOBT, "3")
+	field(ZRST, "ACQ480_RESET")
+	field(ONST, "ACQ480_START")
+	field(TWST, "ACQ480_DESKEW")
+	field(THST, "ACQ480_DESKEW_DONE")
+	field(FRST, "ACQ480_SYNC")
+	field(FVST, "ACQ480_SYNC_DONE")
+	field(SXST, "ACQ480_ACTIVATE")
+	field(SCAN, ".2 second")
+}
+

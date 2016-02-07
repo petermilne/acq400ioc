@@ -34,6 +34,11 @@ getT50R {
 	in "%d";
 }
 
+getTrain {
+	"out train"
+	in "%d";
+}
+
 getJC {
 	out "JC_\$1";
 	in "%d";
