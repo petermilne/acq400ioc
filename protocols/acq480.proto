@@ -35,7 +35,7 @@ getT50R {
 }
 
 getTrain {
-	"out train"
+	out "train";
 	in "%d";
 }
 

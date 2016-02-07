@@ -119,6 +119,8 @@ record(mbbi, "${UUT}:${SITE}:ACQ480:TRAIN") {
 	field(FRST, "ACQ480_SYNC")
 	field(FVST, "ACQ480_SYNC_DONE")
 	field(SXST, "ACQ480_ACTIVATE")
+	field(SVST, "ACQ480_FAIL")
+	field(SVSV, "MAJOR")
 	field(SCAN, ".2 second")
 }
 
