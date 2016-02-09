@@ -1,0 +1,9 @@
+Terminator = LF;
+ExtraInput = Ignore;
+
+
+#setDDS
+
+setDDS {
+	out "dds_phase_inc 0x%x";
+}

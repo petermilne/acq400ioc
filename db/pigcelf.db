@@ -1,0 +1,22 @@
+# pigcelf
+#DDS_PHASE_ANGLE = (Desired Frequency * 2^32) / DDS DAC Update Frequency) 
+# DAC CLK 20MHz
+
+record(longout, "${UUT}:2:SIG:DDS:FREQ") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "DDS Setpoint")
+	field(EGU,  "Hz")
+	field(LOPR, "100")
+	field(HOPR, "20000000")	
+	field(FLNK, "${UUT}:2:SIG:DDS:FREQ:set")
+}
+
+
+record(calcout, "${UUT}:0:SIG:CLK_MB:w") {
+	field(INPA, "${UUT}:2:SIG:DDS:FREQ")
+	field(INPB, "4294967296")
+	field(INPC, "20000000")
+	field(CALC, "A*B/C")
+	field(DTYP, "stream")
+	field(OUT,  "@pig.proto setDDS() ${SPORT}")
+}

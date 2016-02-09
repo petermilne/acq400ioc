@@ -226,7 +226,7 @@ load_400() {
 	calmon="calmon"
 	
 	case $model in
-	$MT_ACQ420|$MT_ACQ420F|$MT_ACQ424|$MT_ACQ425|$MT_ACQ425F|$MT_BOLO8|$MT_BOLO8B|$MT_PIG_CELF)
+	$MT_ACQ420|$MT_ACQ420F|$MT_ACQ424|$MT_ACQ425|$MT_ACQ425F|$MT_BOLO8|$MT_BOLO8B)
 		is_adc="sar"
 		calmon=calmon42x
 		case $model in
@@ -272,6 +272,10 @@ load_400() {
 	$MT_V2F)
 		./scripts/load.v2f $HOST $site
 		return;;
+	$MT_PIG_CELF)
+		is_adc="sar"
+		echo 'dbLoadRecords("db/pigcelf.db","'${cprams}'")'
+		calmon=none;;
 	esac
 	
 	echo 1>&2 "is_adc $is_adc"
@@ -279,8 +283,10 @@ load_400() {
 	if [ "$is_adc" != "no" ]; then
 		make_AI $site
 		aprams="UUT=${HOST},SITE=${site},CHG=${has_ch_gains}"
-		echo 'dbLoadRecords("db/adc-'${is_adc}'.db","'$aprams'")'						
-		echo >>/tmp/st_post.cmd "seq ${calmon} \"uut=${HOST},site=${site}\"" 	
+		echo 'dbLoadRecords("db/adc-'${is_adc}'.db","'$aprams'")'
+		if [ "x${calmon} != "xnone" ]; then
+			echo >>/tmp/st_post.cmd "seq ${calmon} \"uut=${HOST},site=${site}\""
+		fi
 	fi
 	
 	hwmondb=db/hwmon_${name}.db
