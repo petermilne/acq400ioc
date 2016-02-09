@@ -284,7 +284,7 @@ load_400() {
 		make_AI $site
 		aprams="UUT=${HOST},SITE=${site},CHG=${has_ch_gains}"
 		echo 'dbLoadRecords("db/adc-'${is_adc}'.db","'$aprams'")'
-		if [ "x${calmon} != "xnone" ]; then
+		if [ "x${calmon}" != "xnone" ]; then
 			echo >>/tmp/st_post.cmd "seq ${calmon} \"uut=${HOST},site=${site}\""
 		fi
 	fi

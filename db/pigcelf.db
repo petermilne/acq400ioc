@@ -12,7 +12,7 @@ record(longout, "${UUT}:2:SIG:DDS:FREQ") {
 }
 
 
-record(calcout, "${UUT}:0:SIG:CLK_MB:w") {
+record(calcout, "${UUT}:2:SIG:DDS:FREQ:set") {
 	field(INPA, "${UUT}:2:SIG:DDS:FREQ")
 	field(INPB, "4294967296")
 	field(INPC, "20000000")
