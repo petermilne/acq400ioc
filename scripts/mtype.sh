@@ -22,6 +22,7 @@ MT_BOLO8B=64
 MT_V2F=67
 MT_AO420=40
 MT_AO424=41
+MT_PIG_CELF=68
 
 
 nameFromMT() {
@@ -46,6 +47,7 @@ nameFromMT() {
 	$MT_V2F)		echo "v2f";;
 	$MT_AO420)		echo "ao420";;
 	$MT_AO424)		echo "ao424";;
+	$MT_PIG_CELF)	echo "pig-celf";;
 	# no default	
 	esac					
 }

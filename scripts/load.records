@@ -226,7 +226,7 @@ load_400() {
 	calmon="calmon"
 	
 	case $model in
-	$MT_ACQ420|$MT_ACQ420F|$MT_ACQ424|$MT_ACQ425|$MT_ACQ425F|$MT_BOLO8|$MT_BOLO8B)
+	$MT_ACQ420|$MT_ACQ420F|$MT_ACQ424|$MT_ACQ425|$MT_ACQ425F|$MT_BOLO8|$MT_BOLO8B|$MT_PIG_CELF)
 		is_adc="sar"
 		calmon=calmon42x
 		case $model in
