@@ -9,6 +9,7 @@ record(longout, "${UUT}:2:SIG:DDS:FREQ") {
 	field(LOPR, "100")
 	field(HOPR, "20000000")	
 	field(FLNK, "${UUT}:2:SIG:DDS:FREQ:set")
+	field(PINI, "YES")
 }
 
 
