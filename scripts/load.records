@@ -352,7 +352,12 @@ load_400() {
 	echo 'dbLoadRecords("db/signal.db","'${cprams}',FNAM=SYNC,FN=sync,ZNAM=internal,ONAM=external,DISV=1")'
 	echo 'dbLoadRecords("db/signal.db","'${cprams}',FNAM=EVENT1,FN=event1,ZNAM=disable,ONAM=enable,DISV=-1")'
 	echo 'dbLoadRecords("db/signal.db","'${cprams}',FNAM=EVENT0,FN=event0,ZNAM=disable,ONAM=enable,DISV=-1")'
-	echo 'dbLoadRecords("db/acq420fmc99.db","'${cprams}'")'
+	if [ "x$model" = "x$MT_ACQ480" ]; then
+		let sitep1=$site+1
+		echo 'dbLoadRecords("db/acq480fmc99.db","'${cprams},SITEP1=${sitep1}'")'
+	else
+		echo 'dbLoadRecords("db/acq420fmc99.db","'${cprams}'")'
+	fi
 	
 	create_asyn_channel S${site} 127.0.0.1:422${site}
 	if [ "x${site}" = "x1" ]; then

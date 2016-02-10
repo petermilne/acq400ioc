@@ -97,8 +97,7 @@ record(dfanout, "${UUT}:${SITE}:ACQ480:FIR:01:fanout") {
 record(calc, "${UUT}:${SITE}:ACQ480:FIR:DECIM") {
 	field(INPA, "${UUT}:${SITE}:ACQ480:FIR:01")
 #                    12345678901234567890123456789012345678901234567890123456789012345678901234567890	
-	field(CALC, "A==0||A==10? 1: A==1||A==2||A==7? 2: A==9? 8: 4")
-	field(FLNK, "${UUT}:${SITE}:CLKDIV")
+	field(CALC, "A==0||A==10? 1: A==1||A==2||A==7? 2: A==9? 8: 4")	
 	alias("${UUT}:${SITE}:CLKDIV")
 }
 
@@ -110,11 +109,11 @@ record(bi, "${UUT}:${SITE}:ACQ480:JC:LOS") {
 	field(DTYP, "stream")
 	field(SCAN, "1 second")
 	field(INP,  "@acq480.proto getJC(LOS) ${SPORT}")
-	field(FLNK, "${UUT}:${SITE}:ACQ480:JC:LOL")
 }
 
 record(bi, "${UUT}:${SITE}:ACQ480:JC:LOL") {
 	field(DTYP, "stream")
+	field(SCAN, ".5 second")
 	field(INP,  "@acq480.proto getJC(LOL) ${SPORT}")
 }
 
