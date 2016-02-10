@@ -1,23 +1,6 @@
 
 # Internal clock: with full feedback
 
-record (stringin, "${UUT}:${SITE}:MODEL") {
-	field(DTYP, "stream")
-	field(INP, "@acq42x.proto getModel ${SPORT}")
-	field(PINI, "YES")	
-}
-
-record (longin, "${UUT}:${SITE}:NCHAN") {
-	field(DTYP, "stream")
-	field(INP, "@acq42x.proto getNchan ${SPORT}")
-	field(PINI, "YES")	
-}
-
-record (stringin, "${UUT}:${SITE}:SERIAL") {
-	field(DTYP, "stream")
-	field(INP, "@acq42x.proto getSerial ${SPORT}")
-	field(PINI, "YES")	
-}
 
 record (longout, "${UUT}:${SITE}:INTCLK_HZ") {
 	field(DTYP, "Soft Channel")
@@ -160,18 +143,4 @@ record(mbbo, "${UUT}:${SITE}:SIG:clk_counter_src")
 	field(SXST, "d6")
 	field(SVST, "d7")
 	field(EIST, "DIV")
-}
-record (longin, "${UUT}:${SITE}:SHOT") {
-	field(DTYP, "longinAcqHost")
-	field(INP, "@/dev/acq400.${SITE}.knobs/shot")
-	field(SCAN, "1 second")
-	field(PINI, "YES")		
-}
-
-
-record (bi, "${UUT}:${SITE}:RUN") {
-	field(DTYP, "biAcqHost")
-	field(INP, "@/dev/acq400.${SITE}.knobs/run")
-	field(SCAN, "1 second")
-	field(PINI, "YES")		
 }

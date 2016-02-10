@@ -306,7 +306,10 @@ load_400() {
 		make_deltrg ${site}
 	fi
 
-	echo 'dbLoadRecords("db/acq420fmc.db","'${cprams},'LO='${LO}',MAXHZ='${maxhz}'")'
+	echo 'dbLoadRecords("db/acq400fmc.db","'${cprams}'")'
+	if [ "x$model" != "$MT_ACQ480" ]; then
+		echo 'dbLoadRecords("db/acq420fmc.db","'${cprams},'LO='${LO}',MAXHZ='${maxhz}'")'
+	fi
 
 	if [ ${site} -eq 1 ] && [ $HAS_ACQ43X -eq 1 ]; then
 		# MUST  be AFTER acq420fmc.d to hook the right DT0			
