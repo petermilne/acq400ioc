@@ -37,7 +37,7 @@ ss rate_set
 {
 	state init {
 		when() {
-			printf("setMB_ClockMonitor th:%.3f\n", TH);
+			printf("setMB_ClockMonitor th:%.2f\n", TH);
 			pvGet(Fs);
 			Fs0 = Fs;
 		} state wait_change	
@@ -57,11 +57,11 @@ ss rate_set
 	}
 	
 	state monitor_actual {
-		when(Fm != Fm0 && in_bounds(Fm0, Fs, TH)){
+		when(Fm != Fm0 && in_bounds(Fm, Fs, TH)){
 			Fm0 = Fm;
 		} state wait_change 
 		
-		when(Fm != Fm0 && !in_bounds(Fm0, Fs, TH) && ++pollcat > 4){
+		when(Fm != Fm0 && !in_bounds(Fm, Fs, TH) && ++pollcat > 4){
 			Fm0 = Fm;
 			printf("WARNING: MB CLK Fs:%.2f != Fm :%.2f retry\n",
 				Fs, Fm);			
