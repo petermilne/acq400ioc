@@ -18,6 +18,7 @@ monitor Fm;
 double Fs0;
 double Fm0;
 
+double TH = 0.05;
 
 %{
 #include <math.h>
@@ -36,6 +37,7 @@ ss rate_set
 {
 	state init {
 		when() {
+			printf("setMB_ClockMonitor th:%.3f\n", TH);
 			pvGet(Fs);
 			Fs0 = Fs;
 		} state wait_change	
@@ -55,15 +57,16 @@ ss rate_set
 	}
 	
 	state monitor_actual {
-		when(Fm != Fm0 && in_bounds(Fm0, Fs, 0.05)){
+		when(Fm != Fm0 && in_bounds(Fm0, Fs, TH)){
 			Fm0 = Fm;
 		} state wait_change 
 		
-		when(Fm != Fm0 && ++pollcat > 4){
+		when(Fm != Fm0 && !in_bounds(Fm0, Fs, TH) && ++pollcat > 4){
 			Fm0 = Fm;
-			printf("WARNING: MB CLK Fs:%f != Fm :%f retry\n",
+			printf("WARNING: MB CLK Fs:%.2f != Fm :%.2f retry\n",
 				Fs, Fm);			
 			pvPut(Fs);
+			pollcat = 0;
 		} state wait_actual
 	}
 }
