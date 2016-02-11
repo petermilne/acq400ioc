@@ -601,8 +601,10 @@ load_mb_sync() {
 			*)
 				echo >>/tmp/st_post.cmd "seq acq43x_setSampleRate \"uut=${HOST}\"";;
 			esac
+	else
+			echo >> /tmp/st_post.cmd "seq setMB_ClockMonitor\"uut=${HOST}\""
 	fi
-	
+		
 	echo >>/tmp/st_post.cmd "seq onSetTransient \"uut=${HOST}\""
 	echo >>/tmp/st_post.cmd "seq autoRepeat \"uut=${HOST}\""
 }
