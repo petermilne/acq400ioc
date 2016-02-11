@@ -17,6 +17,10 @@ if [ -f /mnt/local/sysconfig/epics.sh ]; then
 	source /mnt/local/sysconfig/epics.sh
 fi
 
+# create access to EPICS PV via site service. This is important for :
+# a/ non-EPICS users to get access to EPICS information
+# b/ portable, UUT-relative namespace - site service omits ${UUT}:${SITE}
+
 make_caget() {
 	PFX=${1%*:$2}
 	VERB=/usr/local/bin/caget_$PFX
@@ -124,6 +128,11 @@ make_epics_knobs() {
 		make_caput $PV ${NU#*:} ${SITE}
 	done
 	
+	for PV in $(grep DECIM /tmp/records.dbl)
+	do
+		NU=${PV#*:}
+		make_caget $PV ${NU#*:} ${NU:0:1}
+	done
 	for PV in $(grep $(hostname):SYS:CLK /tmp/records.dbl | grep -v [a-z]$)	
 	do
 		make_caput $PV ${PV#*:} 0
