@@ -63,7 +63,7 @@ ss rate_set
 		
 		when(Fm != Fm0 && !in_bounds(Fm, Fs, TH) && ++pollcat > 4){
 			Fm0 = Fm;
-			printf("WARNING: MB CLK Fs:%.2f != Fm :%.2f retry\n",
+			printf("WARNING: MB CLK Fs:%.2f != Fm:%.2f retry\n",
 				Fs, Fm);			
 			pvPut(Fs);
 			pollcat = 0;
