@@ -94,16 +94,25 @@ record(dfanout, "${UUT}:${SITE}:ACQ480:FIR:01:fanout") {
 	field(OUTH, "${UUT}:${SITE}:ACQ480:FIR:08 PP")	
 }
 
+record(bi, "${UUT}:${SITE}:ACQ480:JC:PRESENT") {
+	field(DTYP, "Soft Channel")
+	field(VAL,  "${JCP}")
+	field(PINI, "YES")
+}
 record(bi, "${UUT}:${SITE}:ACQ480:JC:LOS") {
 	field(DTYP, "stream")
 	field(SCAN, "1 second")
 	field(INP,  "@acq480.proto getJC(LOS) ${SPORT}")
+	field(DISA, "${UUT}:${SITE}:ACQ480:JC:PRESENT")
+	field(DISV, "0")
 }
 
 record(bi, "${UUT}:${SITE}:ACQ480:JC:LOL") {
 	field(DTYP, "stream")
 	field(SCAN, ".5 second")
 	field(INP,  "@acq480.proto getJC(LOL) ${SPORT}")
+	field(DISA, "${UUT}:${SITE}:ACQ480:JC:PRESENT")
+	field(DISV, "0")
 }
 
 record(mbbi, "${UUT}:${SITE}:ACQ480:TRAIN") {

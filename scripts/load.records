@@ -259,9 +259,14 @@ load_400() {
 		calmon=calmon480
 		create_asyn_channel S${site}_480 127.0.0.1:422${site}
 		mprams="UUT=${HOST},SITE=${site},SPORT=S${site}_480"
+		if [ -e /dev/acq480/${site}/JC ]; then
+			jcp=1
+		else
+			jcp=0
+		fi
 		for ic in $(seq 1 8); do
 			ch=$(printf "%02d" $ic)
-			echo 'dbLoadRecords("db/acq480fmc.db","'${mprams},CH=${ch}'")'
+			echo 'dbLoadRecords("db/acq480fmc.db","'${mprams},CH=${ch},JCP=${jcp}'")'
 			echo 'dbLoadRecords("db/acq480fmc50R.db","'${mprams},CH=:${ch},RAW=_${ic}'")'
 		done
 		echo 'dbLoadRecords("db/acq480fmc50R.db","'${mprams},CH=,RAW='")';;		
