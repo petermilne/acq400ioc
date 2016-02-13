@@ -198,6 +198,8 @@ load_AO() {
 }
 
 HAS_ACQ43X=0
+ACQ480_COUNT=0
+ACQ480_S1=0
 
 load_400() {
 	site=$1
@@ -252,6 +254,8 @@ load_400() {
 		fi		
 		let LO=$LO/256;;
 	$MT_ACQ480)
+		let ACQ480_COUNT=$ACQ480_COUNT+1
+		[ $ACQ480_S1 -eq 0 ] && ACQ480_S1=$site
 		is_adc="sar"
 		# gains are digital.
 		maxhz=80000000
@@ -360,6 +364,21 @@ load_400() {
 	if [ "x$model" = "x$MT_ACQ480" ]; then
 		let sitep1=$site+1
 		echo 'dbLoadRecords("db/acq480fmc99.db","'${cprams},SITEP1=${sitep1}'")'
+		if [ $ACQ480_COUNT -gt 1 ]; then
+				if [ $ACQ480_S1 -eq 0 ]; then
+					echo ERROR ACQ480S site $site ACQ480_S1 not set; exit 1
+				fi
+				case $site in
+				2) outx=OUTA;;
+				3) outx=OUTB;;
+				4) outx=OUTC;;
+				5) outx=OUTD;;
+				6) outx=OUTE;;
+				*) echo ERROR bad ACQ480S site $site; exit 1;;
+				esac
+				sprams=${cprams},A480M=${ACQ480_S1},OUTX=${outx}
+				echo 'dbLoadRecords("db/acq480fmcSlave.db","'${sprams}'")'
+		fi
 	else
 		echo 'dbLoadRecords("db/acq420fmc99.db","'${cprams}'")'
 	fi

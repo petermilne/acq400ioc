@@ -1,0 +1,11 @@
+record(calc, "${UUT}:${A480M}:ACQ480:FIR:DECIM") {
+	field(FLNK, "${UUT}:${A480M}:ACQ480:FIR:m")
+}
+
+record(dfanout, "${UUT}:${A480M}:ACQ480:FIR:m") {
+	field(OMSL,    "closed_loop")
+	field(DOL,     "${UUT}:${A480M}:ACQ480:FIR:01")
+	field(SELM,    "All")
+	
+	field(${OUTX}, "${UUT}:${SITE}:ACQ480:FIR:01 PP")
+}
