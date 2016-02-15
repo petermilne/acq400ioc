@@ -104,3 +104,21 @@ record (bi, "${UUT}:SYS:CLK:Si570_OE") {
 	field(INP,  "@/dev/gpio/CLK/Si570_OE")
 	field(SCAN, "10 second")
 }
+
+record (mbbo, "${UUT}:SYS:CLK:Si5326:INTCLK_SET") {
+	field(DTYP, "stream")
+	field(OUT,  "@acq2106clk.proto acq480_init_clk ${SPORT}")
+	field(NOBT, "8")
+	field(ZRVL, "10")
+	field(ONVL, "20")
+	field(TWVL, "24")
+	field(THVL, "40")
+	field(FRVL, "50")
+	field(FVVL, "80")
+	field(ZRST, "10M")
+	field(ONST, "20M")
+	field(TWST, "24M")
+	field(THST, "40M")
+	field(FRST, "50M")
+	field(FVST, "80M") 
+}

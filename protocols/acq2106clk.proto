@@ -12,3 +12,7 @@ getSi5326bypass {
 	out "si5326bypass";
 	in "%d";
 }
+
+acq480_init_clk {
+	out "acq480_init_clk %dM";
+}
