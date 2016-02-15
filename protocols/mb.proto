@@ -142,6 +142,9 @@ get_zclk_src {
 	in "%(RVAL)x";
 }
 
-
+getSitelist {
+	out "SITELIST";
+	in "%s";
+}
 
 

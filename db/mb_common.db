@@ -1,0 +1,5 @@
+record(stringin, "${UUT}:SITELIST") {
+	field(DTYP, "stream")
+	field(INP,  "@mb.proto getSitelist ${SPORT}")
+	field(PINI, "YES")
+}

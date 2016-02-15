@@ -526,6 +526,7 @@ load_mb_sites() {
 		create_asyn_channel SI 127.0.0.1:4239			
 		load_intmon
 	fi
+	echo 'dbLoadRecords("db/mb_common.db",UUT='${HOST}',SPORT=S0")'
 	create_asyn_channel S0 127.0.0.1:4220
 	create_asyn_channel NP 127.0.0.1:2226
 	create_asyn_channel SS 127.0.0.1:4220
