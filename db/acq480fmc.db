@@ -109,7 +109,7 @@ record(bi, "${UUT}:${SITE}:ACQ480:JC:LOS") {
 
 record(bi, "${UUT}:${SITE}:ACQ480:JC:LOL") {
 	field(DTYP, "stream")
-	field(SCAN, ".5 second")
+	field(SCAN, "1 second")
 	field(INP,  "@acq480.proto getJC(LOL) ${SPORT}")
 	field(SDIS, "${UUT}:${SITE}:ACQ480:JC:PRESENT")
 	field(DISV, "0")
