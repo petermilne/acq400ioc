@@ -80,7 +80,8 @@ ss rate_set
 			for (clkdiv = 1; Fmod * clkdiv <= fin; ++clkdiv){
 				;				
 			}
-			pvPut(clkdiv);									
+			pvPut(clkdiv);
+			Fs0 = Fs;
 		} state run
 	}
 	
