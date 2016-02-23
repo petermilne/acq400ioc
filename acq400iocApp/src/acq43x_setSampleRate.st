@@ -38,6 +38,9 @@ int adc_clk_src; 	assign adc_clk_src to "{uut}:1:CLK";
 int adc_clk_src_dx; 	assign adc_clk_src_dx to "{uut}:1:CLK:DX";
 
 string info;	assign info to "{uut}:1:ACQ43X_SAMPLE_RATE:INFO";
+string srcname; assign srcname to "{uut}:1:ACQ43X_SRCNAME";
+string srcfreq; assign srcfreq to "{uut}:1:ACQ43X_SRCFREQ";
+
 
 double clk_mb_set; assign clk_mb_set to "{uut}:0:SIG:CLK_MB:SET";
 
@@ -72,6 +75,8 @@ ss rate_set
 			adc_mode0 = adc_mode;
 			pvGet(Fs);
 			Fs0 = Fs;
+			sprintf(srcname, "CLK_MB");
+			pvPut(srcname);
 		} state run	
 	}
 	
@@ -209,6 +214,8 @@ ss rate_set
 			pvPut(clkdiv);
 			pvPut(clk_mb_fin, SYNC);
 			pvPut(clk_mb_set);
+			sprintf(srcfreq, "%.0e", clk_mb_set);
+			pvPut(srcfreq);	
 			Fs0 = Fs;
 		} state run
 	} 

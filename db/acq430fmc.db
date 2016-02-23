@@ -141,3 +141,9 @@ record (fanout, "${UUT}:1:DT:f") {
 record(stringin, "${UUT}:${SITE}:ACQ43X_SAMPLE_RATE:INFO") {
 	field(DTYP, "Soft Channel")
 }
+record(stringout, "${UUT}:${SITE}:ACQ43X_SRCNAME") {
+	field(DTYP, "Soft Channel")
+}
+record(stringout, "${UUT}:${SITE}:ACQ43X_SRCFREQ") {
+	field(DTYP, "Soft Channel")
+}
