@@ -6,7 +6,8 @@ record (mbbo, "${UUT}:SYS:CLK:FPMUX") {
 	field(ONST, "XCLK")
 	field(TWST, "FPCLK")
 	field(THST, "${thst}")
-	field(FLNK, "${UUT}:SYS:CLK:fpclk0")	
+	field(FLNK, "${UUT}:SYS:CLK:fpclk0")
+	field(VAL,  "0")
 	field(PINI, "YES")
 }
 
