@@ -491,13 +491,14 @@ load_mb_base() {
 }
 
 isRevA() {
+	rc=0
 	case $1 in
 	acq1001|acq1002)
-			[ $SN -lt 40 ] && echo 1;; 
+			[ $SN -lt 40 ] && rc=1;; 
 	acq2006)
-			[ $SN -le 10 ] && echo 1;;
+			[ $SN -le 10 ] && rc=1;;
 	esac
-	echo 0
+	echo $rc
 }
 
 load_mb_sites() {
