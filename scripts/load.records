@@ -13,6 +13,10 @@ CTR28=268435456
 CTR16=65536
 CTR20=1048576
 
+SN=${HOST#*_}
+SN=${SN#0}
+SN=${SN#0}
+
 source /etc/sysconfig/acq400.conf
 
 # gains are loaded last, as they tweak other WF records, must be there first..
@@ -624,7 +628,16 @@ load_mb_sync() {
 			acq2106|acq2106sfp)
 				;;
 			*)
-				echo >>/tmp/st_post.cmd "seq acq43x_setSampleRate \"uut=${HOST}\"";;
+				# ACQ1001, ACQ2006 REVA has no ZCLK (and hardly ever XCLK)
+				ssr=acq43x_setSampleRate
+				case $MB_MODEL in
+				acq1001|acq1002)
+						[ $SN -lt 40 ] && ssr=acq43x_setSampleRateIntClk;;
+				acq2006)
+						[ $SN -le 10 ] && ssr=acq43x_setSampleRateIntClk;;
+				esac
+
+				echo >>/tmp/st_post.cmd "seq $ssr \"uut=${HOST}\"";;
 			esac
 	else
 			echo >> /tmp/st_post.cmd "seq setMB_ClockMonitor \"uut=${HOST}\""

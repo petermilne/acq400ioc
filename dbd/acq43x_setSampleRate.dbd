@@ -1,1 +1,2 @@
 registrar(acq43x_setSampleRateRegistrar)
+registrar(acq43x_setSampleRateIntClkRegistrar)

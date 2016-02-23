@@ -54,6 +54,7 @@ acq400ioc_SRCS += autoRepeat.st
 acq400ioc_SRCS += aoRangeSet.st
 acq400ioc_SRCS += aoRangeSet424.st
 acq400ioc_SRCS += acq43x_setSampleRate.st
+acq400ioc_SRCS += acq43x_setSampleRateIntClk.st
 acq400ioc_SRCS += onSetTransient.st
 acq400ioc_SRCS += mgtStopOnLinkDown.st
 acq400ioc_SRCS += calmon.st
