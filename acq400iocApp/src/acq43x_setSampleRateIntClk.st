@@ -58,7 +58,7 @@ ss rate_set
 			adc_mode0 = adc_mode;
 			pvGet(Fs);
 			Fs0 = Fs;
-			sprintf(srcname, "INT");
+			sprintf(srcname, "INTCLK");
 			pvPut(srcname);
 			sprintf(srcfreq, "%.0e", fin);
 			pvPut(srcfreq);
@@ -90,7 +90,7 @@ ss rate_set
 							Fmod, adc_mode, clkdiv);
 			pvPut(clkdiv);
 			snprintf(info, 40,
-				"set:%.0f mode:%s fin:%.0f clkdiv:%d",
+				"set:%.0f %s fin:%.0e clkdiv:%d",
 				Fs, adc_mode? "HR_512": "HS_256", 
 				fin, clkdiv);
 			pvPut(info);

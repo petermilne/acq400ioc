@@ -75,7 +75,7 @@ ss rate_set
 			adc_mode0 = adc_mode;
 			pvGet(Fs);
 			Fs0 = Fs;
-			sprintf(srcname, "CLK_MB");
+			sprintf(srcname, "MBCLK");
 			pvPut(srcname);
 		} state run	
 	}
