@@ -490,6 +490,15 @@ load_mb_base() {
 	load_gpg
 }
 
+isRevA() {
+	case $1 in
+	acq1001|acq1002)
+			[ $SN -lt 40 ] && echo 1;; 
+	acq2006)
+			[ $SN -le 10 ] && echo 1;;
+	esac
+	echo 0
+}
 
 load_mb_sites() {
 	KB=$1
@@ -518,7 +527,9 @@ load_mb_sites() {
 		kmcu)
 			;;
 		*)
-			echo 'dbLoadRecords("db/acq2006clktree.db","UUT='${HOST}'")'
+			thst="ZCLK"
+			[ $(isRevA $MB_MODEL) -ne 0 ] && thst=""
+			echo 'dbLoadRecords("db/acq2006clktree.db","UUT='${HOST},thst=${thst}'")'
 			echo 'dbLoadRecords("db/acq2006mb.db","UUT='${HOST}',SPORT=S0")';;
 	esac
 	[ -e /etc/acq400/0/transient ] && \
@@ -629,14 +640,11 @@ load_mb_sync() {
 				;;
 			*)
 				# ACQ1001, ACQ2006 REVA has no ZCLK (and hardly ever XCLK)
-				ssr=acq43x_setSampleRate
-				case $MB_MODEL in
-				acq1001|acq1002)
-						[ $SN -lt 40 ] && ssr=acq43x_setSampleRateIntClk;;
-				acq2006)
-						[ $SN -le 10 ] && ssr=acq43x_setSampleRateIntClk;;
-				esac
-
+				if [ $(isRevA $MB_MODEL) -ne 0 ]; then
+					ssr=acq43x_setSampleRateIntClk
+				else
+					ssr=acq43x_setSampleRate
+				fi
 				echo >>/tmp/st_post.cmd "seq $ssr \"uut=${HOST}\"";;
 			esac
 	else
