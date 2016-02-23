@@ -320,7 +320,8 @@ load_400() {
 	fi
 
 	echo 'dbLoadRecords("db/acq400fmc.db","'${cprams}'")'
-	if [ "x$model" != "x$MT_ACQ480" ]; then
+	
+	if [ "x$model" != "x$MT_ACQ480" ] || [ $HAS_ACQ43X -eq 0 ]; then
 		echo 'dbLoadRecords("db/acq420fmc.db","'${cprams},'LO='${LO}',MAXHZ='${maxhz}'")'
 	fi
 

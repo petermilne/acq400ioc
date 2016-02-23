@@ -1,5 +1,6 @@
 # specific to ACQ430/ACQ435/ACQ436/ACQ437
 
+
 record (bo, "${UUT}:${SITE}:ADC_MODE") {
 	field(DTYP, "Soft Channel")
 	field(ZNAM, "HS_256")
@@ -147,3 +148,78 @@ record(stringout, "${UUT}:${SITE}:ACQ43X_SRCNAME") {
 record(stringout, "${UUT}:${SITE}:ACQ43X_SRCFREQ") {
 	field(DTYP, "Soft Channel")
 }
+
+# copied from acq420fmc.db
+# @@review me please
+
+record(calc, "${UUT}:1:ACQ42X_DT") {
+	field(INPA, "${UUT}:1:INTCLK_HZ")
+	field(CALC, "A!=0? 1/A: 1")
+	field(FLNK, "${UUT}:1:DT")
+}
+
+record(calc, "${UUT}:1:DT") {
+	field(INPA, "${UUT}:1:ACQ42X_DT")
+	field(CALC, "A")
+	field(FLNK, "${UUT}:1:DT:f") 
+}
+
+record (fanout, "${UUT}:1:DT:f") {
+	field(SELM, "All")
+	field(LNK1, "${UUT}:1:INTCLK_calc")	
+	field(LNK2, "${UUT}:1:AI:WF:TB")
+	field(LNK3, "${UUT}:1:AI:TW:TB")
+}
+
+# Clkdiv with external clock - go direct.
+
+record (longout, "${UUT}:${SITE}:CLKDIV") {
+	field(DTYP, "Soft Channel")	
+	field(FLNK, "${UUT}:${SITE}:clkdiv:e PP")
+	field(LOPR, "1")
+	field(HOPR, "65535")
+	field(VAL,  "1")
+	field(PINI, "YES")		
+}
+
+record (longout, "${UUT}:${SITE}:clkdiv:e") {
+	field(DTYP, "longoutAcqHost")
+	field(DOL,  "${UUT}:${SITE}:CLKDIV")
+	field(OUT, "@/dev/acq400.${SITE}.knobs/clkdiv")
+	field(OMSL, "closed_loop")
+}
+
+record(bo, "${UUT}:${SITE}:simulate") {
+	field(DTYP, "boAcqHost")
+	field(OUT, "@/dev/acq400.${SITE}.knobs/simulate")
+}
+
+record(stringin, "${UUT}:${SITE}:stats") {
+	field(DTYP, "dsSysfsStringin")
+	field(INP, "@/dev/acq400.${SITE}.knobs/stats")
+}
+
+record(bo, "${UUT}:${SITE}:data32") {
+	field(DTYP, "boAcqHost")
+	field(OUT,  "@/dev/acq400.${SITE}.knobs/data32")
+	field(PINI, "YES")
+	field(DESC, "select 32 bit data packing")
+}
+
+record(mbbo, "${UUT}:${SITE}:SIG:clk_counter_src")
+{
+	field(DTYP,	"mbboAcqHost")
+	field(OUT,  "@/dev/acq400.${SITE}.knobs/clk_counter_src")
+	field(NOBT, "4")
+	field(PINI, "YES")
+	field(ZRST, "d0")	
+	field(ONST, "d1")
+	field(TWST, "d2")
+	field(THST, "d3")
+	field(FRST, "d4")
+	field(FVST, "d5")
+	field(SXST, "d6")
+	field(SVST, "d7")
+	field(EIST, "DIV")
+}
+
