@@ -340,6 +340,8 @@ load_400() {
 	CTPR="${cprams},CTRMAX=$CTR28,DT=1,DTC=1"
 	echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=clk_count,pname=clk_count'")'
 	echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=sample_count,pname=sample_count'")'
+	echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=CLK_COUNT,pname=clk_count'")'
+	echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=SAMPLE_COUNT,pname=sample_count'")'
 
 	gain_file=${gain_file_pfx}.db
 	(
