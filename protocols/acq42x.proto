@@ -27,6 +27,10 @@ getModel {
 	in "%s";
 }
 
+getPart {
+	out "PART_NUM";
+	in "%s";
+}
 getSerial {
 	out "SERIAL";
 	in "%s";
