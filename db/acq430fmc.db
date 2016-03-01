@@ -14,20 +14,9 @@ record (bo, "${UUT}:${SITE}:ADC_MODE:w") {
 	field(ONAM, "HR_512")
 	field(OMSL, "closed_loop")
 	field(DOL,  "${UUT}:${SITE}:ADC_MODE")
-	field(OUT,  "@acq43x.proto setHiResMode ${SPORT}")
-	field(FLNK, "${UUT}:${SITE}:ADC_MODE:c")
+	field(OUT,  "@acq43x.proto setHiResMode ${SPORT}")	
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:ADC_MODE:r.PACT")
-}
-
-record(calcout, "${UUT}:${SITE}:ADC_MODE:c") {
-	field(OUT,  "${UUT}:${SITE}:LO")
-	field(OOPT, "On Change")
-#	field(DOPT, "CALC")
-	field(INPA, "${UUT}:${SITE}:ADC_MODE")
-	field(INPB, "100000000")
-	field(CALC, "B / (A? 512: 256)")
-	field(FLNK, "${UUT}:${SITE}:LO")
 }
 
 record(bi, "${UUT}:${SITE}:ADC_MODE:r") {
@@ -147,28 +136,6 @@ record(stringout, "${UUT}:${SITE}:ACQ43X_SRCNAME") {
 }
 record(stringout, "${UUT}:${SITE}:ACQ43X_SRCFREQ") {
 	field(DTYP, "Soft Channel")
-}
-
-# copied from acq420fmc.db
-# @@review me please
-
-record(calc, "${UUT}:1:ACQ42X_DT") {
-	field(INPA, "${UUT}:1:INTCLK_HZ")
-	field(CALC, "A!=0? 1/A: 1")
-	field(FLNK, "${UUT}:1:DT")
-}
-
-record(calc, "${UUT}:1:DT") {
-	field(INPA, "${UUT}:1:ACQ42X_DT")
-	field(CALC, "A")
-	field(FLNK, "${UUT}:1:DT:f") 
-}
-
-record (fanout, "${UUT}:1:DT:f") {
-	field(SELM, "All")
-	field(LNK1, "${UUT}:1:INTCLK_calc")	
-	field(LNK2, "${UUT}:1:AI:WF:TB")
-	field(LNK3, "${UUT}:1:AI:TW:TB")
 }
 
 # Clkdiv with external clock - go direct.

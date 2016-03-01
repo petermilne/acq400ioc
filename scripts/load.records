@@ -127,7 +127,8 @@ make_AI_TR_records() {
 		echo dbLoadRecords\(\"db/wfAcqHostTw.db\",\"$WPRAMS\"\)		
 		let ch=$ch+1
 	done
-	[ $FIRST_AI_TR_RECORDS -eq 1 ] && echo dbLoadRecords\(\"db/wfAcqHostTwTb.db\",\"$WPRAMS\"\)	
+	[ $FIRST_AI_TR_RECORDS -eq 1 ] && [ "x$WPRAMS" != "x" ] && \
+		echo dbLoadRecords\(\"db/wfAcqHostTwTb.db\",\"$WPRAMS\"\)	
 	FIRST_AI_TR_RECORDS=0	
 }
 
@@ -386,6 +387,8 @@ load_400() {
 				sprams=${cprams},A480M=${ACQ480_S1},OUTX=${outx}
 				echo 'dbLoadRecords("db/acq480fmcSlave.db","'${sprams}'")'
 		fi
+	elif [ $HAS_ACQ43X -ne 0 ]; then
+		echo 'dbLoadRecords("db/acq430fmc99.db","'${cprams}'")'
 	else
 		echo 'dbLoadRecords("db/acq420fmc99.db","'${cprams}'")'
 	fi
