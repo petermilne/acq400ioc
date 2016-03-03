@@ -164,7 +164,9 @@ record(longout, "${UUT}:LIVE:PRE") {
 	field(OUT,  "@mb.proto setPre ${SPORT}")
 	field(PINI,  "YES")
 	field(DRVL,  "0")
+	field(LOPR,  "0")
 	field(DRVH,  "${LIVESZ}")
+	field(HOPR,  "${LIVESZ}")
 }
 
 record(calcout, "${UUT}:LIVE:delay_calc") {
