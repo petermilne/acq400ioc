@@ -156,28 +156,47 @@ record(longout, "${UUT}:LIVE:LEN" ){
 	field(DESC,  "length of live plot WF (fixed)")
 	field(PINI,  "YES")
 }
-record(longout, "${UUT}:LIVE:PRE") {
+
+record(longout, "${UUT}:LIVE:PREPCT") {
 	field(DTYP, "stream")
 	field(SCAN, "Passive")
 	field(DESC, "delay samples")
-	field(FLNK, "${UUT}:LIVE:delay_calc")
+	field(FLNK, "${UUT}:LIVE:delay_calc_pre")
 	field(OUT,  "@mb.proto setPre ${SPORT}")
 	field(PINI,  "YES")
 	field(DRVL,  "0")
 	field(LOPR,  "0")
-	field(DRVH,  "${LIVESZ}")
-	field(HOPR,  "${LIVESZ}")
+	field(DRVH,  "100")
+	field(HOPR,  "100")
 }
 
-record(calcout, "${UUT}:LIVE:delay_calc") {
+record(calcout, "${UUT}:LIVE:delay_calc_pre") {
 	field(INPA,  "${UUT}:LIVE:LEN")
-	field(INPB,  "${UUT}:LIVE:PRE")
-	field(CALC,  "A-B")
+	field(INPB,  "${UUT}:LIVE:PREPCT")
+	field(CALC,  "B/100*A")
+	field(FLNK,  "${UUT}:LIVE:PRE")
+}
+
+record(longout, "${UUT}:LIVE:PRE") {
+	field(DTYP, "stream")
+	field(DOL,   "${UUT}:LIVE:delay_calc_pre")
+	field(OMSL,  "closed_loop")
+	field(OUT,  "@mb.proto setPre ${SPORT}")
+	field(DESC, "delay samples")
+	field(FLNK, "${UUT}:LIVE:delay_calc_post")
+	field(PINI,  "YES")
+}
+
+record(calcout, "${UUT}:LIVE:delay_calc_post") {
+	field(INPA,  "${UUT}:LIVE:LEN")
+	field(INPB,  "${UUT}:LIVE:PREPCT")
+	field(CALC,  "(1-B/100)*A")
 	field(FLNK,  "${UUT}:LIVE:POST")
 }
+
 record(longout, "${UUT}:LIVE:POST") {
 	field(DTYP,  "stream")
-	field(DOL,   "${UUT}:LIVE:delay_calc")
+	field(DOL,   "${UUT}:LIVE:delay_calc_post")
 	field(OMSL,  "closed_loop")
 	field(OUT,   "@mb.proto setPost ${SPORT}")
 	field(PINI,  "YES")
