@@ -540,7 +540,7 @@ load_mb_sites() {
 			echo 'dbLoadRecords("db/acq2006mb.db","UUT='${HOST}',SPORT=S0")';;
 	esac
 	[ -e /etc/acq400/0/transient ] && \
-		echo 'dbLoadRecords("db/transient.db","UUT='${HOST}',SPORT=SS,SPORTT=ST,NPORT=NP")'
+		echo 'dbLoadRecords("db/transient.db","UUT='${HOST},LIVESZ=${SIZE}',SPORT=SS,SPORTT=ST,NPORT=NP")'
 	[ -e /etc/acq400/0/reboot ] && \
 		echo 'dbLoadRecords("db/reboot.db","UUT='${HOST}',SPORT=S0")'
 	if [ "$LOAD_INTMON" = "y" ]; then

@@ -152,7 +152,7 @@ record(stringin, "${UUT}:TRANSIENT:ACT:ERROR") {
 
 record(longout, "${UUT}:LIVE:LEN" ){
 	field(DTYP, "Soft Channel")
-	field(VAL,  "4096")
+	field(VAL,  "${LIVESZ}")
 	field(DESC,  "length of live plot WF (fixed)")
 	field(PINI,  "YES")
 }
