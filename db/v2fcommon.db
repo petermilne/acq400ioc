@@ -9,7 +9,7 @@ record(longout, "${UUT}:${SITE}:V2F:FREQ_OFFSET") {
 	field(PINI, "YES")
 	field(VAL,  "1")
 	field(FLNK, "${UUT}:${SITE}:V2F:freq_offset_calc")
-	field(DESC, "sets freq off in MHz")
+	field(DESC, "sets freq off in MHz HF Range, 100k LF")
 }
 
 record(longout, "${UUT}:${SITE}:V2F:FREQ_OFFSET_ADJ") {
@@ -29,8 +29,9 @@ record(calcout, "${UUT}:${SITE}:V2F:freq_offset_calc") {
 	field(INPC, "838861")
 	field(INPD, "${UUT}:${SITE}:V2F:HIGH_FREQ")
 	field(INPE, "1000000")
+	field(INPF, "100000")
 # User sets in MHz, tweaks in Hz.
-	field(CALC, "floor(C*(A*E+B)/E)")
+	field(CALC, "floor(C*(A*(D?E:F)+B)/(D?E:F))")
 	field(FLNK, "${UUT}:${SITE}:V2F:freq_offset")
 }
 
