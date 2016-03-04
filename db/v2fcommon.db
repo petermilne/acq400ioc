@@ -7,6 +7,7 @@ record(longout, "${UUT}:${SITE}:V2F:FREQ_OFFSET") {
 	field(HOPR, "4000000")
 	field(EGU,  "Hz")
 	field(PINI, "YES")
+	field(VAL,  "1000000")
 	field(FLNK, "${UUT}:${SITE}:V2F:freq_offset_calc")
 	field(DESC, "sets freq off in Hz")
 }
@@ -17,34 +18,32 @@ record(longout, "${UUT}:${SITE}:V2F:FREQ_OFFSET_ADJ") {
 	field(DRVL, "-100000")
 	field(DRVH, "10000)")
 	field(PINI, "YES")
+	field(FLNK, "${UUT}:${SITE}:V2F:freq_offset_calc")
 }
 
-record(calc, "${UUT}:${SITE}:V2F:freq_offset_calc") {
+record(calcout, "${UUT}:${SITE}:V2F:freq_offset_calc") {
 	field(INPA, "${UUT}:${SITE}:V2F:FREQ_OFFSET")
 	field(INPB, "${UUT}:${SITE}:V2F:FREQ_OFFSET_ADJ")
 # C: count per MHz
 	field(INPC, "838861")
-	field(CALC, "C*A/1000000 + B")
+	field(CALC, "floor(C*A/1000000 + B)")
 	field(FLNK, "${UUT}:${SITE}:V2F:freq_offset")
 }
 
 record(longout, "${UUT}:${SITE}:V2F:freq_offset") {
 	field(DTYP, "stream")
 	field(OMSL,  "closed_loop")
-	field(DOL,   "${UUT}:V2F:freq_offset_calc")
-	field(OUT,  "@v2f.proto setFreqOffset ${SPORT}")
-	field(NOBT, "2")
+	field(DOL,   "${UUT}:${SITE}:V2F:freq_offset_calc")
+	field(OUT,  "@v2f.proto setFreqOffset ${SPORT}")	
 	field(DRVL, "0")
-	field(LOPR, "0")
-	field(DRVH, "4")
-	field(HOPR, "4")
-	field(PINI, "YES")		
+	field(DRVH, "4194304")		
 }
 
 record(bo, "${UUT}:${SITE}:V2F:HIGH_FREQ") {
 	field(DTYP, "stream")
 	field(OUT,  "@v2f.proto setHF ${SPORT}")
 	field(DESC, "1 selects 10MHz range")
+	field(VAL,  "0")
 	field(PINI, "YES")
 }
 
