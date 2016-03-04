@@ -3,20 +3,20 @@ record(longout, "${UUT}:${SITE}:V2F:FREQ_OFFSET") {
 	field(NOBT, "2")
 	field(DRVL, "0")
 	field(LOPR, "0")
-	field(DRVH, "4000000")
-	field(HOPR, "4000000")
-	field(EGU,  "Hz")
+	field(DRVH, "4")
+	field(HOPR, "4")
+	field(EGU,  "MHz")
 	field(PINI, "YES")
-	field(VAL,  "1000000")
+	field(VAL,  "1")
 	field(FLNK, "${UUT}:${SITE}:V2F:freq_offset_calc")
-	field(DESC, "sets freq off in Hz")
+	field(DESC, "sets freq off in MHz")
 }
 
 record(longout, "${UUT}:${SITE}:V2F:FREQ_OFFSET_ADJ") {
 	field(DTYP, "Soft Channel")
 	field(DESC, "adjustment to freq off in raw bits")
-	field(DRVL, "-100000")
-	field(DRVH, "10000)")
+	field(DRVL, "-1000000")
+	field(DRVH, "1000000")
 	field(PINI, "YES")
 	field(FLNK, "${UUT}:${SITE}:V2F:freq_offset_calc")
 }
@@ -26,7 +26,10 @@ record(calcout, "${UUT}:${SITE}:V2F:freq_offset_calc") {
 	field(INPB, "${UUT}:${SITE}:V2F:FREQ_OFFSET_ADJ")
 # C: count per MHz
 	field(INPC, "838861")
-	field(CALC, "floor(C*A/1000000 + B)")
+	field(INPD, "${UUT}:${SITE}:V2F:HIGH_FREQ")
+	field(INPE, "1000000")
+# User sets in MHz, tweaks in Hz.
+	field(CALC, "floor(C*(A*E+B)/E)/(D?1:10)")
 	field(FLNK, "${UUT}:${SITE}:V2F:freq_offset")
 }
 
@@ -45,6 +48,7 @@ record(bo, "${UUT}:${SITE}:V2F:HIGH_FREQ") {
 	field(DESC, "1 selects 10MHz range")
 	field(VAL,  "0")
 	field(PINI, "YES")
+	field(FLNK, "${UUT}:${SITE}:V2F:freq_offset_calc")
 }
 
 record(longout, "${UUT}:${SITE}:V2F:SRC:1") {
