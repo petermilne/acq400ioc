@@ -19,7 +19,7 @@ record(longout, "${UUT}:${SITE}:V2F:FREQ_OFFSET_ADJ") {
 	field(PINI, "YES")
 }
 
-record(calcout, "${UUT}:${SITE}:V2F:freq_offset_calc") {
+record(calc, "${UUT}:${SITE}:V2F:freq_offset_calc") {
 	field(INPA, "${UUT}:${SITE}:V2F:FREQ_OFFSET")
 	field(INPB, "${UUT}:${SITE}:V2F:FREQ_OFFSET_ADJ")
 # C: count per MHz
@@ -31,7 +31,7 @@ record(calcout, "${UUT}:${SITE}:V2F:freq_offset_calc") {
 record(longout, "${UUT}:${SITE}:V2F:freq_offset") {
 	field(DTYP, "stream")
 	field(OMSL,  "closed_loop")
-	field(DOL,   "${UUT}:LIVE:freq_offset_calc")
+	field(DOL,   "${UUT}:V2F:freq_offset_calc")
 	field(OUT,  "@v2f.proto setFreqOffset ${SPORT}")
 	field(NOBT, "2")
 	field(DRVL, "0")
