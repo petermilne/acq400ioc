@@ -3,7 +3,7 @@ ExtraInput = Ignore;
 ReplyTimeout = 2500;
 
 setFreqOffset {
-	out "freq_offset %d";
+	out "freq_offset_raw %d";
 }
 
 setHF {
