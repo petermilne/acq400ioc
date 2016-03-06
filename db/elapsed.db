@@ -4,8 +4,8 @@ record(calc, "${UUT}:${SITE}:SIG:${lname}:FREQ") {
 
 record(calc, "${UUT}:${SITE}:SIG:${lname}:RUNTIME") {
 	field(INPA, "${UUT}:${SITE}:SIG:${lname}:ACTIVE")
-	field(INPB, "${UUT}:${SITE}:SIG:${lname}:COUNT") 
-	field(CALC, "B? A? VAL+1: VAL: 0")
+	field(INPB, "${UUT}:${SITE}:SIG:${lname}:nzcount") 
+	field(CALC, "A? B: VAL")
 	field(EGU,  "s")
 	field(LOPR, "0")
 	field(HOPR, "9999999")
