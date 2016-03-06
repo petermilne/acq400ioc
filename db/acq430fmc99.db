@@ -1,18 +1,3 @@
 
-# force rapid Hz and count reset on change of source.
-record(calcout, "${UUT}:${SITE}:SIG:clk_count:nzcount") {
-	field(INPJ, "${UUT}:${SITE}:SIG:clk_counter_src")
-}
-record(calc, "${UUT}:${SITE}:SIG:clk_count:COUNT") {
-	field(INPJ, "${UUT}:${SITE}:SIG:clk_counter_src")
-}
-record(calc, "${UUT}:${SITE}:SIG:sample_count:COUNT") {
-	field(INPJ, "${UUT}:${SITE}:SHOT")
-}
-record(calc, "${UUT}:${SITE}:SIG:SAMPLE_COUNT:COUNT") {
-	field(INPJ, "${UUT}:${SITE}:SHOT")
-}
-record(mbbo, "${UUT}:${SITE}:SIG:clk_counter_src") {
-	field(FLNK, "${UUT}:${SITE}:SIG:clk_count:nzcount")
-}
+include "db/acq4x0fmc99.db"
 
