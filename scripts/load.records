@@ -343,6 +343,7 @@ load_400() {
 	echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=sample_count,pname=sample_count'")'
 	echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=CLK_COUNT,pname=clk_count'")'
 	echo 'dbLoadRecords("db/counter.db","'${CTPR},lname=SAMPLE_COUNT,pname=sample_count'")'
+	echo 'dbLoadRecords("db/elapsed.db","'${CTPR},lname=SAMPLE_COUNT'")'
 
 	gain_file=${gain_file_pfx}.db
 	(

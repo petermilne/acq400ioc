@@ -18,6 +18,8 @@ int pre; 	assign pre to 		"{uut}:MODE:TRANSIENT:PRE";
 int soft_trig;	assign soft_trig to 	"{uut}:1:TRG:DX";
 int event;	assign event to		"{uut}:1:EVENT0";
 
+int reset;	assign reset to		"{uut}:1:SIG:SAMPLE_COUNT:RESET";
+
 monitor transient;
 monitor pre;
 
@@ -64,8 +66,10 @@ ss actOnContinuous {
 		} state wait_run
 		
 		when(cmode == 1){
+			reset = 1; pvPut(reset, ASYNC);
 			printf("actOnContinuous ENABLE link\n");
 			enable = 1; pvPut(enable);
+			reset = 0; pvPut(reset, SYNC);
 		} state wait_stop
 	}
 	
