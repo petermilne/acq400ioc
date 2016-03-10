@@ -240,6 +240,8 @@ long timebase(aSubRecord *prec) {
 #include "fftw3.h"
 
 #define MAXS	32768   // normalize /32768
+#define MAXL	0x7fffffff
+
 // avoid sqrt() function by dividing by 2 in log domain
 #define LOGSQRT(n)	((n)/2)
 
@@ -250,7 +252,7 @@ long timebase(aSubRecord *prec) {
 //#define SWAP(aa,bb,tt)  ( tt = aa, aa = bb, bb = tt )
 #define SWAP(x, y) do { typeof(x) SWAP = x; x = y; y = SWAP; } while (0)
 
-template <class T>
+template <class T, unsigned SCALE>
 class Spectrum {
 	const int N;
 	const int N2;
@@ -310,8 +312,8 @@ class Spectrum {
 		for (int ii = 0; ii < N; ++ii){
 			float I = out[ii][RE];
 			float Q = out[ii][IM];
-			I /= MAXS;
-			Q /= MAXS;
+			I /= SCALE;
+			Q /= SCALE;
 			R[ii] = (I*I + Q*Q);
 			float M = LOGSQRT(20*log10(R[ii])) - db0;
 
@@ -350,7 +352,7 @@ public:
 	}
 };
 
-template <class T>
+template <class T, unsigned SCALE>
 long spectrum(aSubRecord *prec)
 {
 	T *raw_i = reinterpret_cast<T*>(prec->a);
@@ -362,9 +364,9 @@ long spectrum(aSubRecord *prec)
 	float* freqs = prec->nob>1? reinterpret_cast<float*>(prec->valb): 0;
 	float *window = reinterpret_cast<float*>(prec->valc);
 
-	static Spectrum<T> *spectrum;
+	static Spectrum<T, SCALE> *spectrum;
 	if (!spectrum){
-		spectrum = new Spectrum<T>(len, window, freqs);
+		spectrum = new Spectrum<T, SCALE>(len, window, freqs);
 	}
 	spectrum->exec(raw_i, raw_q, mag, *fs);
 	return 0;
@@ -378,9 +380,9 @@ static registryFunctionRef my_asub_Ref[] = {
        {"cart2pol_LONG", (REGISTRYFUNCTION) cart2pol<long>},
        {"cart2pol_SHORT", (REGISTRYFUNCTION) cart2pol<short>},
        {"timebase", (REGISTRYFUNCTION) timebase},
-       {"spectrum", (REGISTRYFUNCTION) spectrum<short>},
-       {"spectrum_LONG", (REGISTRYFUNCTION) spectrum<long>},
-       {"spectrum_SHORT", (REGISTRYFUNCTION) spectrum<short>},
+       {"spectrum", (REGISTRYFUNCTION) spectrum<short, MAXS>},
+       {"spectrum_LONG", (REGISTRYFUNCTION) spectrum<long, MAXL>},
+       {"spectrum_SHORT", (REGISTRYFUNCTION) spectrum<short, MAXS>},
  };
 
  static void raw_to_uvolts_Registrar(void) {
