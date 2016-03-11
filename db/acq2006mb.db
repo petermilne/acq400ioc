@@ -28,6 +28,9 @@ record(calcout, "${UUT}:0:SIG:CLK_MB:w") {
 	field(OUT,  "@mb.proto setMB() ${SPORT}")
 }
 
+record(bi, "${UUT}:0:SIG:CLK_MB:READY") {
+	field(DTYP, "Soft Channel)
+}
 record(longout, "${UUT}:0:SIG:USER_FPCLK") {
 	field(DTYP, "Soft Channel")
 	field(DESC, "user definition of front panel clock")

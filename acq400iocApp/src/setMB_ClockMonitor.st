@@ -11,6 +11,7 @@ option +r;
 
 double Fs;	assign Fs to "{uut}:0:SIG:CLK_MB:SET";
 double Fm; 	assign Fm to "{uut}:0:SIG:CLK_MB:FREQ";
+int is_ready;	assign is_ready to "{uut}:0:SIG:CLK_MB:READY";
 
 monitor Fs;
 monitor Fm;
@@ -40,6 +41,7 @@ ss rate_set
 			printf("setMB_ClockMonitor th:%.2f\n", TH);
 			pvGet(Fs);
 			Fs0 = Fs;
+			is_ready = 0; pvPut(is_ready);
 		} state wait_change	
 	} 
 	
@@ -59,9 +61,11 @@ ss rate_set
 	state monitor_actual {
 		when(Fm != Fm0 && in_bounds(Fm, Fs, TH)){
 			Fm0 = Fm;
+			is_ready = 1; pvPut(is_ready);
 		} state wait_change 
 		
 		when(Fm != Fm0 && !in_bounds(Fm, Fs, TH) && ++pollcat > 4){
+			is_ready = 0; pvPut(is_ready);
 			Fm0 = Fm;
 			printf("WARNING: MB CLK Fs:%.2f != Fm:%.2f retry\n",
 				Fs, Fm);			
