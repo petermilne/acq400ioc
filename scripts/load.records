@@ -764,6 +764,10 @@ if [ -e "/tmp/st_pre.cmd" ]; then
 	cat /tmp/st_pre.cmd
 fi
 
+if [ -e "/mnt/local/sysconfig/site-aliases.db" ]; then
+		echo 'dbLoadRecords("/mnt/local/sysconfig/site-aliases.db","UUT='${HOST}'")'
+fi
+
 cat - <<EOF
 dbLoadRecords("db/local-aliases.db","UUT=${HOST}")
 iocInit()
