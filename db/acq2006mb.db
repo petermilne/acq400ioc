@@ -29,7 +29,7 @@ record(calcout, "${UUT}:0:SIG:CLK_MB:w") {
 }
 
 record(bi, "${UUT}:0:SIG:CLK_MB:READY") {
-	field(DTYP, "Soft Channel)
+	field(DTYP, "Soft Channel")
 }
 record(longout, "${UUT}:0:SIG:USER_FPCLK") {
 	field(DTYP, "Soft Channel")
