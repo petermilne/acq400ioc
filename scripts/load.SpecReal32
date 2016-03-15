@@ -20,10 +20,14 @@ make_AI() {
 }
 
 
-for ACQ400 in /etc/acq400/?
+for ACQ400 in /dev/acq400.[123456].knobs/
 do
-	if [ -e ${ACQ400}/ACQ43X_SAMPLE_RATE ]; then
-		make_AI ${ACQ400##*/}
-	fi
+	if [ -e ${ACQ400}/module_type ]
+	model=$(cat ${ACQ400}/module_type)
+	
+	case $model in
+		$MT_ACQ435|$MT_ACQ430|$MT_ACQ437)
+			make_AI $(cat $ACQ400/site);;
+	esac
 done
 
