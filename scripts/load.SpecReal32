@@ -23,11 +23,12 @@ make_AI() {
 for ACQ400 in /dev/acq400.[123456].knobs/
 do
 	if [ -e ${ACQ400}/module_type ]
-	model=$(cat ${ACQ400}/module_type)
+		model=$(cat ${ACQ400}/module_type)
 	
-	case $model in
+		case $model in
 		$MT_ACQ435|$MT_ACQ430|$MT_ACQ437)
 			make_AI $(cat $ACQ400/site);;
-	esac
+		esac
+	fi
 done
 
