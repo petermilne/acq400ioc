@@ -2,28 +2,28 @@ record(longout, "${UUT}:0:SIG:CLK_MB:SET") {
 	field(DTYP, "Soft Channel")
 	field(DESC, "MB CLK setpoint")
 	field(EGU,  "Hz")
-	field(LOPR, "4000000")
+	field(LOPR, "1000000")
 	field(HOPR, "100000000")	
-	field(FLNK, "${UUT}:0:SIG:CLK_MB:set_kHz")
-}
-
-record(calc, "${UUT}:0:SIG:CLK_MB:set_kHz") {
-	field(INPA,  "${UUT}:0:SIG:CLK_MB:SET")
-	field(CALC, "A/1000")
-	field(DESC, "MB CLK setpoint")
-	field(EGU,  "kHz")
 	field(FLNK, "${UUT}:0:SIG:CLK_MB:w")
 }
 
 record(longout, "${UUT}:0:SIG:CLK_MB:FIN") {
 	field(DTYP, "Soft Channel")
 	field(DESC, "best input frequency for MB_CLK if set")
+	field(EGU,  "Hz")
+	field(LOPR, "1000000")
+	field(HOPR, "100000000")	
 }
 record(calcout, "${UUT}:0:SIG:CLK_MB:w") {
-	field(INPA, "${UUT}:0:SIG:CLK_MB:set_kHz")
-	field(INPB, "${UUT}:0:SIG:CLK_EXT:FREQ")
-	field(INPC, "${UUT}:0:SIG:CLK_MB:FIN")
-	field(CALC, "(C>1000000? C: B)/1000")
+	field(INPA, "${UUT}:0:SIG:CLK_MB:SET")
+	field(INPB, "${UUT}:0:SIG:CLK_EXT:FREQ") # FREQ is NOT reliable!
+	field(INPC, "${UUT}:0:SIG:CLK_MB:FIN")	 # USER OVERRIDE	
+	field(INPE, "${UUT}:0:SIG:ZCLK_SRC")
+	field(INPF, "${UUT}:SYS:CLK:FPMUX")	
+	field(INPJ, "1000000")			# J: FIN VALID
+	field(INPK, "32768000")			# K: XCLK
+	field(INPL, "33333000")			# L: ZCLK
+	field(CALC, "C>J? C: F==1? K: F==3&&E==0?L: B")
 	field(DTYP, "stream")
 	field(OUT,  "@mb.proto setMB() ${SPORT}")
 }

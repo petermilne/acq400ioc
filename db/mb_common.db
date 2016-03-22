@@ -3,3 +3,79 @@ record(stringin, "${UUT}:SITELIST") {
 	field(INP,  "@mb.proto getSitelist ${SPORT}")
 	field(PINI, "YES")
 }
+record(longout, "${UUT}:0:SIG:USER_FPCLK") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "user definition of front panel clock")
+}
+
+record (longin, "${UUT}:0:NCHAN") {
+	field(DTYP, "stream")
+	field(INP, "@acq42x.proto getNchan ${SPORT}")
+	field(PINI, "YES")
+	field(SCAN, "1 second")	
+}
+
+record(mbbi, "${UUT}:0:SPAD:MODE") {
+	field(DTYP, "Soft Channel")
+	field(NOBT, "3")
+	field(ZRST, "OFF")
+	field(ONST, "SPAD")
+	field(TWST, "FRAME")
+	field(FLNK, "${UUT}:0:SPAD:MODE:w PP")
+}
+
+record(mbbi, "${UUT}:0:SPAD:LEN") {
+	field(DTYP, "Soft Channel")
+	field(NOBT, "3")
+	field(FLNK, "${UUT}:0:SPAD:MODE:w PP")
+}
+record(mbbi, "${UUT}:0:SPAD:DISEL") {
+	field(DTYP, "Soft Channel")
+	field(NOBT, "3")
+	field(ZRST, "OFF")
+	field(ONST, "DI4")
+	field(TWST, "DI32")
+	field(FLNK, "${UUT}:0:SPAD:MODE:w PP")
+}
+record(mbbo, "${UUT}:0:SPAD:MODE:w") {
+	field(DTYP, "stream")
+	field(NOBT, "3")
+	field(OUT,  "@mb.proto setSPAD(${UUT}:0:SPAD:LEN,${UUT}:0:SPAD:DISEL) ${SPORT}")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:0:SPAD:MODE:s.PACT")
+	field(DOL,  "${UUT}:0:SPAD:MODE PP")
+	field(OMSL, "closed_loop")
+}
+
+record(mbbi, "${UUT}:0:SPAD:MODE:r") {
+	field(DTYP, "stream")
+	field(NOBT, "3")
+	field(INP,  "@mb.proto getSPAD(${UUT}:0:SPAD:LEN:r,${UUT}:0:SPAD:DISEL:r) ${SPORT}")
+	field(SCAN, "1 second")	
+	field(FLNK, "${UUT}:0:SPAD:MODE:s")
+}
+
+record(mbbo, "${UUT}:0:SPAD:MODE:s") {
+	field(DTYP, "Soft Channel")
+	field(NOBT, "3")
+	field(DOL,  "${UUT}:0:SPAD:MODE:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:0:SPAD:MODE PP")
+}
+
+record(mbbi, "${UUT}:0:SPAD:LEN:r") {
+
+}
+record(mbbi, "${UUT}:0:SPAD:DISEL:r") {
+
+}
+
+record(longin, "${UUT}:0:QS:EMPTY"){
+	field(DTYP, "stream")
+	field(INP,  "@mb.proto getQstatsEmpty(${UUT}:0:QS) ${SPORT}")
+	field(SCAN, "1 second")
+}
+record(longin, "${UUT}:0:QS:FILLING"){}
+record(longin, "${UUT}:0:QS:FULL"){}
+record(longin, "${UUT}:0:QS:FULL_APP"){}
+record(longin, "${UUT}:0:QS:DROPS"){}

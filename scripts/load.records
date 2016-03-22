@@ -534,6 +534,11 @@ load_mb_sites() {
 	case $MB_MODEL in
 		kmcu)
 			;;
+		acq2106)
+			thst="ZCLK"
+			[ $(isRevA $MB_MODEL) -ne 0 ] && thst=""
+			echo 'dbLoadRecords("db/acq2006clktree.db","UUT='${HOST},thst=${thst}'")'
+			echo 'dbLoadRecords("db/acq2106mb.db","UUT='${HOST}',SPORT=S0")';;		
 		*)
 			thst="ZCLK"
 			[ $(isRevA $MB_MODEL) -ne 0 ] && thst=""
