@@ -6,6 +6,10 @@ setMB {
 	out "mb_clk %d %(A)d";
 }
 
+setMB_Hz {
+# fin Hz, fout (setpoint)
+	out "mb_clk %e %(A)e";
+}
 setSPAD {
 # EN,LEN,DI4/32
 	out "spad %i,%(\$1)i,%(\$2)i";

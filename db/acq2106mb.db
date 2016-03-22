@@ -25,7 +25,7 @@ record(calcout, "${UUT}:0:SIG:CLK_MB:w") {
 	field(INPL, "33333000")			# L: ZCLK
 	field(CALC, "C>J? C: F==1? K: F==3&&E==0?L: B")
 	field(DTYP, "stream")
-	field(OUT,  "@mb.proto setMB() ${SPORT}")
+	field(OUT,  "@mb.proto setMB_Hz() ${SPORT}")
 }
 
 record(bi, "${UUT}:0:SIG:CLK_MB:READY") {
