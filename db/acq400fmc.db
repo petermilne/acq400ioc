@@ -35,3 +35,13 @@ record (bi, "${UUT}:${SITE}:RUN") {
 	field(SCAN, "1 second")
 	field(PINI, "YES")		
 }
+
+record (longout, "${UUT}:${SITE}:INTCLK_HZ") {
+	field(DTYP, "Soft Channel")
+	field(PINI, "YES")
+	field(VAL,  "500000")
+	field(DESC, "Internal FCLK [Hz]")
+	field(LOPR, "10000")
+	field(HOPR, "${MAXHZ}")
+	field(EGU,  "Hz")
+}

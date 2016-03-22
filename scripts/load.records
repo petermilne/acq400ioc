@@ -320,10 +320,10 @@ load_400() {
 		make_deltrg ${site}
 	fi
 
-	echo 'dbLoadRecords("db/acq400fmc.db","'${cprams}'")'
+	echo 'dbLoadRecords("db/acq400fmc.db","'${cprams},'MAXHZ='${maxhz}'")'
 	
 	if [ "x$model" != "x$MT_ACQ480" ] && [ $HAS_ACQ43X -eq 0 ]; then
-		echo 'dbLoadRecords("db/acq420fmc.db","'${cprams},'LO='${LO}',MAXHZ='${maxhz}'")'
+		echo 'dbLoadRecords("db/acq420fmc.db","'${cprams},'LO='${LO}'")'
 	fi
 
 	if [ ${site} -eq 1 ] && [ $HAS_ACQ43X -eq 1 ]; then
