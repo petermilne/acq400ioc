@@ -56,6 +56,8 @@ record(longout, "${UUT}:${SITE}:DELTRG:ZN" ) {
 	field(DESC, "x(t) - x(t-ZN)")
 	field(VAL,  "1")
 	field(PINI, "YES")
+	field(SDIS, "${UUT}:${SITE}:RUN")
+	field(DISV, "1")
 }
 
 record(mbbiDirect, "${UUT}:${SITE}:ANATRG:SRC") {
