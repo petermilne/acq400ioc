@@ -305,6 +305,11 @@ class Spectrum {
 	}
 	void powerSpectrum(float* mag)
 	{
+		// ref http://www.fftw.org/fftw2_doc/fftw_2.html
+		// r0, r1, r2, ..., rn/2, i(n+1)/2-1, ..., i2, i1
+		// map to
+		// in,....i1,r0,r1, .... rn/2
+		// where r0 is at [N2]
 		float *mn = mag;	// neg freqs
 		float *mp = mag+N2;	// pos freqs
 
@@ -319,9 +324,9 @@ class Spectrum {
 
 			// FFTW presents the spectrum 0..-F,+F..0 ? fix that
 			if (ii < N2){
-				mn[N2-ii-1] = M;
+				mp[ii] = M;
 			}else{
-				mp[N-ii-1] = M;
+				mn[ii-N2] = M;
 			}
 		}
 	}
