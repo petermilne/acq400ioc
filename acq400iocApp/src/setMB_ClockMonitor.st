@@ -42,16 +42,9 @@ ss rate_set
 			pvGet(Fs);
 			Fs0 = Fs;
 			is_ready = 0; pvPut(is_ready);
-		} state wait_change	
+		} state wait_actual	
 	} 
-	
-	state wait_change {
-		when(Fs > 0 && Fs != Fs0 ){
-			Fs0 = Fs;
-			pollcat = 0;
-		} state wait_actual			
-	}
-	
+		
 	state wait_actual {
 		when (delay(1)){
 			;
@@ -59,10 +52,15 @@ ss rate_set
 	}
 	
 	state monitor_actual {
+		when(Fs > 0 && Fs != Fs0 ){
+			Fs0 = Fs;
+			pollcat = 0;
+		} state wait_actual
+			
 		when(Fm != Fm0 && in_bounds(Fm, Fs, TH)){
 			Fm0 = Fm;
 			is_ready = 1; pvPut(is_ready);
-		} state wait_change 
+		} state wait_actual 
 		
 		when(Fm != Fm0 && !in_bounds(Fm, Fs, TH) && ++pollcat > 4){
 			is_ready = 0; pvPut(is_ready);
