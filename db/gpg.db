@@ -83,7 +83,8 @@ record(longin, "${UUT}:0:GPG:DBG:RSTATE"){
 	field(INP,  "@mb.proto get_gpg_state(${UUT}) ${SPORT}")
 	# for max responsiveness
 	# dbpf ${UUT}:0:GPG:DBG:RSTATE.SCAN ".1 second"
-	field(SCAN, "1 second")
+# commented out to avoid log message since it's been removed from FPGA..	
+#	field(SCAN, "1 second")
 	field(FLNK, "${UUT}:0:GPG:DBG:STATE")	
 }
 record(mbbi, "${UUT}:0:GPG:DBG:STATE"){
