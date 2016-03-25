@@ -57,18 +57,20 @@ ss rate_set
 			pollcat = 0;
 		} state wait_actual
 			
-		when(Fm != Fm0 && in_bounds(Fm, Fs, TH)){
+		when(Fs > 0 && Fm != Fm0 && in_bounds(Fm, Fs, TH)){
 			Fm0 = Fm;
 			is_ready = 1; pvPut(is_ready);
 		} state wait_actual 
 		
-		when(Fm != Fm0 && !in_bounds(Fm, Fs, TH) && ++pollcat > 4){
-			is_ready = 0; pvPut(is_ready);
-			Fm0 = Fm;
-			printf("WARNING: MB CLK Fs:%.2f != Fm:%.2f retry\n",
-				Fs, Fm);			
-			pvPut(Fs);
-			pollcat = 0;
+		when(Fs > 0 && Fm != Fm0 && !in_bounds(Fm, Fs, TH)){
+			if (++pollcat > 4){
+				is_ready = 0; pvPut(is_ready);
+				Fm0 = Fm;
+				printf("WARNING: MB CLK Fs:%.2f != Fm:%.2f retry\n",
+					Fs, Fm);			
+				pvPut(Fs);
+				pollcat = 0;
+			}
 		} state wait_actual
 	}
 }
