@@ -37,5 +37,22 @@ getAggregatorSites {
 }
 
 getAggregatorEn {
-	in "reg=0x%*x %*s %{off|on}";
+	in "reg=0x%*x %*s DATA_MOVER_EN=%{off|on}";
+}
+
+getDistributor {
+	out "distributor";
+	in "reg=0x%08x %*s %*s %s";
+};
+
+getDistributorSites{
+	in "reg=0x%*08x %s %*s %*s";
+}
+
+getDistributorComms{
+	in "reg=0x%*08x %*s comms=%d %*s";
+}
+
+getDistributorEn {
+	in "reg=0x%*08x %*s comms=%*d DATA_MOVER_EN=%{off|on}";
 }
