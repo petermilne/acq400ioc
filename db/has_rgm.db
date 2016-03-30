@@ -1,0 +1,7 @@
+record(bi, "${UUT}:${SITE}:HAS_RGM") {
+	field(DTYP, "Soft Channel")
+	field(VAL,  "${HAS_RGM}")
+	field(PINI, "YES")
+	field(ZNAM, "0")
+	field(ONAM, "1")
+}
