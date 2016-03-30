@@ -98,12 +98,16 @@ record(bi, "${UUT}:${SITE}:ACQ480:JC:PRESENT") {
 	field(DTYP, "Soft Channel")
 	field(VAL,  "${JCP}")
 	field(PINI, "YES")
+	field(ZNAM, "0")
+	field(ONAM, "1")
 }
 
 record(bi, "${UUT}:${SITE}:ACQ480:HAS_50R") {
 	field(DTYP, "Soft Channel")
 	field(VAL,  "${T50R}")
 	field(PINI, "YES")
+	field(ZNAM, "0")
+	field(ONAM, "1")	
 }
 record(bi, "${UUT}:${SITE}:ACQ480:JC:LOS") {
 	field(DTYP, "stream")
@@ -111,6 +115,8 @@ record(bi, "${UUT}:${SITE}:ACQ480:JC:LOS") {
 	field(INP,  "@acq480.proto getJC(LOS) ${SPORT}")
 	field(SDIS, "${UUT}:${SITE}:ACQ480:JC:PRESENT")
 	field(DISV, "0")
+	field(ZNAM, "0")
+	field(ONAM, "1")	
 }
 
 record(bi, "${UUT}:${SITE}:ACQ480:JC:LOL") {
