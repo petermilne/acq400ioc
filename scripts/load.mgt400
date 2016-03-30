@@ -13,7 +13,7 @@ load_mgt400_fifo_stat()
 	do
 			ln=$(echo $pn | tr '[:lower:]' '[:upper:]')
 			mprams="${cprams},pn=${pn},ln=${ln},SPORT=${sport}"
-			echo 'dbLoadRecords("db/mgt400.db","'${mprams}'")'
+			dblr '"db/mgt400.db","'${mprams}'"'
 	done
 }
 
@@ -22,7 +22,7 @@ load_mgt400_sfp()
 		sprams="UUT=${HOST}"
 		for ch in 1 2 3 4
 		do
-				echo 'dbLoadRecords("db/mgt480sfp.db","'${sprams},CH=${ch}'")'		
+				dblr '"db/mgt480sfp.db","'${sprams},CH=${ch}'"'		
 		done	
 }
 
@@ -48,32 +48,30 @@ load_mgt400() {
 	# count is scaled by 0.5
 	ctprams="${cprams},CTRMAX=${CTR31},DT=1,DTC=0.5"
 	prams="${ctprams},lname=MGT:HB,pname=heartbeat"
-	echo 'dbLoadRecords("db/counter.db","'${prams}'")'
+	dblr '"db/counter.db","'${prams}'"'
 	
 	ctprams="${cprams},CTRMAX=${CTR31},DT=1,DTC=1"
 	prams="${ctprams},lname=MGT:PUSH:BUFS,pname=push_buffer_count"
-	echo 'dbLoadRecords("db/counter.db","'${prams}'")'
+	dblr '"db/counter.db","'${prams}'"'
 
 	ctprams="${cprams},CTRMAX=${CTR31},DT=1,DTC=1"
 	prams="${ctprams},lname=MGT:PULL:BUFS,pname=pull_buffer_count"
-	echo 'dbLoadRecords("db/counter.db","'${prams}'")'		
+	dblr '"db/counter.db","'${prams}'"'		
 	
 	ctprams="${cprams},CTRMAX=${CTR31},DT=1,DTC=1"
 	prams="${ctprams},lname=MGT:PUSH:BYTES,pname=push_buffer_count_lw"
-	echo 'dbLoadRecords("db/counter.db","'${prams}'")'	
+	dblr '"db/counter.db","'${prams}'"'	
 	
 	ctprams="${cprams},CTRMAX=${CTR31},DT=1,DTC=1"
 	prams="${ctprams},lname=MGT:PULL:BYTES,pname=pull_buffer_count_lw"
-	echo 'dbLoadRecords("db/counter.db","'${prams}'")'	
+	dblr '"db/counter.db","'${prams}'"'	
 		
 	HPRAMS="${cprams},size=$MGTHSIZE,type=LONG"
-	echo 'dbLoadRecords("db/hgMgt400.db","'${HPRAMS}'")'
+	dblr '"db/hgMgt400.db","'${HPRAMS}'"'
 	
 	load_mgt400_fifo_stat $cprams
 	let port="4220+$site"
-	
-	echo 'drvAsynIPPortConfigure("'${sport}'", "127.0.0.1:'${port}'")'
-	echo 'dbLoadRecords("db/asynRecord.db","P='${HOST}':,R=asyn:'${sport}',PORT='${sport}',ADDR=0,IMAX=100,OMAX=100")'
+	create_asyn_channel ${sport} 127.0.0.1:4221
 }
 #tr '[:upper:]' '[:lower:]'
 

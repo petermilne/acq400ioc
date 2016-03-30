@@ -13,7 +13,7 @@ make_anatrg() {
 
 		PRAMS="UUT=${HOST},SITE=${site},CH=${cid},SPORT=SA${site}"
 
-		echo dbLoadRecords\(\"db/anatrg.db\",\"${PRAMS}\"\)
+		dblr \"db/anatrg.db\",\"${PRAMS}\"
 	done
 	create_asyn_channel SA${site} 127.0.0.1:422${site}	
 }

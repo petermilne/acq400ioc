@@ -15,7 +15,7 @@ mkdir -p /dev/acq400/data/$SITE
 for led in /dev/bolo8/$SITE/LED?
 do
 	PRAMS="HS=${HS},SITE=${SITE},KNOB=${led},LED=$(basename ${led})"
-	echo 'dbLoadRecords("db/bolo8-led.db","'${PRAMS}'")'
+	dblr '"db/bolo8-led.db","'${PRAMS}'"'
 done
 
 # Currents
@@ -23,7 +23,7 @@ done
 for cur in /etc/acq400/$SITE/current/*
 do
 	PRAMS="HS=${HS},KNOB=${cur},CH=$(basename ${cur})"
-	echo 'dbLoadRecords("db/bolo8-current.db","'${PRAMS}'")'
+	dblr '"db/bolo8-current.db","'${PRAMS}'"'
 done
 
 # Offsets
@@ -31,7 +31,7 @@ done
 for dac in $(seq 1 8)
 do
 	PRAMS="HS=${HS},KNOB=/etc/acq400/$SITE/offset_dac${dac},CH=${dac}"
-	echo 'dbLoadRecords("db/bolo8-offset.db","'${PRAMS}'")'
+	dblr '"db/bolo8-offset.db","'${PRAMS}'"'
 done
 
 # gains
@@ -39,13 +39,13 @@ done
 for ch in $(seq 1 8)
 do
 	PRAMS="HS=${HS},KNOB=/dev/bolo8/${SITE}/ADC_${ch}_,CH=${ch}"
-	echo 'dbLoadRecords("db/bolo8-gains.db","'${PRAMS}'")'
+	dblr '"db/bolo8-gains.db","'${PRAMS}'"'
 done
 
 # hwmon
-echo 'dbLoadRecords("db/bolo8-main.db","'HS=${HS},SITE=${SITE}'")'
+dblr '"db/bolo8-main.db","'HS=${HS},SITE=${SITE}'"'
 
 # "UUT=acq1001_030,SITE=0,CTRMAX=1048576,DT=1,
 PRAMS="UUT=${HOST},SITE=${SITE},CTRMAX=1048576,DT=1,DTC=1"
-echo 'dbLoadRecords("db/counter.db","'${PRAMS},lname=ADC_SAMPLE_COUNT,pname=adc_sample_count'")'
-echo 'dbLoadRecords("db/counter.db","'${PRAMS},lname=DAC_SAMPLE_COUNT,pname=dac_sample_count'")'
+dblr '"db/counter.db","'${PRAMS},lname=ADC_SAMPLE_COUNT,pname=adc_sample_count'"'
+dblr '"db/counter.db","'${PRAMS},lname=DAC_SAMPLE_COUNT,pname=dac_sample_count'"'

@@ -28,7 +28,7 @@ make_AI() {
 			let rawqx=$ch
 			rawq=$(printf "%02d" $rawqx)
 			cp="cid=${cid},cid2=${cid2},rawi=${rawi},rawq=${rawq}"
-			echo dbLoadRecords\(\"db/wfComplexTest.db\",\"${wprams},${cp}\"\)
+			dblr \"db/wfComplexTest.db\",\"${wprams},${cp}\"
 		fi
 		
 	done	
