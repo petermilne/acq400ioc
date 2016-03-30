@@ -2,7 +2,7 @@ record(mbbo, "${UUT}:${SITE}:RGM") {
 	field(DTYP, "Soft Channel")
 	field(NOBT, "2")
 	field(ZRST, "OFF")
-    	field(ONST, "SRTM")
+    	field(ONST, "${SRTM}")
     	field(TWST, "RGM")
     	field(THST, "RTM")
     	field(FRST, "NC")		

@@ -326,13 +326,17 @@ load_400() {
 		dblr '"db/acq420fmc.db","'${cprams},'LO='${LO}'"'
 	fi
 
-	if [ ${site} -eq 1 ] && [ $HAS_ACQ43X -eq 1 ]; then
-		# MUST  be AFTER acq420fmc.d to hook the right DT0			
-		echo 1>&2 "HAS_ACQ43X Detected: $HAS_ACQ43X"
-		#ACQ435 .. nb HIRES makes it /2
+	if [ ${site} -eq 1 ]; then
 		mprams="UUT=${HOST},SITE=${site},SPORT=S1M"
-		dblr '"db/acq430fmc.db","'${mprams},LO=$LO'"'
-		dblr '"db/acq43x_rgm.db","'${mprams}'"'			
+		if [ $HAS_ACQ43X -eq 1 ]; then
+			dblr '"db/acq43x_rgm.db","'${mprams},SRTM=SRTM'"'
+			echo 1>&2 "HAS_ACQ43X Detected: $HAS_ACQ43X"
+			#ACQ435 .. nb HIRES makes it /2
+			# MUST  be AFTER acq420fmc.d to hook the right DT0
+			dblr '"db/acq430fmc.db","'${mprams},LO=$LO'"'
+		elif [ "x$model" == "x$MT_ACQ480" ]; then
+			dblr '"db/acq43x_rgm.db","'${mprams},SRTM="nc"'"'
+		fi
 	fi	
 				
 	HPRAMS="${cprams},size=$HSIZE,type=LONG,fname=HG.${site}"
