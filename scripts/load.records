@@ -337,7 +337,7 @@ load_400() {
 			dblr '"db/acq430fmc.db","'${mprams},LO=$LO'"'
 			has_rgm=1
 		elif [ "x$model" == "x$MT_ACQ480" ]; then
-			dblr '"db/acq43x_rgm.db","'${mprams},SRTM="nc"'"'
+			dblr '"db/acq4xx_rgm.db","'${mprams},SRTM="nc"'"'
 			has_rgm=1
 		fi
 		dblr '"db/has_rgm.db","'${mprams},HAS_RGM=$has_rgm'"'

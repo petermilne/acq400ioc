@@ -74,37 +74,6 @@ record(longin, "${UUT}:${SITE}:DIV") {
 	field(SCAN, "I/O Intr")
 }
 
-record(longout, "${UUT}:${SITE}:RTM_TRANSLEN") {
-	field(DTYP, "Soft Channel")
-	field(LOPR, "1")
-	field(HOPR, "16777215")
-	field(FLNK, "${UUT}:${SITE}:RTM_TRANSLEN:w PP")
-	field(DISV, "1")
-	field(SDIS, "${UUT}:${SITE}:RUN")
-}
-
-record(longout, "${UUT}:${SITE}:RTM_TRANSLEN:w") {
-	field(DTYP, "stream")
-	field(OUT,  "@acq43x.proto setRtmTranslen ${SPORT}")	
-	field(DISV, "1")
-	field(SDIS, "{UUT}:${SITE}:RTM_TRANSLEN:s.PACT")
-	field(DOL,  "${UUT}:${SITE}:RTM_TRANSLEN PP")
-	field(OMSL, "closed_loop")
-}
-
-record(longin, "${UUT}:${SITE}:RTM_TRANSLEN:r") {
-	field(DTYP, "stream")
-	field(INP,  "@acq43x.proto getRtmTranslen ${SPORT}")
-	field(SCAN, "1 second")
-	field(FLNK, "${UUT}:${SITE}:RTM_TRANSLEN:s")
-}
-
-record(longout, "${UUT}:${SITE}:RTM_TRANSLEN:s") {
-	field(DTYP, "Soft Channel")
-	field(DOL,  "${UUT}:${SITE}:RTM_TRANSLEN:r NPP")
-	field(OMSL, "closed_loop")
-	field(OUT,  "${UUT}:${SITE}:RTM_TRANSLEN PP")
-}
 
 record(longout, "${UUT}:${SITE}:ACQ43X_SAMPLE_RATE") {
 	field(DTYP, "Soft Channel")
