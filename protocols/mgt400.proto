@@ -42,11 +42,11 @@ getAggregatorEn {
 
 getDistributor {
 	out "distributor";
-	in "reg=0x%08x %*s %*s %s";
+	in "reg=0x%08x %*s comms=%*d %*s";
 };
 
 getDistributorSites{
-	in "reg=0x%*08x %s %*s %*s";
+	in "reg=0x%*08x %s comms=%*d %*s";
 }
 
 getDistributorComms{
