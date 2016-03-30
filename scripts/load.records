@@ -273,12 +273,18 @@ load_400() {
 		else
 			jcp=0
 		fi
+		
+		t50r=0
+		[ -e /etc/acq400/$site/T50R_1 ] && t50r=1
+		
 		for ic in $(seq 1 8); do
 			ch=$(printf "%02d" $ic)
-			echo 'dbLoadRecords("db/acq480fmc.db","'${mprams},CH=${ch},JCP=${jcp}'")'
-			echo 'dbLoadRecords("db/acq480fmc50R.db","'${mprams},CH=:${ch},RAW=_${ic}'")'
+			dblr '"db/acq480fmc.db","'${mprams},CH=${ch},JCP=${jcp}'"'
+			[ $t50r -ne 0 ] && \
+				dblr '"db/acq480fmc50R.db","'${mprams},CH=:${ch},RAW=_${ic}'"'
 		done
-		echo 'dbLoadRecords("db/acq480fmc50R.db","'${mprams},CH=,RAW='")';;		
+		[ $t50r -ne 0 ] && \
+			dblr '"db/acq480fmc50R.db","'${mprams},CH=,RAW='"';;		
 	$MT_AO420|$MT_AO424)
 		load_AO $site $model $cprams		
 		let LO=66000000;;
@@ -288,7 +294,7 @@ load_400() {
 		return;;
 	$MT_PIG_CELF)
 		is_adc="sar"
-		echo 'dbLoadRecords("db/pigcelf.db","'${cprams}'")'
+		dblr '"db/pigcelf.db","'${cprams}'"'
 		calmon=none;;
 	esac
 	
