@@ -13,6 +13,9 @@ get_nchan() {
     fi
 }
 
+dblr() {
+	echo 'dbLoadRecords(' $* ');'
+}
 get_range() {
 	site=$1
 	if [ -e /etc/acq400/${site}/PART_NUM ]; then
