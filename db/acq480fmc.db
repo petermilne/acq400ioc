@@ -99,6 +99,12 @@ record(bi, "${UUT}:${SITE}:ACQ480:JC:PRESENT") {
 	field(VAL,  "${JCP}")
 	field(PINI, "YES")
 }
+
+record(bi, "${UUT}:${SITE}:ACQ480:HAS_50R") {
+	field(DTYP, "Soft Channel")
+	field(VAL,  "${T50R}")
+	field(PINI, "YES")
+}
 record(bi, "${UUT}:${SITE}:ACQ480:JC:LOS") {
 	field(DTYP, "stream")
 	field(SCAN, "1 second")
