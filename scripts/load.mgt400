@@ -70,7 +70,7 @@ load_mgt400() {
 	dblr '"db/hgMgt400.db","'${HPRAMS}'"'
 	
 	load_mgt400_fifo_stat $cprams
-	let port="4220+$site"
+	let sport="4220+$site"
 	create_asyn_channel ${sport} 127.0.0.1:4221
 }
 #tr '[:upper:]' '[:lower:]'
