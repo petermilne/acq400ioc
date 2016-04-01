@@ -1,0 +1,3 @@
+record(calc, "${UUT}:${SITE}:SIG:${lname}:COUNT") {
+	field(INPC, "2")
+}

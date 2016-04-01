@@ -536,6 +536,7 @@ load_mb_sites() {
 			CTPRAMS="${CPRAMS},CTRMAX=${SCMAX},DT=${dt},DTC=${dt}"
 			PRAMS="${CTPRAMS},lname=${counter#scount_*},pname=${counter}"
 			dblr '"db/counter.db","'${PRAMS}'"'
+			[ $ACQ480_COUNT -ge 1 ] && dblr '"db/acq480_site_counter_prescale.db","'${PRAMS}'"'
 		done
 	)
 
