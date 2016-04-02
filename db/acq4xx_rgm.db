@@ -115,9 +115,27 @@ record(longout, "${UUT}:${SITE}:RTM_TRANSLEN") {
 	field(DTYP, "Soft Channel")
 	field(LOPR, "1")
 	field(HOPR, "16777215")
-	field(FLNK, "${UUT}:${SITE}:RTM_TRANSLEN:w PP")
+	
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:RUN")
+	field(FLNK, "${UUT}:${SITE}:RTM_TRANSLEN:ONCHANGE PP")
+}
+
+record(calcout, "${UUT}:${SITE}:RTM_TRANSLEN:ONCHANGE") {
+	field(INPA, "${UUT}:${SITE}:RTM_TRANSLEN")
+	field(CALC, "A")
+	field(OOPT, "On Change")
+	field(DOPT, "CALC")
+	field(OUT,  "${UUT}:0:RTM_FIT PP")
+	field(LOPR, "0")
+	field(HOPR, "16777216")
+	field(FLNK, "${UUT}:${SITE}:RTM_TRANSLEN:w PP")	
+}
+
+record(longout, "${UUT}:0:RTM_FIT")
+{
+	field(DTYP, "stream")
+	field(OUT,  "@mb.proto setFitRtmTranslenBuffer S0")	
 }
 
 record(longout, "${UUT}:${SITE}:RTM_TRANSLEN:w") {
@@ -127,12 +145,7 @@ record(longout, "${UUT}:${SITE}:RTM_TRANSLEN:w") {
 	field(SDIS, "{UUT}:${SITE}:RTM_TRANSLEN:s.PACT")
 	field(DOL,  "${UUT}:${SITE}:RTM_TRANSLEN PP")
 	field(OMSL, "closed_loop")
-	field(FLNK, "${UUT}:0:RTM_FIT")
-}
-record(longout, "${UUT}:0:RTM_FIT")
-{
-	field(DTYP, "stream")
-	field(OUT,  "@mb.proto setFitRtmTranslenBuffer S0")
+
 }
 
 record(longin, "${UUT}:${SITE}:RTM_TRANSLEN:r") {
