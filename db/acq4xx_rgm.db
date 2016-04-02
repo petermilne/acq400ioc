@@ -127,6 +127,12 @@ record(longout, "${UUT}:${SITE}:RTM_TRANSLEN:w") {
 	field(SDIS, "{UUT}:${SITE}:RTM_TRANSLEN:s.PACT")
 	field(DOL,  "${UUT}:${SITE}:RTM_TRANSLEN PP")
 	field(OMSL, "closed_loop")
+	field(FLNK, "${UUT}:0:RTM_FIT")
+}
+record(longout, "${UUT}:0:RTM_FIT")
+{
+	field(DTYP, "stream")
+	field(OUT,  "@mb.proto setFitRtmTranslenBuffer S0")
 }
 
 record(longin, "${UUT}:${SITE}:RTM_TRANSLEN:r") {
