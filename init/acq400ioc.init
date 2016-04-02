@@ -36,7 +36,7 @@ else
 	echo \${VALUE}
 fi
 EOF
-		chmod a+rx $VERB		
+		chmod 0555 $VERB
 	fi
 	ln -s $VERB /etc/acq400/$3/$2
 }
