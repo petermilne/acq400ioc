@@ -114,7 +114,11 @@ make_epics_knobs() {
 	do
 		NU=${PV#*:}
 		SITE=${NU:0:1}
-		make_caget $PV ${NU#*:} ${SITE}	
+		if [ "${PV%*SET}" != "$PV" ]; then
+			make_caput $PV ${NU#*:} ${SITE}
+		else
+			make_caget $PV ${NU#*:} ${SITE}
+		fi
 	done
 	for PV in $(egrep GAIN $RL | grep -v .[a-z]$ )
 	do
