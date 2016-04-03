@@ -267,14 +267,17 @@ load_400() {
 		has_ch_gains=1
 		calmon=calmon480
 		create_asyn_channel S${site}_480 127.0.0.1:422${site}
+		create_asyn_channel S${site}_480t 127.0.0.1:432${site}
 		mprams="UUT=${HOST},SITE=${site},SPORT=S${site}_480"
 		t50r=0;jcp=0
 		[ -e /etc/acq400/${site}/T50R_1 ] && t50r=1
 		[ -e /dev/acq480/${site}/JC ] && jcp=1
 		
+		dblr '"db/acq480fmc.db","'${mprams},SPTRAIN=S${site}_480t,JCP=${jcp},T50R=${t50r}'"'
+
 		for ic in $(seq 1 8); do
 			ch=$(printf "%02d" $ic)
-			dblr '"db/acq480fmc.db","'${mprams},CH=${ch},JCP=${jcp},T50R=${t50r}'"'
+			dblr '"db/acq480fmc_adc.db","'${mprams},CH=${ch}'"'
 			[ $t50r -ne 0 ] && \
 				dblr '"db/acq480fmc50R.db","'${mprams},CH=:${ch},RAW=_${ic}'"'
 		done

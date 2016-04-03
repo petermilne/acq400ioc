@@ -1,98 +1,6 @@
 # acq480 knobs - gain, invert, hpf, lfns, decimation
-# UUT, SITE, SPORT, CH
+# UUT, SITE, SPORT, JCP SPTRAIN
 
-record(bo, "${UUT}:${SITE}:ACQ480:INVERT:${CH}") {
-	field(DTYP, "stream")
-	field(OUT,  "@acq480.proto setInvert(${CH}) ${SPORT}")
-	field(ZNAM, "REG")
-	field(ONAM, "INV")
-	field(PINI, "YES")
-	field(VAL,  "0")
-}
-
-record(mbbo, "${UUT}:${SITE}:ACQ480:GAIN:${CH}") {
-	field(DTYP, "stream")
-	field(OUT,  "@acq480.proto setGain(${CH}) ${SPORT}")
-	field(NOBT, "4")
-	field(ZRST, "0 dB")
-	field(ONST, "1 dB")
-	field(TWST, "2 dB")
-	field(THST, "3 dB")
-	field(FRST, "4 dB")
-	field(FVST, "5 dB")
-	field(SXST, "6 dB")
-	field(SVST, "7 dB")
-	field(EIST, "8 dB")
-	field(NIST, "9 dB")
-	field(TEST, "10 dB")
-	field(ELST, "11 dB")
-	field(TVST, "12 dB")
-	field(FLNK, "${UUT}:${SITE}:GAIN_CHANGES")
-}
-
-record (calc, "${UUT}:${SITE}:GAIN_CHANGES") {
-	field(INPA, "${UUT}:${SITE}:GAIN_CHANGES")
-	field(CALC, "A+1")
-}
-
-record(mbbo, "${UUT}:${SITE}:ACQ480:HPF:${CH}") {
-	field(DTYP, "stream")
-	field(OUT,  "@acq480.proto setHPF(${CH}) ${SPORT}")	
-	field(NOBT, "4")
-	field(ZRST, "OFF")
-	field(ONST, "do not use")
-	field(TWST, "K2")
-	field(THST, "K3")
-	field(FRST, "K4")
-	field(FVST, "K5")
-	field(SXST, "K6")
-	field(SVST, "K7")
-	field(EIST, "K8")
-	field(NIST, "K9")
-	field(TEST, "K10")
-}
-
-record(bo, "${UUT}:${SITE}:ACQ480:LFNS:${CH}") {
-	field(DTYP, "stream")
-	field(OUT,  "@acq480.proto setLFNS(${CH}) ${SPORT}")
-	field(ZNAM, "OFF")
-	field(ONAM, "ON")
-	field(PINI, "YES")
-	field(VAL,  "0")
-}
-
-record(mbbo, "${UUT}:${SITE}:ACQ480:FIR:${CH}") {
-	field(DTYP, "stream")
-	field(OUT,  "@acq480.proto setFIR(${CH}) ${SPORT}")
-	field(NOBT, "4")
-	field(ZRST, "DISABLE")
-	field(ONST, "LP_ODD_D2")
-	field(TWST, "HP_ODD_D2")
-	field(THST, "LP_EVEN_D4")
-	field(FRST, "BP1_EVEN_D4")
-	field(FVST, "BP2_EVEN_D4")
-	field(SXST, "HP_ODD_D4")
-	field(SVST, "CUSTOM_D2")
-	field(EIST, "CUSTOM_D4")
-	field(NIST, "CUSTOM_D8")
-	field(TEST, "CUSTOM_D1")
-	field(PINI, "YES")
-	field(VAL,  "0")
-}
-
-record(dfanout, "${UUT}:${SITE}:ACQ480:FIR:01:fanout") {
-	field(OMSL, "closed_loop")
-	field(DOL,  "${UUT}:${SITE}:ACQ480:FIR:01")
-	field(SELM, "All")
-	field(OUTA, "${UUT}:${SITE}:ACQ480:FIR:DECIM PP")
-	field(OUTB, "${UUT}:${SITE}:ACQ480:FIR:02 PP")
-	field(OUTC, "${UUT}:${SITE}:ACQ480:FIR:03 PP")
-	field(OUTD, "${UUT}:${SITE}:ACQ480:FIR:04 PP")
-	field(OUTE, "${UUT}:${SITE}:ACQ480:FIR:05 PP")
-	field(OUTF, "${UUT}:${SITE}:ACQ480:FIR:06 PP")
-	field(OUTG, "${UUT}:${SITE}:ACQ480:FIR:07 PP")
-	field(OUTH, "${UUT}:${SITE}:ACQ480:FIR:08 PP")	
-}
 
 record(bi, "${UUT}:${SITE}:ACQ480:JC:PRESENT") {
 	field(DTYP, "Soft Channel")
@@ -129,7 +37,7 @@ record(bi, "${UUT}:${SITE}:ACQ480:JC:LOL") {
 
 record(mbbi, "${UUT}:${SITE}:ACQ480:TRAIN") {
 	field(DTYP, "stream")
-	field(INP,  "@acq480.proto getTrain ${SPORT}")
+	field(INP,  "@acq480.proto getTrain ${SPTRAIN}")
 	field(NOBT, "3")
 	field(ZRST, "ACQ480_RESET")
 	field(ONST, "ACQ480_START")
@@ -140,6 +48,6 @@ record(mbbi, "${UUT}:${SITE}:ACQ480:TRAIN") {
 	field(SXST, "ACQ480_ACTIVATE")
 	field(SVST, "ACQ480_FAIL")
 	field(SVSV, "MAJOR")
-	field(SCAN, ".2 second")
+	field(SCAN, "I/O Intr")
 }
 

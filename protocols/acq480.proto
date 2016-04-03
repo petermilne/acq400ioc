@@ -38,8 +38,8 @@ getT50R {
 	in "%d";
 }
 
+# getTrain : unsolicited data on 4320+SITE
 getTrain {
-	out "train";
 	in "%d";
 }
 
