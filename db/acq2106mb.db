@@ -14,6 +14,8 @@ record(longout, "${UUT}:0:SIG:CLK_MB:FIN") {
 	field(LOPR, "1000000")
 	field(HOPR, "100000000")	
 }
+# setMB_Hz fin fout 
+# ie OVAL, A, when A!=0
 record(calcout, "${UUT}:0:SIG:CLK_MB:w") {
 	field(INPA, "${UUT}:0:SIG:CLK_MB:SET")
 	field(INPB, "${UUT}:0:SIG:CLK_EXT:FREQ") # FREQ is NOT reliable!
@@ -23,9 +25,10 @@ record(calcout, "${UUT}:0:SIG:CLK_MB:w") {
 	field(INPJ, "1000000")			# J: FIN VALID
 	field(INPK, "32768000")			# K: XCLK
 	field(INPL, "33333000")			# L: ZCLK
-	field(CALC, "C>J? C: F==1? K: F==3&&E==0?L: B")
+	field(CALC, "A")
 	field(DTYP, "stream")
-	field(DOPT, "Use CALC")
+	field(OCAL, "C>J? C: F==1? K: F==3&&E==0?L: B")
+	field(DOPT, "Use OCAL")
 	field(OOPT, "When Non-zero")
 	field(OUT,  "@mb.proto setMB_Hz() ${SPORT}")
 }
