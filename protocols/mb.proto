@@ -9,7 +9,17 @@ setMB {
 setMB_Hz {
 # fin Hz, fout (setpoint)
 	out "mb_clk %e %(A)e";
+	out "acq480_force_training 1";
 }
+
+setTrainReq {
+	out "acq480_force_training %d";
+}
+getTrainReq {
+	out "acq480_force_training";
+	in "%d";
+}
+
 setSPAD {
 # EN,LEN,DI4/32
 	out "spad %i,%(\$1)i,%(\$2)i";

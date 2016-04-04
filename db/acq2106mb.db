@@ -31,6 +31,7 @@ record(calcout, "${UUT}:0:SIG:CLK_MB:w") {
 	field(DOPT, "Use OCAL")
 	field(OOPT, "When Non-zero")
 	field(OUT,  "@mb.proto setMB_Hz() ${SPORT}")
+	field(FLNK, "${UUT}:0:SIG:CLK:TRAIN_REQ")
 }
 
 record(bi, "${UUT}:0:SIG:CLK_MB:READY") {
@@ -41,6 +42,33 @@ record(bi, "${UUT}:0:SIG:CLK_MB:READY") {
 	field(ZNAM, "0")
 }
 
+record(bo, "${UUT}:0:SIG:CLK:TRAIN_REQ") {
+	field(DTYP, "Soft Channel")
+	field(ZNAM, "0")
+	field(ONAM, "1")
+	field(FLNK, "${UUT}:0:SIG:CLK:TRAIN_REQ:w PP")
+}
+
+record(bi, "${UUT}:0:SIG:CLK:TRAIN_REQ:r") {
+	field(DTYP, "Stream")
+	field(SCAN, "0.5 Second")
+	field(INP,  "@mb.proto getTrainReq() ${SPORT}")
+	field(FLNK, "${UUT}:0:SIG:CLK:TRAIN_REQ:s")
+}
+
+record(bo, "${UUT}:0:SIG:CLK:TRAIN_REQ:s") {
+	field(DTYP, "Soft Channel")
+	field(DOL,  "${UUT}:0:SIG:CLK:TRAIN_REQ:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:0:SIG:CLK:TRAIN_REQ PP")
+}
+
+record(bo, "${UUT}:0:SIG:CLK:TRAIN_REQ:w") {
+	field(DTYP, "Stream")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:0:SIG:CLK:TRAIN_REQ:s.PACT") 
+	field(OUT,  "@mb.proto setTrainReq() ${SPORT}")
+}
 record(longin, "${UUT}:0:DISTRIBUTOR") {
 	field(DTYP,  "stream")
 	field(INP,   "@mgt400.proto getDistributor ${SPORT}")	
