@@ -15,7 +15,7 @@ record(bi, "${UUT}:${SITE}:ACQ480:HAS_50R") {
 	field(VAL,  "${T50R}")
 	field(PINI, "YES")
 	field(ZNAM, "0")
-	field(ONAM, "1")	
+	field(ONAM, "1")
 }
 record(bi, "${UUT}:${SITE}:ACQ480:JC:LOS") {
 	field(DTYP, "stream")
@@ -24,7 +24,7 @@ record(bi, "${UUT}:${SITE}:ACQ480:JC:LOS") {
 	field(SDIS, "${UUT}:${SITE}:ACQ480:JC:PRESENT")
 	field(DISV, "0")
 	field(ZNAM, "0")
-	field(ONAM, "1")	
+	field(ONAM, "1")
 }
 
 record(bi, "${UUT}:${SITE}:ACQ480:JC:LOL") {
@@ -33,6 +33,26 @@ record(bi, "${UUT}:${SITE}:ACQ480:JC:LOL") {
 	field(INP,  "@acq480.proto getJC(LOL) ${SPORT}")
 	field(SDIS, "${UUT}:${SITE}:ACQ480:JC:PRESENT")
 	field(DISV, "0")
+	field(ZNAM, "0")
+	field(ONAM, "1")
+}
+
+record(bi, "${UUT}:${SITE}:ACQ480:LINK:LOTI") {
+	field(DTYP, "stream")
+	field(SCAN, "1 second")
+	field(INP,  "@acq480.proto getLOTI ${SPORT}")
+	field(SDIS, "${UUT}:${SITE}:ACQ480:LINK:LOTI:na")
+	field(DISV, "-1")
+	field(VAL,  "0")
+	field(DESC, "link Loss Of Training Indicator")
+	field(ZNAM, "0")
+	field(ONAM, "1")
+}
+
+record(longin, "${UUT}:${SITE}:ACQ480:LINK:LOTI:na") {
+	field(DTYP, "stream")
+	field(INP,  "@acq480.proto getLOTI ${SPORT}")
+	field(PINI, "YES")
 }
 
 record(bo, "${UUT}:${SITE}:SIG:CLK:TRAIN_BSY") {

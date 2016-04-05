@@ -47,3 +47,8 @@ getJC {
 	out "JC_\$1";
 	in "%d";
 }
+
+getLOTI {
+	out "acq480_loti";
+	in "%d";
+}
