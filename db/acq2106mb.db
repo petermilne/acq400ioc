@@ -30,8 +30,7 @@ record(calcout, "${UUT}:0:SIG:CLK_MB:w") {
 	field(OCAL, "C>J? C: F==1? K: F==3&&E==0?L: B")
 	field(DOPT, "Use OCAL")
 	field(OOPT, "When Non-zero")
-	field(OUT,  "@mb.proto setMB_Hz() ${SPORT}")
-	field(FLNK, "${UUT}:0:SIG:CLK:TRAIN_REQ")
+	field(OUT,  "@mb.proto setMB_Hz() ${SPORT}")	
 }
 
 record(bi, "${UUT}:0:SIG:CLK_MB:READY") {
@@ -53,8 +52,8 @@ record(bo, "${UUT}:0:SIG:CLK:TRAIN_REQ") {
 
 
 record(bi, "${UUT}:0:SIG:CLK:TRAIN_REQ:r") {
-	field(DTYP, "Stream")
-	field(SCAN, ".5 second")
+	field(DTYP, "stream")
+	field(SCAN, "1 second")
 	field(INP,  "@mb.proto getTrainReq() ${SPORT}")
 	field(FLNK, "${UUT}:0:SIG:CLK:TRAIN_REQ:s")
 }
@@ -67,7 +66,7 @@ record(bo, "${UUT}:0:SIG:CLK:TRAIN_REQ:s") {
 }
 
 record(bo, "${UUT}:0:SIG:CLK:TRAIN_REQ:w") {
-	field(DTYP, "Stream")
+	field(DTYP, "stream")
 	field(DISV, "1")
 	field(SDIS, "${UUT}:0:SIG:CLK:TRAIN_REQ:s.PACT") 
 	field(OUT,  "@mb.proto setTrainReq() ${SPORT}")
