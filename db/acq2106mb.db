@@ -51,9 +51,16 @@ record(bo, "${UUT}:0:SIG:CLK:TRAIN_REQ") {
 	field(PINI, "YES")
 }
 
+record(bo, "${UUT}:0:SIG:CLK:TRAIN_BSY") {
+	field(DTYP, "Soft Channel")
+	field(ZNAM, "0")
+	field(ONAM, "1")
+	field(VAL,  "0")
+	field(PINI, "YES")
+}
 record(bi, "${UUT}:0:SIG:CLK:TRAIN_REQ:r") {
 	field(DTYP, "Stream")
-	field(SCAN, ".5 Second")
+	field(SCAN, ".5 second")
 	field(INP,  "@mb.proto getTrainReq() ${SPORT}")
 	field(FLNK, "${UUT}:0:SIG:CLK:TRAIN_REQ:s")
 }
