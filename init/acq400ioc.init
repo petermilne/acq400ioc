@@ -115,9 +115,9 @@ make_epics_knobs() {
 		NU=${PV#*:}
 		SITE=${NU:0:1}
 		case $PV in
-			*SET|*READY|*BSY)
+			*SET|*READY|*BSY|*SRC*|*FIN|*OUT*|*USER*)
 				make_caput $PV ${NU#*:} ${SITE};;
-			default)
+			*)
 				make_caget $PV ${NU#*:} ${SITE};;
 		esac
 	done
