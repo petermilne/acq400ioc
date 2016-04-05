@@ -35,6 +35,13 @@ record(bi, "${UUT}:${SITE}:ACQ480:JC:LOL") {
 	field(DISV, "0")
 }
 
+record(bo, "${UUT}:${SITE}:SIG:CLK:TRAIN_BSY") {
+	field(DTYP, "Soft Channel")
+	field(ZNAM, "0")
+	field(ONAM, "1")
+	field(VAL,  "0")
+	field(PINI, "YES")
+}
 record(mbbi, "${UUT}:${SITE}:ACQ480:TRAIN") {
 	field(DTYP, "stream")
 	field(INP,  "@acq480.proto getTrain ${SPTRAIN}")
