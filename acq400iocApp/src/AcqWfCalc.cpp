@@ -109,10 +109,10 @@ template <class T> double square(T raw) {
 	return dr*dr;
 }
 
-template <class T> T scale(T raw) { return raw; }
-template <long> long scale(long raw) { return raw >> 8; }
+template <class T, int SHR> T scale(T raw) { return raw >> SHR; }
 
-template <class T>
+
+template <class T, int SHR>
 long raw_to_volts(aSubRecord *prec) {
 	double yy;
 	T *raw = (T *)prec->a;
@@ -144,25 +144,18 @@ long raw_to_volts(aSubRecord *prec) {
 		printf("raw_to_volts() ->c %p vmax %f\n", prec->c, vmax);
 		printf("raw_to_volts() len:%d th:%ld p_over:%p\n",
 				len, alarm_threshold, p_over_range);
+		printf("scale %x becomes %x\n", 0xdead, (unsigned)scale<T, SHR>(0xdead));
 	}
 
 	if (::verbose && strstr(prec->name, ":01") != 0){
 		printf("%s : aslo:%.6e aoff:%.6e\n", prec->name, aslo, aoff);
 	}
 
-	if (aslo*scale<T>(rmax) > vmax*.8){
-		aslo = vmax/rmax;
-		if (report_done == 1){
-			printf("%s range change overrides cal change aslo to %f\n",
-					prec->name, aslo);
-		}
-	}
-
 	min_value = raw[0];
 	max_value = raw[0];
 
 	for (int ii=0; ii <len; ii++) {
-		T rx = scale<T>(raw[ii]);
+		T rx = scale<T, SHR>(raw[ii]);
 
 		if (rx > max_value) max_value = rx;
 		if (rx < min_value) min_value = rx;
@@ -172,6 +165,9 @@ long raw_to_volts(aSubRecord *prec) {
 		sum += rx;
 		yy = rx*aslo + aoff;
 		cooked[ii] = (float)yy;
+		if (::verbose && ii==0 && strstr(prec->name, ":01") != 0){
+			printf("%s : aslo:%.6e aoff:%.6e rx:%06x yy=%.5e\n", prec->name, aslo, aoff, (unsigned)rx, yy);
+		}
 	}
 
 	if (p_over_range){
@@ -379,8 +375,8 @@ long spectrum(aSubRecord *prec)
 
 static registryFunctionRef my_asub_Ref[] = {
        {"raw_to_uvolts", (REGISTRYFUNCTION) raw_to_uvolts},
-       {"raw_to_volts_LONG",  (REGISTRYFUNCTION) raw_to_volts<long>},
-       {"raw_to_volts_SHORT",  (REGISTRYFUNCTION) raw_to_volts<short>},
+       {"raw_to_volts_LONG",  (REGISTRYFUNCTION) raw_to_volts<long, 8>},
+       {"raw_to_volts_SHORT",  (REGISTRYFUNCTION) raw_to_volts<short, 0>},
        {"cart2pol", (REGISTRYFUNCTION) cart2pol<short>},
        {"cart2pol_LONG", (REGISTRYFUNCTION) cart2pol<long>},
        {"cart2pol_SHORT", (REGISTRYFUNCTION) cart2pol<short>},
