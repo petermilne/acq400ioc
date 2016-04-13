@@ -68,9 +68,7 @@ ss v2f_cal {
 			pvGet(ext_eoff);
 		}
 	
-		when() {
-	
-		} state setValues
+		when() {} state setValues
 	}
 	
 	state setValues {
@@ -96,9 +94,7 @@ ss v2f_cal {
 			pvPut(off);
 			pvPut(slo);
 		}
-		when() {
-		
-		} state wait_change
+		when() {} state wait_change
 	}
 	
 	state wait_change {
