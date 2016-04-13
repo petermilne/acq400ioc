@@ -2,8 +2,8 @@ Terminator = LF;
 ExtraInput = Ignore;
 ReplyTimeout = 2500;
 
-setFreqOffset {
-	out "freq_offset_raw %d";
+setFreqFun {
+	out "v2f_freq_\$1_\$2 %d";
 }
 
 setHF {

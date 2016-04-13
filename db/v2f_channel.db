@@ -1,0 +1,6 @@
+record(longout, "${UUT}:${SITE}:V2F:${FUN}:${CH}") {
+	field(DTYP, "stream")
+	field(OUT,  "@v2f.proto setFreqFun(${PFUN},${CH}) ${SPORT}")	
+	field(DRVL, "0")
+	field(DRVH, "4194304")		
+}

@@ -333,7 +333,7 @@ load_400() {
 		mprams="UUT=${HOST},SITE=${site},SPORT=S1M"
 		has_rgm=0
 		if [ $HAS_ACQ43X -eq 1 ]; then
-			dblr '"db/acq43x_rgm.db","'${mprams},SRTM=SRTM'"'
+			dblr '"db/acq4xx_rgm.db","'${mprams},SRTM=SRTM'"'
 			echo 1>&2 "HAS_ACQ43X Detected: $HAS_ACQ43X"
 			#ACQ435 .. nb HIRES makes it /2
 			# MUST  be AFTER acq420fmc.d to hook the right DT0
