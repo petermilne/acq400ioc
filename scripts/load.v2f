@@ -13,7 +13,12 @@ NCHAN=$(cat /etc/acq400/1/NCHAN)
 
 mprams="UUT=${HOST},SITE=${SITE},NCHAN=${NCHAN},SPORT=SV2F"
 
-echo 'dbLoadRecords("db/v2fcommon.db","'${mprams}'")'
+#dblr '"db/v2fcommon.db","'${mprams}
+#for ic in 1 2 3 4
+#do
+#	dblr '"db/v2fchannel.db",${mprams},CH=$ic,FUN=OFF,PFUN=off
+#	dblr '"db/v2fchannel.db",${mprams},CH=$ic,FUN=SLO,PFUN=slo
+#done
 
 
 create_asyn_channel SV2F 127.0.0.1:422${SITE}
