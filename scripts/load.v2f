@@ -18,6 +18,7 @@ for ic in 1 2 3 4
 do
 	dblr '"db/v2f_channel.db","'${mprams},CH=$ic,FUN=OFF,PFUN=off'"'
 	dblr '"db/v2f_channel.db","'${mprams},CH=$ic,FUN=SLO,PFUN=slo'"'
+	echo >>/tmp/st_post.cmd "seq v2f_cal \"uut=${HOST},och=${ic}\""
 done
 
 

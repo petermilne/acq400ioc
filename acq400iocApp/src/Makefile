@@ -61,6 +61,7 @@ acq400ioc_SRCS += calmon.st
 acq400ioc_SRCS += calmon42x.st
 acq400ioc_SRCS += calmon480.st
 acq400ioc_SRCS += setMB_ClockMonitor.st
+acq400ioc_SRCS += v2f_cal.st
 
 # Build the main IOC entry point on workstation OSs.
 acq400ioc_SRCS_DEFAULT += acq400iocMain.cpp \
