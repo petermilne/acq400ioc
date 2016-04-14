@@ -151,8 +151,8 @@ long raw_to_volts(aSubRecord *prec) {
 		printf("%s : aslo:%.6e aoff:%.6e\n", prec->name, aslo, aoff);
 	}
 
-	min_value = raw[0];
-	max_value = raw[0];
+	min_value = scale<T, SHR>(raw[0]);
+	max_value = scale<T, SHR>(raw[0]);
 
 	for (int ii=0; ii <len; ii++) {
 		T rx = scale<T, SHR>(raw[ii]);
