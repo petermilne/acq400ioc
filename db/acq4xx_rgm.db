@@ -125,7 +125,7 @@ record(calcout, "${UUT}:${SITE}:RTM_TRANSLEN:ONCHANGE") {
 	field(INPA, "${UUT}:${SITE}:RTM_TRANSLEN")
 	field(CALC, "A")
 	field(OOPT, "On Change")
-	field(DOPT, "CALC")
+	field(DOPT, "Use CALC")
 	field(OUT,  "${UUT}:0:RTM_FIT PP")
 	field(LOPR, "0")
 	field(HOPR, "16777216")

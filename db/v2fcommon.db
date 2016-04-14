@@ -17,7 +17,6 @@ record(bo, "${UUT}:${SITE}:V2F:HIGH_FREQ") {
 	field(DESC, "1 selects 10MHz range")
 	field(VAL,  "0")
 	field(PINI, "YES")
-	field(FLNK, "${UUT}:${SITE}:V2F:freq_offset_calc")
 }
 
 record(longout, "${UUT}:${SITE}:V2F:SRC:1") {

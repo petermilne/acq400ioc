@@ -41,7 +41,7 @@ record(bo, "${UUT}:${SITE}:ADC_MODE:s") {
 record(longout, "${UUT}:${SITE}:NACC") {
 	field(DTYP, "Soft Channel")
 	field(LOPR, "1")
-	field(HOPR, "32")
+	field(HOPR, "16")
 	field(FLNK, "${UUT}:${SITE}:NACC:w PP")	
 }
 
