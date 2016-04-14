@@ -80,14 +80,14 @@ ss v2f_cal {
 			off = ext_eoff[src]/CSF + ufo*dsf;  
 			slo = ext_eslo[src]/CSF * dsf;
 	
-		printf(	"v2f_cal(%s)\n"
-			"	src %d hf %d ufo %d\n"
-			"off: %10d := %e/%e + %d*%d\n"
-			"slo: %10d := %e/%e * %d\n", 
-			macValueGet("och"),
-			src, hf, ufo,
-			off, ext_eoff[src], CSF, ufo, dsf,
-			slo, ext_eslo[src], CSF, dsf);
+			printf(	"v2f_cal(%s)\n"
+				"	src %d hf %d ufo %d\n"
+				"off: %10d := %e/%e + %d*%d\n"
+				"slo: %10d := %e/%e * %d\n", 
+				macValueGet("och"),
+				src, hf, ufo,
+				off, ext_eoff[src], CSF, ufo, dsf,
+				slo, ext_eslo[src], CSF, dsf);
 		
 			src0 = src;
 			hf0 = hf;
