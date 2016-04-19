@@ -66,14 +66,6 @@ record (bo, "${UUT}:SYS:CLK:DIST_CLK_SRC") {
 	field(ONAM, "Si5326")	
 }
 
-record (bi, "${UUT}:SYS:EXT_SRC") {
-	field(DTYP, "Soft Channel")
-	field(ZNAM, "Si5326")
-	field(ONAM, "SyncE")
-	field(PINI, "YES")
-	field(VAL,  "${acq2106b}")
-}
-
 record (bi, "${UUT}:SYS:CLK:lol") {
 	field(DTYP, "biAcqHost")
 	field(INP,  "@/dev/gpio/CLK/LOL")

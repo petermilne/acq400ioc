@@ -597,6 +597,7 @@ load_mb_sync() {
 		CLK)	nobt=2; onst="HDMI"; 	twst="HDMI";		
                 case $MB_MODEL in
                 acq2106|acq2106sfp)
+						zrst=SyncE
 						thst="COMM_A";;
 				*)
 						thst="nc";;
