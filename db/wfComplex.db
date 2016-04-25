@@ -6,6 +6,7 @@
 # ${UUT}, ${SITE}
 # ${PFX}  eg $HN:1:CH%02d:REF%d:
 # ${RS}	  SHORT | LONG
+# ${RSS}  SHORT | LONG18
 # ${LEN}  waveform LENgth (was size)
 # ${FSB}  frequency div eg DDC=16, LIA=128
 
@@ -83,7 +84,7 @@ record(calc, "${UUT}:${SITE}:AI:WF:FOUT" ) {
 
 
 record(aSub, "${PFX}:PS") {
-	field(SNAM, "spectrum_${RS}")
+	field(SNAM, "spectrum_${RSS}")
 # I	
 	field(FTA,  "${RS}")
 	field(NOA,  "${LEN}")
