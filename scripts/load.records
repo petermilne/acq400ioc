@@ -803,7 +803,7 @@ fi
 
 case $MB_MODEL in
 acq2006)	clk=XCLK;;
-acq1001)
+acq1001|acq1002)
 		if [ $(cat /dev/gpio/BV2) -eq 0 ]; then
 				clk=ZCLK;
 		else
@@ -823,7 +823,7 @@ else
 		;;
 	*)
 		echo "dbpf $HOST:SYS:CLK:FPMUX $clk"
-		if [ "x$HAS_ACQ43X" != "x" ] && [ $ACQ43X_SET_SAMPLE_RATE -gt 1 ]; then
+		if [ "x$HAS_ACQ43X" != "x" ] && [ $HAS_ACQ43X -eq 1 ] && [ $ACQ43X_SET_SAMPLE_RATE -gt 1 ]; then
 			echo "dbpf $HOST:1:ACQ43X_SAMPLE_RATE $ACQ43X_SET_SAMPLE_RATE"
 		fi;;
 	esac

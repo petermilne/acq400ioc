@@ -28,7 +28,7 @@ record(ai, "${UUT}:SYS:${SITE}:VAP") {
 	field(LINR, "LINEAR")
 	field(EGU,  "V")
 	field(PINI, "YES")
-	field(FLNK,  "${UUT}:SYS:${SITE}:3V3P")
+	field(FLNK,  "${UUT}:SYS:${SITE}:9VP_AUX")
 	field(HOPR, "15")
 	field(LOPR, "0")
 	field(LOW,  "5")

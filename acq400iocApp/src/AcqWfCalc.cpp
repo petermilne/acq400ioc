@@ -383,7 +383,7 @@ static registryFunctionRef my_asub_Ref[] = {
        {"timebase", (REGISTRYFUNCTION) timebase},
        {"spectrum", (REGISTRYFUNCTION) spectrum<short, MAXS>},
        {"spectrum_LONG", (REGISTRYFUNCTION) spectrum<long, MAXL>},
-	   {"spectrum_LONG18", (REGISTRYFUNCTION) spectrum<long, (2<<17)>},
+       {"spectrum_LONG18", (REGISTRYFUNCTION) spectrum<long, (2<<17)>},
        {"spectrum_SHORT", (REGISTRYFUNCTION) spectrum<short, MAXS>},
  };
 
