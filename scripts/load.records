@@ -261,7 +261,10 @@ load_400() {
 		let LO=$LO/256;;
 	$MT_ACQ480)
 		let ACQ480_COUNT=$ACQ480_COUNT+1
-		[ $ACQ480_S1 -eq 0 ] && ACQ480_S1=$site
+		if [ $ACQ480_S1 -eq 0 ]; then
+			dblr '"db/acq480_train.db","'${mprams}'"'
+			ACQ480_S1=$site
+		fi
 		is_adc="sar"
 		# gains are digital.
 		maxhz=80000000

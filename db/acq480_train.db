@@ -1,0 +1,30 @@
+record(bo, "${UUT}:0:SIG:CLK:TRAIN_REQ") {
+	field(DTYP, "Soft Channel")
+	field(ZNAM, "0")
+	field(ONAM, "1")
+	field(FLNK, "${UUT}:0:SIG:CLK:TRAIN_REQ:w PP")
+	field(VAL,  "1")
+	field(PINI, "YES")
+}
+
+
+record(bi, "${UUT}:0:SIG:CLK:TRAIN_REQ:r") {
+	field(DTYP, "stream")
+	field(SCAN, "1 second")
+	field(INP,  "@mb.proto getTrainReq() ${SPORT}")
+	field(FLNK, "${UUT}:0:SIG:CLK:TRAIN_REQ:s")
+}
+
+record(bo, "${UUT}:0:SIG:CLK:TRAIN_REQ:s") {
+	field(DTYP, "Soft Channel")
+	field(DOL,  "${UUT}:0:SIG:CLK:TRAIN_REQ:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:0:SIG:CLK:TRAIN_REQ PP")
+}
+
+record(bo, "${UUT}:0:SIG:CLK:TRAIN_REQ:w") {
+	field(DTYP, "stream")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:0:SIG:CLK:TRAIN_REQ:s.PACT") 
+	field(OUT,  "@mb.proto setTrainReq() ${SPORT}")
+}
