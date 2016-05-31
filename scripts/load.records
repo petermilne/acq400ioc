@@ -259,10 +259,11 @@ load_400() {
 				gain_file_pfx="db/gain125_10"		
 		fi		
 		let LO=$LO/256;;
-	$MT_ACQ480)
+	$MT_ACQ480)		
 		let ACQ480_COUNT=$ACQ480_COUNT+1
 		if [ $ACQ480_S1 -eq 0 ]; then
-			dblr '"db/acq480_train.db","'${mprams}'"'
+			# NB force train operates on S0
+			dblr '"db/acq480_train.db","'UUT=${HOST},SPORT=S0'"'
 			ACQ480_S1=$site
 		fi
 		is_adc="sar"
@@ -270,9 +271,11 @@ load_400() {
 		maxhz=80000000
 		has_ch_gains=1
 		calmon=calmon480
+		
+		mprams="UUT=${HOST},SITE=${site},SPORT=S${site}_480"
 		create_asyn_channel S${site}_480 127.0.0.1:422${site}
 		create_asyn_channel S${site}_480t 127.0.0.1:432${site}
-		mprams="UUT=${HOST},SITE=${site},SPORT=S${site}_480"
+		
 		t50r=0;jcp=0
 		[ -e /etc/acq400/${site}/T50R_1 ] && t50r=1
 		[ -e /dev/acq480/${site}/JC ] && jcp=1
