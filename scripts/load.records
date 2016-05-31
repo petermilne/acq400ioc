@@ -18,11 +18,14 @@ SN=${SN#0}
 SN=${SN#0}
 
 
+
 source /etc/sysconfig/acq400.conf
 
+
 # gains are loaded last, as they tweak other WF records, must be there first..
-echo > /tmp/gains_last
-echo > /tmp/st_post.cmd
+echo '#  gains_last'  > /tmp/gains_last
+echo '#  st_pre.cmd'  > /tmp/st_pre.cmd
+echo '#  st_post.cmd' > /tmp/st_post.cmd
 
 if [ -e /dev/acq400.12.knobs ]; then
 	LOAD_INTMON=y
@@ -390,7 +393,7 @@ load_400() {
 	dblr '"db/signal.db","'${cprams}',FNAM=EVENT0,FN=event0,ZNAM=disable,ONAM=enable,DISV=-1"'
 	if [ "x$model" = "x$MT_ACQ480" ]; then
 		let sitep1=$site+1
-		dblr '"db/acq480fmc99.db","'${cprams},SITEP1=${sitep1}'"'
+		dblr '"db/acq480fmc99.db","'${cprams},SITEP1=${sitep1}'"' >>/tmp/st_pre.cmd
 		if [ $ACQ480_COUNT -gt 1 ]; then
 				if [ $ACQ480_S1 -eq 0 ]; then
 					echo ERROR ACQ480S site $site ACQ480_S1 not set; exit 1
