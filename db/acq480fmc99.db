@@ -25,3 +25,9 @@ record(calc, "${UUT}:${SITE}:ACQ480:FIR:DECIM") {
 record(mbbo, "${UUT}:${SITE}:ACQ480:FIR:01") {
 	field(FLNK, "${UUT}:${SITE}:ACQ480:FIR:01:fanout")
 }
+
+record(calc, "${UUT}:0:SIG:CLK_S${SITE}:COUNT") {
+	# C is scale
+	field(INPC, "2")
+	field(DESC, "64 bit count scaled by 2 for ACQ480")
+}
