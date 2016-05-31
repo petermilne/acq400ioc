@@ -9,7 +9,7 @@ mkdir -p opkg/usr/local/bin/ opkg/usr/local/init/ opkg/etc/profile.d \
 	opkg/usr/local/epics/dbd/ \
 	opkg/usr/local/epics/db  \
 	opkg/usr/local/epics/protocols \
-	opkg/usr/local/epics/scripts
+	opkg/usr/local/epics/scripts \
 	opkg/usr/local/CARE
 
 cp CARE/* opkg/usr/local/CARE
