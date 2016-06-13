@@ -320,7 +320,7 @@ load_400() {
 	if [ -e ${hwmondb} ]; then
 		let hmb=$site
 		case $MB_MODEL in
-		kmcu)
+		kmcu*)
 			let hmb=$hmb+1;;
 		esac		
 		dblr '"'${hwmondb}'","'${cprams},HMB=${hmb}'"'
@@ -483,7 +483,7 @@ load_mb_base() {
 			dblr '"db/hwmonvolts_2106.db","UUT='${HOST}'"'
 			acq2106b=$(cat /sys/module/acq420fmc/parameters/is_acq2106B)
 			dblr '"db/acq2106clk.db","UUT='${HOST}',acq2106b='${acq2106b}',SPORT=S0"';;
-	kmcu)
+	kmcu*)
 			dblr '"db/hwmonvolts_mtca-rtm-2.db","UUT='${HOST}'"';;
 	*)
 			dblr '"db/hwmonvolts.db","UUT='${HOST}'"';;
@@ -559,7 +559,7 @@ load_mb_sites() {
 	)
 
 	case $MB_MODEL in
-		kmcu)
+		kmcu*)
 			;;
 		acq2106*)
 			thst="ZCLK"
