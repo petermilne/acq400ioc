@@ -115,10 +115,8 @@ int acq400_getChannel(void *prv, int ch, const char* sw, float* eslo, float* eof
 	RETERRNULL(node, node, "Data");
 	for (XMLNode *range = node->FirstChildElement("Range"); range;
 			range = range->NextSibling()){
-		const char* findkey;
-		if (sw == 0 ||
-		    (findkey = range->ToElement()->Attribute("sw")) ||
-						strcmp(sw, findkey) == 0){
+		const char* findkey =range->ToElement()->Attribute("sw");
+		if (sw == 0 || findkey == 0 || strcmp(sw, findkey) == 0){
 			return _acq400_getChannel(range, ch, eslo, eoff, nocal);
 		}
 	}
