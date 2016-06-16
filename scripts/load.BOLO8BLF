@@ -2,6 +2,8 @@
 
 HOST=$1
 SITE=$2
+
+source ./scripts/record_support.sh
 echo "#records added by load.BOLO8BLF $HOST $SITE"
 
 HS=$HOST:$SITE
