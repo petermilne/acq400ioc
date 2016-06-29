@@ -13,9 +13,9 @@ record(aSub, "${UUT}:${SITE}:AI:WF:${cid}:V") {
 
 record(calc, "${UUT}:${SITE}:AI:WF:FS") {
 	field(INPA, "${UUT}:0:SIG:CLK_S1:FREQ")
-	field(INPB, "1")
+	field(INPB, "${DECIM}")
 # decimate filter could set B?	
-	field(CALC, "1000*FLOOR(A/1000)/1")
+	field(CALC, "1000*FLOOR(A/1000)/B")
 	field(DESC, "DDC Mixer (center) frequency")
 }
 
