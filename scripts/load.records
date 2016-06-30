@@ -629,11 +629,12 @@ load_mb_sync() {
 		CLK)	nobt=2; onst="HDMI"; 	twst="HDMI";
 				case $MB_MODEL in
 				acq2106|acq2106sfp)
-					thst="COMM_B";;
+					zrst="MCLK"; thst="COMM_B";;
 				*)
 					thst="nc";
 				esac;;
-		*) 	nobt=1; zrst="MCLK";  onst="HDMI";  twst="nc"; thst="nc";;
+		*) 		echo ERROR undefined FUN;;
+#nobt=1; onst="HDMI";  twst="nc"; thst="nc";;
 		esac
 		dblr '"db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=1,ZRST=${zrst},ONST=${onst},TWST=${twst},THST=${thst},NOBT=${nobt}'"'
 	done
