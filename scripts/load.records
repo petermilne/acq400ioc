@@ -279,11 +279,15 @@ load_400() {
 		create_asyn_channel S${site}_480 127.0.0.1:422${site}
 		create_asyn_channel S${site}_480t 127.0.0.1:432${site}
 		
-		t50r=0;jcp=0
-		[ -e /etc/acq400/${site}/T50R_1 ] && t50r=1
-		[ -e /dev/acq480/${site}/JC ] && jcp=1
+		t50r=0; jcp=0; decim=1;
+		sroot="/etc/acq400/${site}"
+		[ -e ${sroot}/T50R_1 ] && t50r=1
+		[ -e ${sroot}/JC ] && jcp=1
+		[ -e ${sroot}/acq480_fpga_decim ] && \
+			decim=$(cat ${sroot}/acq480_fpga_decim)
+		a480p="SPTRAIN=S${site}_480t,JCP=${jcp},T50R=${t50r},DECIM=${decim}"
 		
-		dblr '"db/acq480fmc.db","'${mprams},SPTRAIN=S${site}_480t,JCP=${jcp},T50R=${t50r}'"'
+		dblr '"db/acq480fmc.db","'${mprams},${a480p}'"'
 
 		for ic in $(seq 1 8); do
 			ch=$(printf "%02d" $ic)

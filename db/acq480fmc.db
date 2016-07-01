@@ -10,6 +10,12 @@ record(bi, "${UUT}:${SITE}:ACQ480:JC:PRESENT") {
 	field(ONAM, "1")
 }
 
+record(longin, "${UUT}:${SITE}:ACQ480:FPGA:DECIM") {
+	field(DTYP, "Soft Channel")
+	field(VAL,  "${DECIM}")
+	field(PINI, "YES")
+}
+
 record(bi, "${UUT}:${SITE}:ACQ480:HAS_50R") {
 	field(DTYP, "Soft Channel")
 	field(VAL,  "${T50R}")
