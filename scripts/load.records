@@ -235,6 +235,7 @@ load_400() {
 	is_adc="no"
 	has_ch_gains=0
 	calmon="calmon"
+	decim=1;
 	
 	case $model in
 	$MT_ACQ420|$MT_ACQ420F|$MT_ACQ424|$MT_ACQ425|$MT_ACQ425F|$MT_BOLO8|$MT_BOLO8B)
@@ -279,7 +280,7 @@ load_400() {
 		create_asyn_channel S${site}_480 127.0.0.1:422${site}
 		create_asyn_channel S${site}_480t 127.0.0.1:432${site}
 		
-		t50r=0; jcp=0; decim=1;
+		t50r=0; jcp=0; 
 		sroot="/etc/acq400/${site}"
 		[ -e ${sroot}/T50R_1 ] && t50r=1
 		[ -e ${sroot}/JC ] && jcp=1
@@ -337,7 +338,7 @@ load_400() {
 		make_deltrg ${site}
 	fi
 
-	dblr '"db/acq400fmc.db","'${cprams},'MAXHZ='${maxhz}'"'
+	dblr '"db/acq400fmc.db","'${cprams},'MAXHZ='${maxhz},DECIM=${decim}'"'
 	
 	if [ "x$model" != "x$MT_ACQ480" ] && [ $HAS_ACQ43X -eq 0 ]; then
 		dblr '"db/acq420fmc.db","'${cprams},'LO='${LO}'"'

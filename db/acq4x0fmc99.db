@@ -12,6 +12,7 @@ record(calc, "${UUT}:${SITE}:SIG:sample_count:COUNT") {
 record(calc, "${UUT}:${SITE}:SIG:SAMPLE_COUNT:COUNT") {
 	field(INPJ, "${UUT}:${SITE}:SHOT")
 }
+
 record(mbbo, "${UUT}:${SITE}:SIG:clk_counter_src") {
 	field(FLNK, "${UUT}:${SITE}:SIG:clk_count:nzcount")
 }

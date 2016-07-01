@@ -45,3 +45,18 @@ record (longout, "${UUT}:${SITE}:INTCLK_HZ") {
 	field(HOPR, "${MAXHZ}")
 	field(EGU,  "Hz")
 }
+
+record(calc, "${UUT}:${SITE}:OS:FREQ") {
+	field(INPA, "${UUT}:${SITE}:SIG:sample_count:FREQ")
+	field(INPB, "${DECIM}")
+	field(CALC, "A/B")
+	field(EGU,  "Hz")
+	field(DESC, "Output Sample Rate")
+}
+
+record(calc, "${UUT}:${SITE}:OS:COUNT") {
+	field(INPA, "${UUT}:${SITE}:SIG:sample_count:COUNT")
+	field(INPB, "${DECIM}")
+	field(CALC, "A/B")
+	field(DESC, "Output Sample Count")
+}
