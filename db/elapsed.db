@@ -10,4 +10,21 @@ record(calc, "${UUT}:${SITE}:SIG:${lname}:RUNTIME") {
 	field(LOPR, "0")
 	field(HOPR, "9999999")
 	field(DESC, "run time in seconds")
+	field(FLNK, "${UUT}:${SITE}:OS:FREQ")
+}
+
+record(calc, "${UUT}:${SITE}:OS:FREQ") {
+	field(INPA, "${UUT}:${SITE}:SIG:sample_count:FREQ")
+	field(INPB, "${DECIM}")
+	field(CALC, "A/B")
+	field(EGU,  "Hz")
+	field(DESC, "Output Sample Rate")
+	field(FLNK, "${UUT}:${SITE}:OS:COUNT")
+}
+
+record(calc, "${UUT}:${SITE}:OS:COUNT") {
+	field(INPA, "${UUT}:${SITE}:SIG:sample_count:COUNT")
+	field(INPB, "${DECIM}")
+	field(CALC, "A/B")
+	field(DESC, "Output Sample Count")
 }

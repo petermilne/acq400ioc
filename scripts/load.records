@@ -338,7 +338,7 @@ load_400() {
 		make_deltrg ${site}
 	fi
 
-	dblr '"db/acq400fmc.db","'${cprams},'MAXHZ='${maxhz},DECIM=${decim}'"'
+	dblr '"db/acq400fmc.db","'${cprams},'MAXHZ='${maxhz}'"'
 	
 	if [ "x$model" != "x$MT_ACQ480" ] && [ $HAS_ACQ43X -eq 0 ]; then
 		dblr '"db/acq420fmc.db","'${cprams},'LO='${LO}'"'
@@ -369,7 +369,7 @@ load_400() {
 	dblr '"db/counter.db","'${CTPR},lname=sample_count,pname=sample_count'"'
 	dblr '"db/counter.db","'${CTPR},lname=CLK_COUNT,pname=clk_count'"'
 	dblr '"db/counter.db","'${CTPR},lname=SAMPLE_COUNT,pname=sample_count'"'
-	dblr '"db/elapsed.db","'${CTPR},lname=SAMPLE_COUNT'"'
+	dblr '"db/elapsed.db","'${CTPR},lname=SAMPLE_COUNT,DECIM=${decim}'"'
 
 	gain_file=${gain_file_pfx}.db
 	(
