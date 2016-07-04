@@ -1,7 +1,8 @@
 record (mbbo, "${UUT}:0:SIG:FP:${FUN}") {
 	field(DTYP, "Soft Channel")
-	field(NOBT, "4")
-	field(ZRST, "INPUT")
+	field(NOBT, "${nobt}")
+	field(DISA, "${disa}")
+	field(ZRST, "${zrst}")
 	field(ZRVL, "0")
 	field(ONST, "${onst}")
 	field(ONVL, "8")

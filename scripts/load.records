@@ -643,14 +643,29 @@ load_mb_sync() {
 		esac
 		dblr '"db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=1,ZRST=${zrst},ONST=${onst},TWST=${twst},THST=${thst},NOBT=${nobt}'"'
 	done
-	for FUN in GPIO SYNC TRG
+	 
+	if [ "$(cat /dev/acq400.0.knobs/module_role)" = "CLKOUT" ]; then
+		disin=1; disout=0;
+	else
+		disin=0; disout=1;
+	fi
+	for FUN in GPIO SYNC TRG TRGOUT CLKOUT
 	do
+		disa=0
 		case $FUN in 
-		GPIO)	fprams="onst=EVT0,twst=EVT1,thst=EVT7";;
-		SYNC)	fprams="onst=SYNC0,twst=SYNC1,thst=SYNC7";;
-		TRG)	fprams="onst=TRG0,twst=TRG1,thst=TRG7";;
+		GPIO)	fprams="nobt=4,zrst=INPUT,onst=EVT0,twst=EVT1,thst=EVT7"
+				lprams="FUN=${FUN},fun=$(toLower ${FUN}),disa=${disin}";;
+		SYNC)	fprams="nobt=4,zrst=INPUT,onst=SYNC0,twst=SYNC1,thst=SYNC7"
+				lprams="FUN=${FUN},fun=$(toLower ${FUN}),disa=${disin}";;
+		TRG)	fprams="nobt=4,zrst=INPUT,onst=TRG0,twst=TRG1,thst=TRG7"
+				lprams="FUN=${FUN},fun=$(toLower ${FUN}),disa=0";;
+		TRGOUT)
+				fprams="nobt=2,zrst=OFF,onst=ON,twst=nc,thst=nc"
+				lprams="FUN=${FUN},fun=gpio,disa=${disout}";;
+		CLKOUT)
+				fprams="nobt=2,zrst=OFF,onst=ON,twst=nc,thst=nc"
+				lprams="FUN=${FUN},fun=sync,disa=${disout}";;
 		esac
-		lprams="FUN=${FUN},fun=$(toLower ${FUN})"
 		dblr '"db/fpctl.db","'${CPRAMS},${lprams},${fprams}'"'		
 	done
 	dblr '"db/zclk.db","'${CPRAMS}'"'
@@ -827,6 +842,9 @@ acq1001|acq1002)
 *)		clk=ZCLK;;
 esac
 
+if [ "$(cat /dev/acq400.0.knobs/module_role)" = "CLKOUT" ]; then
+		dbpf acq1001_109:0:SIG:FP:
+fi
 if [ "x$IOC_POSTINIT" != "x" ]; then
 	echo 1>&2 "load.records:$IOC_POSTINIT"
 	if [ -e $IOC_POSTINIT ]; then
