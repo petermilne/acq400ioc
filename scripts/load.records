@@ -660,10 +660,10 @@ load_mb_sync() {
 		TRG)	fprams="nobt=4,zrst=INPUT,onst=TRG0,twst=TRG1,thst=TRG7"
 				lprams="FUN=${FUN},fun=$(toLower ${FUN}),disa=0";;
 		TRGOUT)
-				fprams="nobt=2,zrst=OFF,onst=ON,twst=nc,thst=nc"
+				fprams="nobt=4,zrst=INPUT,onst=TRG0,twst=TRG1,thst=TRG7"
 				lprams="FUN=${FUN},fun=gpio,disa=${disout}";;
 		CLKOUT)
-				fprams="nobt=2,zrst=OFF,onst=ON,twst=nc,thst=nc"
+				fprams="nobt=4,zrst=INPUT,onst=CLK0,twst=CLK1,thst=CLK7"
 				lprams="FUN=${FUN},fun=sync,disa=${disout}";;
 		esac
 		dblr '"db/fpctl.db","'${CPRAMS},${lprams},${fprams}'"'		
