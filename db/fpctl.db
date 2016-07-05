@@ -9,7 +9,7 @@ record (mbbo, "${UUT}:0:SIG:FP:${FUN}") {
 	field(TWST, "${twst}")
 	field(TWVL, "9")
 	field(THST, "${thst}")
-	field(THVL, "15")
+	field(THVL, "${thvl}")
 	field(FLNK, "${UUT}:0:SIG:FP:${FUN}:w PP")	
 	field(PINI, "YES")
 }
@@ -35,7 +35,7 @@ record (mbbi, "${UUT}:0:SIG:FP:${FUN}:r") {
 	field(TWST, "${twst}")
 	field(TWVL, "9")
 	field(THST, "${thst}")
-	field(THVL, "15")	
+	field(THVL, "${thvl}")	
 	field(INP,  "@mb.proto get_fpctl(${fun}) ${SPORT}")
 	field(SCAN, "1 second")
 	field(PINI, "YES")

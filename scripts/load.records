@@ -651,7 +651,7 @@ load_mb_sync() {
 	fi
 	for FUN in GPIO SYNC TRG TRGOUT CLKOUT
 	do
-		disa=0
+		disa=0,thvl=15
 		case $FUN in 
 		GPIO)	fprams="nobt=4,zrst=INPUT,onst=EVT0,twst=EVT1,thst=EVT7"
 				lprams="FUN=${FUN},fun=$(toLower ${FUN}),disa=${disin}";;
@@ -663,10 +663,11 @@ load_mb_sync() {
 				fprams="nobt=4,zrst=INPUT,onst=TRG0,twst=TRG1,thst=TRG7"
 				lprams="FUN=${FUN},fun=gpio,disa=${disout}";;
 		CLKOUT)
-				fprams="nobt=4,zrst=INPUT,onst=CLK0,twst=CLK1,thst=CLK7"
+				thvl=10
+				fprams="nobt=4,zrst=INPUT,onst=CLK0,twst=CLK1,thst=CLK2"
 				lprams="FUN=${FUN},fun=sync,disa=${disout}";;
 		esac
-		dblr '"db/fpctl.db","'${CPRAMS},${lprams},${fprams}'"'		
+		dblr '"db/fpctl.db","'${CPRAMS},${lprams},${fprams},thvl=${thvl}'"'		
 	done
 	dblr '"db/zclk.db","'${CPRAMS}'"'
 	for FUN in SYNC TRG GPIO CLK
