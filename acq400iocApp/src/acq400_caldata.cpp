@@ -116,9 +116,11 @@ int acq400_getChannel(void *prv, int ch, const char* sw, float* eslo, float* eof
 	for (XMLNode *range = node->FirstChildElement("Range"); range;
 			range = range->NextSibling()){
 		const char* findkey =range->ToElement()->Attribute("sw");
-		if (sw == 0 || findkey == 0 || strcmp(sw, findkey) == 0){
+		int nosw = sw==0 || findkey==0 || strcmp(findkey, "default")==0;
+		if (nosw || strcmp(sw, findkey) == 0){
 			return _acq400_getChannel(range, ch, eslo, eoff, nocal);
 		}
 	}
+	printf("ERROR: range \"%s\" not found\n", sw);
 	return -1;
 }
