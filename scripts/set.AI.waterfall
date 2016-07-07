@@ -1,0 +1,26 @@
+#!/bin/sh
+
+SITE=${SITE:-${1:-1}}
+DSLO=2e-5
+DOFF=0.5
+
+HN=$(hostname)
+eoff=0
+noff=0
+
+for ch in $(seq 1 32)
+do
+	CH=$(printf "%02d" $ch)
+	caput ${HN}:${SITE}:AI:CH:${CH}.EOFF ${eoff}
+	caput ${HN}:${SITE}:AI:CH:${CH}.ESLO $DSLO
+
+	if [ $noff -eq 7 ]; then
+		noff=0
+		eoff=0
+	else
+		let noff=$noff+1
+		eoff=$(echo $noff $DOFF | awk '{ print $1*$2 }')
+	fi
+done
+
+
