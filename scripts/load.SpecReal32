@@ -3,6 +3,7 @@ make_AI() {
 	type=LONG
 	maxcode=2147483648
 	eslo=4.65661e-09
+	let s2=$SIZE/2
 
 	let nchan=$(cat /etc/acq400/$site/NCHAN)
 	vmax=10
@@ -12,8 +13,8 @@ make_AI() {
 		cid=$(printf "%02d" $ch)
 		let IDX=$ch
 		
-		PRAMS="UUT=${HOST},SITE=${site},idx=${IDX},fname=AI.${site}"
-		wprams="${PRAMS},size=${SIZE},type=${type},cid=${cid}"
+		PRAMS="UUT=${HOST},SITE=${site},idx=${IDX},fname=AI.${site}"		
+		wprams="${PRAMS},size=${SIZE},size2=${S2},type=${type},cid=${cid}"
 		wprams="${wprams},maxcode=${maxcode},vmax=${vmax},eslo=${eslo}"
 		echo dbLoadRecords\(\"db/wfSpecReal32.db\",\"${wprams}\"\)
 	done	

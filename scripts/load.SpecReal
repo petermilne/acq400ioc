@@ -3,9 +3,11 @@ make_AI() {
 	type=SHORT
 	maxcode=32768
 	eslo=0.00030517578125
+	let s2=$SIZE/2
+	
 	decim=1
-	if [ -e /etc/acq400/$site/acq480_fpga_decim ]; then
-		decim=$(cat /etc/acq400/$site/acq480_fpga_decim)
+	if [ "$(cat /etc/acq400/1/MTYPE)" = "08" ]; then
+		decim="${HOST}:${site}:ACQ480:FPGA:DECIM"
 	fi
 
 	let nchan=$(cat /etc/acq400/$SITE/NCHAN)
@@ -15,9 +17,10 @@ make_AI() {
 		let ch=$ch+1
 		cid=$(printf "%02d" $ch)
 		let IDX=$ch
+
 		
 		PRAMS="UUT=${HOST},SITE=${site},idx=${IDX},fname=AI.${site}"
-		wprams="${PRAMS},size=${SIZE},type=${type},cid=${cid}"
+		wprams="${PRAMS},size=${SIZE},size2=${S2},type=${type},cid=${cid}"
 		wp2="maxcode=${maxcode},vmax=${vmax},eslo=${eslo}"
 		wprams="${wprams},${wp2},DECIM=${decim}"
 		echo dbLoadRecords\(\"db/wfSpecReal.db\",\"${wprams}\"\)

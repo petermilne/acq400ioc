@@ -259,20 +259,29 @@ class Spectrum {
 	float* R;		/* local array computes R (magnitude) */
 	float f0;		/* previous frequency .. do we have to recalc the bins? */
 	float db0;
+	const bool is_cplx;
 
-	void binFreqs(float fs) {
+	void binFreqs(float fs, int f_bin0, int nmax) {
 		if (bins != 0 && floorf(fs/100) != floorf(f0/100)){
 			float nyquist = fs/2;
-			float fx = -nyquist;
+			float fx = f_bin0*nyquist;
 			float delta = nyquist/N2;
 
-			for (int ii = 0; ii != N; ++ii){
+			for (int ii = 0; ii != nmax; ++ii){
 				bins[ii] = fx;
 				fx += delta;
 			}
 			f0 = fs;
 		}
 	}
+	void binFreqs(float fs) {
+		if (is_cplx){
+			binFreqs(fs, -1, N);
+		}else{
+			binFreqs(fs, 0, N2);
+		}
+	}
+
 	void fillWindowTriangle() {
 		printf("filling default triangle window\n");
 		for (int ii = 0; ii < N2; ++ii){
@@ -306,8 +315,8 @@ class Spectrum {
 		// map to
 		// in,....i1,r0,r1, .... rn/2
 		// where r0 is at [N2]
-		float *mn = mag;	// neg freqs
-		float *mp = mag+N2;	// pos freqs
+		float *mn = mag;			// neg freqs
+		float *mp = is_cplx? mag+N2: mn;	// pos freqs
 
 		// calc magnitude of every bin
 		for (int ii = 0; ii < N; ++ii){
@@ -327,8 +336,8 @@ class Spectrum {
 		}
 	}
 public:
-	Spectrum(int _N, float* _window, float* _bins) :
-		N(_N), N2(_N/2), window(_window), bins(_bins), R(new float[_N]), f0(0) {
+	Spectrum(int _N, float* _window, float* _bins, int isCplx) :
+		N(_N), N2(_N/2), window(_window), bins(_bins), R(new float[_N]), f0(0), is_cplx(isCplx) {
 
 		printf("Spectrum B1013\n");
 		fillWindow();
@@ -359,6 +368,7 @@ long spectrum(aSubRecord *prec)
 	T *raw_i = reinterpret_cast<T*>(prec->a);
 	T *raw_q = reinterpret_cast<T*>(prec->b);
 	float *fs = reinterpret_cast<float*>(prec->c);
+	int* isCplx = reinterpret_cast<int*>(prec->d);
 	int len = prec->noa;
 
 	float* mag = reinterpret_cast<float*>(prec->vala);
@@ -367,7 +377,7 @@ long spectrum(aSubRecord *prec)
 
 	static Spectrum<T, SCALE> *spectrum;
 	if (!spectrum){
-		spectrum = new Spectrum<T, SCALE>(len, window, freqs);
+		spectrum = new Spectrum<T, SCALE>(len, window, freqs, *isCplx);
 	}
 	spectrum->exec(raw_i, raw_q, mag, *fs);
 	return 0;
