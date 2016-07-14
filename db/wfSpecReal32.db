@@ -41,7 +41,7 @@ record(aSub, "${UUT}:${SITE}:AI:WF:PS:${cid}") {
 # IS CPLX	
 	field(FTD,  "ULONG")
 	field(NOD,  "1")
-	field(INPD, "1");
+	field(INPD, "1")
 	
 # single sided power spectrum
 	field(FTVA, "FLOAT")
