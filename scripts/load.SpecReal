@@ -20,7 +20,7 @@ make_AI() {
 
 		
 		PRAMS="UUT=${HOST},SITE=${site},idx=${IDX},fname=AI.${site}"
-		wprams="${PRAMS},size=${SIZE},size2=${S2},type=${type},cid=${cid}"
+		wprams="${PRAMS},size=${SIZE},size2=${s2},type=${type},cid=${cid}"
 		wp2="maxcode=${maxcode},vmax=${vmax},eslo=${eslo}"
 		wprams="${wprams},${wp2},DECIM=${decim}"
 		echo dbLoadRecords\(\"db/wfSpecReal.db\",\"${wprams}\"\)

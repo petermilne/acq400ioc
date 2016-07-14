@@ -14,7 +14,7 @@ make_AI() {
 		let IDX=$ch
 		
 		PRAMS="UUT=${HOST},SITE=${site},idx=${IDX},fname=AI.${site}"		
-		wprams="${PRAMS},size=${SIZE},size2=${S2},type=${type},cid=${cid}"
+		wprams="${PRAMS},size=${SIZE},size2=${s2},type=${type},cid=${cid}"
 		wprams="${wprams},maxcode=${maxcode},vmax=${vmax},eslo=${eslo}"
 		echo dbLoadRecords\(\"db/wfSpecReal32.db\",\"${wprams}\"\)
 	done	
