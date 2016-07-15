@@ -255,13 +255,13 @@ class Spectrum {
 	fftwf_complex *in, *out;
 	fftwf_plan plan;
 	float* window;
-	float* bins;		/* x_axis bins in Hz */
+
 	float* R;		/* local array computes R (magnitude) */
 	float f0;		/* previous frequency .. do we have to recalc the bins? */
 	float db0;
 	const bool is_cplx;
 
-	void binFreqs(float fs, int f_bin0, int nmax) {
+	void binFreqs(float* bins, float fs, int f_bin0, int nmax) {
 		if (bins != 0 && floorf(fs/100) != floorf(f0/100)){
 			float nyquist = fs/2;
 			float fx = f_bin0*nyquist;
@@ -274,11 +274,11 @@ class Spectrum {
 			f0 = fs;
 		}
 	}
-	void binFreqs(float fs) {
+	void binFreqs(float* bins, float fs) {
 		if (is_cplx){
-			binFreqs(fs, -1, N);
+			binFreqs(bins, fs, -1, N);
 		}else{
-			binFreqs(fs, 0, N2);
+			binFreqs(bins, fs, 0, N2);
 		}
 	}
 
@@ -347,8 +347,8 @@ class Spectrum {
 		}
 	}
 public:
-	Spectrum(int _N, float* _window, float* _bins, int isCplx) :
-		N(_N), N2(_N/2), window(_window), bins(_bins), R(new float[_N]), f0(0), is_cplx(isCplx) {
+	Spectrum(int _N, float* _window, int isCplx) :
+		N(_N), N2(_N/2), window(_window), R(new float[_N]), f0(0), is_cplx(isCplx) {
 
 		printf("Spectrum B1013\n");
 		fillWindow();
@@ -364,12 +364,12 @@ public:
 		fftwf_free(out);
 	}
 
-	void exec (T* re, T* im, float* mag, float fs)
+	void exec (T* re, T* im, float* mag, float* bins, float fs)
 	{
 		windowFunction(re, im);
 		fftwf_execute(plan);
 		powerSpectrum(mag);
-		binFreqs(fs);
+		binFreqs(bins, fs);
 	}
 };
 
@@ -388,9 +388,9 @@ long spectrum(aSubRecord *prec)
 
 	static Spectrum<T, SCALE> *spectrum;
 	if (!spectrum){
-		spectrum = new Spectrum<T, SCALE>(len, window, freqs, *isCplx);
+		spectrum = new Spectrum<T, SCALE>(len, window, *isCplx);
 	}
-	spectrum->exec(raw_i, raw_q, mag, *fs);
+	spectrum->exec(raw_i, raw_q, mag, freqs, *fs);
 	return 0;
 }
 
