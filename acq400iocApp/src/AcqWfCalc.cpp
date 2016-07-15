@@ -147,7 +147,7 @@ long raw_to_volts(aSubRecord *prec) {
 		printf("scale %x becomes %x\n", 0xdead, (unsigned)scale<T, SHR>(0xdead));
 	}
 
-	if (::verbose && strstr(prec->name, ":01") != 0){
+	if (::verbose > 1 && strstr(prec->name, ":01") != 0){
 		printf("%s : aslo:%.6e aoff:%.6e\n", prec->name, aslo, aoff);
 	}
 
@@ -327,11 +327,22 @@ class Spectrum {
 			R[ii] = (I*I + Q*Q);
 			float M = LOGSQRT(20*log10(R[ii])) - db0;
 
+			if (is_cplx){
 			// FFTW presents the spectrum 0..-F,+F..0 ? fix that
-			if (ii < N2){
-				mp[ii] = M;
+				if (ii < N2){
+					mp[ii] = M;
+				}else{
+					mn[ii-N2] = M;
+				}
 			}else{
-				mn[ii-N2] = M;
+				if (ii < N2){
+					mp[ii] = M;
+				}
+/*
+				}else{
+					mn[N-ii] += M;
+				}
+*/
 			}
 		}
 	}

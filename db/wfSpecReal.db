@@ -2,14 +2,16 @@
 
 
 record(calc, "${UUT}:0:SIG:CLK_S1:FREQ") {
-	field(FLNK, "${UUT}:${SITE}:AI:WF:FS")
+	field(FLNK, "${UUT}:${SITE}:AI:WF:fsfan")
 }
 record(aSub, "${UUT}:${SITE}:AI:WF:${cid}:V") {
 	field(FLNK, "${UUT}:${SITE}:AI:WF:PS:${cid}")
 }
 
 
-# LNK2
+record(fanout, "${UUT}:${SITE}:AI:WF:fsfan") {
+	field(LNK${SITE}, "${UUT}:${SITE}:AI:WF:FS")	
+}
 
 record(calc, "${UUT}:${SITE}:AI:WF:FS") {
 	field(INPA, "${UUT}:0:SIG:CLK_S1:FREQ")
