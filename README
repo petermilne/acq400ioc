@@ -5,6 +5,8 @@ To trace streamdevice operation:
 REAL SPECTRUM:
 /mnt/local/sysconfig/epics.sh:
 export IOC_PREINIT=./scripts/load.SpecReal
+[ -e /dev/shm/window ] || \
+	ln -s /usr/local/CARE/hanning-float.bin /dev/shm/window
 
 DDC:
 /mnt/local/sysconfig/epics.sh:
