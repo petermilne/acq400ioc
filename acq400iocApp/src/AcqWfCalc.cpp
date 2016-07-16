@@ -34,7 +34,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#include <limits.h>
+#include <cmath>
+#include <limits>
 
 
 #include "alarm.h"
@@ -185,8 +186,11 @@ long raw_to_volts(aSubRecord *prec) {
 
 /* ARGS:  T: short or long
  * INPUTS:
- * INPA : const T I
- * INPB : const T Q
+ * INPA : const T I [N]
+ * INPB : const T Q [N]
+ * INPC : float* fs [1]
+ * INPD : int* is_cplx [1]
+ * INPF : float* attenuation factor db [1]
  * OUTPUTS:
  * VALA : float* radius
  * optional:
@@ -327,6 +331,9 @@ class Spectrum {
 			R[ii] = (I*I + Q*Q);
 			float M = LOGSQRT(20*log10(R[ii])) - db0;
 
+			if (ii && M < std::numeric_limits<float>::min()){
+				M = R[ii-1];
+			}
 			if (is_cplx){
 			// FFTW presents the spectrum 0..-F,+F..0 ? fix that
 				if (ii < N2){
@@ -337,17 +344,14 @@ class Spectrum {
 			}else{
 				if (ii < N2){
 					mp[ii] = M;
-				}
-/*
 				}else{
-					mn[N-ii] += M;
+					break;
 				}
-*/
 			}
 		}
 	}
 public:
-	Spectrum(int _N, float* _window, int isCplx) :
+	Spectrum(int _N, float* _window, int isCplx, float atten_db) :
 		N(_N), N2(_N/2), window(_window), R(new float[_N]), f0(0), is_cplx(isCplx) {
 
 		printf("Spectrum B1013\n");
@@ -356,7 +360,7 @@ public:
 		out = (fftwf_complex*) fftwf_malloc(sizeof(fftwf_complex) * N);
 		plan = fftwf_plan_dft_1d(N, in, out, FFTW_FORWARD, FFTW_ESTIMATE);
 		// full scale I+Q Say all one bin 2 * 4096 ..
-		db0 = 20 * log10(N*2) - DDC_ATTENUATION_FACTOR;
+		db0 = 20 * log10(N*2) - atten_db;
 	}
 	virtual ~Spectrum() {
 		fftwf_destroy_plan(plan);
@@ -369,7 +373,7 @@ public:
 		windowFunction(re, im);
 		fftwf_execute(plan);
 		powerSpectrum(mag);
-		binFreqs(bins, fs);
+		if (bins != 0) binFreqs(bins, fs);
 	}
 };
 
@@ -380,6 +384,8 @@ long spectrum(aSubRecord *prec)
 	T *raw_q = reinterpret_cast<T*>(prec->b);
 	float *fs = reinterpret_cast<float*>(prec->c);
 	int* isCplx = reinterpret_cast<int*>(prec->d);
+	float *attenuation = reinterpret_cast<float*>(prec->f);
+	float atten_db = prec->nof? *attenuation: DDC_ATTENUATION_FACTOR;
 	int len = prec->noa;
 
 	float* mag = reinterpret_cast<float*>(prec->vala);
@@ -388,7 +394,7 @@ long spectrum(aSubRecord *prec)
 
 	static Spectrum<T, SCALE> *spectrum;
 	if (!spectrum){
-		spectrum = new Spectrum<T, SCALE>(len, window, *isCplx);
+		spectrum = new Spectrum<T, SCALE>(len, window, *isCplx, atten_db);
 	}
 	spectrum->exec(raw_i, raw_q, mag, freqs, *fs);
 	return 0;
