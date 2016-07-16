@@ -264,6 +264,7 @@ class Spectrum {
 	float f0;		/* previous frequency .. do we have to recalc the bins? */
 	float db0;
 	const bool is_cplx;
+	const float MINSPEC;
 
 	void binFreqs(float* bins, float fs, int f_bin0, int nmax) {
 		if (bins != 0 && floorf(fs/100) != floorf(f0/100)){
@@ -321,6 +322,7 @@ class Spectrum {
 		// where r0 is at [N2]
 		float *mn = mag;			// neg freqs
 		float *mp = is_cplx? mag+N2: mn;	// pos freqs
+		float M1 = 0;
 
 		// calc magnitude of every bin
 		for (int ii = 0; ii < N; ++ii){
@@ -331,8 +333,8 @@ class Spectrum {
 			R[ii] = (I*I + Q*Q);
 			float M = LOGSQRT(20*log10(R[ii])) - db0;
 
-			if (ii && M < std::numeric_limits<float>::min()){
-				M = R[ii-1];
+			if (ii && M < MINSPEC){
+				M = M1;
 			}
 			if (is_cplx){
 			// FFTW presents the spectrum 0..-F,+F..0 ? fix that
@@ -348,11 +350,14 @@ class Spectrum {
 					break;
 				}
 			}
+			M1 = M;
 		}
 	}
 public:
 	Spectrum(int _N, float* _window, int isCplx, float atten_db) :
-		N(_N), N2(_N/2), window(_window), R(new float[_N]), f0(0), is_cplx(isCplx) {
+		N(_N), N2(_N/2), window(_window),
+		R(new float[_N]), f0(0), is_cplx(isCplx),
+		MINSPEC(sizeof(T) == 2? -120: -150) {
 
 		printf("Spectrum B1013\n");
 		fillWindow();
