@@ -7,7 +7,7 @@ FNAME=AI
 
 HSIZE=256
 
-CTR32=4294967296ac
+CTR32=4294967296
 CTR31=2147483648
 CTR28=268435456
 CTR16=65536
@@ -148,7 +148,9 @@ make_AI_subrate() {
 
 	eval $(cat /dev/acq400.0.knobs/aggregator)
 	sites=$(echo $sites | tr , \  )
-	if [ "x$sites" != "x" ]; then
+	if [ "x$sites" = "xnone" ]; then
+		return
+	elif [ "x$sites" != "x" ]; then
 		let i1=0
 		for site in $sites
 		do
