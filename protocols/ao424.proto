@@ -49,15 +49,6 @@ setCommit {
 	out "dacreset_device 1";
 }
 
-setPlayloopLength {
-	out "playloop_length %d";
-	in;
-}
-
-getPlayloopLength {
-	out "playloop_length";
-	in "%d";
-}
 
 getOdds {
 	out "odd_channels";

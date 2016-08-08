@@ -1,0 +1,16 @@
+Terminator = LF;
+ExtraInput = Ignore;
+
+setPlayloopLength {
+	out "playloop_length %d";
+	in;
+}
+
+getPlayloopLength {
+	out "playloop_length";
+	in "%d";
+}
+
+getPlayloopCursor {
+	out "playloop_cursor";
+	in "%d";

@@ -51,3 +51,10 @@ nameFromMT() {
 	# no default	
 	esac					
 }
+
+hasOutput() {
+	case $1 in
+	$MT_DIO432|$MT_DIO432P|$MT_AO420|$MT_AO424) echo "yes";;
+	*) echo "no";;
+	esac
+}

@@ -1,0 +1,46 @@
+record(longout, "${UUT}:${SITE}:PLAYLOOP_LEN") {
+	field(DTYP, "Soft Channel")			
+	field(FLNK, "${UUT}:${SITE}:PLAYLOOP_LEN:w PP")	
+}
+
+#http://www.aps.anl.gov/epics/tech-talk/2010/msg00131.php
+# PLL   : setpoint
+# PLL:r : readback
+# PLL:s : sync
+# PLL:w : write
+
+record(longin, "${UUT}:${SITE}:PLAYLOOP_LEN:r") {
+	field(DTYP, "stream")
+	field(INP,  "@xo.proto getPlayloopLength ${SPORT}")
+	field(SCAN, "1 second")
+	field(PINI, "YES")
+	field(FLNK, "${UUT}:${SITE}:PLAYLOOP_LEN:s")
+}
+record(longout, "${UUT}:${SITE}:PLAYLOOP_LEN:s") {
+	field(DTYP, "Soft Channel")
+	field(DOL,  "${UUT}:${SITE}:PLAYLOOP_LEN:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:${SITE}:PLAYLOOP_LEN PP")
+	field(FLNK, "${UUT}:${SITE}:PLAY")
+}
+
+record(longout, "${UUT}:${SITE}:PLAYLOOP_LEN:w") {
+	field(DTYP, "stream")	
+	field(OUT,  "@xo.proto setPlayloopLength ${SPORT}")	
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:PLAYLOOP_LEN:s.PACT")
+}
+
+record(bi, "${UUT}:${SITE}:PLAY") {
+	field(DTYP, "Soft Channel")
+	field(INP,  "${UUT}:${SITE}:PLAYLOOP_LEN:r")
+}
+
+record(longin, "${UUT}:${SITE}:PLAYLOOP_CURSOR") {
+	field(DTYP, "stream")
+	field(INP,  "@xo.proto getPlayloopCursor ${SPORT}")
+	field(SCAN, "1 second")
+	field(PINI, "YES")
+	field(DISV, "0")
+	field(SDIS, "${UUT}:${SITE}:PLAY")
+}
