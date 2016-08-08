@@ -39,7 +39,7 @@ record(bi, "${UUT}:${SITE}:PLAY") {
 record(longin, "${UUT}:${SITE}:PLAYLOOP_CURSOR") {
 	field(DTYP, "stream")
 	field(INP,  "@xo.proto getPlayloopCursor ${SPORT}")
-	field(SCAN, "1 second")
+	field(SCAN, ".1 second")
 	field(PINI, "YES")
 	field(DISV, "0")
 	field(SDIS, "${UUT}:${SITE}:PLAY")
