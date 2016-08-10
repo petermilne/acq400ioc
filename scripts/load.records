@@ -307,6 +307,9 @@ load_400() {
 	$MT_V2F)
 		./scripts/load.v2f $HOST $site
 		return;;
+	$MT_RAD_CELF)
+		./scripts/load.rad_celf $HOST $site
+		return;;
 	$MT_PIG_CELF)
 		is_adc="sar"
 		dblr '"db/pigcelf.db","'${cprams}'"'
