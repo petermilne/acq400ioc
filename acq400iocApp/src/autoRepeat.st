@@ -110,7 +110,7 @@ ss autorepeat
 	
 	state waitrun 
 	{
-		when(shot_complete != shot_complete0){
+		when(shot_complete != shot_complete0 && tstate == 0){
 			printf("wait_run->run_transition\n");
 		} state run_transition
 		
