@@ -286,7 +286,7 @@ load_400() {
 		t50r=0; jcp=0; 
 		sroot="/etc/acq400/${site}"
 		[ -e ${sroot}/T50R_1 ] && t50r=1
-		[ -e ${sroot}/JC ] && jcp=1
+		[ -e ${sroot}/JC_LOL ] && jcp=1		
 		[ -e ${sroot}/acq480_fpga_decim ] && \
 			decim=$(cat ${sroot}/acq480_fpga_decim)
 		a480p="SPTRAIN=S${site}_480t,JCP=${jcp},T50R=${t50r},DECIM=${decim}"
