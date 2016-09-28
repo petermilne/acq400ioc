@@ -83,6 +83,7 @@ record(mbbi, "${UUT}:MODE:TRANS_ACT:STATE") {
 	field(TWST, "RUN_PRE")
 	field(THST, "RUN_POST")
 	field(FRST, "POST_PROCESS")
+	field(FVST, "CLEANUP")
 	field(INP,  "@transient.proto read_state ${SPORTT}")
 	field(SCAN, "I/O Intr")		
 	field(FLNK, "${UUT}:MODE:TRANS_ACT:STATE_NOT_IDLE")
