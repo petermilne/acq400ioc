@@ -28,23 +28,11 @@ load_mgt400_sfp()
 
 load_mgt400() {
 	site=$1
-	
-	
-	case $site in
-	12)
-		ab=B;;
-	13)
-		ab=A;;
-	*)
-		echo "# bad site $site"
-		return;;		
-	esac
-	
-	sport="S${ab}"
-	
-	
-	
-	cprams="UUT=${HOST},SITE=${ab},chan=${ab}"
+	abc=$2
+
+	sport="S${abc}"
+		
+	cprams="UUT=${HOST},SITE=${abc},chan=${abc}"
 	# count is scaled by 0.5
 	ctprams="${cprams},CTRMAX=${CTR31},DT=1,DTC=0.5"
 	prams="${ctprams},lname=MGT:HB,pname=heartbeat"
@@ -78,10 +66,11 @@ load_mgt400() {
 # kmcu sfp gpio do no exist
 [ "x$mt" != "xkmcu" ] && load_mgt400_sfp
 
-
-if [ -e /dev/acq400.12.knobs ]; then
-	load_mgt400 12
-fi
-if [ -e /dev/acq400.13.knobs ]; then
-	load_mgt400 13
-fi
+for SITE in 11 12 13; do
+	case $SITE in
+	11) id=C;;
+	12) id=B;;
+	13) id=A;;
+	esac
+	[ -e /dev/acq400.$SITE.knobs ] && load_mgt400 $SITE $id
+done
