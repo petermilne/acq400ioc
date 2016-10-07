@@ -41,10 +41,10 @@ record(aSub, "${UUT}:${SITE}:AI:WF:PS:${cid}") {
 	field(FTC,  "FLOAT")
 	field(NOC,  "1")
 	field(INPC, "${UUT}:${SITE}:AI:WF:FS")	
-# IS CPLX	
+# IS CPLX: NO
 	field(FTD,  "ULONG")
 	field(NOD,  "1")
-	field(INPD, "1")
+	field(INPD, "0")
 	
 # single sided power spectrum
 	field(FTVA, "FLOAT")

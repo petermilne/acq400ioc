@@ -97,7 +97,7 @@ record(aSub, "${PFX}:PS") {
 	field(FTC,  "FLOAT")
 	field(NOC,  "1")
 	field(INPC, "${UUT}:${SITE}:AI:WF:FOUT")
-# IS CPLX	
+# IS CPLX : YES	
 	field(FTD,  "ULONG")
 	field(NOD,  "1")
 	field(INPD, "1")
