@@ -853,9 +853,11 @@ acq1001|acq1002)
 *)		clk=ZCLK;;
 esac
 
-if [ "$(cat /dev/acq400.0.knobs/module_role)" = "CLKOUT" ]; then
-		dbpf acq1001_109:0:SIG:FP:
-fi
+# WORKTODO : what was this
+#if [ "$(cat /dev/acq400.0.knobs/module_role)" = "CLKOUT" ]; then
+#		dbpf acq1001_109:0:SIG:FP:
+#fi
+
 if [ "x$IOC_POSTINIT" != "x" ]; then
 	echo 1>&2 "load.records:$IOC_POSTINIT"
 	if [ -e $IOC_POSTINIT ]; then
