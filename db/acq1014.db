@@ -9,7 +9,7 @@ record (bo, "${UUT}:0:SIG:FP:${FUN}") {
 }
 
 record (bo, "${UUT}:0:SIG:FP:${FUN}:w") {
-	field(DTYP, "boAcqHost")
+	field(DTYP, "stream")
 	field(OUT,  "@mb.proto set_fpctl(acq1014_${fun}) ${SPORT}")	
 	field(PINI, "YES")	
 	field(DISV, "1")
@@ -19,7 +19,7 @@ record (bo, "${UUT}:0:SIG:FP:${FUN}:w") {
 }
 
 record (bi, "${UUT}:0:SIG:FP:${FUN}:r") {
-	field(DTYP, "biAcqHost")
+	field(DTYP, "stream")
 	field(INP,  "@mb.proto get_fpctl(acq1014_${fun}) ${SPORT}")
 	field(SCAN, "1 second")
 	field(PINI, "YES")
