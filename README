@@ -26,3 +26,7 @@ export ACQ43X_SET_SAMPLE_RATE=-1
 
 # set a default sample rate
 export ACQ43X_SET_SAMPLE_RATE=10000
+
+ACQ1014:
+/mnt/local/sysconfig/epics.sh:
+export IOC_PREINIT=./scripts/load.acq1014
