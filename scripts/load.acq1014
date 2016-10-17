@@ -2,10 +2,7 @@ source /usr/local/epics/scripts/load.SpecReal
 wprams="UUT=${HOST}"
 echo dbLoadRecords\(\"db/acq1014.db\",\"${wprams}\"\)
 CPRAMS="UUT=${HOST},SITE=0,SPORT=S0"
-fprams="nobt=1,zrst=INT,onst=EXT_FP,twst=,thst="
-lprams="FUN=CLK_SRC,fun=acq1014_clk,disa=0"
-dblr '"db/fpctl.db","'${CPRAMS},${lprams},${fprams},thvl='"'
 
-lprams="FUN=TRG_SRC,fun=acq1014_trg,disa=0"
-dblr '"db/fpctl.db","'${CPRAMS},${lprams},${fprams},thvl='"'
+dblr '"db/acq1014.db","'${CPRAMS},FUN=CLK_SRC,fun=clk'"'
+dblr '"db/acq1014.db","'${CPRAMS},FUN=TRG_SRC,fun=trg'"'
 
