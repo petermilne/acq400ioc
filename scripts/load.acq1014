@@ -1,6 +1,4 @@
 source /usr/local/epics/scripts/load.SpecReal
-wprams="UUT=${HOST}"
-echo dbLoadRecords\(\"db/acq1014.db\",\"${wprams}\"\)
 CPRAMS="UUT=${HOST},SITE=0,SPORT=S0"
 
 dblr '"db/acq1014.db","'${CPRAMS},FUN=CLK_SRC,fun=clk'"'
