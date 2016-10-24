@@ -50,6 +50,11 @@ record(bo, "${HS}:B8:GAIN:${CH}:_1") {
 	field(DOL, "${HS}:B8:GAIN:${CH}:_c1")         
 }
 
+record (calc, "${HS}:GAIN_CHANGES") {
+	field(INPA, "${HS}:GAIN_CHANGES")
+	field(CALC, "A+1")
+}
+
 # force waveform record to rescale
 record(calc, "${HS}:B8:GAIN:${CH}_f") {
 	field(INPA, "${HS}:B8:GAIN:${CH}")
