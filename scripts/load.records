@@ -376,9 +376,16 @@ load_400() {
 	
 	CTPR="${cprams},CTRMAX=$CTR28,DT=1,DTC=1"
 	dblr '"db/counter.db","'${CTPR},lname=clk_count,pname=clk_count'"'
-	dblr '"db/counter.db","'${CTPR},lname=sample_count,pname=sample_count'"'
+	case $model in
+	$MT_BOLO8|$MT_BOLO8B)
+		psc=adc_sample_count;;
+	*)
+		psc=sample_count;;
+	esac
+	
 	dblr '"db/counter.db","'${CTPR},lname=CLK_COUNT,pname=clk_count'"'
-	dblr '"db/counter.db","'${CTPR},lname=SAMPLE_COUNT,pname=sample_count'"'
+	dblr '"db/counter.db","'${CTPR},lname=sample_count,pname=${psc}'"'
+	dblr '"db/counter.db","'${CTPR},lname=SAMPLE_COUNT,pname=${psc}'"'
 	dblr '"db/elapsed.db","'${CTPR},lname=SAMPLE_COUNT,DECIM=${decim}'"'
 
 	gain_file=${gain_file_pfx}.db
