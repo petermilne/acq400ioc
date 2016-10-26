@@ -791,14 +791,25 @@ load_mb() {
 	fi	
 }
 
+load_mod_present()
+{
+	CPRAMS="UUT=${HOST},SITE=$1,PRESENT=$2"
+	dblr '"db/mod_present.db","'${CPRAMS}'"'		
+}
 # execution starts here
 
-for ACQ400 in /dev/acq400.[123456]
+for site in 1 2 3 4 5 6
 do
+	ACQ400=/dev/acq400.$site
 	if [ -e $ACQ400 ]; then
-		load_400 ${ACQ400##*.} $ACQ400
+		load_400 $site $ACQ400
+		load_mod_present $site 1
+	else
+		load_mod_present $site 0
 	fi
 done
+
+for s in 
 
 load_mb
 

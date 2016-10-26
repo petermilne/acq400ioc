@@ -1,0 +1,7 @@
+record(bi, "${UUT}:${SITE}:IS_PRESENT") {
+	field(DTYP, "Soft Channel")
+	field(VAL,  "${PRESENT}")
+	field(PINI, "YES")
+	field(ONAM, "PRESENT")
+	field(ZNAM, "EMPTY")
+}
