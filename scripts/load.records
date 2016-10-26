@@ -809,8 +809,6 @@ do
 	fi
 done
 
-for s in 
-
 load_mb
 
 
