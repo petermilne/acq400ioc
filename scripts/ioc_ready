@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set +e
+
+
+PV=$(hostname):IOC_READY
+RDY=$(caget -nt $PV)
+
+if [ "x$RDY" = "x1" ]; then
+	echo 1
+else
+	echo 0
+fi
+
