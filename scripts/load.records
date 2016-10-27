@@ -689,7 +689,7 @@ load_mb_sync() {
 			dblr '"db/fpctl.db","'${CPRAMS},${lprams},${fprams},thvl=${thvl}'"';;
 		*)
 			dblr '"db/fpctl2.db","'${CPRAMS},${lprams},${fprams}'"';;
-						
+		esac
 	done
 	dblr '"db/zclk.db","'${CPRAMS}'"'
 	for FUN in SYNC TRG GPIO CLK
