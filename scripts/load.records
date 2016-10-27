@@ -670,21 +670,26 @@ load_mb_sync() {
 	do
 		disa=0,thvl=15
 		case $FUN in 
-		GPIO)	fprams="nobt=4,zrst=INPUT,onst=EVT0,twst=EVT1,thst=EVT7"
+		GPIO)	fprams="nobt=4,zrst=INPUT,src=EVT"
 				lprams="FUN=${FUN},fun=$(toLower ${FUN}),disa=${disin}";;
-		SYNC)	fprams="nobt=4,zrst=INPUT,onst=SYNC0,twst=SYNC1,thst=SYNC7"
+		SYNC)	fprams="nobt=4,zrst=INPUT,src=SYNC"
 				lprams="FUN=${FUN},fun=$(toLower ${FUN}),disa=${disin}";;
-		TRG)	fprams="nobt=4,zrst=INPUT,onst=TRG0,twst=TRG1,thst=TRG7"
+		TRG)	fprams="nobt=4,zrst=INPUT,src=TRG"
 				lprams="FUN=${FUN},fun=$(toLower ${FUN}),disa=0";;
 		TRGOUT)
-				fprams="nobt=4,zrst=INPUT,onst=TRG0,twst=TRG1,thst=TRG7"
+				fprams="nobt=4,zrst=INPUT,src=TRG"
 				lprams="FUN=${FUN},fun=gpio,disa=${disout}";;
 		CLKOUT)
 				thvl=10
 				fprams="nobt=4,zrst=INPUT,onst=CLK0,twst=CLK1,thst=CLK2"
 				lprams="FUN=${FUN},fun=sync,disa=${disout}";;
 		esac
-		dblr '"db/fpctl.db","'${CPRAMS},${lprams},${fprams},thvl=${thvl}'"'		
+		case $FUN in
+		CLKOUT)
+			dblr '"db/fpctl.db","'${CPRAMS},${lprams},${fprams},thvl=${thvl}'"';;
+		*)
+			dblr '"db/fpctl2.db","'${CPRAMS},${lprams},${fprams}'"';;
+						
 	done
 	dblr '"db/zclk.db","'${CPRAMS}'"'
 	for FUN in SYNC TRG GPIO CLK
