@@ -14,10 +14,18 @@ record(calc, "${UUT}:1:ACQ42X_DT") {
 	field(CALC, "A!=0? 1/A: 1")
 	field(FLNK, "${UUT}:1:DT")
 }
+record(longout, "${UUT}:1:XDT") {
+	field(DTYP, "Soft Channel")
+	field(VAL,  "0")
+	field(PINI,  "YES")
+	field(DESC,  "USER override for exact DT nsec")
+	field(EGU,   "nsec")
+}
 
 record(calc, "${UUT}:1:DT") {
 	field(INPA, "${UUT}:1:ACQ42X_DT")
-	field(CALC, "A")
+	field(INPB, "${UUT}:1:XDT")
+	field(CALC, "B>0? B*1e-9: A")
 	field(FLNK, "${UUT}:1:DT:f") 
 }
 
