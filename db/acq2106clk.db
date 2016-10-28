@@ -32,7 +32,10 @@ record (bo, "${UUT}:SYS:CLK:BYPASS:s" ) {
 	field(DOL,  "${UUT}:SYS:CLK:BYPASS:r NPP")
 	field(OUT,  "${UUT}:SYS:CLK:BYPASS PP")
 }
-
+record(longout, "${UUT}:0:SIG:CLK_MB:SET") {
+	field(SDIS, "${UUT}:SYS:CLK:BYPASS")
+	field(DISV, "1")
+}
 record (bo, "${UUT}:SYS:CLK:OE_CLK1_ELF1") {
 	field(DTYP, "boAcqHost")	
 	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ELF1")
