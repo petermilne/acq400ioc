@@ -90,9 +90,12 @@ record(longout, "${UUT}:1:XDT") {
 	field(PINI,  "YES")
 	field(DESC,  "USER override for exact DT nsec")
 	field(EGU,   "nsec")
+	field(FLNK,  "${UUT}:1:DT")
 }
+
+
 record(calc, "${UUT}:1:DT") {
-	field(INPA, "${UUT}:0:SIG:CLK_S1:FREQ")
+	field(INPA, "${UUT}:0:SIG:CLK_S1:FREQ")	
 # user override for exact value in nsec.
 	field(INPB, "${UUT}:1:XDT")
 	field(CALC, "B>0? B*1e-9: A>0? 1/A: 0")
