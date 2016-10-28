@@ -1,14 +1,38 @@
+
 record (stringin, "${UUT}:SYS:CLK:CONFIG") {
 	field(DTYP, "stream")
 	field(INP,  "@acq2106clk.proto getSi5326config ${SPORT}")
 	field(SCAN, "1 second")
 }
 
-record (bi, "${UUT}:SYS:CLK:BYPASS" ) {
+record (bo, "${UUT}:SYS:CLK:BYPASS" ) {
+	field(DTYP, "Soft Channel")
+	field(PINI, "YES")
+	field(VAL,  "0")
+	field(FLNK, "${UUT}:SYS:CLK:BYPASS:w PP")	
+}
+
+record (bo, "${UUT}:SYS:CLK:BYPASS:w" ){
+	field(DTYP, "stream")
+	field(OUT,  "@acq2106clk.proto setSi5326Bypass ${SPORT}")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:SYS:CLK:BYPASS")
+	field(SDIS, "${UUT}:SYS:CLK:BYPASS:s.PACT")
+	field(DISV, "1")
+}
+record (bi, "${UUT}:SYS:CLK:BYPASS:r" ) {
 	field(DTYP, "stream")
 	field(INP,  "@acq2106clk.proto getSi5326bypass ${SPORT}")
 	field(SCAN, "1 second")
+	field(FLNK, "${UUT}:SYS:CLK:BYPASS:s")
 }
+record (bo, "${UUT}:SYS:CLK:BYPASS:s" ) {
+	field(DTYP, "Soft Channel")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:SYS:CLK:BYPASS:r NPP")
+	field(OUT,  "${UUT}:SYS:CLK:BYPASS PP")
+}
+
 record (bo, "${UUT}:SYS:CLK:OE_CLK1_ELF1") {
 	field(DTYP, "boAcqHost")	
 	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ELF1")
