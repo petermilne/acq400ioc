@@ -233,8 +233,10 @@ record(calcout, "${UUT}:1:SIG:sample_count:FREQ:nzc") {
 	field(INPL, "0.1")
 # A+1 : never zero. Output Zero on a big change, then next will ->1	
 	field(CALC, "ABS(A+1-B)/(A+1) > L? 0: A")
-	field(OUT, "${UUT}:1:SIG:sample_count:FREQ:ONCHANGE")
+	field(OUT, "${UUT}:1:SIG:sample_count:FREQ:ONCHANGE PP")
+	field(OCAL, "VAL != 0 ? 1: 0")
 	field(OOPT, "Transition To Non-zero")
+	field(DOPT, "Use OCAL")
 	field(ODLY, "2")
 }
 
