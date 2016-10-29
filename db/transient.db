@@ -222,21 +222,24 @@ record(mbbi, "${UUT}:LIVE:MODE") {
 # of course if XDT is set, we get that rather than the measurement
 # either way, it's good
 
-record(calc, "${UUT}:${SITE}:SIG:sample_count:FREQ") {
-	field(FLNK, "${UUT}:${SITE}:SIG:sample_count:FREQ:nz")
+record(calc, "${UUT}:1:SIG:sample_count:FREQ") {
+	field(FLNK, "${UUT}:1:SIG:sample_count:FREQ:nzc")
 }
 
-record(calcout, "${UUT}:${SITE}:SIG:sample_count:FREQ:nzc") {
-	field(INPA, "${UUT}:${SITE}:SIG:sample_count:FREQ")
-# B: sensitivity 	
-	field(INPB, "0.1")	
-	field(CALC, "A!=0 && LA==0 || A!=0 && ABS(A-LA)/A > B")
-	field(OUT, "${UUT}:${SITE}:SIG:sample_count:FREQ:nzl")
+record(calcout, "${UUT}:1:SIG:sample_count:FREQ:nzc") {
+	field(INPA, "${UUT}:1:SIG:sample_count:FREQ")
+	field(INPB, "${UUT}:1:SIG:sample_count:FREQ:nzc.LA")
+# L: sensitivity
+	field(INPL, "0.1")
+# A+1 : never zero. Output Zero on a big change, then next will ->1	
+	field(CALC, "ABS(A+1-B)/(A+1) > L? 0: A")
+	field(OUT, "${UUT}:1:SIG:sample_count:FREQ:ONCHANGE")
 	field(OOPT, "Transition To Non-zero")
 	field(ODLY, "2")
 }
 
-record(longout, "{UUT}:${SITE}:SIG:sample_count:FREQ:ONCHANGE") {
+record(longout, "${UUT}:1:SIG:sample_count:FREQ:ONCHANGE") {
+	field(DTYP, "Soft Channel")
 	field(FLNK, "${UUT}:1:DT")
 }
 
