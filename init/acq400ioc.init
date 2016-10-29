@@ -156,7 +156,9 @@ make_epics_knobs() {
 		make_caput $PV ${PV#*:} 0
 	done
 	
-	for PV in $(egrep -e :1:CLK -e :1:TRG -e :1:EVE -e :1:RGM -e :1:RTM :1:XDT :1:DT $RL | grep -v [a-z]$)
+	for PV in $(egrep -e :1:CLK -e :1:TRG -e :1:EVE \
+					  -e :1:RGM -e :1:RTM -e :1:XDT -e :1:DT $RL \
+				| grep -v [a-z]$)
 	do
 		pv1=${PV#*:}
 		make_caput $PV ${pv1#*:} 1
