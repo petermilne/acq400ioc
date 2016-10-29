@@ -10,7 +10,7 @@ make_AI() {
 		decim="${HOST}:${site}:ACQ480:FPGA:DECIM"
 	fi
 
-	let nchan=$(cat /etc/acq400/$SITE/NCHAN)
+	let nchan=$(cat /etc/acq400/$site/NCHAN)
 	vmax=10
 
 	let ch=0; while [ $ch -lt $nchan ]; do
