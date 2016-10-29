@@ -98,7 +98,8 @@ record(calc, "${UUT}:1:DT") {
 	field(INPA, "${UUT}:0:SIG:CLK_S1:FREQ")	
 # user override for exact value in nsec.
 	field(INPB, "${UUT}:1:XDT")
-	field(CALC, "B>0? B*1e-9: A>0? 1/A: 0")
+	field(INPD, "${UUT}:1:ACQ480:FPGA:DECIM")
+	field(CALC, "B>0? B*1e-9: A>0? D/A: 0")
 	field(FLNK, "${UUT}:1:DT:f")
 }
 
