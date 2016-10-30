@@ -840,6 +840,17 @@ do
 	fi
 done
 
+for file in /usr/local/epics/init.d/*init*
+do
+	if [ -x $file ]; then
+		echo 1>&2 "execute extension $file"
+		$file
+	elif [ -e $file ]; then
+		echo 1>&2 "source extension $file"
+		source $file
+	fi 
+done
+
 if [ "x$IOC_PREINIT" != "x" ]; then
 	echo 1>&2 "load.records:$IOC_PREINIT"
 	if [ -e $IOC_PREINIT ]; then
