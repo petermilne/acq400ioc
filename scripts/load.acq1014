@@ -1,6 +1,0 @@
-source /usr/local/epics/scripts/load.SpecReal
-CPRAMS="UUT=${HOST},SITE=0,SPORT=S0"
-
-dblr '"db/acq1014.db","'${CPRAMS},FUN=CLK_SRC,fun=clk'"'
-dblr '"db/acq1014.db","'${CPRAMS},FUN=TRG_SRC,fun=trg'"'
-
