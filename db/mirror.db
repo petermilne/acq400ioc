@@ -1,0 +1,13 @@
+record(stringout, "${UUT}:MIRROR_HOST")
+{
+	field(DTYP, "Soft Channel")
+	field(VAL,  "")
+	field(PINI, "YES")
+}
+
+record(bo, "${UUT}:MIRROR_EN")
+{
+	field(DTYP, "Soft Channel")
+	field(VAL,  "0")
+	field(PINI, "YES")
+}
