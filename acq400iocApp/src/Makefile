@@ -38,6 +38,7 @@ acq400ioc_DBD += onSetTransient.dbd
 acq400ioc_DBD += mgtStopOnLinkDown.dbd
 acq400ioc_DBD += calmon.dbd
 acq400ioc_DBD += setMB_ClockMonitor.dbd
+acq400ioc_DBD += pvmirror.dbd
 
 # Add all the support libraries needed by this IOC
 acq400ioc_LIBS += acq2ioc
@@ -62,6 +63,8 @@ acq400ioc_SRCS += calmon42x.st
 acq400ioc_SRCS += calmon480.st
 acq400ioc_SRCS += setMB_ClockMonitor.st
 acq400ioc_SRCS += v2f_cal.st
+acq400ioc_SRCS += pvmirror.st
+
 
 # Build the main IOC entry point on workstation OSs.
 acq400ioc_SRCS_DEFAULT += acq400iocMain.cpp \
