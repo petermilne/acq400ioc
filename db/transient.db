@@ -58,16 +58,34 @@ record(longout, "${UUT}:MODE:TRANSIENT:SOFT_TRIGGER") {
 	field(HOPR, "1")
 }
 
-record(longout, "${UUT}:MODE:TRANSIENT:SET_ARM") {
-	field(DTYP, "stream")	
+record(bo, "${UUT}:MODE:TRANSIENT:SET_ARM") {
+	field(DTYP, "Soft Channel")
 	field(DESC, "start transient capture")
-	field(EGU,  "Samples")
+	field(VAL,  "0")
+	field(PINI, "YES")	
 	field(LOPR, "0")
-	field(HOPR, "1")	
-	field(OUT,  "@mb.proto setArm ${SPORT}")
+	field(HOPR, "1")
+	field(FLNK, "${UUT}:MODE:TRANSIENT:SET_ARM:set")	
+
 	field(SDIS, "${UUT}:MODE:CONTINUOUS")
 	field(DISV, "1")
+	field(HIGH, "0.1")
+
 }
+
+record(calcout, "${UUT}:MODE:TRANSIENT:SET_ARM:set") {
+	field(INPA,  "${UUT}:MODE:TRANSIENT:SET_ARM")
+	field(CALC, "A")
+	field(OOPT, "Transition To Non-zero")
+	field(DOPT, "Use CALC")
+	field(OUT,  "${UUT}:MODE:TRANSIENT:SET_ARM:w PP")
+}
+
+record(bo, "${UUT}:MODE:TRANSIENT:SET_ARM:w") {
+	field(DTYP, "stream")
+	field(OUT,  "@mb.proto setArm ${SPORT}")	
+}
+
 
 record(longout, "${UUT}:MODE:TRANSIENT:SET_ABORT") {
 	field(DTYP, "stream")	
