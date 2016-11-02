@@ -18,8 +18,6 @@ record(bo, "${UUT}:MODE:TRANSIENT") {
 	field(DESC, "enable transient")
 	field(VAL,  "0")
 	field(PINI, "YES")
-	field(LOPR, "0")
-	field(HOPR, "1")
 	field(FLNK, "${UUT}:MODE:TRANSIENT:set")
 	field(HIGH, "0.1")
 }
@@ -77,9 +75,7 @@ record(bo, "${UUT}:MODE:TRANSIENT:SET_ARM") {
 	field(DTYP, "Soft Channel")
 	field(DESC, "start transient capture")
 	field(VAL,  "0")
-	field(PINI, "YES")	
-	field(LOPR, "0")
-	field(HOPR, "1")
+	field(PINI, "YES")
 	field(FLNK, "${UUT}:MODE:TRANSIENT:SET_ARM:set")	
 
 	field(SDIS, "${UUT}:MODE:CONTINUOUS")
@@ -102,14 +98,11 @@ record(bo, "${UUT}:MODE:TRANSIENT:SET_ARM:w") {
 }
 
 
-record(longout, "${UUT}:MODE:TRANSIENT:SET_ABORT") {
+record(bo, "${UUT}:MODE:TRANSIENT:SET_ABORT") {
 	field(DTYP, "Soft Channel")
 	field(DESC, "abort transient capture")
 	field(VAL,  "0")
 	field(PINI, "YES")	
-	field(EGU,  "Samples")
-	field(LOPR, "0")
-	field(HOPR, "1")	
 	field(FLNK,  "${UUT}:MODE:TRANSIENT:SET_ABORT:set")
 	field(HIGH, "0.1")
 }
@@ -123,7 +116,7 @@ record(calcout, "${UUT}:MODE:TRANSIENT:SET_ABORT:set") {
 }
 
 
-record(bo, ${UUT}:MODE:TRANSIENT:SET_ABORT:w") {
+record(bo, "${UUT}:MODE:TRANSIENT:SET_ABORT:w") {
 	field(DTYP, "stream")
 	field(OUT,  "@mb.proto setAbort ${SPORT}")	
 }
