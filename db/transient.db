@@ -43,13 +43,17 @@ record(longout, "${UUT}:MODE:TRANSIENT:OSAM") {
 	field(DESC, "subrate oversample ratio")
 	field(EGU,  "Samples")
 	field(LOPR, "0")
+	field(VAL,  "1")
+	field(PINI, "YES")
 	field(HOPR, "256")
 }
 
 record(longout, "${UUT}:MODE:TRANSIENT:SOFT_TRIGGER") {
 	field(DTYP, "Soft Channel")
-	field(DESC, "set transient pre-samples")
+	field(DESC, "auto soft trigger after ARM")
 	field(EGU,  "Samples")
+	field(VAL,  "1")
+	field(PINI, "YES")	
 	field(LOPR, "0")
 	field(HOPR, "1")
 }
