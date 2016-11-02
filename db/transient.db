@@ -15,7 +15,6 @@ record(stringin, "${UUT}:MODE:CONTINUOUS:STATUS") {
 }
 record(bo, "${UUT}:MODE:TRANSIENT") {
 	field(DTYP, "Soft Channel")
-	field(DTYP, "stream")	
 	field(DESC, "enable transient")
 	field(VAL,  "0")
 	field(PINI, "YES")
