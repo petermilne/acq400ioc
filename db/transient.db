@@ -94,7 +94,8 @@ record(calcout, "${UUT}:MODE:TRANSIENT:SET_ARM:set") {
 
 record(bo, "${UUT}:MODE:TRANSIENT:SET_ARM:w") {
 	field(DTYP, "stream")
-	field(OUT,  "@mb.proto setArm ${SPORT}")	
+	field(OUT,  "@mb.proto setArm ${SPORT}")
+	field(FLNK, "${UUT}:1:DT PP")
 }
 
 
@@ -311,7 +312,7 @@ record(calcout, "${UUT}:1:SIG:sample_count:FREQ:nzc") {
 
 record(longout, "${UUT}:1:SIG:sample_count:FREQ:ONCHANGE") {
 	field(DTYP, "Soft Channel")
-	field(FLNK, "${UUT}:1:DT")
+	field(FLNK, "${UUT}:1:DT PP")
 }
 
 
