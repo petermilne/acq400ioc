@@ -21,6 +21,7 @@ record(bo, "${UUT}:MODE:TRANSIENT") {
 	field(LOPR, "0")
 	field(HOPR, "1")
 	field(FLNK, "${UUT}:MODE:TRANSIENT:set")
+	field(HIGH, "0.1")
 }
 
 record(calcout, "${UUT}:MODE:TRANSIENT:set") {
@@ -28,10 +29,10 @@ record(calcout, "${UUT}:MODE:TRANSIENT:set") {
 	field(CALC, "A")
 	field(OOPT, "Transition To Non-zero")
 	field(DOPT, "Use CALC")
-	field(OUT,  "${UUT}:MODE:TRANSIENT:SET_ARM:w PP")
+	field(OUT,  "${UUT}:MODE:TRANSIENT:TRANSIENT:w PP")
 }
 
-record(bo, "${UUT}:MODE:TRANSIENT:SET_ARM:w") {
+record(bo, "${UUT}:MODE:TRANSIENT:TRANSIENT:w") {
 	field(DTYP, "stream")
 	field(OUT,  "@mb.proto setTransient(${UUT}:MODE:TRANSIENT) ${SPORT}")
 }
@@ -102,14 +103,30 @@ record(bo, "${UUT}:MODE:TRANSIENT:SET_ARM:w") {
 
 
 record(longout, "${UUT}:MODE:TRANSIENT:SET_ABORT") {
-	field(DTYP, "stream")	
+	field(DTYP, "Soft Channel")
 	field(DESC, "abort transient capture")
+	field(VAL,  "0")
+	field(PINI, "YES")	
 	field(EGU,  "Samples")
 	field(LOPR, "0")
 	field(HOPR, "1")	
-	field(OUT,  "@mb.proto setAbort ${SPORT}")
+	field(FLNK,  "${UUT}:MODE:TRANSIENT:SET_ABORT:set")
+	field(HIGH, "0.1")
 }
 
+record(calcout, "${UUT}:MODE:TRANSIENT:SET_ABORT:set") {
+	field(INPA,  "${UUT}:MODE:TRANSIENT:SET_ABORT")
+	field(CALC, "A")
+	field(OOPT, "Transition To Non-zero")
+	field(DOPT, "Use CALC")
+	field(OUT,  "${UUT}:MODE:TRANSIENT:SET_ABORT:w PP")
+}
+
+
+record(bo, ${UUT}:MODE:TRANSIENT:SET_ABORT:w") {
+	field(DTYP, "stream")
+	field(OUT,  "@mb.proto setAbort ${SPORT}")	
+}
 record(mbbi, "${UUT}:MODE:TRANS_ACT:STATE") {
 	field(DTYP, "stream")
 	field(DESC, "transient actual state")
