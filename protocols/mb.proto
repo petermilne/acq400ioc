@@ -165,4 +165,6 @@ setFitRtmTranslenBuffer {
 	out "fit_rtm_translen_to_buffer %d";
 }
 
-
+setSoftTrigger {
+	out "soft_trigger";
+}

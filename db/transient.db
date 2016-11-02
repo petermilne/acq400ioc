@@ -120,6 +120,29 @@ record(bo, "${UUT}:MODE:TRANSIENT:SET_ABORT:w") {
 	field(DTYP, "stream")
 	field(OUT,  "@mb.proto setAbort ${SPORT}")	
 }
+
+record(bo, "${UUT}:SIG:SOFT_TRIGGER") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "abort transient capture")
+	field(VAL,  "0")
+	field(PINI, "YES")	
+	field(FLNK,  "${UUT}:SIG:SOFT_TRIGGER:set")
+	field(HIGH, "0.1")
+}
+
+record(calcout, "${UUT}:SIG:SOFT_TRIGGER:set") {
+	field(INPA,  "${UUT}:SIG:SOFT_TRIGGER")
+	field(CALC, "A")
+	field(OOPT, "Transition To Non-zero")
+	field(DOPT, "Use CALC")
+	field(OUT,  "${UUT}:SIG:SOFT_TRIGGER:w PP")
+}
+
+
+record(bo, "${UUT}:SIG:SOFT_TRIGGER:w") {
+	field(DTYP, "stream")
+	field(OUT,  "@mb.proto setSoftTrigger ${SPORT}")	
+}
 record(mbbi, "${UUT}:MODE:TRANS_ACT:STATE") {
 	field(DTYP, "stream")
 	field(DESC, "transient actual state")
