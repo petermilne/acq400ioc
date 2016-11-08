@@ -315,4 +315,29 @@ record(longout, "${UUT}:1:SIG:sample_count:FREQ:ONCHANGE") {
 	field(FLNK, "${UUT}:1:DT PP")
 }
 
+# enum FE_STATUS { FE_IDLE, FE_SEARCH, FE_FOUND, FE_NOTFOUND, FE_FAIL };
+record(mbbi, "${UUT}:MODE:TRANS_ACT:FIND_EV:STA") {
+	field(DTYP, "stream")
+	field(DESC, "transient event state")
+	field(NOBT, "3")
+	field(ZRST, "IDLE")
+	field(ONST, "SEARCH")
+	field(TWST, "FOUND")
+	field(THST, "NOT FOUND")
+	field(FRST, "FAIL")
+	field(INP,  "@transient.proto findEventStatus ${SPORTT}")
+	field(SCAN, "I/O Intr")		
+}
 
+record(longin, "${UUT}:MODE:TRANS_ACT:FIND_EV:CUR") {
+	field(DTYP, "stream")
+	field(INP,  "@transient.proto findEventCurBuf ${SPORTT}")
+	field(SCAN, "I/O Intr")
+}
+
+#                     123456789012345678901234567890	27+11 = 39
+record(longin, "${UUT}:MODE:TRANS_ACT:FIND_EV:NBU") {
+	field(DTYP, "stream")
+	field(INP,  "@transient.proto findEventTotBuf ${SPORTT}")
+	field(SCAN, "I/O Intr")
+}
