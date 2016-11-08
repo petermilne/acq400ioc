@@ -96,14 +96,15 @@ ss autorepeat
       			pvGet(shot_complete);
       			shot_complete0 = shot_complete;
     		}
-		when(set_abort > 0){
-			set_abort = 0;
+		when(set_abort > 0){			
 			pvPut(set_abort);
+			set_abort = 0;
 			printf("run=>stop_transition ABORT\n");
 		} state stop_transition
 		    		
 		when (delay(repeat_delay)) {
 			printf("rearm=>waitrun\n");
+			set_arm = 1;
 			pvPut(set_arm);
 		} state waitrun
 	}
