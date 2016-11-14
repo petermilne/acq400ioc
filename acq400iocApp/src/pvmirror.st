@@ -35,18 +35,17 @@ ss MirrorOnChange {
 	} 
 	
 	state wait_change {
-		when(src != src0 && mirror_en0){
+		when(src != src0 && mirror_en == 1){			
 			src0 = src;
 		} state make_change
 		
-		when(mirror_en != mirror_en0 && mirror_en){
+		when(mirror_en != mirror_en0 && mirror_en == 1){
 			mirror_en0 = mirror_en;
 		} state make_change
 	}
 	
 	state make_change {
-		when() {
-			src0 = src;
+		when() {			
 			if (!pvAssigned(dst)){
 				pvGet(dst_base);
 				pvAssign(dst, dstName(dst_base, macValueGet("mirrorpv")));
