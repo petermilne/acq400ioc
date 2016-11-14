@@ -831,9 +831,8 @@ do
 		     "x$FRU_PROD_NAME" = "xAO421ELF"      ]; then
 			
 	 		load_421 $site
-	 	fi
-	 	
-	 	LOAD_MOD=/usr/local/epics/scripts/load.$FRU_PROD_NAME
+	 	fi	 	
+	 	LOAD_MOD=/usr/local/epics/scripts/load.${FRU_PROD_NAME// /}
 	 	if [ -e $LOAD_MOD ]; then
 			echo 1>&2 "load.records:$LOAD_MOD $HOST $site"
 	 		$LOAD_MOD $HOST $site
