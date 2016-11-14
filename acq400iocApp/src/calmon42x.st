@@ -44,7 +44,7 @@ static char* getKey(int gain)
 { 
 	static char key[8];
 	
-	snprintf(key, 8, "%d", 0, gain);
+	snprintf(key, 8, "%d", gain);
 	
 	return key; 
 }
