@@ -304,8 +304,9 @@ load_400() {
 		load_AO $site $model $cprams		
 		let LO=66000000;;
 #	@@todo : different flavour of calmon for SAR ADC needed
-	$MT_V2F)
-		./scripts/load.v2f $HOST $site
+	$MT_DIOB)
+		name=$(cat /dev/acq400.$site.knobs/module_name)
+		[ -e ./scripts/load.$name ] && ./scripts/load.$name $HOST $site
 		return;;
 	$MT_RAD_CELF)
 		./scripts/load.rad_celf $HOST $site

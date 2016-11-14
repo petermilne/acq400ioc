@@ -1,0 +1,6 @@
+#!/bin/sh
+# quadrature encoder.
+
+mprams="UUT=${HOST},SITE=${SITE},SPORT=SQEN"
+dblr '"db/qen.db","'${mprams}'"'
+create_asyn_channel SQEN 127.0.0.1:422${SITE}

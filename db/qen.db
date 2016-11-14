@@ -1,0 +1,13 @@
+# quadrature encoder
+
+
+record(longin, "${UUT}:${SITE}:QEN:COUNT") {
+	field(DTYP, "stream")
+	field(SCAN, ".2 second")
+	field(INP,  "@qen.proto read_qen_count ${SPORT}")
+}
+
+record(bo, "${UUT}:${SITE}:QEN:CLR") {
+	field(DTYP, "stream")
+	field(OUT, "@qen.proto clr_qen_count ${SPORT}")
+}

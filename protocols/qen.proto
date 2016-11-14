@@ -1,0 +1,14 @@
+Terminator = LF;
+ExtraInput = Ignore;
+
+
+
+
+clr_qen_count {
+	out "qen_count 0";
+}
+
+read_qen_count {
+	out "qen_count";
+	in "%d";
+}
