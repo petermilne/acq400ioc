@@ -1,3 +1,8 @@
+record(longin, "${UUT}:${SITE}:${SIG}:${lname}:rc") {
+# body of this Raw Count record provided by device-specific code	
+	field(FLNK, "${UUT}:${SITE}:${SIG}:${lname}:ACTIVE")
+}
+
 record(calc, "${UUT}:${SITE}:${SIG}:${lname}:ACTIVE") {
 	field(INPA, "${UUT}:${SITE}:${SIG}:${lname}:rc")
 	field(INPB, "${UUT}:${SITE}:${SIG}:${lname}:ACTIVE.LA")

@@ -9,8 +9,7 @@ record(longin, "${UUT}:${SITE}:STAT:GETS:rc") {
 	field(SCAN, "1 second")
 	field(DTYP, "stream")	
 	field(INP,  "@signal.proto getNGETS ${SPORT}")	
-	field(DESC, "buffer GETS count")	
-	field(FLNK, "${UUT}:${SITE}:STAT:GETS:ACTIVE")
+	field(DESC, "buffer GETS count")		
 	field(PRIO, "HIGH")
 }
 
@@ -35,8 +34,7 @@ record(longin, "${UUT}:${SITE}:STAT:PUTS:rc") {
 	field(SCAN, "I/O Intr")
 	field(DTYP, "stream")	
 	field(INP,  "@signal.proto getNPUTS ${SPORT}")	
-	field(DESC, "buffer PUTS count")	
-	field(FLNK, "${UUT}:${SITE}:STAT:PUTS:ACTIVE")
+	field(DESC, "buffer PUTS count")		
 	field(PRIO, "HIGH")
 }
 
@@ -46,8 +44,7 @@ record(longin, "${UUT}:${SITE}:STAT:AXI64:W:rc") {
 	field(DTYP, "stream")	
 	field(INP,  "@signal.proto getAXIW ${SPORT}")
 #		    "1234567890123456789012345678901234567890"	
-	field(DESC, "buffer GETS count")	
-	field(FLNK, "${UUT}:${SITE}:STAT:AXI64:W:ACTIVE")	
+	field(DESC, "buffer GETS count")
 }
 
 record(longin, "${UUT}:${SITE}:STAT:AXI64:F:rc") {
@@ -55,8 +52,7 @@ record(longin, "${UUT}:${SITE}:STAT:AXI64:F:rc") {
 	field(DTYP, "stream")	
 	field(INP,  "@signal.proto getAXIF ${SPORT}")
 #		    "1234567890123456789012345678901234567890"	
-	field(DESC, "buffer GETS count")	
-	field(FLNK, "${UUT}:${SITE}:STAT:AXI64:F:ACTIVE")	
+	field(DESC, "buffer GETS count")		
 }
 
 record(longin, "${UUT}:${SITE}:STAT:AXI64:C:rc") {
@@ -64,6 +60,5 @@ record(longin, "${UUT}:${SITE}:STAT:AXI64:C:rc") {
 	field(DTYP, "stream")	
 	field(INP,  "@signal.proto getAXIC ${SPORT}")
 #		    "1234567890123456789012345678901234567890"	
-	field(DESC, "buffer GETS count")	
-	field(FLNK, "${UUT}:${SITE}:STAT:AXI64:C:ACTIVE")	
+	field(DESC, "buffer GETS count")
 }
