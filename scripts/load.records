@@ -349,8 +349,16 @@ load_400() {
 		make_deltrg ${site}
 	fi
 
-	dblr '"db/acq400fmc.db","'${cprams},'MAXHZ='${maxhz}'"'
+	if [ ${site} -eq 1 ]; then
+		dblr '"db/eventCount.db","'${cprams},SPEV=$SPEV'"'		
+		sprams="${cprams},CTRMAX=$CTR28,DT=1,DTC=1"
+		dblr '"db/_counter.db","'${sprams},lname=${EVT_COUNT}'"'
+		dblr '"db/_counter.db","'${sprams},lname=${EVT_SCOUNT}'"'
+		create_asyn_channel SPEV 127.0.0.1:4238
+	fi
 	
+	dblr '"db/acq400fmc.db","'${cprams},'MAXHZ='${maxhz}'"'
+		
 	if [ "x$model" != "x$MT_ACQ480" ] && [ $HAS_ACQ43X -eq 0 ]; then
 		dblr '"db/acq420fmc.db","'${cprams},'LO='${LO}'"'
 	fi

@@ -1,0 +1,10 @@
+Terminator = LF;
+ExtraInput = Ignore;
+# 1179448417 37 38 OK 0x00000000 5897
+
+
+#nowt		{ in "%*d %*d %*d %*s %*x %*d"; }
+eventCount 	{ in "%*d %*d %*d %*s %*x %d"; }
+
+sampleCount 	{ in "%d %*d %*d %*s %*x %*d"; }
+

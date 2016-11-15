@@ -1,0 +1,15 @@
+record(longin, "${UUT}:1:EVT_COUNT:rc") {
+	field(SCAN, "I/O Intr")
+	field(DTYP, "stream")	
+	field(INP,  "@event.proto eventCount ${SPEV}")	
+	field(DESC, "Event count")	
+	field(PRIO, "HIGH")
+}
+
+record(longin, "${UUT}:1:EVT_SCOUNT:rc") {
+	field(SCAN, "I/O Intr")
+	field(DTYP, "stream")	
+	field(INP,  "@event.proto sampleCount ${SPEV}")	
+	field(DESC, "Event count")	
+	field(PRIO, "HIGH")
+}
