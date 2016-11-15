@@ -9,6 +9,7 @@ record(waveform, "${UUT}:${SITE}:AI:WF:${cid}") {
 }
 
 
+
 record(bo, "${UUT}:${SITE}:AI:WF:${cid}:OVER") {
 	field(DTYP, "Soft Channel")
 	field(OMSL, "closed_loop")
@@ -99,5 +100,13 @@ record(calc, "${UUT}:${SITE}:AI:WF:${cid}:ACTIVE") {
 	field(INPA, "${UUT}:${SITE}:AI:WF:${cid}:V.VALG")
 	field(INPB, "${UUT}:ACTIVITY_THRESHOLD")
 	field(CALC, "A > B")
+}
+
+record(calc, "${UUT}:${SITE}:AI:WF:01:ACTIVE") {
+	field(FLNK, "${UUT}:${SITE}:AI:WF:COUNT")
+}
+record(calc, "${UUT}:${SITE}:AI:WF:COUNT") {
+	field(CALC, "VAL+1")
+	field(DESC, "WF update count")
 }
 
