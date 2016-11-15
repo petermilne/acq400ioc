@@ -350,10 +350,10 @@ load_400() {
 	fi
 
 	if [ ${site} -eq 1 ]; then
-		dblr '"db/eventCount.db","'${cprams},SPEV=$SPEV'"'		
+		dblr '"db/eventCount.db","'${cprams},SPORT=SPEV'"'		
 		sprams="${cprams},CTRMAX=$CTR28,DT=1,DTC=1"
-		dblr '"db/_counter.db","'${sprams},lname=${EVT_COUNT}'"'
-		dblr '"db/_counter.db","'${sprams},lname=${EVT_SCOUNT}'"'
+		dblr '"db/_counter.db","'${sprams},SIG=EVT,lname=INDX'"'
+		dblr '"db/_counter.db","'${sprams},SIG=EVT,lname=SMPL'"'
 		create_asyn_channel SPEV 127.0.0.1:4238
 	fi
 	

@@ -1,15 +1,15 @@
-record(longin, "${UUT}:1:EVT_COUNT:rc") {
+record(longin, "${UUT}:1:EVT:INDX:rc") {
 	field(SCAN, "I/O Intr")
 	field(DTYP, "stream")	
-	field(INP,  "@event.proto eventCount ${SPEV}")	
+	field(INP,  "@event.proto eventCount ${SPORT}")	
 	field(DESC, "Event count")	
 	field(PRIO, "HIGH")
 }
 
-record(longin, "${UUT}:1:EVT_SCOUNT:rc") {
+record(longin, "${UUT}:1:EVT:SMPL:rc") {
 	field(SCAN, "I/O Intr")
 	field(DTYP, "stream")	
-	field(INP,  "@event.proto sampleCount ${SPEV}")	
+	field(INP,  "@event.proto sampleCount ${SPORT}")	
 	field(DESC, "Event count")	
 	field(PRIO, "HIGH")
 }
