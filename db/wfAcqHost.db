@@ -102,11 +102,4 @@ record(calc, "${UUT}:${SITE}:AI:WF:${cid}:ACTIVE") {
 	field(CALC, "A > B")
 }
 
-record(calc, "${UUT}:${SITE}:AI:WF:01:ACTIVE") {
-	field(FLNK, "${UUT}:${SITE}:AI:WF:COUNT")
-}
-record(calc, "${UUT}:${SITE}:AI:WF:COUNT") {
-	field(CALC, "VAL+1")
-	field(DESC, "WF update count")
-}
 
