@@ -229,14 +229,14 @@ record(longout, "${UUT}:LIVE:LEN" ){
 }
 
 record(longout, "${UUT}:LIVE:PREPCT") {
-	field(DTYP, "stream")
+	field(DTYP, "Soft Channel")
 	field(SCAN, "Passive")
 	field(DESC, "delay samples")
 	field(FLNK, "${UUT}:LIVE:delay_calc_pre")
-	field(OUT,  "@mb.proto setPre ${SPORT}")
 	field(PINI,  "YES")
 	field(DRVL,  "0")
 	field(LOPR,  "0")
+	field(VAL,   "50")
 	field(DRVH,  "100")
 	field(HOPR,  "100")
 }
