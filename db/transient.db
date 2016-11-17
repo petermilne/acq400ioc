@@ -236,7 +236,7 @@ record(longout, "${UUT}:LIVE:PREPCT") {
 	field(PINI,  "YES")
 	field(DRVL,  "0")
 	field(LOPR,  "0")
-	field(VAL,   "50")
+	field(VAL,   "0")
 	field(DRVH,  "100")
 	field(HOPR,  "100")
 }
