@@ -5,5 +5,5 @@ set.site 0 SYS:CLK:FPMUX ZCLK
 set.site 0 SYS:CLK:DIST_CLK_SRC Si5326
 set.site 0 SYS:CLK:OE_CLK1_ZYNQ 1
 load.si5326 /etc/si5326.d/si5326_33M333-10M.txt
-set.site 1 clkdiv=10) &
+set.site 1 CLKDIV=10) &
 
