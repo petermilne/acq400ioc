@@ -341,3 +341,9 @@ record(longin, "${UUT}:MODE:TRANS_ACT:FIND_EV:NBU") {
 	field(INP,  "@transient.proto findEventTotBuf ${SPORTT}")
 	field(SCAN, "I/O Intr")
 }
+
+record(longin, "${UUT}:MODE:TRANS_ACT:POST:MDSPUTCH") {
+	field(DTYP, "stream")
+	field(INP,  "@transient.proto mdsPutCh ${SPORTT}")
+	field(SCAN, "I/O Intr")
+}

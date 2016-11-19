@@ -21,3 +21,6 @@ read_error	{ in "ERROR %s"; }
 findEventStatus { in "findEvent=%d,%*d,%*d"; }
 findEventCurBuf { in "findEvent=%*d,%d,%*d"; }
 findEventTotBuf { in "findEvent=%*d,%*d,%d"; }
+
+
+mdsPutCh	{ in "mdsPutCh %d"; }
