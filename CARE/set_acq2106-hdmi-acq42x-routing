@@ -11,14 +11,18 @@ set_master() {
 set_slave() {
 	echo set_slave
 	set_master
-	
+	set.site 0 SIG:SRC:CLK:1 HDMI
+	set.site 0 SIG:SRC:TRG:0 HDMI
+	set.site 0 SYS:CLK:DIST_CLK_SRC HDMI
 }
 
 case $1 in
 master)
-	set_master;;
+	(/usr/local/epics/scripts/wait_ioc_ready; sleep 2
+	set_master) & ;;
 slave)
-	set_slave;;
+	(/usr/local/epics/scripts/wait_ioc_ready; sleep 2
+	set_slave) & ;;
 *)
 	echo "USAGE set_acq2106-hdmi-acq42x-routing master\|slave";;
 esac
