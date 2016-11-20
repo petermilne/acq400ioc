@@ -346,4 +346,6 @@ record(longin, "${UUT}:MODE:TRANS_ACT:POST:MDSPUTCH") {
 	field(DTYP, "stream")
 	field(INP,  "@transient.proto mdsPutCh ${SPORTT}")
 	field(SCAN, "I/O Intr")
+	field(PINI, "YES")
+	field(VAL,  "-1")
 }
