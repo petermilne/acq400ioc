@@ -2,7 +2,7 @@
 
 set_master() {
 	echo set_master
-	set.site 1 SIG:SYNC_OUT:CLK CLK
+	set.site 0 SIG:SYNC_OUT:CLK CLK
 	set.site 0 SIG:SYNC_OUT:CLK:DX d1
 	set.site 0 SIG:SYNC_OUT:TRG TRG
 	set.site 0 SIG:SYNC_OUT:TRG:DX d0
