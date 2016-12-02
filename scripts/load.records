@@ -233,7 +233,11 @@ load_400() {
 		let maxhz="$(cat /etc/acq400/$site/MAX_KHZ) * 1000"
 	fi
 	cprams="UUT=${HOST},SITE=${site},SPORT=S${site}"
-	gain_file_pfx="db/gain"
+	# temporary hack. define in epics.sh eg 
+	# export GAINS=G0=10,G1=5,G2=2,G3=1
+	[ -e /dev/sites/$site/gains.sh ] && source /dev/sites/$site/gains.sh	
+	#gains=${GAINS:-G0=10,G1=5,G2=2.5,G3=1.25}
+	gains=${GAINS:-G0=10,G1=5,G2=2,G3=1} 
 	
 	is_adc="no"
 	has_ch_gains=0
@@ -263,7 +267,7 @@ load_400() {
 			echo 1>&2 "HAS_ACQ43X Detected: $HAS_ACQ43X"
 		fi
 		if [ $model = 6	]; then
-				gain_file_pfx="db/gain125_10"		
+				gains="G0=10,G1=5,G2=2,G3=1"				
 		fi		
 		let LO=$LO/256;;
 	$MT_ACQ480)		
@@ -405,12 +409,12 @@ load_400() {
 		if [ -e $kb ]; then
 			ix=${kb#*gain}
 			ch=$(printf "%02d" $ix)
-			dblr '"'${gain_file}'","'${cprams}',CH='$ch',IX='$ix',KNOB='${kb}'"'
+			dblr '"db/gain.db","'${cprams}',CH='$ch','$gains',IX='$ix',KNOB='${kb}'"'
 			has_gain=1
 		fi		
 	done
 	if [ $has_gain -ne 0 ]; then
-		dblr '"'${gain_file_pfx}'M.db","'${cprams}',CH='ALL'"'				
+		dblr '"db/gainM.db","'${cprams}','$gains',CH='ALL'"'				
 	fi
 	) >>/tmp/gains_last
 		
