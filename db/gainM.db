@@ -1,8 +1,7 @@
 # ACQ420, ACQ425 gains : Master : control only
 
 record (mbbo, "${UUT}:${SITE}:GAIN:${CH}") {	
-	field(DTYP, "stream")
-	field(OUT,  "@acq42x.proto setGainAll ${SPORT}")
+	field(DTYP, "Soft Channel")	
 	field(NOBT, "2")	
 	field(ZRST, "${G0}V")
 	field(ONST, "${G1}V")
@@ -11,7 +10,30 @@ record (mbbo, "${UUT}:${SITE}:GAIN:${CH}") {
 	field(FLNK, "${UUT}:${SITE}:GAIN_CHANGES")    	
 }
 
+
 record (calc, "${UUT}:${SITE}:GAIN_CHANGES") {
 	field(INPA, "${UUT}:${SITE}:GAIN_CHANGES")
 	field(CALC, "A+1")
+}
+
+record(dfanout, "${UUT}:${SITE}:GAIN:fan1") {
+	field(DOL,  "${UUT}:${SITE}:GAIN:${CH}")
+	field(OMSL, "closed_loop")
+	field(FLNK, "${UUT}:${SITE}:GAIN:fan2")
+}
+
+record(dfanout, "${UUT}:${SITE}:GAIN:fan2") {
+	field(DOL,  "${UUT}:${SITE}:GAIN:${CH}")
+	field(OMSL, "closed_loop")
+	field(FLNK, "${UUT}:${SITE}:GAIN:fan3")
+}
+
+record(dfanout, "${UUT}:${SITE}:GAIN:fan3") {
+	field(DOL,  "${UUT}:${SITE}:GAIN:${CH}")
+	field(OMSL, "closed_loop")
+	field(FLNK, "${UUT}:${SITE}:GAIN:fan4")
+}
+record(dfanout, "${UUT}:${SITE}:GAIN:fan4") {
+	field(DOL,  "${UUT}:${SITE}:GAIN:${CH}")
+	field(OMSL, "closed_loop")
 }
