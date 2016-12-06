@@ -7,14 +7,9 @@ record (mbbo, "${UUT}:${SITE}:GAIN:${CH}") {
 	field(ONST, "${G1}V")
 	field(TWST, "${G2}V")
 	field(THST, "${G3}V")
-	field(FLNK, "${UUT}:${SITE}:GAIN_CHANGES")    	
+	field(FLNK, "${UUT}:${SITE}:GAIN:fan1")    	
 }
 
-
-record (calc, "${UUT}:${SITE}:GAIN_CHANGES") {
-	field(INPA, "${UUT}:${SITE}:GAIN_CHANGES")
-	field(CALC, "A+1")
-}
 
 record(dfanout, "${UUT}:${SITE}:GAIN:fan1") {
 	field(DOL,  "${UUT}:${SITE}:GAIN:${CH}")
@@ -36,4 +31,10 @@ record(dfanout, "${UUT}:${SITE}:GAIN:fan3") {
 record(dfanout, "${UUT}:${SITE}:GAIN:fan4") {
 	field(DOL,  "${UUT}:${SITE}:GAIN:${CH}")
 	field(OMSL, "closed_loop")
+	field(FLNK, "${UUT}:${SITE}:GAIN_CHANGES")
+}
+
+record (calc, "${UUT}:${SITE}:GAIN_CHANGES") {
+	field(INPA, "${UUT}:${SITE}:GAIN_CHANGES")
+	field(CALC, "A+1")
 }

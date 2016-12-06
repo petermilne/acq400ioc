@@ -53,7 +53,7 @@ record(aSub, "${UUT}:${SITE}:AI:TW:${CH}:V") {
 	field(INPC,  "${UUT}:${SITE}:GAIN:${CH}_f")
 }
 
-record(dfanout, "${UUT}:${SITE}:GAIN:${FAN}") {
-	field(INP${fan}, "${UUT}:${SITE}:GAIN:${CH}")
+record(dfanout, "${UUT}:${SITE}:GAIN:fan${FAN}") {
+	field(OUT${fan}, "${UUT}:${SITE}:GAIN:${CH} PP")
 }
 
