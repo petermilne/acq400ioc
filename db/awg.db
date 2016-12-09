@@ -1,16 +1,19 @@
 record (longin, "${UUT}:${SITE}:AWG:CURSOR") {
 	field(DTYP, "stream")
 	field(INP, "@awg.proto getCursor ${SPORT}")
+	field(DESC, "AWG current playback position")
 	field(SCAN, ".2 second")	
 }
 record (longin, "${UUT}:${SITE}:AWG:REPS") {
 	field(DTYP, "stream")
 	field(INP, "@awg.proto getReps ${SPORT}")
+	field(DESC, "AWG number of cycles")
 	field(SCAN, "1 second")	
 }
 record (longin, "${UUT}:${SITE}:AWG:ACTIVE") {
 	field(DTYP, "stream")
 	field(INP, "@awg.proto getActive ${SPORT}")
+	field(DESC, "AWG is active")
 	field(SCAN, "1 second")	
 }
 record (mbbi, "${UUT}:${SITE}:AWG:MODE") {
@@ -18,6 +21,7 @@ record (mbbi, "${UUT}:${SITE}:AWG:MODE") {
 	field(ZRST, "continuous")
 	field(ONST, "oneshot")
 	field(TWST, "oneshot_rearm")
+	field(DESC, "AWG operating mode")
 	field(NOBT, "2")	
 }
 
@@ -25,6 +29,7 @@ record (longin, "${UUT}:${SITE}:AWG:LENGTH") {
 	field(DTYP, "stream")
 	field(INP, "@awg.proto getML(${UUT}:${SITE}:AWG:MODE) ${SPORT}")
 	field(SCAN, "2 second")
+	field(DESC, "AWG waveform length in samples")
 	field(PINI, "YES")
 }
 

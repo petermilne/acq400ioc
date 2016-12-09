@@ -311,8 +311,7 @@ load_400() {
 		load_AO $site $model $cprams		
 		let LO=66000000;;
 #	@@todo : different flavour of calmon for SAR ADC needed
-	$MT_DIOB)
-		dblr '"db/awg.db","'${cprams}'"'
+	$MT_DIOB)		
 		name=$(cat /dev/acq400.$site.knobs/module_name)
 		[ -e ./scripts/load.$name ] && ./scripts/load.$name $HOST $site
 		return;;
@@ -338,6 +337,7 @@ load_400() {
 	if [ "$has_output" = "yes" ]; then
 		aprams="UUT=${HOST},SITE=${site},SPORT=S${site}"
 		dblr '"db/xo.db","'${aprams}'"'
+		dblr '"db/awg.db","'${aprams}'"'
 	fi
 	
 	hwmondb=db/hwmon_${name}.db

@@ -21,7 +21,6 @@ record(longout, "${UUT}:${SITE}:PLAYLOOP_LEN:s") {
 	field(DOL,  "${UUT}:${SITE}:PLAYLOOP_LEN:r NPP")
 	field(OMSL, "closed_loop")
 	field(OUT,  "${UUT}:${SITE}:PLAYLOOP_LEN PP")
-	field(FLNK, "${UUT}:${SITE}:PLAY")
 }
 
 record(longout, "${UUT}:${SITE}:PLAYLOOP_LEN:w") {
@@ -31,16 +30,3 @@ record(longout, "${UUT}:${SITE}:PLAYLOOP_LEN:w") {
 	field(SDIS, "${UUT}:${SITE}:PLAYLOOP_LEN:s.PACT")
 }
 
-record(bi, "${UUT}:${SITE}:PLAY") {
-	field(DTYP, "Soft Channel")
-	field(INP,  "${UUT}:${SITE}:PLAYLOOP_LEN:r")
-}
-
-record(longin, "${UUT}:${SITE}:PLAYLOOP_CURSOR") {
-	field(DTYP, "stream")
-	field(INP,  "@xo.proto getPlayloopCursor ${SPORT}")
-	field(SCAN, ".1 second")
-	field(PINI, "YES")
-	field(DISV, "0")
-	field(SDIS, "${UUT}:${SITE}:PLAY")
-}
