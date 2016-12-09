@@ -245,7 +245,7 @@ load_400() {
 	has_ch_gains=0
 	calmon="calmon"
 	decim=1;
-	
+		
 	case $model in
 	$MT_ACQ420|$MT_ACQ420F|$MT_ACQ424|$MT_ACQ425|$MT_ACQ425F|$MT_BOLO8|$MT_BOLO8B)
 		is_adc="sar"
@@ -307,10 +307,12 @@ load_400() {
 		done
 		[ $t50r -ne 0 ] && dblr '"db/acq480fmc50R.db","'${mprams},CH=,RAW='"';;
 	$MT_AO420|$MT_AO424)
+		dblr '"db/awg.db","'${cprams}'"'	
 		load_AO $site $model $cprams		
 		let LO=66000000;;
 #	@@todo : different flavour of calmon for SAR ADC needed
 	$MT_DIOB)
+		dblr '"db/awg.db","'${cprams}'"'
 		name=$(cat /dev/acq400.$site.knobs/module_name)
 		[ -e ./scripts/load.$name ] && ./scripts/load.$name $HOST $site
 		return;;

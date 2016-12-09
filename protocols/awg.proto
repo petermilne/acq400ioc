@@ -1,0 +1,22 @@
+Terminator = LF;
+ExtraInput = Ignore;
+
+getCursor {
+	out "playloop_cursor";
+	in "%d";
+}
+
+getReps {
+	out "playloop_repeats";
+	in "%d";
+}
+
+getActive {
+	out "task_active";
+	in "%d";
+}
+
+getML {
+	out "playloop_length";
+	in "%d %(\$1)d";
+}
