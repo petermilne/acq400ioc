@@ -1,0 +1,15 @@
+# ao420fmc.db - DC set, gains, AWG gain and offset.
+record(ao, "${UUT}:${SITE}:AO:SLOW_SET:CH:${cid}") {
+        field(DTYP, "dsSysfsAo")
+        field(OUT, "@/dev/acq400.${SITE}.knobs/AO_0${cid}")
+        field(SCAN, "Passive")
+        field(DESC, "Slow set AO${cid}")
+        field(DRVL, "-10")
+        field(DRVH, "+9.9999")
+        field(LINR, "LINEAR")
+# 20 bit, right justified eslo= 10/2**19        
+        field(ESLO, "1.9073-5")
+        field(HOPR, "9.9999")
+        field(LOPR, "-10.0000")
+        field(EGU,  "V")
+}
