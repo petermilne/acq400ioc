@@ -185,7 +185,8 @@ load_AO() {
 		$MT_AO428)
 			for ch in $(seq 1 8)
 			do
-				dblr '"db/ao420fmc.db","'${cprams},cid=$ch'"'
+				cid=$(printf "%02d" $ch)
+				dblr '"db/ao420fmc.db","'${cprams},cid=$cid'"'
 			done
 			dblr '"db/aoALL.db","'${cprams}'"'
 			#echo 'dbLoadRecords("db/ao420fmc.db","'${cprams},cid=32'")'
