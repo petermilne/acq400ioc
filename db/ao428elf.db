@@ -8,7 +8,7 @@ record(ao, "${UUT}:${SITE}:AO:SLOW_SET:CH:${cid}") {
         field(DRVH, "+9.9999")
         field(LINR, "LINEAR")
 # 20 bit, right justified eslo= 10/2**19        
-        field(ESLO, "1.9073-5")
+        field(ESLO, "1.9073e-5")
         field(HOPR, "9.9999")
         field(LOPR, "-10.0000")
         field(EGU,  "V")
