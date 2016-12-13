@@ -4,8 +4,8 @@ record(ao, "${UUT}:${SITE}:AO:SLOW_SET:CH:${cid}") {
         field(OUT, "@/dev/acq400.${SITE}.knobs/AO_${cid}")
         field(SCAN, "Passive")
         field(DESC, "Slow set AO${cid}")
-        field(DRVL, "-10")
-        field(DRVH, "+9.9999")
+        field(DRVL, "-9.99")
+        field(DRVH, "+9.99")
         field(LINR, "LINEAR")
 # 20 bit, right justified eslo= 10/2**19        
         field(ESLO, "1.9073e-5")
