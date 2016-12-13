@@ -17,7 +17,7 @@ record (longin, "${UUT}:${SITE}:AWG:ACTIVE") {
 	field(SCAN, "1 second")	
 }
 record (mbbi, "${UUT}:${SITE}:AWG:MODE") {
-	field(DTYP, "SoftChannel")
+	field(DTYP, "Soft Channel")
 	field(ZRST, "continuous")
 	field(ONST, "oneshot")
 	field(TWST, "oneshot_rearm")
