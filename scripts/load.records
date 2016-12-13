@@ -182,6 +182,14 @@ load_AO() {
 			dblr '"db/aoALL.db","'${cprams}'"'			
 			#echo 'dbLoadRecords("db/ao420fmc.db","'${cprams},cid=32'")'
 			;;
+		$MT_AO428)
+			for ch in $(seq 1 8)
+			do
+				dblr '"db/ao420fmc.db","'${cprams},cid=$ch'"'
+			done
+			dblr '"db/aoALL.db","'${cprams}'"'
+			#echo 'dbLoadRecords("db/ao420fmc.db","'${cprams},cid=32'")'
+			;;
 		$MT_AO424)
 			for ch in $(seq 1 32)
 			do
@@ -306,7 +314,7 @@ load_400() {
 				dblr '"db/acq480fmc50R.db","'${mprams},CH=:${ch},RAW=_${ic}'"'
 		done
 		[ $t50r -ne 0 ] && dblr '"db/acq480fmc50R.db","'${mprams},CH=,RAW='"';;
-	$MT_AO420|$MT_AO424)
+	$MT_AO420|$MT_AO424|$MT_AO428)
 		dblr '"db/awg.db","'${cprams}'"'	
 		load_AO $site $model $cprams		
 		let LO=66000000;;

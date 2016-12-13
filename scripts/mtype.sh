@@ -24,6 +24,7 @@ MT_AO420=40
 MT_AO424=41
 MT_PIG_CELF=68
 MT_RAD_CELF=69
+MT_AO428=6A
 
 
 nameFromMT() {
@@ -50,13 +51,14 @@ nameFromMT() {
 	$MT_AO424)		echo "ao424";;
 	$MT_PIG_CELF)	echo "pig-celf";;
 	$MT_RAD_CELF)	echo "rad-celf";;
+	$MT_AO428)		echo "ao428elf";;
 	# no default	
 	esac					
 }
 
 hasOutput() {
 	case $1 in
-	$MT_DIO432|$MT_DIO432P|$MT_AO420|$MT_AO424) echo "yes";;
+	$MT_DIO432|$MT_DIO432P|$MT_AO420|$MT_AO424|$MT_AO428) echo "yes";;
 	*) echo "no";;
 	esac
 }
