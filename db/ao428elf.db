@@ -8,8 +8,38 @@ record(ao, "${UUT}:${SITE}:AO:SLOW_SET:CH:${cid}") {
         field(DRVH, "+9.99")
         field(LINR, "LINEAR")
 # 20 bit, right justified eslo= 10/2**19        
-        field(ESLO, "1.9073e-5")
+        field(ESLO, "1.9073486e-5")
         field(HOPR, "9.9999")
         field(LOPR, "-10.0000")
         field(EGU,  "V")
+}
+
+
+# ao420fmc.db - DC set, gains, AWG gain and offset.
+record(ao, "${UUT}:${SITE}:AO:SLOW_SET:CH:ALL") {
+        field(DTYP, "Soft Channel")        
+        field(SCAN, "Passive")
+        field(DESC, "Slow set AO${cid}")
+        field(DRVL, "-9.99")
+        field(DRVH, "+9.99")
+        field(LINR, "LINEAR")
+# 20 bit, right justified eslo= 10/2**19        
+        field(ESLO, "1.9073486e-5")
+        field(HOPR, "9.9999")
+        field(LOPR, "-10.0000")
+        field(EGU,  "V")
+        field(FLNK, "${UUT}:${SITE}:AO:SLOW_SET:CH:all")
+}
+
+record(dfanout, "${UUT}:${SITE}:AO:SLOW_SET:CH:all") {
+	field(OUTA, "${UUT}:${SITE}:AO:SLOW_SET:CH:01")
+	field(OUTB, "${UUT}:${SITE}:AO:SLOW_SET:CH:02")
+	field(OUTC, "${UUT}:${SITE}:AO:SLOW_SET:CH:03")
+	field(OUTD, "${UUT}:${SITE}:AO:SLOW_SET:CH:04")
+	field(OUTE, "${UUT}:${SITE}:AO:SLOW_SET:CH:05")
+	field(OUTF, "${UUT}:${SITE}:AO:SLOW_SET:CH:06")		
+	field(OUTG, "${UUT}:${SITE}:AO:SLOW_SET:CH:07")
+	field(OUTH, "${UUT}:${SITE}:AO:SLOW_SET:CH:08")
+	field(DOL,  "${UUT}:${SITE}:AO:SLOW_SET:CH:ALL")
+	field(OMSL, "closed_loop")
 }
