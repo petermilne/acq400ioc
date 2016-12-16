@@ -1,4 +1,10 @@
 #!/bin/sh
+# configure clocking with acq1001 and acq480
+# local (zclk) :
+# acq1001+acq480.init Fsample
+# front panel clk (fpclk)
+# acq1001+acq480.init fpclk Fsys Fsample
+# Defaults: Fsys=1MHz, Fsample=40MHz
 
 cp /usr/local/CARE/acq480_streamd.0.conf /etc/sysconfig/acq400_streamd.0.conf
 
@@ -12,5 +18,23 @@ init_mb_clk() {
 	set.site 1 clk=1,1,0
 }
 
-(init_mb_clk ${1:-40000000}) &
+init_mb_clk_fp() {
+	/usr/local/epics/scripts/wait_ioc_ready
+	sleep 1
+	set.site 0 SYS:CLK:FPMUX=FPCLK
+	set.site 0 SIG:CLK_MB:FIN=$1
+	set.site 0 SIG:CLK_MB:SET $2
+	set.site 1 clk=1,1,0
+}
+
+case $1 in
+fpclk)
+	(init_mb_clk_fp ${2:-1000000} ${3:-40000000}) & 
+	;;
+*)
+	(init_mb_clk ${1:-40000000}) &
+	;;
+esac
+
+
 
