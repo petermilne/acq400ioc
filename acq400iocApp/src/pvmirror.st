@@ -16,11 +16,18 @@ monitor mirror_en;
 int src0;
 int mirror_en0;
 
+
+
 %{
-static char* dstName(char* base, char* mpv) {
-	static char name[128];
-	snprintf(name, 128, "%s:%s", base, mpv);
-	return name;
+char dst_name[128];
+
+static char* dstName(char* base, char* mpv) {	
+	snprintf(dst_name, 128, "%s:%s", base, mpv);
+	return dst_name;
+}
+
+static void show_pvPut(int value) {
+	printf("pvPut %s = %d\n", dst_name, value);
 }
 }%
 
@@ -50,8 +57,8 @@ ss MirrorOnChange {
 				pvGet(dst_base);
 				pvAssign(dst, dstName(dst_base, macValueGet("mirrorpv")));
 			}
-			dst = src;
-			pvPut(dst);
+			dst = src;			
+			show_pvPut(dst);
 			src0 = src;
 		} state wait_change
 	}
