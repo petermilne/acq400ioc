@@ -32,14 +32,14 @@ record(ao, "${UUT}:${SITE}:AO:SLOW_SET:CH:ALL") {
 }
 
 record(dfanout, "${UUT}:${SITE}:AO:SLOW_SET:CH:all") {
-	field(OUTA, "${UUT}:${SITE}:AO:SLOW_SET:CH:01")
-	field(OUTB, "${UUT}:${SITE}:AO:SLOW_SET:CH:02")
-	field(OUTC, "${UUT}:${SITE}:AO:SLOW_SET:CH:03")
-	field(OUTD, "${UUT}:${SITE}:AO:SLOW_SET:CH:04")
-	field(OUTE, "${UUT}:${SITE}:AO:SLOW_SET:CH:05")
-	field(OUTF, "${UUT}:${SITE}:AO:SLOW_SET:CH:06")		
-	field(OUTG, "${UUT}:${SITE}:AO:SLOW_SET:CH:07")
-	field(OUTH, "${UUT}:${SITE}:AO:SLOW_SET:CH:08")
+	field(OUTA, "${UUT}:${SITE}:AO:SLOW_SET:CH:01 PP")
+	field(OUTB, "${UUT}:${SITE}:AO:SLOW_SET:CH:02 PP")
+	field(OUTC, "${UUT}:${SITE}:AO:SLOW_SET:CH:03 PP")
+	field(OUTD, "${UUT}:${SITE}:AO:SLOW_SET:CH:04 PP")
+	field(OUTE, "${UUT}:${SITE}:AO:SLOW_SET:CH:05 PP")
+	field(OUTF, "${UUT}:${SITE}:AO:SLOW_SET:CH:06 PP")		
+	field(OUTG, "${UUT}:${SITE}:AO:SLOW_SET:CH:07 PP")
+	field(OUTH, "${UUT}:${SITE}:AO:SLOW_SET:CH:08 PP")
 	field(DOL,  "${UUT}:${SITE}:AO:SLOW_SET:CH:ALL")
 	field(OMSL, "closed_loop")
 }
