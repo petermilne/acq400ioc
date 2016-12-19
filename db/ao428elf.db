@@ -43,3 +43,21 @@ record(dfanout, "${UUT}:${SITE}:AO:SLOW_SET:CH:all") {
 	field(DOL,  "${UUT}:${SITE}:AO:SLOW_SET:CH:ALL")
 	field(OMSL, "closed_loop")
 }
+
+record(ai, "${UUT}:SYS:4:TEMP") {
+        field(DTYP, "dsSysfsAi")
+        field(INP, "@/dev/hwmon/4/temp")
+        field(SCAN, ".5 second")
+        field(DESC, "Temperature")
+        field(ASLO, "0.001")
+        field(ROFF, "0")
+        field(LINR, "LINEAR")
+        field(EGU,  "C")
+        field(PINI, "YES")
+        field(HOPR, "99")
+        field(LOPR, "0")
+        field(HIGH, "55")
+        field(HIHI, "75")
+        field(LOW,  "-1")
+        field(LOLO, "-1")
+}
