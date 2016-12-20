@@ -157,7 +157,7 @@ make_epics_knobs() {
 	done
 	
 	for PV in $(egrep -e :1:CLK -e :1:TRG -e :1:EVE \
-					  -e :1:RGM -e :1:RTM -e :1:XDT -e :1:DT $RL \
+				  -e :1:RGM -e :1:RTM -e :1:XDT -e :1:DT $RL \
 				| grep -v [a-z]$)
 	do
 		pv1=${PV#*:}
@@ -223,6 +223,7 @@ restart() {
 	stop_ioc
 	make_epics_knobs
 	[ "x$IOC_GLOBAL_ALIAS_PFX" != "x" ] && make_aliases $IOC_GLOBAL_ALIAS_PFX
+	cat /tmp/st_final.cmd >> /tmp/st.cmd
 	start_ioc
 }
 

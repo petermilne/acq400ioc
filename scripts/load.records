@@ -941,5 +941,5 @@ fi
 
 echo 'dbl > /tmp/records.dbl'
 echo "dbpf ${HOST}:LIVE:PREPCT 50"
-echo "dbpf ${HOST}:IOC_READY 1" 
+echo "dbpf ${HOST}:IOC_READY 1"  > /tmp/st_final.cmd
 echo 1>&2 "load.records 99"
