@@ -1,0 +1,1 @@
+exec /usr/local/epics/scripts/acq2106_init.sh $*

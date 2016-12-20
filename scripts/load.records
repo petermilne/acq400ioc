@@ -904,6 +904,9 @@ if [ -e "/tmp/st_post.cmd" ]; then
 	cat /tmp/st_post.cmd
 fi
 
+if [ -x /usr/local/epics/scripts/${MB_MODEL}_init.sh ]; then
+		/usr/local/epics/scripts/${MB_MODEL}_init.sh create
+fi
 case $MB_MODEL in
 acq2006)	clk=XCLK;;
 acq1001|acq1002)
