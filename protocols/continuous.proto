@@ -1,6 +1,6 @@
-Terminator = CR;
+Terminator = CR LF;
 ExtraInput = Ignore;
 
 getContinuousStatus {
-	in "%39c";
+	in "%4c";
 }
