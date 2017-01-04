@@ -282,6 +282,8 @@ load_400() {
 		let LO=$LO/256;;
 	$MT_ACQ480)		
 		let ACQ480_COUNT=$ACQ480_COUNT+1
+		[ $ACQ480_COUNT -eq 1 ] && \
+			cp protocols/continuous-480.proto protocols/continuous.proto
 		if [ $ACQ480_S1 -eq 0 ]; then
 			# NB force train operates on S0
 			dblr '"db/acq480_train.db","'UUT=${HOST},SPORT=S0'"'
@@ -831,6 +833,7 @@ load_mod_present()
 }
 # execution starts here
 
+cp protocols/continuous-400.proto protocols/continuous.proto
 for site in 1 2 3 4 5 6
 do
 	ACQ400=/dev/acq400.$site
