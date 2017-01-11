@@ -3,6 +3,7 @@ ExtraInput = Ignore;
 
 setRange {
 	out "range\$1 %x";
+	in;
 }
 
 setRangeAll {
@@ -47,6 +48,7 @@ getInit {
 
 setCommit {
 	out "dacreset_device 1";
+	in;
 }
 
 

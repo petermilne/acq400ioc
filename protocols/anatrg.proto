@@ -3,15 +3,18 @@ ExtraInput = Ignore;
 ReplyTimeout = 2500;
 
 setAnaTrg {
-	out "anatrg_\$2 -H %(\$1:H.RVAL)d -- %(\$1:M)s %(\$1:L1.RVAL)d %(\$1:L2.RVAL)d";	
+	out "anatrg_\$2 -H %(\$1:H.RVAL)d -- %(\$1:M)s %(\$1:L1.RVAL)d %(\$1:L2.RVAL)d";
+	in;
 }
 
 setAnaTrgOr {
 	out "atd_OR %(\$1:1)04x%(\$1:0)04x";
+	in;
 }
 
 setAnaTrgAnd {
 	out "atd_AND %(\$1:1)04x%(\$1:0)04x";
+	in;
 }
 
 getAnaTrgSrc {
@@ -21,8 +24,10 @@ getAnaTrgSrc {
 
 setDelTrg {
 	out "deltrg_\$1 %d";
+	in;
 }
 
 setDelZN {
 	out "dtd_ZN 0x%x";
+	in;
 }

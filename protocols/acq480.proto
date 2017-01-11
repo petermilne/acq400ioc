@@ -3,34 +3,36 @@ ExtraInput = Ignore;
 
 setInvert {
 	out "acq480_setInvert \$1 %d";	
-	in "";
+	in;
 }
 
 
 setGain {
 	out "acq480_setGain \$1 %d";
-	in "";
+	in;
 }
 
 setHPF {
 # channel enable K   enable = K!=0
 	out "acq480_setHiPassFilter \$1 %d %d";	
+	in;
 }
 
 setLFNS {
 	out "acq480_setLFNS \$1 %d";
-	in "";
+	in;
 }
 
 setFIR {
 	# odd-chan for Custom : TODO. Custom: TODO
 	out "acq480_setDecimationFilter \$1 %d 0";
-	in "";
+	in;
 }
 
 # T50R_[1-8] or T50R (global) value 0 or 1
 setT50R {
 	out "T50R\$1 %d";
+	in;
 }
 
 getT50R {

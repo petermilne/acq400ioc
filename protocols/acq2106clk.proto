@@ -15,8 +15,10 @@ getSi5326bypass {
 
 setSi5326Bypass {
 	out "set_si5326_bypass %d";
+	in;
 }
 
 acq480_init_clk {
 	out "acq480_init_clk %dM";
+	in;
 }

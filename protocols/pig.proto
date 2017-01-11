@@ -6,4 +6,5 @@ ExtraInput = Ignore;
 
 setDDS {
 	out "dds_phase_inc 0x%x";
+	in;
 }

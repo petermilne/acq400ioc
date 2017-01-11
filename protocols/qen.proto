@@ -6,6 +6,7 @@ ExtraInput = Ignore;
 
 clr_qen_count {
 	out "qen_count 0";
+	in;
 }
 
 read_qen_count {

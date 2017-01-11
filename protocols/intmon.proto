@@ -4,6 +4,7 @@ ExtraInput = Ignore;
 trig {
 # fin kHz, fout (setpoint)
 	out "y";
+	in;
 }
 
 

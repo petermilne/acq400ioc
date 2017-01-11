@@ -4,16 +4,20 @@ ExtraInput = Ignore;
 setMB {
 # fin kHz, fout (setpoint)
 	out "mb_clk %d %(A)d";
+	in;
 }
 
 setMB_Hz {
 # fin Hz, fout (setpoint)
 	out "mb_clk %e %(A)e";
+	in;
 	out "acq480_force_training 1";
+	in;
 }
 
 setTrainReq {
 	out "acq480_force_training %d";
+	in;
 }
 getTrainReq {
 	out "acq480_force_training";
@@ -23,6 +27,7 @@ getTrainReq {
 setSPAD {
 # EN,LEN,DI4/32
 	out "spad %i,%(\$1)i,%(\$2)i";
+	in;
 }
 
 getSPAD {
@@ -97,10 +102,12 @@ getFpgaVersion {
 
 setPre {
 	out "live_pre %d";
+	in;
 }
 
 setPost {
 	out "live_post %d";
+	in;
 }
 
 get_live_mode {
@@ -119,6 +126,7 @@ get_gpg_enable {
 }
 set_gpg_enable {
 	out "gpg_enable=%d";
+	in;
 }
 
 get_gpg_mode {
@@ -127,6 +135,7 @@ get_gpg_mode {
 }
 set_gpg_mode {
 	out "gpg_mode=%d";
+	in;
 }
 
 get_gpg_top {
@@ -140,6 +149,7 @@ get_pulse_def {
 }
 set_fpctl {
 	out "fpctl_\$1=%(RVAL)x";
+	in;
 }
 
 get_fpctl {
@@ -149,6 +159,7 @@ get_fpctl {
 
 set_zclk_src {
 	out "zclk_sel=%(RVAL)x";
+	in;
 }
 
 get_zclk_src {
@@ -163,8 +174,10 @@ getSitelist {
 
 setFitRtmTranslenBuffer {
 	out "fit_rtm_translen_to_buffer %d";
+	in;
 }
 
 setSoftTrigger {
 	out "soft_trigger";
+	in;
 }

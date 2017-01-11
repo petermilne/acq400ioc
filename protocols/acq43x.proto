@@ -3,6 +3,7 @@ ExtraInput = Ignore;
 
 setNacc {
 	out "nacc %d";
+	in;
 }
 
 getNacc {
@@ -17,6 +18,7 @@ getNacc {
 
 setRtmTranslen {
 	out "rtm_translen %d";
+	in;
 }
 
 getRtmTranslen {
@@ -30,6 +32,7 @@ getDiv {
 
 setHiResMode {
 	out "hi_res_mode %d";
+	in;
 }
 
 getHiResMode {

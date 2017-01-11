@@ -4,12 +4,15 @@ ReplyTimeout = 2500;
 
 setFreqFun {
 	out "v2f_freq_\$1_\$2 %d";
+	in;
 }
 
 setHF {
 	out "hf %d";
+	in;
 }
 
 setSrcMap {
 	out "chan_sel %(A)d,%(B)d,%(C)d,%(D)d";
+	in;
 }
