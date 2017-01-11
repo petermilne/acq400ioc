@@ -426,7 +426,7 @@ load_400() {
 			let fan0="$ix/8+1"
 			let f9="($ix-1)%8"
 			ixgrp="IX=$ix,FAN=$fan0,fan=${OUTX:$f9:1}"
-			dblr '"db/gain.db","'${cprams}',CH='$ch','$gains','$ixgrp',KNOB='${kb}'"'
+			dblr '"db/gain.db","'${cprams}',CH='$ch','$gains','$ixgrp'"'
 			has_gain=1
 		fi		
 	done
