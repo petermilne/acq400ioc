@@ -27,7 +27,7 @@ static char* dstName(char* base, char* mpv) {
 }
 
 static void show_pvPut(int value) {
-	printf("pvPut %s = %d\n", dst_name, value);
+	printf("pvPut %s = %d\n", dst_name, value);	
 }
 }%
 
@@ -57,8 +57,11 @@ ss MirrorOnChange {
 				pvGet(dst_base);
 				pvAssign(dst, dstName(dst_base, macValueGet("mirrorpv")));
 			}
-			dst = src;			
-			show_pvPut(dst);
+			dst = src;
+			if (macValueGet("adb")){			
+				show_pvPut(dst);
+			}
+			pvPut(dst);
 			src0 = src;
 		} state wait_change
 	}
