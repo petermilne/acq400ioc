@@ -30,3 +30,9 @@ export ACQ43X_SET_SAMPLE_RATE=10000
 ACQ1014:
 /mnt/local/sysconfig/epics.sh:
 export IOC_PREINIT=./scripts/load.acq1014
+
+
+# Enable AI records (OFF by default)
+
+/mnt/local/sysconfig/epics.sh:
+echo -1 > /etc/acq400/0/OVERSAMPLING
