@@ -124,7 +124,7 @@ record(bo, "${UUT}:MODE:TRANSIENT:SET_ABORT:w") {
 
 record(bo, "${UUT}:SIG:SOFT_TRIGGER") {
 	field(DTYP, "Soft Channel")
-	field(DESC, "abort transient capture")
+	field(DESC, "set soft trigger")
 	field(VAL,  "0")
 	field(PINI, "YES")	
 	field(FLNK,  "${UUT}:SIG:SOFT_TRIGGER:set")
