@@ -163,9 +163,19 @@ make_epics_knobs() {
 		pv1=${PV#*:}
 		make_caput $PV ${pv1#*:} 1
 	done
+
+	for PV in $(egrep -r MODE:TRANSIENT | grep -v [a-z]$)
+	do
+		pv1=${PV#*:}
+		make_caput $PV ${pv1#*:} 0
+	done
 	
-	(cd /etc/acq400/0/; rm -f fpmux)
+	(cd /etc/acq400/0/; 
+	 rm -f fpmux
+	 ln -s /usr/local/epics/scripts/ifconfig_eth0
+	)
 	
+
 	killall voltsmon
 	daemon /usr/local/bin/voltsmon.epics
 	echo make_epics_knobs_done >/tmp/epics_knobs_done

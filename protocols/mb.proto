@@ -95,6 +95,11 @@ getSwVersion {
 	in "%39c";
 }
 
+getIfconfig {
+	out "ifconfig_\$1";
+	in "%39c";
+}
+
 getFpgaVersion {
 	out "fpga_version";
 	in "%39c";

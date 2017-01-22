@@ -16,6 +16,12 @@ record (stringin, "${UUT}:SYS:VERSION:FPGA" ) {
 	field(PINI, "YES")
 }
 
+record (stringin, "${UUT}:SYS:IFCONFIG:ETH0" ) {
+	field(DTYP, "stream")
+	field(INP,  "@mb.proto getIfconfig(eth0) ${SPORT}")
+	field(PINI, "YES")
+}
+
 record (bo, "${UUT}:NOALIASES") {
 	field(DTYP, "Soft Channel")
 }
