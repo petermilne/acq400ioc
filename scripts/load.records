@@ -187,7 +187,7 @@ load_AO() {
 			do
 				cid=$(printf "%02d" $ch)
 				dblr '"db/ao428elf.db","'${cprams},cid=$cid'"'
-			done					
+			done
 			#echo 'dbLoadRecords("db/ao420fmc.db","'${cprams},cid=32'")'
 			;;
 		$MT_AO424)

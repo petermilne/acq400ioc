@@ -1,2 +1,2 @@
 #!/bin/sh
-echo "system /usr/local/epics/scripts/dac20_autozero_restore" >>/tmp/st_final.cmd	
+echo "system /usr/local/epics/scripts/dac20_autozero_restore" >>/tmp/st_final.cmd
