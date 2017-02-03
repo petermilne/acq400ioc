@@ -187,7 +187,7 @@ load_AO() {
 			do
 				cid=$(printf "%02d" $ch)
 				dblr '"db/ao428elf.db","'${cprams},cid=$cid'"'
-			done			
+			done					
 			#echo 'dbLoadRecords("db/ao420fmc.db","'${cprams},cid=32'")'
 			;;
 		$MT_AO424)
@@ -947,5 +947,5 @@ fi
 
 echo 'dbl > /tmp/records.dbl'
 echo "dbpf ${HOST}:LIVE:PREPCT 50"
-echo "dbpf ${HOST}:IOC_READY 1"  > /tmp/st_final.cmd
+echo "dbpf ${HOST}:IOC_READY 1"  >> /tmp/st_final.cmd
 echo 1>&2 "load.records 99"
