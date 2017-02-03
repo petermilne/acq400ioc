@@ -1,0 +1,5 @@
+#!/bin/sh
+
+/usr/local/epics/scripts/wait_ioc_ready
+
+[ -e /mnt/local/autozero_restore ] && /mnt/local/autozero_restore

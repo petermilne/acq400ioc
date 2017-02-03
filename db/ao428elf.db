@@ -44,7 +44,7 @@ record(dfanout, "${UUT}:${SITE}:AO:SLOW_SET:CH:all") {
 	field(OMSL, "closed_loop")
 }
 
-record(ai, "${UUT}:SYS:4:TEMP") {
+record(ai, "${UUT}:SYS:2:TEMP") {
         field(DTYP, "dsSysfsAi")
         field(INP, "@/dev/hwmon/4/temp")
         field(SCAN, ".5 second")
@@ -60,4 +60,9 @@ record(ai, "${UUT}:SYS:4:TEMP") {
         field(HIHI, "75")
         field(LOW,  "-1")
         field(LOLO, "-1")
+}
+
+record(bo, "${UUT}:${SITE}:SET_AUTOZERO") {
+	field(DTYP, "stream")
+	field(OUT,  "@xo.proto setAZ ${SPORT}")
 }

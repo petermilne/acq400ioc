@@ -15,3 +15,9 @@ getPlayloopCursor {
 	out "playloop_cursor";
 	in "%d";
 }
+
+setAZ {
+	out "dac20_autozero";
+	wait 20000
+	in "";
+}
