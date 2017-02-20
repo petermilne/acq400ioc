@@ -605,8 +605,8 @@ load_mb_sites() {
 				fixup=0
 				case $MB_MODEL in
 					acq100*)
-						tlm=/etc/acq400/1/acq480_two_lane_mode
-						[ -e $tlm ] && [ $(cat $tlm) -gt 0 ] && fixup=1;;
+						axi=/dev/acq400.0.knobs/has_axi_dma
+						[ -e $axi ] && [ $(cat $axi) -eq 2 ] && fixup=1;;
 					acq2106*)
 						fixup=1;;
 				esac
