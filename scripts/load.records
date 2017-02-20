@@ -164,6 +164,15 @@ make_AI_subrate() {
 	fi
 }
 
+acq480_div() {
+	axi=/dev/acq400.0.knobs/has_axi_dma
+	if [ -e $axi ] && [ $(cat $axi) -eq 2 ]; then
+		echo 4
+	else
+		echo 2
+	fi
+}
+		
 
 load_AO() {
 		site=$1
@@ -444,11 +453,8 @@ load_400() {
 	dblr '"db/signal.db","'${cprams}',FNAM=EVENT1,FN=event1,ZNAM=disable,ONAM=enable,DISV=-1"'
 	dblr '"db/signal.db","'${cprams}',FNAM=EVENT0,FN=event0,ZNAM=disable,ONAM=enable,DISV=-1"'
 	if [ "x$model" = "x$MT_ACQ480" ]; then
-		let sp1=$site+1
-		div=2
-		axi=/dev/acq400.0.knobs/has_axi_dma
-		[ -e $axi ] && [ $(cat $axi) -eq 2 ] && div=4;;
-		dblr '"db/acq480fmc99.db","'${cprams},SITEP1=${sp1},div=${div}'"' \
+		let sp1=$site+1		
+		dblr '"db/acq480fmc99.db","'${cprams},SITEP1=${sp1},div=$(acq480_div)'"' \
 			>>/tmp/st_pre.cmd
 		if [ $ACQ480_COUNT -gt 1 ]; then
 				if [ $ACQ480_S1 -eq 0 ]; then
