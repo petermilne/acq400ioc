@@ -601,12 +601,18 @@ load_mb_sites() {
 			CTPRAMS="${CPRAMS},CTRMAX=${SCMAX},DT=${dt},DTC=${dt}"
 			PRAMS="${CTPRAMS},lname=${counter#scount_*},pname=${counter}"
 			dblr '"db/counter.db","'${PRAMS}'"'
-			case $MB_MODEL in
-				acq2106*)
-					[ $ACQ480_COUNT -ge 1 ] && \
-					[ "x${counter%_CLK_S*}" = "xscount" ] && \
+			if [ $ACQ480_COUNT -ge 1 ]; then
+				fixup=0
+				case $MB_MODEL in
+					acq1001)
+						tlm=/etc/acq400/1/acq480_two_lane_mode
+						[ -e $tlm ] && [ $(cat $tlm) -gt 0 ] && fixup=1;;
+					acq2106*)
+						fixup=1;;
+				esac
+				[ $fixup -gt 0 ] && [ "x${counter%_CLK_S*}" = "xscount" ] && \
 					dblr '"db/acq480_site_counter_prescale.db","'${PRAMS}'"';;
-			esac
+			fi
 		done
 	)
 
