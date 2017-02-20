@@ -604,14 +604,14 @@ load_mb_sites() {
 			if [ $ACQ480_COUNT -ge 1 ]; then
 				fixup=0
 				case $MB_MODEL in
-					acq1001)
+					acq100*)
 						tlm=/etc/acq400/1/acq480_two_lane_mode
 						[ -e $tlm ] && [ $(cat $tlm) -gt 0 ] && fixup=1;;
 					acq2106*)
 						fixup=1;;
 				esac
 				[ $fixup -gt 0 ] && [ "x${counter%_CLK_S*}" = "xscount" ] && \
-					dblr '"db/acq480_site_counter_prescale.db","'${PRAMS}'"';;
+					dblr '"db/acq480_site_counter_prescale.db","'${PRAMS}'"'
 			fi
 		done
 	)
