@@ -444,8 +444,12 @@ load_400() {
 	dblr '"db/signal.db","'${cprams}',FNAM=EVENT1,FN=event1,ZNAM=disable,ONAM=enable,DISV=-1"'
 	dblr '"db/signal.db","'${cprams}',FNAM=EVENT0,FN=event0,ZNAM=disable,ONAM=enable,DISV=-1"'
 	if [ "x$model" = "x$MT_ACQ480" ]; then
-		let sitep1=$site+1
-		dblr '"db/acq480fmc99.db","'${cprams},SITEP1=${sitep1}'"' >>/tmp/st_pre.cmd
+		let sp1=$site+1
+		div=2
+		axi=/dev/acq400.0.knobs/has_axi_dma
+		[ -e $axi ] && [ $(cat $axi) -eq 2 ] && div=4;;
+		dblr '"db/acq480fmc99.db","'${cprams},SITEP1=${sp1},div=${div}'"' \
+			>>/tmp/st_pre.cmd
 		if [ $ACQ480_COUNT -gt 1 ]; then
 				if [ $ACQ480_S1 -eq 0 ]; then
 					echo ERROR ACQ480S site $site ACQ480_S1 not set; exit 1
@@ -601,18 +605,6 @@ load_mb_sites() {
 			CTPRAMS="${CPRAMS},CTRMAX=${SCMAX},DT=${dt},DTC=${dt}"
 			PRAMS="${CTPRAMS},lname=${counter#scount_*},pname=${counter}"
 			dblr '"db/counter.db","'${PRAMS}'"'
-			if [ $ACQ480_COUNT -ge 1 ]; then
-				fixup=0
-				case $MB_MODEL in
-					acq100*)
-						axi=/dev/acq400.0.knobs/has_axi_dma
-						[ -e $axi ] && [ $(cat $axi) -eq 2 ] && fixup=1;;
-					acq2106*)
-						fixup=1;;
-				esac
-				[ $fixup -gt 0 ] && [ "x${counter%_CLK_S*}" = "xscount" ] && \
-					dblr '"db/acq480_site_counter_prescale.db","'${PRAMS}'"'
-			fi
 		done
 	)
 
