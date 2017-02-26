@@ -36,7 +36,7 @@ record (stringin, "IP:${ipaddrbis}") {
 	field(DTYP, "Soft Channel")
 	field(INP,  "${UUT}")
 	field(PINI, "YES")
-	field(DESC  "Reverse DNS feature")
+	field(DESC,  "Reverse DNS feature")
 }
 
 
