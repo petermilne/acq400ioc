@@ -34,7 +34,7 @@ record (bo, "${UUT}:IOC_READY") {
 
 record (stringin, "IP:${ipaddrbis}") {
 	field(DTYP, "Soft Channel")
-	field(INP,  "${UUT}")
+	field(VAL,  "${UUT}")
 	field(PINI, "YES")
 	field(DESC,  "Reverse DNS feature")
 }
