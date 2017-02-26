@@ -32,4 +32,11 @@ record (bo, "${UUT}:IOC_READY") {
 	field(PINI, "YES")
 }
 
+record (stringin, "IP:${ipaddrbis}") {
+	field(DTYP, "Soft Channel")
+	field(INP,  "${UUT}")
+	field(PINI, "YES")
+	field(DESC  "Reverse DNS feature")
+}
+
 

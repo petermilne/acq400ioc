@@ -792,7 +792,7 @@ cat - <<EOF
 epicsEnvSet("STREAM_PROTOCOL_PATH","./protocols")
 dbLoadDatabase("dbd/acq400ioc.dbd",0,0)
 acq400ioc_registerRecordDeviceDriver(pdbbase)
-dbLoadRecords("db/system.db","UUT=${HOST},SPORT=S0")
+dbLoadRecords("db/system.db","UUT=${HOST},ipaddrbis=$(./scripts/ifconfig_eth0 :),$SPORT=S0")
 EOF
 
 KB=/dev/acq400.0.knobs
