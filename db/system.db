@@ -16,6 +16,7 @@ record (stringin, "${UUT}:SYS:VERSION:FPGA" ) {
 	field(PINI, "YES")
 }
 
+
 record (stringin, "${UUT}:SYS:IFCONFIG:ETH0" ) {
 	field(DTYP, "stream")
 	field(INP,  "@mb.proto getIfconfig(eth0) ${SPORT}")
@@ -39,4 +40,16 @@ record (stringin, "IP:${ipaddrbis}") {
 	field(DESC,  "Reverse DNS feature")
 }
 
+
+record(stringout, "${UUT}:USER") {
+	field(DTYP, "Soft Channel")
+	field(OUT, "")
+	field(PINI, "YES")
+}
+
+record(stringout, "${UUT}:TEST_DESCR") {
+	field(DTYP, "Soft Channel")
+	field(OUT, "")
+	field(PINI, "YES")
+}
 
