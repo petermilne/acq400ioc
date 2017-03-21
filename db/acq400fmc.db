@@ -1,34 +1,3 @@
-record (stringin, "${UUT}:${SITE}:MODEL") {
-	field(DTYP, "stream")
-	field(INP, "@acq42x.proto getModel ${SPORT}")
-	field(PINI, "YES")	
-}
-
-record (stringin, "${UUT}:${SITE}:PART_NUM") {
-	field(DTYP, "stream")
-	field(INP, "@acq42x.proto getPart ${SPORT}")
-	field(PINI, "YES")
-}
-
-record (longin, "${UUT}:${SITE}:NCHAN") {
-	field(DTYP, "stream")
-	field(INP, "@acq42x.proto getNchan ${SPORT}")
-	field(PINI, "YES")	
-}
-
-record (stringin, "${UUT}:${SITE}:SERIAL") {
-	field(DTYP, "stream")
-	field(INP, "@acq42x.proto getSerial ${SPORT}")
-	field(PINI, "YES")	
-}
-record (longin, "${UUT}:${SITE}:SHOT") {
-	field(DTYP, "longinAcqHost")
-	field(INP, "@/dev/acq400.${SITE}.knobs/shot")
-	field(SCAN, "1 second")
-	field(PINI, "YES")		
-}
-
-
 
 
 record (bi, "${UUT}:${SITE}:RUN") {
@@ -47,4 +16,12 @@ record (longout, "${UUT}:${SITE}:INTCLK_HZ") {
 	field(HOPR, "${MAXHZ}")
 	field(EGU,  "Hz")
 }
+
+record (longin, "${UUT}:${SITE}:SHOT") {
+	field(DTYP, "longinAcqHost")
+	field(INP, "@/dev/acq400.${SITE}.knobs/shot")
+	field(SCAN, "1 second")
+	field(PINI, "YES")		
+}
+
 

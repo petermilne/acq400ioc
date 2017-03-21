@@ -384,6 +384,7 @@ load_400() {
 		create_asyn_channel SPEV 127.0.0.1:4238
 	fi
 	
+	dblr '"db/acq400.db","'${cprams}'"'
 	dblr '"db/acq400fmc.db","'${cprams},'MAXHZ='${maxhz}'"'
 		
 	if [ "x$model" != "x$MT_ACQ480" ] && [ $HAS_ACQ43X -eq 0 ]; then
@@ -532,9 +533,11 @@ load_mb_base() {
 	mt=$2
 	zynq_hwmon Z
 	
+	dblr '"db/acq400.db","'UUT=${HOST}',SITE=0,SPORT=S0"'
+	
 	for SITE in $(seq 0 $ns)
 	do
-		CPRAMS="UUT=${HOST},lname=${SITE}"
+		CPRAMS="UUT=${HOST},lname=${SITE}"				
 		PRAMS="$CPRAMS,pname=/dev/hwmon/${SITE}/temp,scale=0.001,offset=0"
 		dblr '"db/hwmontemp.db","'${PRAMS}'"'
 	done

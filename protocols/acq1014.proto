@@ -7,6 +7,11 @@ select_clk_src {
 	in;
 }
 
+is_master {
+	out "acq1014_is_master";
+	in "%d";
+}
+
 get_clk_src {
 	out "acq1014_clk_src";
 	in "%{int|ext} %(\$1:FS:r)d %(\$1:FIN:r)d";

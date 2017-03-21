@@ -54,7 +54,7 @@ record(longout, "${UUT}:ACQ1014:FIN") {
 	field(EGU,  "Hz")
 # zero means "measure it yourself". Actual min = 1000000	
 	field(LOPR, "0")
-	field(HOPR, "10000000")
+	field(HOPR, "25000000")
 }
 
 record(longout, "${UUT}:ACQ1014:FIN:r") {
@@ -97,3 +97,34 @@ record(mbbo, "${UUT}:ACQ1014:CLK_SRC:s") {
 	field(OUT,  "${UUT}:ACQ1014:CLK_SRC PP")
 }
 
+
+record(bi, "${UUT}:ACQ1014:LOC_MASTER") {
+	field(DTYP, "stream")
+	field(DESC, "masters local box if no HDMI IN")
+	field(INP,  "@acq1014.proto is_master ${SPORT}")
+	field(ZNAM, "no")
+	field(ONAM, "yes")		
+	field(PINI, "YES")	
+}
+
+record(mbbi, "${UUT}:2:SIG:ACQ1014:CLK_SRC") {
+	field(FLNK, "${UUT}:ACQ1014:STACK_MASTER")
+}
+
+record(calc, "${UUT}:ACQ1014:STACK_MASTER") {
+	field(DESC, "masters a stack of boxes")
+	field(INPA, "${UUT}:ACQ1014:LOC_MASTER")
+	field(INPB, "${UUT}:2:SIG:ACQ1014:CLK_SRC")
+	field(CALC, "A==1 && B<2")	
+}
+
+record(bi, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DET")
+{
+	field(FLNK, "${UUT}:ACQ1014:GRAND_MASTER")
+}
+
+record(calc, "${UUT}:ACQ1014:GRAND_MASTER") {
+	field(DESC, "masters a stack of stacks via external clk/dst")
+	field(INPA, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DET")	
+	field(CALC, "A")	
+}
