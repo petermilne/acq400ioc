@@ -1,0 +1,99 @@
+record(mbbo, "${UUT}:ACQ1014:TRG_SRC") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "selects TRG SRC, run on both boxes")
+	field(NOBT, "2")
+	field(ZRST, "int")
+	field(ONST, "ext")
+	field(TWST, "ext2")
+	field(FLNK, "${UUT}:ACQ1014:TRG_SRC:w PP")
+}
+
+record(mbbo, "${UUT}:ACQ1014:TRG_SRC:w") {
+	field(DTYP, "stream")
+	field(OUT,  "@acq1014.proto select_trg_src ${SPORT}")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:ACQ1014:TRG_SRC:s.PACT")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:ACQ1014:TRG_SRC")
+}
+
+record(mbbi, "${UUT}:ACQ1014:TRG_SRC:r") {
+	field(DTYP, "stream")
+	field(INP,  "@acq1014.proto get_trg_src ${SPORT}")
+	field(SCAN, "1 second")
+	field(PINI, "YES")
+	field(FLNK, "${UUT}:ACQ1014:TRG_SRC:s")
+}
+
+record(mbbo, "${UUT}:ACQ1014:TRG_SRC:s") {
+	field(DTYP, "Soft Channel")
+	field(DOL,  "${UUT}:ACQ1014:TRG_SRC:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:ACQ1014:TRG_SRC PP")
+}
+
+record(longout, "${UUT}:ACQ1014:FS") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "Sample Frequency Hz")
+	field(EGU,  "Hz")
+	field(LOPR, "10000000")
+	field(HOPR, "80000000")
+}
+
+record(longin, "${UUT}:ACQ1014:FS:r") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "Sample Frequency Hz")
+	field(EGU,  "Hz")
+	field(LOPR, "10000000")
+	field(HOPR, "80000000")
+}
+
+record(longout, "${UUT}:ACQ1014:FIN") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "Input Clock Frequency")
+	field(EGU,  "Hz")
+# zero means "measure it yourself". Actual min = 1000000	
+	field(LOPR, "0")
+	field(HOPR, "10000000")
+}
+
+record(longout, "${UUT}:ACQ1014:FIN:r") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "Input Clock Frequency")
+	field(EGU,  "Hz")
+# zero means "measure it yourself". Actual min = 1000000	
+	field(LOPR, "0")
+	field(HOPR, "10000000")
+}
+record(mbbo, "${UUT}:ACQ1014:CLK_SRC") {
+	field(DTYP, "Soft Channel")
+	field(NOBT, "1")
+	field(ZRST, "int")
+	field(ONST, "ext")
+	field(FLNK, "${UUT}:ACQ1014:CLK_SRC:w PP")
+}
+
+record(mbbo, "${UUT}:ACQ1014:CLK_SRC:w") {
+	field(DTYP, "stream")
+	field(OUT,  "@acq1014.proto select_clk_src(${UUT}:ACQ1014) ${SPORT}")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:ACQ1014:CLK_SRC:s.PACT")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:ACQ1014:CLK_SRC")	
+}
+
+record(mbbi, "${UUT}:ACQ1014:CLK_SRC:r") {
+	field(DTYP, "stream")
+	field(INP,  "@acq1014.proto get_clk_src(${UUT}:ACQ1014) ${SPORT}")
+	field(SCAN, "1 second")
+	field(PINI, "YES")
+	field(FLNK, "${UUT}:ACQ1014:CLK_SRC:s")
+}
+
+record(mbbo, "${UUT}:ACQ1014:CLK_SRC:s") {
+	field(DTYP, "Soft Channel")
+	field(DOL,  "${UUT}:ACQ1014:CLK_SRC:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:ACQ1014:CLK_SRC PP")
+}
+

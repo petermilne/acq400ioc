@@ -1,0 +1,29 @@
+Terminator = LF;
+ExtraInput = Ignore;
+ReplyTimeout = 5000;
+
+select_clk_src {
+	out "acq1014_select_clk_src %{int|ext} %(\$1:FS)d %(\$1:FIN)d";
+	in;
+}
+
+get_clk_src {
+	out "acq1014_clk_src";
+	in "%{int|ext} %(\$1:FS:r)d %(\$1:FIN:r)d";
+}
+select_trg_src {
+	out "acq1014_select_trg_src %{int|ext|ext2}";
+	in;
+}
+
+get_trg_src {
+	out "acq1014_trg_src";
+	# must put substring "ext" last or we get a false match
+	in "%#{int=0|ext2=2|ext=1}";
+}
+
+# valid site 2
+get {
+	out "acq1014_\$1";
+	in %d;
+}

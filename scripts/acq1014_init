@@ -1,0 +1,76 @@
+# NOT executable, source me from load.records
+
+
+__create_mirror() {
+	ADB=0
+	if [ "x$PVDBG" != "x" ]; then
+		ADB=$PVDBG
+	fi
+	for pv in $(cat $1)
+	do
+		echo seq pvmirror \"name=mpv${pv##*:},mirrorpv=$pv,uut=${HOST},adb=$ADB\" >>/tmp/st_post.cmd
+	done
+}
+
+_create_default_mirror() {
+cat - >/tmp/local_mirror <<EOF
+MODE:CONTINUOUS
+LIVE:PREPCT
+ACQ1014:FS
+ACQ1014:FIN
+ACQ1014:CLK_SRC
+ACQ1014:TRG_SRC
+1:EVENT0
+1:EVENT0:DX
+1:EVENT0:SENSE
+1:TRG
+1:TRG:DX
+1:TRG:SENSE
+MODE:TRANSIENT:PRE
+MODE:TRANSIENT:POST
+MODE:TRANSIENT
+MODE:TRANSIENT:SET_ARM
+MODE:TRANSIENT:SET_ABORT
+MODE:TRANSIENT:OSAM
+MODE:TRANSIENT:SOFT_TRIGGER
+EOF
+__create_mirror /tmp/local_mirror
+}
+
+create_mirror() {
+	if [ "x$(cat $1)" = "xdefault" ]; then
+		_create_default_mirror
+	else
+		__create_mirror $1
+	fi
+}
+
+acq1014_records_init() {
+	create_asyn_channel S014 127.0.0.1:4220
+	CPRAMS="UUT=${HOST},SITE=0,SPORT=S014"
+	dblr '"db/acq1014.db","'${CPRAMS}'"'
+	if [ $(acq1014_is_master) -ne 0 ]; them
+		create_asyn_channel S214 127.0.0.1:4222
+		CPRAMS="UUT=${HOST},SITE=2,SPORT=S214"
+		dblr '"db/acq1014src.db","'${CPRAMS},FUN=CLK_SRC,fun=clk'"'
+		dblr '"db/acq1014src.db","'${CPRAMS},FUN=TRG_SRC,fun=trg'"'
+	else
+		CPRAMS="UUT=${HOST},SITE=0
+		dblr '"db/acq1014src.db","'${CPRAMS},FUN=CLK_SRC,fun=clk'"'
+		dblr '"db/acq1014src.db","'${CPRAMS},FUN=TRG_SRC,fun=trg'"'		
+	fi
+
+	if [ -e /mnt/local/sysconfig/pvmirror ]; then
+		create_mirror /mnt/local/sysconfig/pvmirror 
+        fi
+        if [ "x$MIRROR_HOST" != "x" ]; then
+		echo "dbpf ${HOST}:MIRROR_HOST ${MIRROR_HOST}" >>/tmp/st_post.cmd
+        fi
+        if [ "x$MIRROR_EN" != "x" ]; then
+        	echo "dbpf ${HOST}:MIRROR_EN ${MIRROR_EN}" >>/tmp/st_post.cmd
+        fi
+}
+
+[ "x$HOST" = "x" ] && echo 1>&2 "ERROR acq1014_init should not be executed"
+[ "x$HOST" != "x" ] && acq1014_records_init
+

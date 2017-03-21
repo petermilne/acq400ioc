@@ -811,6 +811,9 @@ load_mb() {
 				ns=2; mt=acq1001;;
 		kmcu*)
 				ns=2; mt=kmcu;;
+		acq1014)
+				source ./scripts/acq1014.init
+				ns=1; mt=acq1001;;
 		*)
 				ns=1; mt=acq1001;;
 	esac		

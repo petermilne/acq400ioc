@@ -1,0 +1,13 @@
+# acq1001_112:2:SIG:ACQ1014:TRG_SRC
+# MASTER version has "real fb"
+
+record (mbbi, "${UUT}:${SITE}:SIG:ACQ1014:${FUN}") {
+	field(DTYP, "stream")
+	field(INP,  "@acq1014.proto get(${fun}) ${SPORT}")
+	field(NOBT, "2")
+	field(ZRST, "EXT_FP")
+	field(ONST, "LOC")
+	field(TWST, "EXT_RP")
+	field(THST, "SLAVE")
+	field(SCAN, "1 second")
+}

@@ -1,0 +1,14 @@
+# acq1001_112:0:SIG:FP:TRG_SRC
+# Slave version with dummy value
+
+record (mbbi, "${UUT}:${SITE}:SIG:ACQ1014:${FUN}") {
+	field(DTYP, "Soft Channel")	
+	field(NOBT, "2")
+	field(ZRST, "EXT_FP")
+	field(ONST, "LOC")
+	field(TWST, "EXT_RP")
+	field(THST, "SLAVE")
+	field(PINI, "YES")
+	field(VAL,  "3")
+}
+
