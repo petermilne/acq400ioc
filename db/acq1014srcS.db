@@ -2,7 +2,8 @@
 # Slave version with dummy value
 
 record (mbbi, "${UUT}:${SITE}:SIG:ACQ1014:${FUN}") {
-	field(DTYP, "Soft Channel")	
+	field(DTYP, "Soft Channel")
+	field(DESC, "UUTR always a slave")	
 	field(NOBT, "2")
 	field(ZRST, "EXT_FP")
 	field(ONST, "LOC")

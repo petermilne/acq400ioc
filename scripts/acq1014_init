@@ -49,13 +49,13 @@ acq1014_records_init() {
 	create_asyn_channel S014 127.0.0.1:4220
 	CPRAMS="UUT=${HOST},SITE=0,SPORT=S014"
 	dblr '"db/acq1014.db","'${CPRAMS}'"'
-	if [ $(acq1014_is_master) -ne 0 ]; them
+	if [ $(acq1014_is_master) -ne 0 ]; then
 		create_asyn_channel S214 127.0.0.1:4222
 		CPRAMS="UUT=${HOST},SITE=2,SPORT=S214"
 		dblr '"db/acq1014src.db","'${CPRAMS},FUN=CLK_SRC,fun=clk'"'
 		dblr '"db/acq1014src.db","'${CPRAMS},FUN=TRG_SRC,fun=trg'"'
 	else
-		CPRAMS="UUT=${HOST},SITE=0
+		CPRAMS="UUT=${HOST},SITE=0"
 		dblr '"db/acq1014src.db","'${CPRAMS},FUN=CLK_SRC,fun=clk'"'
 		dblr '"db/acq1014src.db","'${CPRAMS},FUN=TRG_SRC,fun=trg'"'		
 	fi

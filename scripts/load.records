@@ -812,7 +812,7 @@ load_mb() {
 		kmcu*)
 				ns=2; mt=kmcu;;
 		acq1014)
-				source ./scripts/acq1014.init
+				source ./scripts/acq1014_init
 				ns=1; mt=acq1001;;
 		*)
 				ns=1; mt=acq1001;;
