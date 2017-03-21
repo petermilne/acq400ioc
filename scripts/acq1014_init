@@ -55,9 +55,9 @@ acq1014_records_init() {
 		dblr '"db/acq1014src.db","'${CPRAMS},FUN=CLK_SRC,fun=clk'"'
 		dblr '"db/acq1014src.db","'${CPRAMS},FUN=TRG_SRC,fun=trg'"'
 	else
-		CPRAMS="UUT=${HOST},SITE=0"
-		dblr '"db/acq1014src.db","'${CPRAMS},FUN=CLK_SRC,fun=clk'"'
-		dblr '"db/acq1014src.db","'${CPRAMS},FUN=TRG_SRC,fun=trg'"'		
+		CPRAMS="UUT=${HOST},SITE=2"
+		dblr '"db/acq1014srcS.db","'${CPRAMS},FUN=CLK_SRC,fun=clk'"'
+		dblr '"db/acq1014srcS.db","'${CPRAMS},FUN=TRG_SRC,fun=trg'"'		
 	fi
 
 	if [ -e /mnt/local/sysconfig/pvmirror ]; then
