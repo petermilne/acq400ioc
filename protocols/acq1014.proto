@@ -25,5 +25,5 @@ get_trg_src {
 # valid site 2
 get {
 	out "acq1014_\$1";
-	in %d;
+	in "%d";
 }
