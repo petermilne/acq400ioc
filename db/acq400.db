@@ -1,0 +1,24 @@
+record (stringin, "${UUT}:${SITE}:MODEL") {
+	field(DTYP, "stream")
+	field(INP, "@acq42x.proto getModel ${SPORT}")
+	field(PINI, "YES")	
+}
+
+record (stringin, "${UUT}:${SITE}:PART_NUM") {
+	field(DTYP, "stream")
+	field(INP, "@acq42x.proto getPart ${SPORT}")
+	field(PINI, "YES")
+}
+
+record (longin, "${UUT}:${SITE}:NCHAN") {
+	field(DTYP, "stream")
+	field(INP, "@acq42x.proto getNchan ${SPORT}")
+	field(PINI, "YES")	
+}
+
+record (stringin, "${UUT}:${SITE}:SERIAL") {
+	field(DTYP, "stream")
+	field(INP, "@acq42x.proto getSerial ${SPORT}")
+	field(PINI, "YES")	
+}
+
