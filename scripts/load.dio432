@@ -1,8 +1,8 @@
 #!/bin/sh
 
-HOST=$1
-SITE=$2
-HSS="$HOST:$SITE,SPORT=S${SITE}"
+uut=$1
+site=$2
+HSS="UUT=${uut},SITE=${site},SPORT=S${site}"
 
 source ./scripts/record_support.sh
 
