@@ -329,7 +329,11 @@ load_400() {
 		dblr '"db/awg.db","'${cprams}'"'	
 		load_AO $site $model $cprams		
 		let LO=66000000;;
-#	@@todo : different flavour of calmon for SAR ADC needed
+#	@@todo : different flavour of calmon for SAR ADC needed	
+	$MT_DIO432|$MT_DIO432P|$MT_DIO482)
+	# probably should be common to all @@todo
+		name=$(cat /dev/acq400.$site.knobs/module_name)
+		[ -e ./scripts/load.$name ] && ./scripts/load.$name $HOST $site;;		
 	$MT_DIOB)		
 		name=$(cat /dev/acq400.$site.knobs/module_name)
 		[ -e ./scripts/load.$name ] && ./scripts/load.$name $HOST $site
