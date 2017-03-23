@@ -1,0 +1,7 @@
+Terminator = LF;
+ExtraInput = Ignore;
+
+get_dpg {
+	out "dpg_status";
+	in "%d %(\$1)d";
+}

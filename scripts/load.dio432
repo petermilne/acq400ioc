@@ -1,0 +1,10 @@
+#!/bin/sh
+
+HOST=$1
+SITE=$2
+HSS="$HOST:$SITE,SPORT=S${SITE}"
+
+source ./scripts/record_support.sh
+
+dblr '"db/dio432.db","'${HSS}'"'
+

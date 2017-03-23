@@ -1,0 +1,13 @@
+record(longin, "${UUT}:${SITE}:AWG:SAMPLES") {
+	
+}
+
+record(mbbi, "${UUT}:${SITE}:AWG:STATE") {
+	field(DTYP, "stream")
+	field(NOBT, "2")
+	field(ZRST, "IDLE")
+	field(ONST, "ARM")
+	field(TWST, "RUN")
+	field(INP, "@dio432.proto get_dpg(${UUT}:${SITE}:AWG:SAMPLES) ${SPORT})
+	field(SCAN, ".1 second")
+}
