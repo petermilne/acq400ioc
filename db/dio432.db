@@ -8,6 +8,6 @@ record(mbbi, "${UUT}:${SITE}:AWG:STATE") {
 	field(ZRST, "IDLE")
 	field(ONST, "ARM")
 	field(TWST, "RUN")
-	field(INP, "@dio432.proto get_dpg(${UUT}:${SITE}:AWG:SAMPLES) ${SPORT})
+	field(INP, "@dio432.proto get_dpg(${UUT}:${SITE}:AWG:SAMPLES) ${SPORT}")
 	field(SCAN, ".1 second")
 }
