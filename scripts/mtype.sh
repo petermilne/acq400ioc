@@ -25,6 +25,7 @@ MT_AO424=41
 MT_PIG_CELF=68
 MT_RAD_CELF=69
 MT_AO428=6A
+MT_DIO482=6B
 
 
 nameFromMT() {
@@ -44,6 +45,7 @@ nameFromMT() {
 	$MT_BOLO8)		echo "bolo8";;
 	$MT_DIO432)		echo "dio432";;
 	$MT_DIO432P)	echo "dio432";;
+	$MT_DIO482)		echo "dio432";;
 	$MT_PMODAD1)	echo "pmodad1";;
 	$MT_BOLO8B)		echo "bolo8B";;
 	$MT_DIOB)		echo "diobiscuit";;
@@ -58,7 +60,7 @@ nameFromMT() {
 
 hasOutput() {
 	case $1 in
-	$MT_DIO432|$MT_DIO432P|$MT_AO420|$MT_AO424|$MT_AO428) echo "yes";;
+	$MT_DIO432|$MT_DIO432P|$MT_DIO482|$MT_AO420|$MT_AO424|$MT_AO428) echo "yes";;
 	*) echo "no";;
 	esac
 }
