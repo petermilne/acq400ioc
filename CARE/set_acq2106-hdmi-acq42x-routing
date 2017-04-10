@@ -16,7 +16,18 @@ set_slave() {
 	set.site 0 SYS:CLK:DIST_CLK_SRC HDMI
 }
 
+set_fpmaster() {
+        set.site 0 SYS:CLK:FPMUX FPCLK
+        set.site 0 SYS:CLK:BYPASS 1
+        set.site 0 SYS:CLK:DIST_CLK_SRC Si5326
+        set.site 0 SYS:CLK:OE_CLK1_ZYNQ 1
+        set.site 0 SIG:SRC:CLK:1 MCLK
+}
+
 case $1 in
+fpmaster)
+	(/usr/local/epics/scripts/wait_ioc_ready; sleep 2
+        set_master; set_fpmaster) & ;;
 master)
 	(/usr/local/epics/scripts/wait_ioc_ready; sleep 2
 	set_master) & ;;
