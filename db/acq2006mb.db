@@ -18,6 +18,8 @@ record(calc, "${UUT}:0:SIG:CLK_MB:set_kHz") {
 record(longout, "${UUT}:0:SIG:CLK_MB:FIN") {
 	field(DTYP, "Soft Channel")
 	field(DESC, "best input frequency for MB_CLK if set")
+	field(LOPR, "1000000")
+	field(HOPR, "40000000")	
 }
 record(calcout, "${UUT}:0:SIG:CLK_MB:w") {
 	field(INPA, "${UUT}:0:SIG:CLK_MB:set_kHz")
