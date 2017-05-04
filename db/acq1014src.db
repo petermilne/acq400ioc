@@ -3,7 +3,9 @@
 
 record (mbbi, "${UUT}:${SITE}:SIG:ACQ1014:${FUN}") {
 	field(DTYP, "stream")
-	field(DESC, "get state of CLKTRG. EXT_RP is HDMI cable override")
+#                    12345678901234567890123456789
+	field(DESC, "get state of CLKTRG")
+	# . EXT_RP is HDMI cable override")
 	field(INP,  "@acq1014.proto get(${fun}) ${SPORT}")
 	field(NOBT, "2")
 	field(ZRST, "EXT_FP")

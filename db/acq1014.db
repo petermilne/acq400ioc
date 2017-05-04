@@ -1,6 +1,7 @@
 record(mbbo, "${UUT}:ACQ1014:TRG_SRC") {
 	field(DTYP, "Soft Channel")
-	field(DESC, "selects TRG SRC, run on both boxes")
+#                    12345678901234567890123456789	
+	field(DESC, "selects TRG SRC, both boxes")
 	field(NOBT, "2")
 	field(ZRST, "int")
 	field(ONST, "ext")
@@ -124,7 +125,9 @@ record(bi, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DET")
 }
 
 record(calc, "${UUT}:ACQ1014:GRAND_MASTER") {
-	field(DESC, "masters a stack of stacks via external clk/dst")
+#                    12345678901234567890123456789
+	field(DESC, "masters a stack of stacks")
+	# via external clk/dst")
 	field(INPA, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DET")	
 	field(CALC, "A")	
 }
