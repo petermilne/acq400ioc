@@ -773,9 +773,11 @@ load_mb_sync() {
 				fi
 				echo >>/tmp/st_post.cmd "seq $ssr \"uut=${HOST}\"";;
 			esac
-	else
-			echo >> /tmp/st_post.cmd "seq setMB_ClockMonitor \"uut=${HOST}\""
 	fi
+	case $MB_MODEL in
+	acq100*)
+		echo >> /tmp/st_post.cmd "seq setMB_ClockMonitor \"uut=${HOST}\"";;
+	esac
 		
 	echo >>/tmp/st_post.cmd "seq onSetTransient \"uut=${HOST}\""
 	echo >>/tmp/st_post.cmd "seq autoRepeat \"uut=${HOST}\""
