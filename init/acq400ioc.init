@@ -127,7 +127,7 @@ make_epics_knobs() {
 				make_caget $PV ${NU#*:} ${SITE};;
 		esac
 	done
-	for PV in $(egrep GAIN $RL | grep -v .[a-z]$ )
+	for PV in $(egrep GAIN\|RANGE $RL | grep -v .[a-z]$ )
 	do
 		NU=${PV#*:}
 		SITE=${NU:0:1}
