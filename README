@@ -31,6 +31,8 @@ ACQ1014:
 /mnt/local/sysconfig/epics.sh:
 export IOC_PREINIT=./scripts/load.acq1014
 
+# interrupt monitor
+export LOAD_INTMON=y
 
 # Enable AI records (OFF by default)
 
