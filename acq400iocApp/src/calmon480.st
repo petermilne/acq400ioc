@@ -82,7 +82,7 @@ ss calmon {
 				if (ch==1) printf("assign %s\n",pvfield);
 				
 				if (has_ch_gains){
-					snprintf(pvname, 80, "%s:%s:GAIN:%02d", uut, site, ch);
+					snprintf(pvname, 80, "%s:%s:ACQ480:GAIN:%02d", uut, site, ch);
 					pvAssign(gains[ch], pvname);
 				}
 			}
@@ -114,8 +114,8 @@ ss calmon {
 						
 												
 						if (ch==1 || ch==5){
-							printf("site:%s ch:%2d eslo:%.6e=>%.6e eoff:%.6e\n", 
-										site, ch, eslo[ch], eslo[ch]*voltsFromDb(gains[ch]), eoff[ch]);
+							printf("site:%s ch:%2d gain:%d eslo:%.6e=>%.6e eoff:%.6e\n", 
+										site, ch, gains[ch], eslo[ch], eslo[ch]*voltsFromDb(gains[ch]), eoff[ch]);
 						}
 						eslo[ch] *= voltsFromDb(gains[ch]);
 						pvPut(eslo[ch]);

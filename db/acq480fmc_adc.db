@@ -28,6 +28,7 @@ record(mbbo, "${UUT}:${SITE}:ACQ480:GAIN:${CH}") {
 	field(ELST, "11 dB")
 	field(TVST, "12 dB")
 	field(FLNK, "${UUT}:${SITE}:GAIN_CHANGES")
+	alias("${UUT}:${SITE}:GAIN:${CH}")
 }
 
 record (calc, "${UUT}:${SITE}:GAIN_CHANGES") {
