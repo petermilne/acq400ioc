@@ -80,12 +80,12 @@ record(longin, "${UUT}:0:GPG:DBG:GPGTOP") {
 
 record(longin, "${UUT}:0:GPG:DBG:RSTATE"){
 	field(DTYP, "stream")
-	field(INP,  "@mb.proto get_gpg_state(${UUT}) ${SPORT}")
-	# for max responsiveness
-	# dbpf ${UUT}:0:GPG:DBG:RSTATE.SCAN ".1 second"
-# commented out to avoid log message since it's been removed from FPGA..	
-#	field(SCAN, "1 second")
+	field(INP,  "@mb.proto get_gpg_state(${UUT}:0:GPG:DBG) ${SPORT}")
+	field(SCAN, ".1 second")
 	field(FLNK, "${UUT}:0:GPG:DBG:STATE")	
+	field(DISV, "1")
+#set DISA=0 to enable	
+	field(DISA, "1")	
 }
 record(mbbi, "${UUT}:0:GPG:DBG:STATE"){
 	field(DTYP, "Soft Channel")
@@ -107,6 +107,16 @@ record(longin, "${UUT}:0:GPG:DBG:PTR"){
 
 record(longin, "${UUT}:0:GPG:DBG:CTR"){
 	field(DTYP, "Soft Channel")	
+}
+
+record(longin, "${UUT}:0:GPG:DBG:CTR"){
+	field(DTYP, "Soft Channel")	
+}
+record(longin, "${UUT}:0:GPG:DBG:OSTATE"){
+	field(DTYP, "Soft Channel")	
+}
+record(longin, "${UUT}:0:GPG:DBG:UNTIL"){
+	field(DTYP, "Soft Channel")
 }
 # CNT PULSE1 PULSE2 SMS
 record(stringin, "${UUT}:0:GPG:DBG:DEF"){

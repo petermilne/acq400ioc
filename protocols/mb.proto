@@ -122,7 +122,7 @@ get_live_mode {
 
 get_gpg_state {
 	out "gpg_debug";
-	in "%d,%(\$1:0:GPG:DBG:PTR)d,%(\$1:0:GPG:DBG:CTR)d";
+	in "%d,%(\$1:PTR)d,%(\$1:CTR)d,%(\$1:OSTATE)d,%(\$1:UNTIL)d";
 }
 
 get_gpg_enable {

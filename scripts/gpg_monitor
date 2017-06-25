@@ -1,0 +1,13 @@
+#!/bin/sh
+en=${1:-1}
+
+if [ $en -ne 0 ];then
+	dis=0
+else
+	dis=1
+fi
+
+echo caput $(hostname):0:GPG:DBG:RSTATE.DISA $dis
+caput $(hostname):0:GPG:DBG:RSTATE.DISA $dis
+
+
