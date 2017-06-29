@@ -252,6 +252,9 @@ load_400() {
 		let maxhz="$(cat /etc/acq400/$site/MAX_KHZ) * 1000"
 	fi
 	cprams="UUT=${HOST},SITE=${site},SPORT=S${site}"
+	dblr '"db/acq400.db","'${cprams}'"'
+	create_asyn_channel S${site} 127.0.0.1:422${site}
+
 	# temporary hack. define in epics.sh eg 
 	# export GAINS=G0=10,G1=5,G2=2,G3=1
 	[ -e /dev/sites/$site/gains.sh ] && source /dev/sites/$site/gains.sh	
@@ -388,7 +391,6 @@ load_400() {
 		create_asyn_channel SPEV 127.0.0.1:4238
 	fi
 	
-	dblr '"db/acq400.db","'${cprams}'"'
 	dblr '"db/acq400fmc.db","'${cprams},'MAXHZ='${maxhz}'"'
 		
 	if [ "x$model" != "x$MT_ACQ480" ] && [ $HAS_ACQ43X -eq 0 ]; then
@@ -482,7 +484,6 @@ load_400() {
 		dblr '"db/acq420fmc99.db","'${cprams}'"'
 	fi
 	
-	create_asyn_channel S${site} 127.0.0.1:422${site}
 	if [ "x${site}" = "x1" ]; then
 		create_asyn_channel S1M 127.0.0.1:4221
 	fi
