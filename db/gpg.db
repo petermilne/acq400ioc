@@ -88,8 +88,7 @@ record(longin, "${UUT}:0:GPG:DBG:RSTATE"){
 	field(DISA, "1")	
 }
 record(mbbi, "${UUT}:0:GPG:DBG:STATE"){
-	field(DTYP, "Soft Channel")
-	field(INP,  "${UUT}:0:GPG:DBG:RSTATE")	
+	field(DTYP, "Soft Channel")	
 	field(NOBT, "3")
 	field(ZRST, "IDLE")
 	field(ONST, "RESET_CNT")
