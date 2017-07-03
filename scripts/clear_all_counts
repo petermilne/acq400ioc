@@ -1,0 +1,7 @@
+#!/bin/sh
+
+for pv in $(grep rawc64 /tmp/records.dbl)
+do
+	caput $pv 0
+done
+
