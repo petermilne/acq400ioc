@@ -18,5 +18,5 @@ getActive {
 
 getML {
 	out "playloop_length";
-	in "%d";
+	in "%d %(\$1)d";
 }
