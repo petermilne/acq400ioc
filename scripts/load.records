@@ -690,7 +690,7 @@ load_mb_sync() {
 		TRG)	if [ $(has_dsp_trg $MB_MODEL) -ne 0 ]; then
 					nobt=3; zrst="EXT"; onst="HDMI_TRG"; twst="HOSTB"; thst="GPG0"; frst="DSP0"
 				else
-					nobt=2; onst="HDMI";    twst="HDMI_GPIO";  	thst="GPG0";;
+					nobt=2; onst="HDMI";    twst="HDMI_GPIO";  	thst="GPG0"
 				fi;;
 		SYNC)	nobt=1; onst="HDMI"; 	twst="nc";		thst="nc";;
 		esac
