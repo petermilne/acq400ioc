@@ -656,6 +656,17 @@ toLower() {
 	echo $* | tr '[:upper:]' '[:lower:]'
 }
 
+has_dsp_trg() {
+	rc=0
+	if [ -e /dev/acq400.0.knobs/fpga_rev ]; then
+		rev=$(cat /dev/acq400.0.knobs/fpga_rev)
+		case $1 in
+		acq2106|acq2106sfp)	[ $rev -ge 25 ] && rc=1;;
+		acq100*)			[ $rev -ge 38 ] && rc=1;;
+		esac
+	fi
+	echo $rc
+}
 load_mb_sync() {
 	KB=$1 
 	
@@ -665,7 +676,7 @@ load_mb_sync() {
 	do		 
 		lprams="FUN=${FUN},fun=$(toLower ${FUN})"
 		# d0
-		zrst="EXT";
+		zrst="EXT";	frst="nc"
 		
 		case $FUN in
 		CLK)	nobt=2; onst="HDMI"; 	twst="HDMI";		
@@ -676,19 +687,27 @@ load_mb_sync() {
 				*)
 						thst="nc";;
 				esac;;
-		TRG)	nobt=2; onst="HDMI";    twst="HDMI_GPIO";  	thst="GPG0";;
+		TRG)	if [ $(has_dsp_trg $MB_MODEL) -ne 0 ]; then
+					nobt=3; zrst="EXT"; onst="HDMI_TRG"; twst="HOSTB"; thst="GPG0"; frst="DSP0"
+				else
+					nobt=2; onst="HDMI";    twst="HDMI_GPIO";  	thst="GPG0";;
+				fi;;
 		SYNC)	nobt=1; onst="HDMI"; 	twst="nc";		thst="nc";;
 		esac
-		dblr '"db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=0,ZRST=${zrst},ONST=${onst},TWST=${twst},THST=${thst},NOBT=${nobt}'"'
+		dblr '"db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=0,ZRST=${zrst},ONST=${onst},TWST=${twst},THST=${thst},FRST=${frst},NOBT=${nobt}'"'
 		
 		# d1
 		case $FUN in
-		TRG)	case $MB_MODEL in
-				acq2106|acq2106sfp)					
-					nobt=2; zrst="STRIG"; onst="HOSTA"; twst="HOSTB"; 	thst="GPG1";;
-				*)
-					nobt=2; zrst="STRIG"; onst="HDMI";  twst="HDMI_GPIO"; thst="GPG1";;
-				esac;;				
+		TRG)	if [ $(has_dsp_trg $MB_MODEL) -ne 0 ]; then
+					nobt=3; zrst="STRIG"; onst="HOSTA"; twst="HDMI_GPIO"; thst="GPG1"; frst="DSP1"
+				else				
+					case $MB_MODEL in
+					acq2106|acq2106sfp)
+						nobt=2; zrst="STRIG"; onst="HOSTA"; twst="HOSTB"; 	thst="GPG1";;
+					*)
+						nobt=2; zrst="STRIG"; onst="HDMI";  twst="HDMI_GPIO"; thst="GPG1";;
+					esac
+				fi;;				
 		SYNC) 	nobt=1; zrst="EXT";   onst="HDMI";  twst="nc"; thst="nc";;
 		CLK)	nobt=2; onst="HDMI"; 	twst="HDMI";
 				case $MB_MODEL in
@@ -700,7 +719,7 @@ load_mb_sync() {
 		*) 		echo ERROR undefined FUN;;
 #nobt=1; onst="HDMI";  twst="nc"; thst="nc";;
 		esac
-		dblr '"db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=1,ZRST=${zrst},ONST=${onst},TWST=${twst},THST=${thst},NOBT=${nobt}'"'
+		dblr '"db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=1,ZRST=${zrst},ONST=${onst},TWST=${twst},THST=${thst},FRST=${frst},NOBT=${nobt}'"'
 	done
 	 
 	if [ "$(cat /dev/acq400.0.knobs/module_role)" = "CLKOUT" ]; then
