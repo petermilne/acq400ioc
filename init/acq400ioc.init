@@ -163,11 +163,22 @@ make_epics_knobs() {
 	done
 	
 	for PV in $(egrep -e :1:CLK -e :1:TRG -e :1:EVE \
-				  -e :1:RGM -e :1:RTM -e :1:XDT -e :1:DT $RL \
-				| grep -v [a-z]$)
+			  -e :1:RGM -e :1:RTM -e :1:XDT -e :1:DT $RL \
+			| grep -v [a-z]$)
 	do
 		pv1=${PV#*:}
 		make_caput $PV ${pv1#*:} 1
+	done
+	
+	for PV in $(grep GPG /tmp/records.dbl | grep -v :[a-z]$)
+	do
+		pv1=${PV#*:}
+		case $PV in
+		*DBG*)
+			make_caget $PV ${pv1#*:} 0;;
+		*)
+			make_caput $PV ${pv1#*:} 0;;
+		esac
 	done
 
 	for PV in $(egrep -e MODE:TRANSIENT $RL | grep -v [a-z]$)
