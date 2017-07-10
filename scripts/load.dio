@@ -1,0 +1,3 @@
+# load.dio load.dio4 : support for DIO USB MT67
+
+set.sys /dev/acq400.2.knobs/diob_src 2
