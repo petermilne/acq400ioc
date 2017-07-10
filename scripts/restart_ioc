@@ -1,0 +1,2 @@
+echo Q | tr Q \\x18 | acq4xx-epics-console
+
