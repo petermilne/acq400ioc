@@ -962,23 +962,22 @@ esac
 #		dbpf acq1001_109:0:SIG:FP:
 #fi
 
+case $MB_MODEL in
+acq2106|acq2106sfp)
+	;;
+*)
+	echo "dbpf $HOST:SYS:CLK:FPMUX $clk"
+	if [ "x$HAS_ACQ43X" != "x" ] && [ $HAS_ACQ43X -eq 1 ] && [ $ACQ43X_SET_SAMPLE_RATE -gt 1 ]; then
+		echo "dbpf $HOST:1:ACQ43X_SAMPLE_RATE $ACQ43X_SET_SAMPLE_RATE"
+	fi;;
+esac
+
 if [ "x$IOC_POSTINIT" != "x" ]; then
 	echo 1>&2 "load.records:$IOC_POSTINIT"
 	if [ -e $IOC_POSTINIT ]; then
 		source $IOC_POSTINIT
 	fi
-else
-	case $MB_MODEL in
-	acq2106|acq2106sfp)
-		;;
-	*)
-		echo "dbpf $HOST:SYS:CLK:FPMUX $clk"
-		if [ "x$HAS_ACQ43X" != "x" ] && [ $HAS_ACQ43X -eq 1 ] && [ $ACQ43X_SET_SAMPLE_RATE -gt 1 ]; then
-			echo "dbpf $HOST:1:ACQ43X_SAMPLE_RATE $ACQ43X_SET_SAMPLE_RATE"
-		fi;;
-	esac
 fi
-
 
 
 echo 'dbl > /tmp/records.dbl'
