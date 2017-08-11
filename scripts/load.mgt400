@@ -57,6 +57,9 @@ load_mgt400() {
 	HPRAMS="${cprams},size=$MGTHSIZE,type=LONG"
 	dblr '"db/hgMgt400.db","'${HPRAMS}'"'
 	
+	if [ -e /etc/acq400/$site/fpga_temp ]; then
+		dblr '"db/mgt_temp.db","'${cprams}'"'	
+	fi
 	load_mgt400_fifo_stat $cprams
 	let port="4220+$site"
 	create_asyn_channel ${sport} 127.0.0.1:${port}
