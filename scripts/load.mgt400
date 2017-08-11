@@ -19,11 +19,11 @@ load_mgt400_fifo_stat()
 
 load_mgt400_sfp() 
 {
-		sprams="UUT=${HOST}"
-		for ch in 1 2 3 4
-		do
-				dblr '"db/mgt480sfp.db","'${sprams},CH=${ch}'"'		
-		done	
+	sprams="UUT=${HOST}"
+	for ch in 1 2 3 4
+	do
+			dblr '"db/mgt480sfp.db","'${sprams},CH=${ch}'"'		
+	done	
 }
 
 load_mgt400() {
@@ -67,7 +67,7 @@ load_mgt400() {
 #tr '[:upper:]' '[:lower:]'
 
 # kmcu sfp gpio do no exist
-[ "x$mt" != "xkmcu" ] && load_mgt400_sfp
+[ "$MB_MODEL" = "acq2106sfp" ] && load_mgt400_sfp
 
 for SITE in 11 12 13; do
 	case $SITE in
