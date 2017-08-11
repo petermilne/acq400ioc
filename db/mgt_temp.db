@@ -15,6 +15,6 @@ record(ai, "${UUT}:${SITE}:FPGA:TEMP") {
         field(LOPR, "0")
         field(LOW,  "0")
         field(HIGH, "60")
-        filed(HIHI, "70")  
+        field(HIHI, "70")  
         field(PREC, "2")      
 }
