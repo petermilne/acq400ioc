@@ -26,6 +26,11 @@ getAuroraErr {
 	in "%d";
 }
 
+getAstats {
+	out "astats\$1";
+	in "%x %(\$2:\$3:rc)d %(\$2:\$4:rc)d %(\$2:\$5:rc)d %(\$2:\$6:rc)d";
+}
+
 getAggregator {
 	out "aggregator";
 	in "reg=%x %*s %*s";

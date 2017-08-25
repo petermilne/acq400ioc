@@ -60,6 +60,17 @@ load_mgt400() {
 	if [ -e /etc/acq400/$site/fpga_temp ]; then
 		dblr '"db/mgt_temp.db","'${cprams}'"'	
 	fi
+	if [ -e /dev/acq400.$site.knobs/astats1 ]; then
+		ctprams="${cprams},CTRMAX=255,DT=1,DTC=1"
+		dblr '"db/mgt_astats.db","'${cprams},X=1,N1=UPC,N2=SE,N3=HE,N4=FE'"'
+		for lname in UPC SE HE FE; do
+			dblr '"db/_counter.db","'${ctprams},SIG=AS,lname=$lname'"'
+		done
+		dblr '"db/mgt_astats.db","'${cprams},X=2,N1=CRC,N2=NAK,N3=XOF,N4=XON'"'
+		for lname in CRC NAK XOF XON; do
+			dblr '"db/_counter.db","'${ctprams},SIG=AS,lname=$lname'"'
+		done
+	fi
 	load_mgt400_fifo_stat $cprams
 	let port="4220+$site"
 	create_asyn_channel ${sport} 127.0.0.1:${port}

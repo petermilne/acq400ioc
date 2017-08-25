@@ -1,0 +1,29 @@
+record(longin, "${UUT}:${SITE}:AS:${X}:rc") {
+	field(SCAN, "I/O Intr")
+	field(DTYP, "stream")
+	#            12345678901234567890123456789012345678901234567890123456789012345678901234567890
+	field(INP,  "@event.proto eventCount(${X},${UUT}:${SITE}:AS:,${N1},${N2},${N3},${N4}) ${SPORT}")	
+	field(DESC, "Event count")	
+	field(PRIO, "HIGH")
+}
+
+record(longin, "${UUT}:${SITE}:AS:${N1}:rc") {
+# body of this Raw Count record provided by device-specific code	
+	field(FLNK, "${UUT}:${SITE}:${SIG}:${lname}:ACTIVE")
+}
+
+record(longin, "${UUT}:${SITE}:AS:${N2}:rc") {
+# body of this Raw Count record provided by device-specific code	
+	field(FLNK, "${UUT}:${SITE}:${SIG}:${lname}:ACTIVE")
+}
+
+record(longin, "${UUT}:${SITE}:AS:${N2}:rc") {
+# body of this Raw Count record provided by device-specific code	
+	field(FLNK, "${UUT}:${SITE}:${SIG}:${lname}:ACTIVE")
+}
+
+record(longin, "${UUT}:${SITE}:AS:${N2}:rc") {
+# body of this Raw Count record provided by device-specific code	
+	field(FLNK, "${UUT}:${SITE}:${SIG}:${lname}:ACTIVE")
+}
+
