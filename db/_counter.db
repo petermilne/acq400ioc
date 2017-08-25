@@ -3,6 +3,11 @@ record(longin, "${UUT}:${SITE}:${SIG}:${lname}:rc") {
 	field(FLNK, "${UUT}:${SITE}:${SIG}:${lname}:ACTIVE")
 }
 
+record(bo, "${UUT}:${SITE}:SIG:${lname}:RESET") {
+	field(DTYP, "Soft Channel")
+	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:COUNT")
+}
+
 record(calc, "${UUT}:${SITE}:${SIG}:${lname}:ACTIVE") {
 	field(INPA, "${UUT}:${SITE}:${SIG}:${lname}:rc")
 	field(INPB, "${UUT}:${SITE}:${SIG}:${lname}:ACTIVE.LA")
@@ -25,7 +30,8 @@ record(calc, "${UUT}:${SITE}:${SIG}:${lname}:COUNT") {
 	field(INPB, "${UUT}:${SITE}:${SIG}:${lname}:COUNT.LA")
 	field(INPC, "${CTRMAX}")
 	field(INPD, "${UUT}:${SITE}:${SIG}:${lname}:ACTIVE")
-	field(CALC, "A*B*D!=0 ? A>B? VAL+(A-B): VAL+(A+C-B): VAL")
+	field(INPE, "${UUT}:${SITE}:SIG:${lname}:RESET")
+	field(CALC, "E?0:A*B*D!=0?A>B?VAL+(A-B):VAL+(A+C-B):VAL")
 #                    01234567890012345678900123456789001234567890	
 	field(FLNK, "${UUT}:${SITE}:${SIG}:${lname}:delta")
 	field(DESC, "64 bit count corrects HW rollover")
