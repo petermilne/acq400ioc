@@ -63,7 +63,7 @@ record(ai, "${UUT}:SYS:${SITE}:5VP") {
 	field(LOW,  "4.6")
 	field(HIGH, "5.2")            
 	field(PREC, "2")
-	field(FLNK,  "${UUT}:SYS:${SITE}:3V3P")  
+	field(FLNK,  "${UUT}:SYS:${SITE}:2V5P")  
 }
 
 
