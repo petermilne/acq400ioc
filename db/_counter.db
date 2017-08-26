@@ -3,9 +3,9 @@ record(longin, "${UUT}:${SITE}:${SIG}:${lname}:rc") {
 	field(FLNK, "${UUT}:${SITE}:${SIG}:${lname}:ACTIVE")
 }
 
-record(bo, "${UUT}:${SITE}:SIG:${lname}:RESET") {
+record(bo, "${UUT}:${SITE}:${SIG}:${lname}:RESET") {
 	field(DTYP, "Soft Channel")
-	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:COUNT")
+	field(FLNK, "${UUT}:${SITE}:${SIG}:${lname}:COUNT")
 }
 
 record(calc, "${UUT}:${SITE}:${SIG}:${lname}:ACTIVE") {
