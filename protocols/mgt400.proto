@@ -33,7 +33,7 @@ getAstats {
 
 getAggregator {
 	out "aggregator";
-	in "reg=%x sites=%*s DATA_MOVER_EN=%*s";
+	in "reg=0x%x sites=%*s DATA_MOVER_EN=%*s";
 }
 
 getAggregatorSites {	
