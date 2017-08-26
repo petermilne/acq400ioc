@@ -30,7 +30,7 @@ record(calc, "${UUT}:${SITE}:${SIG}:${lname}:COUNT") {
 	field(INPB, "${UUT}:${SITE}:${SIG}:${lname}:COUNT.LA")
 	field(INPC, "${CTRMAX}")
 	field(INPD, "${UUT}:${SITE}:${SIG}:${lname}:ACTIVE")
-	field(INPE, "${UUT}:${SITE}:SIG:${lname}:RESET")
+	field(INPE, "${UUT}:${SITE}:${SIG}:${lname}:RESET")
 	field(CALC, "E?0:A*B*D!=0?A>B?VAL+(A-B):VAL+(A+C-B):VAL")
 #                    01234567890012345678900123456789001234567890	
 	field(FLNK, "${UUT}:${SITE}:${SIG}:${lname}:delta")
