@@ -38,6 +38,7 @@ record(longin, "${UUT}:${chan}:AGGREGATOR") {
 	field(SCAN,  "1 second")
 	field(DESC,  "0-> DISABLED")
 	field(FLNK,  "${UUT}:${chan}:AGGREGATOR:SITES")
+	field(PINI,  "YES")
 }
 
 record(stringin, "${UUT}:${chan}:AGGREGATOR:SITES") {
