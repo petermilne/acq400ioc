@@ -36,11 +36,13 @@ getAggregator {
 	in "reg=0x%x sites=%*s DATA_MOVER_EN=%*s";
 }
 
-getAggregatorSites {	
+getAggregatorSites {
+	out "aggregator";	
 	in "reg=0x%*x sites=%s DATA_MOVER_EN=%*s";		
 }
 
 getAggregatorEn {
+	out "aggregator";
 	in "reg=0x%*x sites=%*s DATA_MOVER_EN=%{off|on}";
 }
 
