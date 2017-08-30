@@ -1,6 +1,5 @@
 record(bo, "${UUT}:${SITE}:SIG:${lname}:RESET") {
 	field(DTYP, "Soft Channel")
-	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:rawc64")
 }
 
 record(longin, "${UUT}:${SITE}:SIG:${lname}:rawcount") {
@@ -37,7 +36,7 @@ record(calc, "${UUT}:${SITE}:SIG:${lname}:rawc64") {
 	field(INPC, "${CTRMAX}")
 	field(INPD, "${UUT}:${SITE}:SIG:${lname}:ACTIVE")
 	field(INPE, "${UUT}:${SITE}:SIG:${lname}:RESET")
-	field(CALC, "E? 0: VAL + (A*D!=0?A>B?(A-B):(A+C-B):0)")
+	field(CALC, "E? 0: VAL + (A*D!=0?A>=B?(A-B):(A+C-B):0)")
 #                    01234567890012345678900123456789001234567890	
 	field(FLNK, "${UUT}:${SITE}:SIG:${lname}:COUNT")
 	field(DESC, "64 bit count corrects HW rollover")
