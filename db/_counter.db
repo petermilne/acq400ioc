@@ -32,8 +32,16 @@ record(calc, "${UUT}:${SITE}:${SIG}:${lname}:COUNT") {
 	field(INPE, "${UUT}:${SITE}:${SIG}:${lname}:RESET")
 	field(CALC, "E?0:A*B*D!=0?A>=B?VAL+(A-B):VAL+(A+C-B):VAL")
 #                    01234567890012345678900123456789001234567890	
-	field(FLNK, "${UUT}:${SITE}:${SIG}:${lname}:delta")
+	field(FLNK, "${UUT}:${SITE}:${SIG}:${lname}:clr")
 	field(DESC, "64 bit count corrects HW rollover")
+}
+
+record(bo, "${UUT}:${SITE}:${SIG}:${lname}:clr" ) {
+	field(DESC, "Clears RESET")
+	field(DTYP, "Soft Channel")
+	field(OUT,  "${UUT}:${SITE}:${SIG}:${lname}:RESET")
+	field(DOL,  "0")
+	field(FLNK, "${UUT}:${SITE}:${SIG}:${lname}:delta")
 }
 
 record(calc, "${UUT}:${SITE}:${SIG}:${lname}:delta") {
