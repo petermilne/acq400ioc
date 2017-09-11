@@ -194,7 +194,7 @@ make_epics_knobs() {
 		make_caput $PV ${pv1#*:} 13
 	done
 
-	for PV in $(egrep -e MODE: $RL | grep -v [wsrft]$)
+	for PV in $(egrep -e MODE:T -e IOC_READY $RL | grep -v [wsrft]$)
 	do
 		pv1=${PV#*:}
 		echo $pv1 | grep -q SET_
