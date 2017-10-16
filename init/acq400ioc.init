@@ -197,11 +197,15 @@ make_epics_knobs() {
 	for PV in $(egrep -e MODE:T -e IOC_READY $RL | grep -v [wsrft]$)
 	do
 		pv1=${PV#*:}
-		echo $pv1 | grep -q SET_
-		if [ $? -eq 0 ]; then
-			make_caput $PV ${pv1#*:} 0			
-		else
-			make_caget $PV ${pv1#*:} 0
+		kn1=${pv1#*:}
+		if [ ! -e /etc/acq400/0/$kn1 ]; then
+			# avoid repeating MODE:TRANSIENT from above
+			echo $pv1 | grep -q SET_
+			if [ $? -eq 0 ]; then
+				make_caput $PV $kn1 0
+			else
+				make_caget $PV $kn1 0
+			fi
 		fi
 	done	
 	make_site0_knobs	
