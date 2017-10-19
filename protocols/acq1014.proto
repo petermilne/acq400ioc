@@ -27,8 +27,14 @@ get_trg_src {
 	in "%#{int=0|ext2=2|ext=1}";
 }
 
+delay_trg {
+	out "delay_trigger %d";
+	in;
+}
+
 # valid site 2
 get {
 	out "acq1014_\$1";
 	in "%d";
 }
+

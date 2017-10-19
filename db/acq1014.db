@@ -58,6 +58,16 @@ record(longout, "${UUT}:ACQ1014:FIN") {
 	field(HOPR, "25000000")
 }
 
+
+record(longout, "${UUT}:ACQ1014:DELAY") {
+	field(DESC, "delay trigger, common clock counts")
+	field(DTYP, "stream")
+	field(LOPR, "0")
+	field(HOPR, "250000000")
+	field(EGU,  "ticks")
+	field(OUT,  "@acq1014.proto delay_trg ${SPORT}")
+}
+
 record(longout, "${UUT}:ACQ1014:FIN:r") {
 	field(DTYP, "Soft Channel")
 	field(DESC, "Input Clock Frequency")
