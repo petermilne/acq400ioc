@@ -19,14 +19,15 @@ int mirror_en0;
 
 
 %{
-char dst_name[128];
 
-static char* dstName(char* base, char* mpv) {	
+
+static char* dstName(char* base, char* mpv) {
+	static char dst_name[128];	
 	snprintf(dst_name, 128, "%s:%s", base, mpv);
 	return dst_name;
 }
 
-static void show_pvPut(int value) {
+static void show_pvPut(int value, char* dst_name) {
 	printf("pvPut %s = %d\n", dst_name, value);	
 }
 }%
@@ -59,7 +60,7 @@ ss MirrorOnChange {
 			}
 			dst = src;
 			if (macValueGet("adb")){			
-				show_pvPut(dst);
+				show_pvPut(dst, dstName(dst_base, macValueGet("mirrorpv")));
 			}
 			pvPut(dst);
 			src0 = src;

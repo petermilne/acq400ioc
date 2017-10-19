@@ -6,10 +6,13 @@ __create_mirror() {
 	if [ "x$PVDBG" != "x" ]; then
 		ADB=$PVDBG
 	fi
+	let pvn=0
 	for pv in $(cat $1)
 	do
-		echo seq pvmirror \"name=mpv${pv##*:},mirrorpv=$pv,uut=${HOST},adb=$ADB\" >>/tmp/st_post.cmd
+		echo seq pvmirror \"name=mpv${pvn},mirrorpv=$pv,uut=${HOST},adb=$ADB\" >>/tmp/st_post.cmd
+		let pvn=$pvn+1
 	done
+	echo "# pvmirror launches $pvn sequences"
 }
 
 _create_default_mirror() {
@@ -26,6 +29,7 @@ ACQ1014:TRG_SRC
 1:TRG
 1:TRG:DX
 1:TRG:SENSE
+1:ACQ480:FIR:01
 MODE:TRANSIENT:PRE
 MODE:TRANSIENT:POST
 MODE:TRANSIENT
@@ -38,7 +42,7 @@ __create_mirror /tmp/local_mirror
 }
 
 create_mirror() {
-	if [ "x$(cat $1)" = "xdefault" ]; then
+	if [ "x$1" = "xdefault" -o "x$(cat $1)" = "xdefault" ]; then
 		_create_default_mirror
 	else
 		__create_mirror $1
@@ -60,10 +64,13 @@ acq1014_records_init() {
 		dblr '"db/acq1014srcS.db","'${CPRAMS},FUN=TRG_SRC,fun=trg'"'		
 	fi
 
-	if [ -e /mnt/local/sysconfig/pvmirror ]; then
-		create_mirror /mnt/local/sysconfig/pvmirror 
-        fi
+
         if [ "x$MIRROR_HOST" != "x" ]; then
+		if [ -e /mnt/local/sysconfig/pvmirror ]; then
+			create_mirror /mnt/local/sysconfig/pvmirror
+		else
+			create_mirror default 
+        	fi        
 		echo "dbpf ${HOST}:MIRROR_HOST ${MIRROR_HOST}" >>/tmp/st_post.cmd
         fi
         if [ "x$MIRROR_EN" != "x" ]; then
