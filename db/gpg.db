@@ -85,7 +85,7 @@ record(longin, "${UUT}:0:GPG:DBG:RSTATE"){
 	field(FLNK, "${UUT}:0:GPG:DBG:STATE")	
 	field(DISV, "1")
 #set DISA=0 to enable	
-	field(DISA, "1")	
+	field(DISA, "${MONDIS}")
 }
 record(mbbi, "${UUT}:0:GPG:DBG:STATE"){
 	field(DTYP, "Soft Channel")	

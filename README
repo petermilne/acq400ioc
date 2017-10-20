@@ -38,3 +38,8 @@ export LOAD_INTMON=y
 
 /mnt/local/sysconfig/epics.sh:
 echo -1 > /etc/acq400/0/OVERSAMPLING
+
+
+GPG_MON=y # enable gpg_monitor 
+#recommended for testing gpg, you can also set it after the event with
+# /usr/local/epics/scripts/gpg_monitor 1 
