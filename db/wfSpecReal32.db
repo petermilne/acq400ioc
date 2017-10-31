@@ -13,6 +13,15 @@ record(fanout, "${UUT}:0:AI:WF:fsfan") {
 	field(LNK${SITE}, "${UUT}:${SITE}:AI:WF:FS")	
 }
 
+record(ao, "${UUT}:AI:WF:PS:SMOO") {
+	field(DTYP, "Soft Channel")
+	field(PINI, "YES")
+	field(VAL,  "0")
+	field(DRVH, "1")
+	field(DRVL, "0")
+	field(EGUL, "0")
+	field(EGUF, "1")	
+}
 
 record(calc, "${UUT}:${SITE}:AI:WF:FS") {
 	field(INPA, "${UUT}:0:SIG:SYN_S1:FREQ")
@@ -45,7 +54,16 @@ record(aSub, "${UUT}:${SITE}:AI:WF:PS:${cid}") {
 	field(FTD,  "ULONG")
 	field(NOD,  "1")
 	field(INPD, "0")
-	
+# Attenuation                                 
+        field(FTF,  "FLOAT")                  
+        field(NOF,  "1")    
+        field(INPF, "15")  
+        
+# SMOOTHING : 0 : no smoothing, 1: infinite
+	field(FTS,   "DOUBLE")
+	field(NOS,   "1")
+	field(INPS   "${UUT}:AI:WF:PS:SMOO")
+	 	
 # single sided power spectrum
 	field(FTVA, "FLOAT")
 	field(NOVA, "${size2}")

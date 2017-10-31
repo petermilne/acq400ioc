@@ -265,6 +265,7 @@ class Spectrum {
 	float db0;
 	const bool is_cplx;
 	const float MINSPEC;
+	float smoo;
 
 	void binFreqs(float* bins, float fs, int f_bin0, int nmax) {
 		if (bins != 0 && floorf(fs/100) != floorf(f0/100)){
@@ -338,13 +339,13 @@ class Spectrum {
 			if (is_cplx){
 			// FFTW presents the spectrum 0..-F,+F..0 ? fix that
 				if (ii < N2){
-					mp[ii] = M;
+					mp[ii] = mp[ii]*smoo + M*(1-smoo);
 				}else{
-					mn[ii-N2] = M;
+					mn[ii-N2] = mn[ii-N2]*smoo + M*(1-smoo);
 				}
 			}else{
 				if (ii < N2){
-					mp[ii] = M;
+					mp[ii] = mp[ii]*smoo + M*(1-smoo);
 				}else{
 					break;
 				}
@@ -352,10 +353,10 @@ class Spectrum {
 		}
 	}
 public:
-	Spectrum(int _N, float* _window, int isCplx, float atten_db) :
+	Spectrum(int _N, float* _window, int isCplx, float atten_db, float _smoo) :
 		N(_N), N2(_N/2), window(_window),
 		R(new float[_N]), f0(0), is_cplx(isCplx),
-		MINSPEC(sizeof(T) == 2? -150: -180) {
+		MINSPEC(sizeof(T) == 2? -150: -180), smoo(_smoo) {
 
 		printf("Spectrum B1014 %s MINSPEC %.1f\n",
 			isCplx? "cplx": "real", MINSPEC);
@@ -390,6 +391,7 @@ long spectrum(aSubRecord *prec)
 	int* isCplx = reinterpret_cast<int*>(prec->d);
 	float *attenuation = reinterpret_cast<float*>(prec->f);
 	float atten_db = prec->nof? *attenuation: DDC_ATTENUATION_FACTOR;
+	float smoo = prec->nos? (float)(reinterpret_cast<double*>(prec->s)[0]): 0;
 	int len = prec->noa;
 
 	float* mag = reinterpret_cast<float*>(prec->vala);
@@ -398,7 +400,7 @@ long spectrum(aSubRecord *prec)
 
 	static Spectrum<T, SCALE> *spectrum;
 	if (!spectrum){
-		spectrum = new Spectrum<T, SCALE>(len, window, *isCplx, atten_db);
+		spectrum = new Spectrum<T, SCALE>(len, window, *isCplx, atten_db, smoo);
 	}
 	spectrum->exec(raw_i, raw_q, mag, freqs, *fs);
 	return 0;
