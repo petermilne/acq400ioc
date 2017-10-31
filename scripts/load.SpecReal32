@@ -27,7 +27,7 @@ do
 		model=$(cat ${ACQ400}/module_type)
 	
 		case $model in
-		$MT_ACQ435|$MT_ACQ430|$MT_ACQ437)
+		$MT_ACQ425F|$MT_ACQ425|$MT_ACQ435|$MT_ACQ430|$MT_ACQ437)
 			make_AI $(cat $ACQ400/site);;
 		esac
 	fi
