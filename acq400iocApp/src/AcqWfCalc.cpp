@@ -265,7 +265,7 @@ class Spectrum {
 	float db0;
 	const bool is_cplx;
 	const float MINSPEC;
-	float smoo;
+	double* smoo;
 
 	void binFreqs(float* bins, float fs, int f_bin0, int nmax) {
 		if (bins != 0 && floorf(fs/100) != floorf(f0/100)){
@@ -323,6 +323,7 @@ class Spectrum {
 		// where r0 is at [N2]
 		float *mn = mag;			// neg freqs
 		float *mp = is_cplx? mag+N2: mn;	// pos freqs
+		float sm = smoo==0? 0: (float)smoo[0];
 
 		// calc magnitude of every bin
 		for (int ii = 0; ii < N; ++ii){
@@ -339,13 +340,13 @@ class Spectrum {
 			if (is_cplx){
 			// FFTW presents the spectrum 0..-F,+F..0 ? fix that
 				if (ii < N2){
-					mp[ii] = mp[ii]*smoo + M*(1-smoo);
+					mp[ii] = mp[ii]*sm + M*(1-sm);
 				}else{
-					mn[ii-N2] = mn[ii-N2]*smoo + M*(1-smoo);
+					mn[ii-N2] = mn[ii-N2]*sm + M*(1-sm);
 				}
 			}else{
 				if (ii < N2){
-					mp[ii] = mp[ii]*smoo + M*(1-smoo);
+					mp[ii] = mp[ii]*sm + M*(1-sm);
 				}else{
 					break;
 				}
@@ -353,7 +354,7 @@ class Spectrum {
 		}
 	}
 public:
-	Spectrum(int _N, float* _window, int isCplx, float atten_db, float _smoo) :
+	Spectrum(int _N, float* _window, int isCplx, float atten_db, double* _smoo) :
 		N(_N), N2(_N/2), window(_window),
 		R(new float[_N]), f0(0), is_cplx(isCplx),
 		MINSPEC(sizeof(T) == 2? -150: -180), smoo(_smoo) {
@@ -391,7 +392,7 @@ long spectrum(aSubRecord *prec)
 	int* isCplx = reinterpret_cast<int*>(prec->d);
 	float *attenuation = reinterpret_cast<float*>(prec->f);
 	float atten_db = prec->nof? *attenuation: DDC_ATTENUATION_FACTOR;
-	float smoo = prec->nos? (float)(reinterpret_cast<double*>(prec->s)[0]): 0;
+	double* smoo = prec->nos? reinterpret_cast<double*>(prec->s): 0;
 	int len = prec->noa;
 
 	float* mag = reinterpret_cast<float*>(prec->vala);

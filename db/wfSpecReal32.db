@@ -62,7 +62,7 @@ record(aSub, "${UUT}:${SITE}:AI:WF:PS:${cid}") {
 # SMOOTHING : 0 : no smoothing, 1: infinite
 	field(FTS,   "DOUBLE")
 	field(NOS,   "1")
-	field(INPS   "${UUT}:AI:WF:PS:SMOO")
+	field(INPS,  "${UUT}:AI:WF:PS:SMOO")
 	 	
 # single sided power spectrum
 	field(FTVA, "FLOAT")
