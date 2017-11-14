@@ -165,11 +165,15 @@ make_AI_subrate() {
 }
 
 acq480_div() {
-	axi=/dev/acq400.0.knobs/has_axi_dma
-	if [ -e $axi ] && [ $(cat $axi) -eq 2 ]; then
-		echo 4
+	if [ "x$MB_MODEL" = "xkmcuz30" ]; then
+		echo 1
 	else
-		echo 2
+		axi=/dev/acq400.0.knobs/has_axi_dma
+		if [ -e $axi ] && [ $(cat $axi) -eq 2 ]; then
+			echo 4
+		else
+			echo 2
+		fi
 	fi
 }
 		
