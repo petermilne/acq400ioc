@@ -13,6 +13,7 @@ mkdir -p opkg/usr/local/bin/ opkg/usr/local/init/ opkg/etc/profile.d \
 	opkg/usr/local/CARE
 
 cp CARE/* opkg/usr/local/CARE
+(cd opkg/usr/local/CARE;ln -s acq2106+acq42x.init acq2106+acq424.init)
 cp bin/linux-arm/acq400ioc opkg/usr/local/bin
 cp bin-scripts/* opkg/usr/local/bin
 cp init/* opkg/usr/local/init/
