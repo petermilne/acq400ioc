@@ -11,10 +11,10 @@ record(ai, "${UUT}:${SITE}:FPGA:TEMP") {
         field(LINR, "LINEAR")
         field(EGU,  "C")
         field(PINI, "YES")
-        field(HOPR, "70")
+        field(HOPR, "100")
         field(LOPR, "0")
         field(LOW,  "0")
-        field(HIGH, "60")
-        field(HIHI, "70")  
+        field(HIGH, "80")
+        field(HIHI, "90")  
         field(PREC, "2")      
 }
