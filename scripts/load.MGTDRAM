@@ -1,0 +1,20 @@
+#!/bin/sh
+# loads MGTDRAM specials
+
+HOST=$1
+SITE=$2
+
+source ./scripts/record_support.sh
+echo "#records added by load.BOLO8BLF $HOST $SITE"
+
+CPRAMS="UUT=${HOST},lname=${SITE}"				
+PRAMS="$CPRAMS,pname=/dev/hwmon/7/temp,scale=0.001,offset=0"
+
+dblr '"db/hwmontemp.db","'${PRAMS}'"'
+
+dblr '"db/hwmonvolts_mgtdram.db","'${CPRAMS}',DEV=7"'
+
+
+
+
+

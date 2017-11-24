@@ -1,0 +1,73 @@
+
+# set up as a chain triggered on 10s scan .. avoids parallel access ?
+# but also ensures that VAN processes last with valid data
+
+record(ai, "${UUT}:SYS:MGTD:3V3") {
+        field(DTYP, "dsSysfsAi")
+        field(INP, "@/dev/hwmon/${DEV}/in1")
+        field(SCAN, "10 second")
+        field(DESC, "Digital 3V3 Rail")
+# 5/1024        
+        field(ASLO, "0.00488")
+        field(LINR, "LINEAR")
+        field(EGU,  "V")
+        field(PINI, "YES")
+        field(FLNK,  "${UUT}:SYS:MGTD:1V8")
+        field(HOPR, "3.4")
+        field(LOPR, "3.2")
+        field(LOW,  "3.2")
+        field(HIGH, "3.4")
+        field(PREC, "2")                
+}
+
+record(ai, "${UUT}:SYS:MGTD:1V8") {
+        field(DTYP, "dsSysfsAi")
+        field(INP, "@/dev/hwmon/${DEV}/in2")        
+        field(DESC, "FPGA 1V8 Rail")
+# 5/1024         
+        field(ASLO, "0.00488")
+        field(LINR, "LINEAR")
+        field(EGU,  "V")
+        field(PINI, "YES")
+        field(FLNK,  "${UUT}:SYS:MGTD:EEPROM")
+        field(HOPR, "3")
+        field(LOPR, "0")
+        field(LOW,  "1.7")
+        field(HIGH, "1.9")
+        field(PREC, "2")         
+}
+
+
+record(ai, "${UUT}:SYS:MGTD:EEPROM") {
+        field(DTYP, "dsSysfsAi")
+        field(INP, "@/dev/hwmon/${DEV}/in3")        
+        field(DESC, "1V5 DDR or 1V8 SPI")
+# 5/1024        
+        field(ASLO, "0.00488")
+        field(LINR, "LINEAR")
+        field(EGU,  "V")
+        field(PINI, "YES")
+        field(FLNK,  "${UUT}:SYS:MGTD:1V")
+        field(HOPR, "2")
+        field(LOPR, "1")
+        field(LOW,  "1.4")
+        field(HIGH, "1.9") 
+        field(PREC, "2")                
+}
+
+record(ai, "${UUT}:SYS:MGTD:1V") {
+        field(DTYP, "dsSysfsAi")   
+        field(INP, "@/dev/hwmon/${DEV}/in4")
+        field(DESC, "FPGA 1V Rail")       
+# 5/1024        
+        field(ASLO, "0.00488")     
+        field(LINR, "LINEAR")           
+        field(EGU,  "V")         
+        field(PINI, "YES")           
+        field(HOPR, "1.1")              
+        field(LOPR, "0.9")              
+        field(LOW,  "0.9")
+        field(HIGH, "1.1")            
+        field(PREC, "2")  
+}
+
