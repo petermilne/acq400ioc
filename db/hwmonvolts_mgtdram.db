@@ -29,7 +29,7 @@ record(ai, "${UUT}:SYS:MGTD:1V8") {
         field(LINR, "LINEAR")
         field(EGU,  "V")
         field(PINI, "YES")
-        field(FLNK,  "${UUT}:SYS:MGTD:EEPROM")
+        field(FLNK,  "${UUT}:SYS:MGTD:VEEP")
         field(HOPR, "3")
         field(LOPR, "0")
         field(LOW,  "1.7")
