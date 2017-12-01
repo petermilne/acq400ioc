@@ -5,10 +5,20 @@
 PATH=$PATH:/usr/local/bin
 
 monitor() {
-for file in /etc/acq400/S/*[Vv]*
-do
-	$file
-done
+	TF=$(mktemp -tp /tmp voltsmon.XXXXXX)
+	for file in /etc/acq400/S/*[Vv]*
+	do
+		case $file in
+		*MGTD*)
+			$file >>$TF;;
+		*VERSION*)
+			$file >>$TF;;
+		*)
+			$file;;
+		esac
+	done
+	cat $TF
+	rm $TF
 }
 
 
@@ -17,7 +27,7 @@ do
 	(monitor | fs2xml --kvp >/dev/shm/volts.xml) &
 	MONPID=$!
 	sleep 5
-	kill -9 $MONPID
+	[ -e /proc/$MONPID ] &&  kill -9 $MONPID
 done
 
 
