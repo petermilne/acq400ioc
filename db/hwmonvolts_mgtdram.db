@@ -7,8 +7,8 @@ record(ai, "${UUT}:SYS:MGTD:3V3") {
         field(INP, "@/dev/hwmon/${DEV}/in1")
         field(SCAN, "10 second")
         field(DESC, "Digital 3V3 Rail")
-# 5/1024        
-        field(ASLO, "0.00488")
+# 5/2500 actual formula 5/1024, but Linux rescales to 2498     
+        field(ASLO, "0.002")
         field(LINR, "LINEAR")
         field(EGU,  "V")
         field(PINI, "YES")
@@ -24,8 +24,8 @@ record(ai, "${UUT}:SYS:MGTD:1V8") {
         field(DTYP, "dsSysfsAi")
         field(INP, "@/dev/hwmon/${DEV}/in2")        
         field(DESC, "FPGA 1V8 Rail")
-# 5/1024         
-        field(ASLO, "0.00488")
+# 5/2500 actual formula 5/1024, but Linux rescales to 2498     
+        field(ASLO, "0.002")
         field(LINR, "LINEAR")
         field(EGU,  "V")
         field(PINI, "YES")
@@ -38,12 +38,12 @@ record(ai, "${UUT}:SYS:MGTD:1V8") {
 }
 
 
-record(ai, "${UUT}:SYS:MGTD:EEPROM") {
+record(ai, "${UUT}:SYS:MGTD:VEEP") {
         field(DTYP, "dsSysfsAi")
         field(INP, "@/dev/hwmon/${DEV}/in3")        
         field(DESC, "1V5 DDR or 1V8 SPI")
-# 5/1024        
-        field(ASLO, "0.00488")
+# 5/2500 actual formula 5/1024, but Linux rescales to 2498     
+        field(ASLO, "0.002")
         field(LINR, "LINEAR")
         field(EGU,  "V")
         field(PINI, "YES")
@@ -59,8 +59,8 @@ record(ai, "${UUT}:SYS:MGTD:1V") {
         field(DTYP, "dsSysfsAi")   
         field(INP, "@/dev/hwmon/${DEV}/in4")
         field(DESC, "FPGA 1V Rail")       
-# 5/1024        
-        field(ASLO, "0.00488")     
+# 5/2500 actual formula 5/1024, but Linux rescales to 2498     
+        field(ASLO, "0.002")    
         field(LINR, "LINEAR")           
         field(EGU,  "V")         
         field(PINI, "YES")           

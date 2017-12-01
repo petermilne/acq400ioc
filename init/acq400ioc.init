@@ -110,7 +110,7 @@ make_epics_knobs() {
 	fi
 
 	mkdir -p /etc/acq400/S
-	for PV in $(egrep SYS:[0-9][Vv]\|SYS:VA?\|SYS:vcc?\|Z:TEMP $RL)
+	for PV in $(egrep SYS:[0-9][Vv]\|SYS:VA?\|SYS:vcc?\|Z:TEMP\|MGTD $RL)
 	do
 		NU=${PV#*:}
 		make_caget $PV ${NU#*:} S
