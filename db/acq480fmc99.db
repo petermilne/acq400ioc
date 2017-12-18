@@ -26,8 +26,9 @@ record(mbbo, "${UUT}:${SITE}:ACQ480:FIR:01") {
 	field(FLNK, "${UUT}:${SITE}:ACQ480:FIR:01:fanout")
 }
 
+## TODO : ONLY IF 2D IMAGE
 record(calc, "${UUT}:0:SIG:CLK_S${SITE}:COUNT") {
 	# C is scale
 	field(INPC, "${div}")
-	field(DESC, "64 bit count scaled by 2 for ACQ480")
+	field(DESC, "64 bit count scaled by ${div} for ACQ480")
 }
