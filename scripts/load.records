@@ -170,7 +170,7 @@ acq480_div() {
 	else
 		axi=/dev/acq400.0.knobs/has_axi_dma
 		if [ -e $axi ] && [ $(cat $axi) -eq 2 ]; then
-			echo 2
+			echo 4
 		else
 			echo 1
 		fi
