@@ -24,7 +24,7 @@ record(ao, "${UUT}:AI:WF:PS:SMOO") {
 }
 
 record(calc, "${UUT}:${SITE}:AI:WF:FS") {
-	field(INPA, "${UUT}:0:SIG:SYN_S1:FREQ")
+	field(INPA, "${UUT}:0:SIG:SYN_S${SITE}:FREQ")
 	field(INPB, "1")
 # decimate filter could set B?	
 	field(CALC, "A")
