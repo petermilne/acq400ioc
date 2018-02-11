@@ -17,7 +17,7 @@ SN=${HOST#*_}
 SN=${SN#0}
 SN=${SN#0}
 
-
+FIRST_SITE=-1
 
 source /etc/sysconfig/acq400.conf
 
@@ -401,8 +401,8 @@ load_400() {
 		dblr '"db/acq420fmc.db","'${cprams},'LO='${LO}'"'
 	fi
 
-	if [ ${site} -eq 1 ]; then
-		mprams="UUT=${HOST},SITE=${site},SPORT=S1M"
+	if [ ${site} -eq $FIRST_SITE ]; then
+		mprams="UUT=${HOST},SITE=${site},SPORT=S${site}M"
 		has_rgm=0
 		if [ $HAS_ACQ43X -eq 1 ]; then
 			dblr '"db/acq4xx_rgm.db","'${mprams},SRTM=SRTM'"'
@@ -416,6 +416,7 @@ load_400() {
 			has_rgm=1
 		fi
 		dblr '"db/has_rgm.db","'${mprams},HAS_RGM=$has_rgm'"'
+		create_asyn_channel S${site}M 127.0.0.1:422${site}	
 	fi	
 				
 	HPRAMS="${cprams},size=$HSIZE,type=LONG,fname=HG.${site}"
@@ -488,9 +489,7 @@ load_400() {
 		dblr '"db/acq420fmc99.db","'${cprams}'"'
 	fi
 	
-	if [ "x${site}" = "x1" ]; then
-		create_asyn_channel S1M 127.0.0.1:4221
-	fi
+
 }
 
 load_421() {
@@ -880,7 +879,8 @@ for site in 1 2 3 4 5 6
 do
 	ACQ400=/dev/acq400.$site
 	if [ -e $ACQ400 ]; then
-		load_400 $site $ACQ400
+		[ $FIRST_SITE -eq -1 ] && FIRST_SITE=$site
+		[ ! -L $ACQ400 ] && load_400 $site $ACQ400
 		load_mod_present $site 1
 	else
 		load_mod_present $site 0

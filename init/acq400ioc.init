@@ -23,6 +23,7 @@ fi
 # b/ portable, UUT-relative namespace - site service omits ${UUT}:${SITE}
 
 make_caget() {
+	[ -L /etc/acq400/$3 ] && return
 	PFX=${1%*:$2}
 	VERB=/usr/local/bin/caget_$PFX
 	if [ ! -e $VERB ]; then
@@ -42,6 +43,7 @@ EOF
 }
 
 make_caget_w() {
+	[ -L /etc/acq400/$3 ] && return
 	PFX=${1%*:$2}
 	VERB=/usr/local/bin/caget_w_$PFX
 	if [ ! -e $VERB ]; then
@@ -61,6 +63,7 @@ EOF
 }
 
 make_caput() {
+	[ -L /etc/acq400/$3 ] && return
 	PFX=${1%*:$2}
 	VERB=/usr/local/bin/caput_$PFX
 	if [ ! -e $VERB ]; then
@@ -163,12 +166,13 @@ make_epics_knobs() {
 		make_caput $PV ${PV#*:} 0
 	done
 	
-	for PV in $(egrep -e :1:CLK -e :1:TRG -e :1:EVE \
-			  -e :1:RGM -e :1:RTM -e :1:XDT -e :1:DT $RL \
-			| grep -v [a-z]$)
-	do
+	for PV in $(egrep -e ':[1-6]:CLK' -e :[1-6]:TRG -e :[1-6]:EVE \
+			  -e :1:RGM -e :1:RTM -e :[1-6]:XDT -e :1:DT $RL \
+			| grep -v ':[0-9a-z_]*$' )
+	do		
 		pv1=${PV#*:}
-		make_caput $PV ${pv1#*:} 1
+		site=${pv1%%:*}
+		make_caput $PV ${pv1#*:} $site
 	done
 	
 	for PV in $(grep GPG /tmp/records.dbl | grep -v :[a-z]$)
