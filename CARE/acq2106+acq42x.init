@@ -3,7 +3,8 @@ clkdiv=${1:-10}
 SITE=${SITE:-1}
 (
 /usr/local/epics/scripts/wait_ioc_ready; sleep 1;
-set.site $SITE clk=1,1,1
+set.site $SITE CLK=1
+set.site $SITE CLK:DX=1
 set.site 0 SIG:ZCLK_SRC INT33M
 set.site 0 SYS:CLK:FPMUX ZCLK
 set.site 0 SYS:CLK:DIST_CLK_SRC Si5326
