@@ -880,7 +880,7 @@ for site in 1 2 3 4 5 6
 do
 	ACQ400=/dev/acq400.$site
 	if [ -e $ACQ400 ]; then
-		load_400 $site $ACQ400
+		[ ! -L $ACQ400 ] && load_400 $site $ACQ400
 		load_mod_present $site 1
 	else
 		load_mod_present $site 0
