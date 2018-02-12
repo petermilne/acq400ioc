@@ -879,8 +879,10 @@ for site in 1 2 3 4 5 6
 do
 	ACQ400=/dev/acq400.$site
 	if [ -e $ACQ400 ]; then
-		[ $FIRST_SITE -eq -1 ] && FIRST_SITE=$site
-		[ ! -L $ACQ400 ] && load_400 $site $ACQ400
+		if [ ! -L $ACQ400 ]; then
+			[ $FIRST_SITE -eq -1 ] && FIRST_SITE=$site
+			load_400 $site $ACQ400
+		fi
 		load_mod_present $site 1
 	else
 		load_mod_present $site 0
