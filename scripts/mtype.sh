@@ -12,6 +12,8 @@ MT_ACQ430=3
 MT_ACQ424=4
 MT_ACQ425=5
 MT_ACQ425F=A5
+MT_ACQ427=07
+MT_ACQ427F=A7
 MT_ACQ437=6
 MT_ACQ480=8
 MT_BOLO8=60
@@ -33,18 +35,20 @@ nameFromMT() {
 	$MT_ACQ2006)	echo "acq2006";;
 	$MT_ACQ1001)	echo "acq1001";;
 	$MT_ACQ2106)	echo "acq2106";;
-	$MT_ACQ420)		echo "acq420";;
-	$MT_ACQ420F)	echo "acq420";;
+	$MT_ACQ420|$MT_ACQ420F)
+					echo "acq420";;	
 	$MT_ACQ435)		echo "acq435";;
 	$MT_ACQ430)		echo "acq430";;
 	$MT_ACQ424)		echo "acq424";;
-	$MT_ACQ425)		echo "acq425";;
-	$MT_ACQ425F)	echo "acq425";;
+	$MT_ACQ425|$ACQ425F)		
+					echo "acq425";;	
+	$MT_ACQ427|$MT_ACQ427F)	
+					echo "acq427";;
 	$MT_ACQ437)		echo "acq437";;
 	$MT_ACQ480)		echo "acq480";;
 	$MT_BOLO8)		echo "bolo8";;
-	$MT_DIO432)		echo "dio432";;
-	$MT_DIO432P)	echo "dio432";;
+	$MT_DIO432|$MT_DIO432P)
+					echo "dio432";;
 	$MT_DIO482)		echo "dio432";;
 	$MT_PMODAD1)	echo "pmodad1";;
 	$MT_BOLO8B)		echo "bolo8B";;
