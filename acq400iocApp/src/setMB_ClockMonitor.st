@@ -2,7 +2,6 @@
  * it comes right
  */
  
- 
 
 
 program setMB_ClockMonitor
@@ -22,7 +21,8 @@ double Fm0;
 double TH = 0.05;
 
 %{
-#include <math.h>
+double fabs(double x);
+/*#include <math.h>*/
 static int in_bounds(double x1, double x2, double th)
 {
 	if (x2 == 0){

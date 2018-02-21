@@ -43,7 +43,8 @@ char pvfield[100];
 %%extern int acq400_getChannel(void *prv, int ch, const char* sw, float* eslo, float* eoff, int nocal);
 
 %{
-#include <math.h>
+/* #include <math.h> */
+double pow(double x, double y);
 float voltsFromDb(int db)
 {
 	// higher gain, smaller volts

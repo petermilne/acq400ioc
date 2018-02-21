@@ -1,0 +1,12 @@
+#!/bin/sh
+#do this ONCE after boot, then reboot.
+
+MSITE=${1:-2}
+ASITE=${2:-1}
+
+HN=$(hostname)
+grep ${HN}:${MSITE}: /tmp/records.dbl | grep -v ':[a-z0-9_]*$' | sed -e "s/${HN}:${MSITE}://" | \
+awk '{ printf("alias(\"'${HN}:${MSITE}':%s\", \"'${HN}:${ASITE}':%s\")\n", $1, $1) }' > \
+ /mnt/local/sysconfig/site-aliases.db
+
+
