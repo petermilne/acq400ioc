@@ -20,7 +20,8 @@ get_range() {
 	site=$1
 	if [ -e /etc/acq400/${site}/PART_NUM ]; then
 		VSPEC=$(tr -s -- -\  \\n   </etc/acq400/${site}/PART_NUM | grep V)
-		VR=${VSPEC%*V}
+		vr1=${VSPEC%*V}
+		VR=${vr1/V/.}
 	fi
 	
 	if [ "x$VR" != "x" ]; then
