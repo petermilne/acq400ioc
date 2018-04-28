@@ -53,6 +53,14 @@ record(bi, "${UUT}:${SITE}:ACQ480:LINK:LOTI") {
 	field(DESC, "link Loss Of Training Indicator")
 	field(ZNAM, "0")
 	field(ONAM, "1")
+# FIXME	
+	field(FLNK, "${UUT}:${SITE}:ACQ480:OSR")
+}
+
+record(calc, "${UUT}:${SITE}:ACQ480:OSR") {
+	field(INPA, "${UUT}:${SITE}:SIG:clk_count:FREQ")	
+	field(INPD, "${UUT}:1:ACQ480:FPGA:DECIM")
+	field(CALC, "A/D")
 }
 
 record(longin, "${UUT}:${SITE}:ACQ480:LINK:LOTI:na") {
