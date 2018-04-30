@@ -1,0 +1,4 @@
+
+record(calc, "${UUT}:${SITE}:AI:WF:FS") {
+        field(INPA, "${UUT}:0:SIG:clk_count:FREQ")
+}

@@ -24,6 +24,9 @@ make_AI() {
 		wp2="maxcode=${maxcode},vmax=${vmax},eslo=${eslo}"
 		wprams="${wprams},${wp2},DECIM=${decim}"
 		echo dbLoadRecords\(\"db/wfSpecReal.db\",\"${wprams}\"\)
+                if [ "x$decim" != "x1" ]; then
+			echo dbLoadRecords\(\"db/wfSpecReal480.db\",\"${wprams}\"\)
+		fi
 	done	
 }
 
