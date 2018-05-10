@@ -1,3 +1,6 @@
+
+SPEC_ATTEN=${SPEC_ATTEN:-1}
+
 make_AI() {
 	site=$1
 	type=SHORT
@@ -22,7 +25,7 @@ make_AI() {
 		PRAMS="UUT=${HOST},SITE=${site},idx=${IDX},fname=AI.${site}"
 		wprams="${PRAMS},size=${SIZE},size2=${s2},type=${type},cid=${cid}"
 		wp2="maxcode=${maxcode},vmax=${vmax},eslo=${eslo}"
-		wprams="${wprams},${wp2},DECIM=${decim}"
+		wprams="${wprams},${wp2},DECIM=${decim},ATTEN=${SPEC_ATTEN}"
 		echo dbLoadRecords\(\"db/wfSpecReal.db\",\"${wprams}\"\)
                 if [ "x$decim" != "x1" ]; then
 			echo dbLoadRecords\(\"db/wfSpecReal480.db\",\"${wprams}\"\)
