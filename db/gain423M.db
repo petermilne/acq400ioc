@@ -1,12 +1,18 @@
 # ACQ423 : WORKTODO
 
 record (mbbo, "${UUT}:${SITE}:GAIN:${CH}") {	
-	field(DTYP, "Soft Channel")	
-	field(NOBT, "2")	
-	field(ZRST, "${G0}V")
-	field(ONST, "${G1}V")
-	field(TWST, "${G2}V")
-	field(THST, "${G3}V")
+	field(DTYP, "Soft Channel")
+	field(NOBT, "3")	
+	field(ZRST, "OFF")
+	field(ONST, "+/-10V")
+	field(TWST, "+/-5V")
+	field(THST, "0-10V")
+	field(FRST, "0-5V")
+	field(ZRVL, "0")
+	field(ONVL, "6")
+	field(TWVL, "2")
+	field(THVL, "4")
+	field(FRVL, "1")
 	field(FLNK, "${UUT}:${SITE}:GAIN:fan1")    	
 }
 
