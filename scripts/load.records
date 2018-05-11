@@ -454,7 +454,7 @@ load_400() {
 		if [ -e $kb ]; then
 			ix=${kb#*gain}
 			ch=$(printf "%02d" $ix)
-			let fan0="$ix/8+1"
+			let fan0="($ix-1)/8+1"
 			let f9="($ix-1)%8"
 			ixgrp="IX=$ix,FAN=$fan0,fan=${OUTX:$f9:1}"
 			dblr '"'${gain_file}'","'${cprams}',CH='$ch','$gains','$ixgrp'"'
