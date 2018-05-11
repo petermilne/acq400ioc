@@ -263,18 +263,22 @@ load_400() {
 	# export GAINS=G0=10,G1=5,G2=2,G3=1
 	[ -e /dev/sites/$site/gains.sh ] && source /dev/sites/$site/gains.sh	
 	#gains=${GAINS:-G0=10,G1=5,G2=2.5,G3=1.25}
-	gains=${GAINS:-G0=10,G1=5,G2=2,G3=1} 
+	gains=${GAINS:-G0=10,G1=5,G2=2,G3=1}
+	gain_file_pfx="gain"
 	
 	is_adc="no"
 	has_ch_gains=0
 	calmon="calmon"
 	decim=1;
-		
+
 	case $model in
 	$MT_ACQ420|$MT_ACQ420F|$MT_ACQ424|$MT_ACQ425|$MT_ACQ425F|$MT_ACQ427|$MT_ACQ427F|$MT_BOLO8|$MT_BOLO8B|$MT_ACQ423)
 		is_adc="sar"
 		calmon=calmon42x
-		case $model in		
+		case $model in
+		$MT_ACQ423)
+			gains="GX=fixed"
+			gain_file_pfx="gain423";;
 		$MT_ACQ424)
 			LO=66000000;;
 		*)
@@ -439,12 +443,7 @@ load_400() {
 	dblr '"db/elapsed.db","'${CTPR},lname=SAMPLE_COUNT,DECIM=${decim}'"'
 
 
-	case $model in
-	$MT_ACQ423)
-		gain_file_pfx=gain423;;
-	*)
-		gain_file_pfx=gain;;
-	esac
+
 	 
 	gain_file=db/${gain_file_pfx}.db
 	(
