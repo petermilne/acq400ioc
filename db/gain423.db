@@ -12,6 +12,8 @@ record (mbbo, "${UUT}:${SITE}:GAIN:${CH}")	{
 	field(TWVL, "4")
 	field(THVL, "1")
 	field(FLNK, "${UUT}:${SITE}:GAIN:${CH}:w PP")
+	field(PINI, "YES")
+	field(RVAL, "0")
 }
 
 record (mbbo, "${UUT}:${SITE}:GAIN:${CH}:w")	{
@@ -29,18 +31,16 @@ record (mbbi, "${UUT}:${SITE}:GAIN:${CH}:r") {
 	field(DTYP, "stream")
 	field(INP,  "@acq42x.proto getGain(${IX}) ${SPORT}")	
 	field(NOBT, "3")	
-	field(ZRST, "OFF")
-	field(ONST, "+/-10V")
-	field(TWST, "+/-5V")
-	field(THST, "0-10V")
-	field(FRST, "0-5V")
-	field(ZRVL, "0")
-	field(ONVL, "6")
-	field(TWVL, "2")
-	field(THVL, "4")
-	field(FRVL, "1")
+	field(ZRST, "+/-10V")
+	field(ONST, "+/-5V")
+	field(TWST, "0-10V")
+	field(THST, "0-5V")
+	field(ZRVL, "6")
+	field(ONVL, "2")
+	field(TWVL, "4")
+	field(THVL, "1")
 	field(SCAN, "5 second")
-	field(PINI, "YES")	
+		
 	field(FLNK, "${UUT}:${SITE}:GAIN:${CH}:s")
 }
 
