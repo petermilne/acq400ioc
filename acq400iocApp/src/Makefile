@@ -39,6 +39,7 @@ acq400ioc_DBD += mgtStopOnLinkDown.dbd
 acq400ioc_DBD += calmon.dbd
 acq400ioc_DBD += setMB_ClockMonitor.dbd
 acq400ioc_DBD += pvmirror.dbd
+acq400ioc_DBD += ai_vector.dbd
 
 # Add all the support libraries needed by this IOC
 acq400ioc_LIBS += acq2ioc
