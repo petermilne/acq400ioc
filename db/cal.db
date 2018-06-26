@@ -11,3 +11,10 @@ record(waveform, "${UUT}:${SITE}:AI:CAL:EOFF") {
 	field(FTVL, "FLOAT")
 	field(DESC, "Offset each channel 1..N, index from 0")	
 }
+
+record(waveform, "${UUT}:${SITE}:AI:CHX") {
+	field(DTYP, "Soft Channel")
+	field(NELM, "${nchanp1}")
+	field(FTVL, "FLOAT")
+	field(DESC, "AI channels presented as a waveform")	
+}
