@@ -1,0 +1,16 @@
+#!/bin/sh
+
+extract_gains() 
+{
+   gains="$(xml_lookup  -c $1/caldef.xml ACQ.AcqCalibration.Data.@ranges)"
+   if [ "x$gains" != "x" ]; then
+       echo "GAINS=$gains" > /dev/sites/${site}/gains.sh
+   fi   
+}
+
+for s in /dev/sites/*
+do
+    if [ -e $s/caldef.xml ] && [ ! -e $s/gain.sh ]; then
+        extract_gains $s
+    fi
+done

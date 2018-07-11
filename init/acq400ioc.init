@@ -223,6 +223,7 @@ make_epics_knobs() {
 }
 make_stcmd() {
 	if [ ! -e ${STCMD} ]; then
+	 	./scripts/extract_gains	
 		echo "++ create EPICS db ${STCMD}" 
 		(cd ${ETOP}; ./scripts/load.records > ${STCMD})		
 	fi
