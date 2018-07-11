@@ -1,5 +1,5 @@
 #!/bin/sh
-# configure clocking with acq1001 and acq4
+# configure clocking with acq1001 and acq42x
 # local (zclk) :
 # acq1001+acq424.init FCLK CLKDIV
 # Default : FCLK=16M, CLDIV=16
@@ -7,7 +7,8 @@
 # acq1001+acq424.init fpclk Fsys FCLK CLKDIV
 # Defaults: Fsys=1MHz, FCLK=16MHz CLKDIV=16MHz
 
-cp /usr/local/CARE/acq480_streamd.0.conf /etc/sysconfig/acq400_streamd.0.conf
+cp /usr/local/CARE/acq400_streamd.0.conf-soft_trigger \
+	/etc/sysconfig/acq400_streamd.0.conf
 
 init_mb_clk() {
 	/usr/local/epics/scripts/wait_ioc_ready
