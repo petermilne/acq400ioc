@@ -578,13 +578,6 @@ load_mb_base() {
 			dblr '"db/hwmonvolts.db","UUT='${HOST}'"';;
 	esac
 	case $mt in
-	acq2106*|acq2006|acq2006b)
-		for site in $(seq 1 $ns)
-		do
-			cprams="UUT=${HOST},site=${site}"
-			dblr '"db/acq2006sites.db","'${cprams}'"'
-		done
-		dblr '"db/acq2006leds.db","UUT='${HOST}'"' ;;
 	acq1001|acq1002)
 		for site in $(seq 1 $ns)
 		do
@@ -594,8 +587,19 @@ load_mb_base() {
 				echo 'dbLoadRecords("db/acq2006sites.db","'${cprams}'")'
 		done
 		dblr '"db/acq1001leds.db","UUT='${HOST}'"' ;;
+	acq2106*|acq2006|acq2006b)
+		for site in $(seq 1 $ns)
+		do
+			cprams="UUT=${HOST},site=${site}"
+			dblr '"db/acq2006sites.db","'${cprams}'"'
+		done;;
 	esac
-	
+	case $mt in
+	acq2106*)
+		dblr '"db/acq2106leds.db","UUT='${HOST}'"' ;;
+	acq2006*)
+		dblr '"db/acq2006leds.db","UUT='${HOST}'"' ;;
+	esac
 	if [ -e /dev/acq2006 ]; then
 		if [ -e /etc/sysconfig/power ]; then
 			source /etc/sysconfig/power
