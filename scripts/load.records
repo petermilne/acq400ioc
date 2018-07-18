@@ -277,6 +277,7 @@ load_400() {
 		calmon=calmon42x
 		case $model in
 		$MT_ACQ423)
+			has_ch_gains=1
 			gains="GX=fixed"
 			gain_file_pfx="gain423";;
 		$MT_ACQ424)
