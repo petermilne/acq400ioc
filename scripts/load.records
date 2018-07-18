@@ -568,7 +568,7 @@ load_mb_base() {
 
 	dblr '"db/hwmonvolts_common.db","UUT='${HOST}'"'
 	case $mt in
-	acq2106)			
+	acq2106*)			
 			dblr '"db/hwmonvolts_2106.db","UUT='${HOST}'"'
 			acq2106b=$(cat /sys/module/acq420fmc/parameters/is_acq2106B)
 			dblr '"db/acq2106clk.db","UUT='${HOST}',acq2106b='${acq2106b}',SPORT=S0"';;
@@ -578,7 +578,7 @@ load_mb_base() {
 			dblr '"db/hwmonvolts.db","UUT='${HOST}'"';;
 	esac
 	case $mt in
-	acq2106|acq2006|acq2006b)
+	acq2106*|acq2006|acq2006b)
 		for site in $(seq 1 $ns)
 		do
 			cprams="UUT=${HOST},site=${site}"
@@ -680,7 +680,7 @@ has_dsp_trg() {
 	if [ -e /dev/acq400.0.knobs/fpga_rev ]; then
 		rev=$(cat /dev/acq400.0.knobs/fpga_rev)
 		case $1 in
-		acq2106|acq2106sfp)	[ $rev -ge 25 ] && rc=1;;
+		acq2106*)	[ $rev -ge 25 ] && rc=1;;
 		acq100*)			[ $rev -ge 38 ] && rc=1;;
 		esac
 	fi
@@ -700,7 +700,7 @@ load_mb_sync() {
 		case $FUN in
 		CLK)	nobt=2; onst="HDMI"; 	twst="HDMI";		
                 case $MB_MODEL in
-                acq2106|acq2106sfp)
+                acq2106*)
 						zrst=SyncE
 						thst="COMM_A";;
 				*)
@@ -721,7 +721,7 @@ load_mb_sync() {
 					nobt=3; zrst="STRIG"; onst="HOSTA"; twst="HDMI_GPIO"; thst="GPG1"; frst="DSP1"
 				else				
 					case $MB_MODEL in
-					acq2106|acq2106sfp)
+					acq2106*)
 						nobt=2; zrst="STRIG"; onst="HOSTA"; twst="HOSTB"; 	thst="GPG1";;
 					*)
 						nobt=2; zrst="STRIG"; onst="HDMI";  twst="HDMI_GPIO"; thst="GPG1";;
@@ -730,7 +730,7 @@ load_mb_sync() {
 		SYNC) 	nobt=1; zrst="EXT";   onst="HDMI";  twst="nc"; thst="nc";;
 		CLK)	nobt=2; onst="HDMI"; 	twst="HDMI";
 				case $MB_MODEL in
-				acq2106|acq2106sfp)
+				acq2106*)
 					zrst="MCLK"; thst="COMM_B";;
 				*)
 					thst="nc";
@@ -801,7 +801,7 @@ load_mb_sync() {
 	
 	if [ $HAS_ACQ43X -ne 0 ] && [ $ACQ43X_SET_SAMPLE_RATE -ge 0 ]; then
 			case $MB_MODEL in
-			acq2106|acq2106sfp)
+			acq2106*)
 				;;
 			*)
 				# ACQ1001, ACQ2006 REVA has no ZCLK (and hardly ever XCLK)
@@ -848,7 +848,7 @@ load_mb() {
 	echo 1>&2 "load.records:load_mb"
 	
 	case $MB_MODEL in
-		acq2106|acq2106sfp)
+		acq2106*)
 				ns=6; mt=acq2106;;
 		acq2006|acq2006b)
 				ns=6; mt=acq2006;;
@@ -982,7 +982,7 @@ esac
 #fi
 
 case $MB_MODEL in
-acq2106|acq2106sfp)
+acq2106*)
 	;;
 acq10*)
 	echo "dbpf $HOST:SYS:CLK:FPMUX $clk"
