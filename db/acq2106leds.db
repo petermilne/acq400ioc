@@ -4,7 +4,25 @@ record (bo, "${UUT}:SYS:LED:TRG") {
 	field(OMSL, "closed_loop")	
 	field(DOL, "${UUT}:0:SIG:TRG_EXT:ACTIVE")
 	field(OUT, "@/dev/gpio/LED/TRG_G")
+    field(FLNK, "${UUT}:SYS:LED:TRG:FAULT")
 }
+
+# acq2106d37 error .. TRG goes amber
+# make sure it doesn't by always writing 0 to TRG_R
+# can still declare a fault by writing to FAULT directly.
+
+record (calc, "${UUT}:SYS:LED:TRG:FAULT") {
+    field(INPA, "0")
+    field(CALC, "A")
+    field(FLNK, "${UUT}:SYS:LED:TRG:FAULT:w")
+}
+record (bo, "${UUT}:SYS:LED:TRG:FAULT:w") {
+    field(DTYP, "boAcqHost")        
+    field(OMSL, "closed_loop")      
+    field(DOL, "${UUT}:SYS:LED:TRG:FAULT")
+    field(OUT, "@/dev/gpio/LED/TRG_R")      
+}
+
 
 record (bo, "${UUT}:SYS:LED:CLK") {
 	field(DTYP, "boAcqHost")
@@ -12,8 +30,25 @@ record (bo, "${UUT}:SYS:LED:CLK") {
 	field(OMSL, "closed_loop")	
 	field(DOL, "${UUT}:0:SIG:CLK_MB:ACTIVE")
 	field(OUT, "@/dev/gpio/LED/CLK_G")
+	field(FLNK, "${UUT}:SYS:LED:CLK:FAULT")
 }
 
+
+# acq2106d37 error .. TRG goes amber
+# make sure it doesn't by always writing 0 to TRG_R
+# can still declare a fault by writing to FAULT directly.
+
+record (calc, "${UUT}:SYS:LED:CLK:FAULT") {
+    field(INPA, "0")
+    field(CALC, "A")
+    field(FLNK, "${UUT}:SYS:LED:CLK:FAULT:w")
+}
+record (bo, "${UUT}:SYS:LED:CLK:FAULT:w") {
+    field(DTYP, "boAcqHost")        
+    field(OMSL, "closed_loop")      
+    field(DOL, "${UUT}:SYS:CLK:TRG:FAULT")
+    field(OUT, "@/dev/gpio/LED/CLK_R")      
+}
 record (bo, "${UUT}:SYS:LED:ACT_G") {
 	field(DTYP, "boAcqHost")
 	field(OUT, "@/dev/gpio/LED/ACT_G")
