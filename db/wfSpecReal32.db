@@ -5,7 +5,7 @@ record(calc, "${UUT}:0:SIG:SYN_S1:FREQ") {
 	field(FLNK, "${UUT}:0:AI:WF:fsfan")
 }
 
-record(calc, "${UUT}:${SITE}:AI:WF:${cid}:ACTIVE") {	
+record(calc, "${UUT}:${SITE}:AI:WF:${cid}:UPDATES") {	
 	field(FLNK, "${UUT}:${SITE}:AI:WF:PS:${cid}")
 }
 

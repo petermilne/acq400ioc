@@ -19,10 +19,3 @@ record(aSub, "${UUT}:${SITE}:AI:WF:TB") {
 	field(DESC, "AI waveform timebase seconds")	
 }
 
-record(calc, "${UUT}:${SITE}:AI:WF:01:UPDATES") {
-	field(SCAN, "Passive")
-	field(CALC, "VAL + 1")
-}
-record(calc, "${UUT}:${SITE}:AI:WF:01:ACTIVE") {
-	field(FLNK, "${UUT}:${SITE}:AI:WF:01:UPDATES PP")
-}
