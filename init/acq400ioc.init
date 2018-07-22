@@ -26,7 +26,7 @@ wait_ioc_records_loaded() {
 	while [ ! -e "$RL.done" ]; do
 		let report=$pollcat%5
 		if [ $report -eq 0 ]; then
-			$LG wait_ioc_ready $pollcat
+			$LG wait_ioc_records_loaded $pollcat
 		fi
 		sleep 1
 		let pollcat="$pollcat+1"
@@ -81,7 +81,7 @@ restart() {
 	make_stcmd
 	stop_ioc
 	start_ioc
-	wait_ioc_ready
+	wait_ioc_records_loaded
 	stop_ioc
 	make_epics_knobs
 	[ "x$IOC_GLOBAL_ALIAS_PFX" != "x" ] && make_aliases $IOC_GLOBAL_ALIAS_PFX
