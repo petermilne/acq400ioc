@@ -652,12 +652,12 @@ load_mb_sites() {
 			thst="ZCLK"
 			[ $(isRevA $MB_MODEL) -ne 0 ] && thst=""
 			dblr '"db/acq2006clktree.db","UUT='${HOST},thst=${thst}'"'
-			dblr '"db/acq2106mb.db","UUT='${HOST}',SPORT=S0"';;		
+			dblr '"db/acq2106mb.db","UUT='${HOST}',SPORT=S0,MB_SET_MIN=2000"';;		
 		*)
 			thst="ZCLK"
 			[ $(isRevA $MB_MODEL) -ne 0 ] && thst=""
 			dblr '"db/acq2006clktree.db","UUT='${HOST},thst=${thst}'"'
-			dblr '"db/acq2006mb.db","UUT='${HOST}',SPORT=S0"';;
+			dblr '"db/acq2006mb.db","UUT='${HOST}',SPORT=S0,MB_SET_MIN=4000000"';;
 	esac
 	[ -e /etc/acq400/0/transient ] && \
 		dblr '"db/transient.db","UUT='${HOST},LIVESZ=${SIZE}',SPORT=SS,SPORTT=ST,NPORT=NP"'

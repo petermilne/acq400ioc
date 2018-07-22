@@ -2,7 +2,7 @@ record(longout, "${UUT}:0:SIG:CLK_MB:SET") {
 	field(DTYP, "Soft Channel")
 	field(DESC, "MB CLK setpoint")
 	field(EGU,  "Hz")
-	field(LOPR, "4000000")
+	field(LOPR, "${MB_SET_MIN}")
 	field(HOPR, "100000000")	
 	field(FLNK, "${UUT}:0:SIG:CLK_MB:set_kHz")
 }
