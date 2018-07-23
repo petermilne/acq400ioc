@@ -81,7 +81,7 @@ ss calmon {
 				if (ch==1) printf("assign %s\n",pvfield);
 				
 				if (has_ch_gains){
-					snprintf(pvname, 80, "%s:%s:GAIN:%02d", uut, site, ch);
+					snprintf(pvname, 80, "%s:%s:GAIN:%02d.RVAL", uut, site, ch);
 					pvAssign(gains[ch], pvname);
 				}
 			}
@@ -111,8 +111,8 @@ ss calmon {
 					if (acq400_getChannel(doc, ch, getKey(gains[ch]), 
 								&eslo[ch], &eoff[ch], adc_cal_mode==1) == 1){
 						if (ch==1){
-							printf("site:%s ch:%2d eslo:%.6e eoff:%.6e\n", 
-										site, ch, eslo[ch], eoff[ch]);
+							printf("site:%s g:%d ch:%2d eslo:%.6e eoff:%.6e\n", 
+										site, gains[ch], ch, eslo[ch], eoff[ch]);
 						}
 						pvPut(eslo[ch]);
                                                 pvPut(eoff[ch]);
