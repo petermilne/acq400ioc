@@ -6,7 +6,11 @@ record (mbbo, "${UUT}:${SITE}:GAIN:${CH}")	{
 	field(ZRST, "${G0}V")
 	field(ONST, "${G1}V")
 	field(TWST, "${G2}V")
-	field(THST, "${G3}V")        
+	field(THST, "${G3}V")
+	field(ZRVL, "0")
+	field(ONVL, "1")
+	field(TWVL, "2")
+	field(THVL, "3")	       
 	field(FLNK, "${UUT}:${SITE}:GAIN:${CH}:w PP")
 }
 
