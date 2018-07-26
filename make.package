@@ -14,6 +14,9 @@ mkdir -p opkg/usr/local/bin/ opkg/usr/local/init/ opkg/etc/profile.d \
 
 cp CARE/* opkg/usr/local/CARE
 (cd opkg/usr/local/CARE;ln -s acq2106+acq42x.init acq2106+acq424.init)
+(cd opkg/usr/local/CARE;ln -s acq1001+acq42x.init acq1001+acq424.init)
+# warning : cross package link ..
+(cd opkg/usr/local/CARE;ln -s /usr/local/CARE/acq480_init_clk acq2106+acq48x.init)
 cp bin/linux-arm/acq400ioc opkg/usr/local/bin
 cp bin-scripts/* opkg/usr/local/bin
 cp init/* opkg/usr/local/init/

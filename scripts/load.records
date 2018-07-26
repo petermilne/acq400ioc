@@ -801,7 +801,7 @@ load_mb_sync() {
 	dblr '"db/sync_bus_data.db","'${CPRAMS}'"'
 	
 	echo 1>&2 "HAS_ACQ43X $HAS_ACQ43X"
-	ACQ43X_SET_SAMPLE_RATE=${ACQ43X_SET_SAMPLE_RATE:-43500}
+	ACQ43X_SET_SAMPLE_RATE=${ACQ43X_SET_SAMPLE_RATE:-0}
 	
 	if [ $HAS_ACQ43X -ne 0 ] && [ $ACQ43X_SET_SAMPLE_RATE -ge 0 ]; then
 			case $MB_MODEL in
@@ -1004,9 +1004,12 @@ if [ "x$IOC_POSTINIT" != "x" ]; then
 	fi
 fi
 
+IOC_READY_DELAY=${IOC_READY_DELAY:-3}
 
 echo 'dbl > /tmp/records.dbl'
 echo 'seqShow > /tmp/records.dbl.done'
 echo "dbpf ${HOST}:LIVE:PREPCT 50"
-echo "dbpf ${HOST}:IOC_READY 1"  >> /tmp/st_final.cmd
+#echo "dbpf ${HOST}:IOC_READY 1"  >> /tmp/st_final.cmd
+echo >> /tmp/st_final.cmd \
+"seq on_delay \"pv=${HOST}:IOC_READY,val=1,delay=$IOC_READY_DELAY,priority=0\"" 
 echo 1>&2 "load.records 99"
