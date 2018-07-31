@@ -54,3 +54,8 @@ getLOTI {
 	out "acq480_loti";
 	in "%d";
 }
+
+get2LM {
+	out "acq480_two_lane_mode";
+	in "%d";
+}

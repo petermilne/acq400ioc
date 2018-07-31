@@ -53,14 +53,22 @@ record(bi, "${UUT}:${SITE}:ACQ480:LINK:LOTI") {
 	field(DESC, "link Loss Of Training Indicator")
 	field(ZNAM, "0")
 	field(ONAM, "1")
-# FIXME	
-	field(FLNK, "${UUT}:${SITE}:ACQ480:OSR")
 }
 
+record(bi,   "${UUT}:${SITE}:ACQ480:TWO_LANE") {
+	field(DTYP, "stream")
+	field(SCAN, "1 second")
+	field(INP,  "@acq480.proto get2LM ${SPORT}")
+	field(DESC, "TWO LANES per channel, half bit rate")
+	field(ZNAM, "0")
+	field(ONAM, "1")
+	field(FLNK, "${UUT}:${SITE}:ACQ480:OSR")
+}
 record(calc, "${UUT}:${SITE}:ACQ480:OSR") {
-	field(INPA, "${UUT}:${SITE}:SIG:clk_count:FREQ")	
+	field(INPA, "${UUT}:${SITE}:SIG:clk_count:FREQ")
+	field(INPB, "${UUT}:${SITE}:ACQ480:TWO_LANE")
 	field(INPD, "${UUT}:1:ACQ480:FPGA:DECIM")
-	field(CALC, "A/D")
+	field(CALC, "A/D/(B==1? 2: 1)")
 }
 
 record(longin, "${UUT}:${SITE}:ACQ480:LINK:LOTI:na") {
