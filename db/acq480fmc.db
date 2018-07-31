@@ -66,9 +66,13 @@ record(bi,   "${UUT}:${SITE}:ACQ480:TWO_LANE") {
 }
 record(calc, "${UUT}:${SITE}:ACQ480:OSR") {
 	field(INPA, "${UUT}:${SITE}:SIG:clk_count:FREQ")
+# two lane mode halves the bit rate, so double the clock reading	
 	field(INPB, "${UUT}:${SITE}:ACQ480:TWO_LANE")
+# FPGA decimation reduces the effective clock.	
 	field(INPD, "${UUT}:1:ACQ480:FPGA:DECIM")
-	field(CALC, "A/D/(B==1? 2: 1)")
+	field(CALC, "A*(B==1? 2: 1)/D")
+	field(DESC, "Output Sample Rate")
+	
 }
 
 record(longin, "${UUT}:${SITE}:ACQ480:LINK:LOTI:na") {
