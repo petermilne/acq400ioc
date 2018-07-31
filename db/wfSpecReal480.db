@@ -1,4 +1,4 @@
 
 record(calc, "${UUT}:${SITE}:AI:WF:FS") {
-        field(INPA, "${UUT}:1:SIG:clk_count:FREQ")
+        field(INPA, "${UUT}:${SITE}:ACQ480:OSR")
 }
