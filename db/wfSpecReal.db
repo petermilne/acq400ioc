@@ -27,11 +27,7 @@ record(ao, "${UUT}:AI:WF:PS:SMOO") {
 record(calc, "${UUT}:${SITE}:AI:WF:FS") {
 	field(INPA, "${UUT}:0:SIG:CLK_S${SITE}:FREQ")
 	field(INPB, "${DECIM}")
-	field(INPC, "${UUT}:${SITE}:AI:WF:FS")
-	field(INPD, "${UUT}:${SITE}:AI:WF:FS.LC")
-	field(INPK, "0.9")
-# decimate filter could set B?	
-	field(CALC, "K*D + (1-K)*A/B")
+	field(CALC, "A/B")
 	field(DESC, "DDC Mixer (center) frequency")
 }
 
