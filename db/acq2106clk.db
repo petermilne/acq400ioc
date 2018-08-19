@@ -145,22 +145,33 @@ record (mbbo, "${UUT}:SYS:CLK:Si5326:INTCLK_SET") {
 # Set Output Enable when FP signals configured as OUTPUTS
 # NOT AVAILABLE for CLK, TRG.
 record (mbbo, "${UUT}:0:SIG:FP:GPIO:w" ){
-	field(FLNK, "${UUT}:0:SIG:FP:GPIO:OE")
+	field(FLNK, "${UUT}:0:SIG:FP:GPIO:OE:c")
 }
 
+record (calc, "${UUT}:0:SIG:FP:GPIO:OE:c") {
+	field(INPA, "${UUT}:0:SIG:FP:GPIO:w")
+	field(CALC, "A != 0")
+	field(FLNK, "${UUT}:0:SIG:FP:GPIO:OE")	
+}
 record (bo, "${UUT}:0:SIG:FP:GPIO:OE") {
 	field(DTYP, "boAcqHost")
 	field(OUT, "@/dev/gpio/FP_IO_DIR_OUT")
 	field(OMSL, "closed_loop")
-	field(DOL,  "${UUT}:0:SIG:FP:GPIO:w")
+	field(DOL,  "${UUT}:0:SIG:FP:GPIO:OE:c")
 }
 
 record (mbbo, "${UUT}:0:SIG:FP:SYNC:w" ){
-	field(FLNK, "${UUT}:0:SIG:FP:SYNC:OE")
+	field(FLNK, "${UUT}:0:SIG:FP:SYNC:OE:c")
+}
+
+record (calc, "${UUT}:0:SIG:FP:SYNC:OE:c") {
+	field(INPA, "${UUT}:0:SIG:FP:SYNC:w")
+	field(CALC, "A != 0")
+	field(FLNK, "${UUT}:0:SIG:FP:SYNC:OE")	
 }
 record (bo, "${UUT}:0:SIG:FP:SYNC:OE") {
 	field(DTYP, "boAcqHost")
 	field(OUT, "@/dev/gpio/FP_SYNC_DIR_OUT")
 	field(OMSL, "closed_loop")
-	field(DOL,  "${UUT}:0:SIG:FP:SYNC:w")
+	field(DOL,  "${UUT}:0:SIG:FP:SYNC:OE:c")
 }
