@@ -141,3 +141,26 @@ record (mbbo, "${UUT}:SYS:CLK:Si5326:INTCLK_SET") {
 	field(FRST, "50M")
 	field(FVST, "80M") 
 }
+
+# Set Output Enable when FP signals configured as OUTPUTS
+# NOT AVAILABLE for CLK, TRG.
+record (mbbo, "${UUT}:0:SIG:FP:GPIO:w" ){
+	field(FLNK, "${UUT}:0:SIG:FP:GPIO:OE")
+}
+
+record (bo, "${UUT}:0:SIG:FP:GPIO:OE") {
+	field(DTYP, "boAcqHost")
+	field(OUT, "@/dev/gpio/FP_IO_DIR_OUT")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:0:SIG:FP:GPIO:w")
+}
+
+record (mbbo, "${UUT}:0:SIG:FP:SYNC:w" ){
+	field(FLNK, "${UUT}:0:SIG:FP:SYNC:OE")
+}
+record (bo, "${UUT}:0:SIG:FP:SYNC:OE") {
+	field(DTYP, "boAcqHost")
+	field(OUT, "@/dev/gpio/FP_SYNC_DIR_OUT")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:0:SIG:FP:SYNC:w")
+}
