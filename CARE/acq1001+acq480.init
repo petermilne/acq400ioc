@@ -9,22 +9,20 @@
 cp /usr/local/CARE/acq480_streamd.0.conf /etc/sysconfig/acq400_streamd.0.conf
 
 init_mb_clk() {
-	/usr/local/epics/scripts/wait_ioc_ready
-	sleep 1
-	set.site 0 SIG:ZCLK_SRC=INT33M
-	set.site 0 SYS:CLK:FPMUX=ZCLK
-	set.site 0 SIG:CLK_MB:FIN=33333000
-	set.site 0 SIG:CLK_MB:SET $1
-	set.site 1 clk=1,1,0
+		/usr/local/epics/scripts/wait_ioc_ready
+		set.site 1 'CLK=1; CLK:DX=d1; CLK:SENSE=falling'	
+		set.site 0 SIG:ZCLK_SRC=INT33M
+		set.site 0 SYS:CLK:FPMUX=ZCLK
+		set.site 0 SIG:CLK_MB:FIN=33333000
+		set.site 0 SIG:CLK_MB:SET=$1	
 }
 
 init_mb_clk_fp() {
-	/usr/local/epics/scripts/wait_ioc_ready
-	sleep 1
-	set.site 0 SYS:CLK:FPMUX=FPCLK
-	set.site 0 SIG:CLK_MB:FIN=$1
-	set.site 0 SIG:CLK_MB:SET $2
-	set.site 1 clk=1,1,0
+		/usr/local/epics/scripts/wait_ioc_ready
+		set.site 1 'CLK=1; CLK:DX=d1; CLK:SENSE=falling'
+		set.site 0 SYS:CLK:FPMUX=FPCLK
+		set.site 0 SIG:CLK_MB:FIN=$1
+		set.site 0 SIG:CLK_MB:SET=$2
 }
 
 case $1 in

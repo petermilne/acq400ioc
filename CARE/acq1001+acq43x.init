@@ -6,18 +6,18 @@ cp /usr/local/CARE/acq400_streamd.0.conf-soft_trigger \
 
 
 init_mb_clk() {
-       /usr/local/epics/scripts/wait_ioc_ready
-       set.site 0 SYS:CLK:FPMUX XCLK
-       set.site 0 SIG:CLK_MB:FIN 32768000
-       set.site 1 ACQ43X_SAMPLE_RATE $1
+		/usr/local/epics/scripts/wait_ioc_ready
+		set.site 0 SYS:CLK:FPMUX=XCLK
+		set.site 0 SIG:CLK_MB:FIN=32768000
+		set.site 1 ACQ43X_SAMPLE_RATE=$1
 }
 
 init_mb_clk_fp() {
-       /usr/local/epics/scripts/wait_ioc_ready 
-       set.site 0 SIG:USER_FPCLK $1  
-       set.site 0 SIG:CLK_MB:FIN $1      
-       set.site 0 SYS:CLK:FPMUX FPCLK
-       set.site 1 ACQ43X_SAMPLE_RATE $2
+		/usr/local/epics/scripts/wait_ioc_ready 
+		set.site 0 SIG:USER_FPCLK=$1  
+		set.site 0 SIG:CLK_MB:FIN=$1      
+		set.site 0 SYS:CLK:FPMUX=FPCLK
+		set.site 1 ACQ43X_SAMPLE_RATE=$2
 }
 
 case $1 in
