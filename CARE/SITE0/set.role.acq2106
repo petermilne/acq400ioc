@@ -1,0 +1,84 @@
+#!/bin/sh
+# set.role.acq2106
+# set.site 0 set.role fpmaster\|master\|slave 
+
+/usr/local/epics/scripts/wait_ioc_ready
+
+sync_trg_to_clk() {
+	[ -e /etc/acq400/1/sync_trg_to_clk ] && \
+		set.site 0 sync_trg_to_clk $1
+}
+
+# common to all
+# even a slave can master another link in the chain..
+# we share the MB clock and the SITE trigger 
+# The MASTER syncs the SITE trigger, SLAVES MUST leave it untouched.
+
+set_common() {
+	set.site 0 SYS:CLK:OE_CLK1_ZYNQ 1
+	set.site 0 SIG:SRC:CLK:1 MCLK
+	
+	set.site 0 SIG:SYNC_OUT:CLK CLK
+	set.site 0 SIG:SYNC_OUT:CLK:DX d1
+	set.site 0 SIG:SYNC_OUT:TRG TRG
+	set.site 0 SIG:SYNC_OUT:TRG:DX d2
+	
+	SIG:TRG_EXT:RESET=1
+	SIG:TRG_MB:RESET=1
+	SIG:TRG_S1:RESET=1
+}
+
+set_slave() {	
+	set_common
+	sync_trg_to_clk 0
+	set.site 0 SYS:CLK:DIST_CLK_SRC HDMI
+	set.site 0 SIG:SRC:TRG:0 HDMI_TRG
+	set.site 1 'CLK=1; CLK:DX=d1; CLK:SENSE=falling'
+	set.site 1 'TRG=1; TRG:DX=d0; CLK:SENSE=falling'
+	echo set_slave >/dev/shm/role
+}
+
+set_master() {
+	set_common
+	sync_trg_to_clk 1
+        set.site 0 SYS:CLK:FPMUX ZCLK
+        set.site 0 SIG:ZCLK_SRC INT33M	       
+        set.site 0 SIG:CLK_MB:FIN 33333000
+        set.site 0 SIG:CLK_MB:SET $1
+        set.site 0 SYS:CLK:DIST_CLK_SRC Si5326
+        set.site 1 CLKDIV 1
+ 	set.site 1 'CLK=1; CLK:DX=d1; CLK:SENSE=falling'
+ 	set.site 1 'TRG=1; TRG:DX=d1; CLK:SENSE=falling'
+	echo set_master >/dev/shm/role
+}
+
+set_fpmaster() {
+	set_common
+	sync_trg_to_clk 1
+        set.site 0 SYS:CLK:FPMUX FPCLK               
+        set.site 0 SIG:CLK_MB:FIN $2
+        set.site 0 SIG:CLK_MB:SET $1
+        set.site 0 SYS:CLK:DIST_CLK_SRC Si5326
+        set.site 1 CLKDIV 1
+ 	set.site 1 'CLK=1; CLK:DX=d1; CLK:SENSE=falling'
+ 	set.site 1 'TRG=1; TRG:DX=d0; CLK:SENSE=falling'        
+        echo set_fpmaster >/dev/shm/role
+}
+
+case $1 in
+"")
+	if [ -e /dev/shm/role ]; then
+		cat /dev/shm/role
+	else
+		echo "role not set"
+	fi;;
+fpmaster)	
+        set_fpmaster ${2:-1000000} ${3:-1000000};;
+master)
+	set_master ${2:-1000000};;
+slave)	
+	set_slave;;
+*)
+	echo "USAGE set.role fpmaster\|master\|slave [CLKHZ] [FIN]";;
+esac
+

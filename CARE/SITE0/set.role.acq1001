@@ -1,0 +1,7 @@
+#!/bin/sh
+# set.role.acq1001
+# set.site 0 set.role fpmaster\|master\|slave 
+
+/usr/local/epics/scripts/wait_ioc_ready
+
+echo WORKTODO
