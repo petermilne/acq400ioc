@@ -7,8 +7,11 @@ make_site0_knobs() {(
 	rm -f fpmux
 	ln -s /usr/local/epics/scripts/ifconfig_eth0
 	compat=$(cat /proc/device-tree/chosen/compatible_model)
-	for file in /usr/local/epics/CARE/SITE0/*${compat} ; do
-		[ -e $file ] && ln -s $file /etc/acq400/0/${file.${compat}}
+	for file in /usr/local/epics/scripts/SITE0/*${compat} ; do
+		if [ -e $file ]; then
+			fn=$(basename $file)
+			ln -s $file /etc/acq400/0/${fn%.${compat}}
+		fi
 	done
 )}
 

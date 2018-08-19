@@ -29,6 +29,7 @@ cp dbd/acq400ioc.dbd opkg/usr/local/epics/dbd
 cp db/* opkg/usr/local/epics/db
 cp protocols/* opkg/usr/local/epics/protocols
 cp scripts/* opkg/usr/local/epics/scripts
+cp -a CARE/SITE0 opkg/usr/local/epics/scripts
 cp -a ../base/lib/linux-arm/* opkg/usr/local/lib
 cp -a ../base/bin/linux-arm/ca* opkg/usr/local/bin
 cp -a ../seq/lib/linux-arm/libpv.so ../seq/lib/linux-arm/libseq.so opkg/usr/local/lib
