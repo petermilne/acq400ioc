@@ -1,0 +1,14 @@
+#!/bin/sh
+# outputs trigger on front panel
+
+case $1 in
+1|on)
+	set.site 0 SIG:SYNC_OUT:GPIO EVNT
+	set.site 0 SIG:SYNC_OUT:GPIO:DX d1
+	set.site 0 SIG:FP:GPIO EVT1;;
+0|off)
+	set.site 0 SIG:SYNC_OUT:GPIO DO	
+	set.site 0 SIG:FP:GPIO INPUT;;
+*)
+	get.site 0 SIG:FP:GPIO;;
+esac	
