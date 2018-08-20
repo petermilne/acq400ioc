@@ -6,7 +6,7 @@
 
 sync_trg_to_clk() {
 	[ -e /etc/acq400/1/sync_trg_to_clk ] && \
-		set.site 0 sync_trg_to_clk $1
+		set.site 1 sync_trg_to_clk $1
 }
 
 # common to all
