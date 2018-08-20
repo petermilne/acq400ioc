@@ -32,7 +32,7 @@ set_slave() {
 	set.site 0 SIG:SRC:CLK:1 HDMI
 	set.site 0 SIG:SRC:TRG:0 HDMI_TRG
 	set.site 1 'CLK=1; CLK:DX=d1; CLK:SENSE=falling'
-	set.site 1 'TRG=1; TRG:DX=d0; CLK:SENSE=falling'
+	set.site 1 'TRG=1; TRG:DX=d0; TRG:SENSE=falling'
 	echo set_slave >/dev/shm/role
 }
 
@@ -51,7 +51,7 @@ set_master() {
         set.site 0 SYS:CLK:DIST_CLK_SRC Si5326
         set.site 1 CLKDIV 1
  	set.site 1 'CLK=1; CLK:DX=d1; CLK:SENSE=falling'
- 	set.site 1 'TRG=1; TRG:DX=d1; CLK:SENSE=falling'
+ 	set.site 1 'TRG=1; TRG:DX=d1; TRG:SENSE=falling'
 	echo set_master >/dev/shm/role
 }
 
@@ -63,7 +63,7 @@ set_fpmaster() {
         set.site 0 SYS:CLK:DIST_CLK_SRC Si5326
         set.site 1 CLKDIV 1
  	set.site 1 'CLK=1; CLK:DX=d1; CLK:SENSE=falling'
- 	set.site 1 'TRG=1; TRG:DX=d0; CLK:SENSE=falling'        
+ 	set.site 1 'TRG=1; TRG:DX=d0; TRG:SENSE=falling'        
         echo set_fpmaster >/dev/shm/role
 }
 

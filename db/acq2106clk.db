@@ -85,8 +85,10 @@ record (bo, "${UUT}:SYS:CLK:OE_CLK1_ZYNQ") {
 	field(VAL,  "0")	
 }
 
+
 record (bo, "${UUT}:SYS:CLK:DIST_CLK_SRC") {
-	field(DTYP, "boAcqHost")	
+	field(DTYP, "boAcqHost")
+	field(DESC, "sel inp to Si53315 (NC)")	
 	field(OUT, "@/dev/gpio/CLK/DIST_CLK_HDMI")
 # NB inverted	
 	field(ZNAM, "HDMI")
