@@ -4,8 +4,8 @@
 case $1 in
 1|on)
 	set.site 0 SIG:SYNC_OUT:GPIO EVNT
-	set.site 0 SIG:SYNC_OUT:GPIO:DX d1
-	set.site 0 SIG:FP:GPIO EVT1;;
+	set.site 0 SIG:SYNC_OUT:GPIO:DX d2
+	set.site 0 SIG:FP:GPIO EVT2;;
 0|off)
 	set.site 0 SIG:SYNC_OUT:GPIO DO	
 	set.site 0 SIG:FP:GPIO INPUT;;
