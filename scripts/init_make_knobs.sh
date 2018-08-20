@@ -2,18 +2,27 @@
 # a/ non-EPICS users to get access to EPICS information
 # b/ portable, UUT-relative namespace - site service omits ${UUT}:${SITE}
 
-make_site0_knobs() {(
-	cd /etc/acq400/0/ 
-	rm -f fpmux
-	ln -s /usr/local/epics/scripts/ifconfig_eth0
-	compat=$(cat /proc/device-tree/chosen/compatible_model)
-	for file in /usr/local/epics/scripts/SITE0/*${compat} ; do
+
+make_site_custom_knobs() {
+	site=$1
+	special=$2
+	for file in /usr/local/epics/scripts/SITE${site}/*${special} ; do
 		if [ -e $file ]; then
 			fn=$(basename $file)
-			ln -s $file /etc/acq400/0/${fn%.${compat}}
+			ln -s $file /etc/acq400/${site}/${fn%.${special}}
 		fi
 	done
-)}
+}
+
+make_site0_knobs() {
+	(
+		cd /etc/acq400/0/
+		rm -f fpmux
+		ln -s /usr/local/epics/scripts/ifconfig_eth0
+	)
+	make_site_custom_knobs 0 common
+	make_site_custom_knobs 0 $(cat /proc/device-tree/chosen/compatible_model)
+}
 
 
 make_epics_knobs() {
