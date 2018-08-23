@@ -2,9 +2,10 @@
 
 extract_gains() 
 {
-   gains="$(xml_lookup  -c $1/caldef.xml ACQ.AcqCalibration.Data.@ranges)"
+   gains="$(xml_lookup  -c $1/caldef.xml ACQ.AcqCalibration.Data.@ranges 2>/dev/null)"
    if [ "x$gains" != "x" ]; then
-       echo "GAINS=$gains" > /dev/sites/${site}/gains.sh
+       echo site $(basename $1) custom gains $gains
+       echo "GAINS=$gains" > $1/gains.sh
    fi   
 }
 
