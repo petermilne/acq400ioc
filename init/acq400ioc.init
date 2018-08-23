@@ -35,11 +35,12 @@ wait_ioc_records_loaded() {
 
 
 make_stcmd() {
-	if [ ! -e ${STCMD} ]; then
-	 	./scripts/extract_gains	
+	if [ ! -e ${STCMD} ]; then (
 		echo "++ create EPICS db ${STCMD}" 
-		(cd ${ETOP}; ./scripts/load.records > ${STCMD})		
-	fi
+		cd ${ETOP}
+		./scripts/extract_gains
+		./scripts/load.records > ${STCMD}
+	) fi
 	touch /dev/shm/AI
 }
 
