@@ -987,6 +987,7 @@ esac
 
 case $MB_MODEL in
 acq2106*)
+	echo "dbpf $HOST:SYS:CLK:DIST_CLK_SRC 1"
 	;;
 acq10*)
 	echo "dbpf $HOST:SYS:CLK:FPMUX $clk"
