@@ -810,7 +810,6 @@ load_mb_sync() {
 				echo "dbpf ${HOST}:SYS:CLK:FPMUX XCLK"
 				echo "seq $ssr \"uut=${HOST},fin=SYS:XCLK\""
 				) >>/tmp/st_post.cmd;;
-				;;
 			*)
 				# ACQ1001, ACQ2006 REVA has no ZCLK (and hardly ever XCLK)
 				if [ $(isRevA $MB_MODEL) -ne 0 ]; then
