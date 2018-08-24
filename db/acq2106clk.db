@@ -85,6 +85,11 @@ record (bo, "${UUT}:SYS:CLK:OE_CLK1_ZYNQ") {
 	field(VAL,  "0")	
 }
 
+record (longin "${UUT}:SYS:XCLK") {
+	field(DTYP, "Soft Channel")
+	field(PINI, "YES")
+	field(VAL,  "32768000")	 	
+}
 
 record (bo, "${UUT}:SYS:CLK:DIST_CLK_SRC") {
 	field(DTYP, "boAcqHost")

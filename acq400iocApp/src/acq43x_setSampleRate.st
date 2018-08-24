@@ -22,7 +22,7 @@ program acq43x_setSampleRate
 option +r;
 
 double Fs;	assign Fs  to "{uut}:1:ACQ43X_SAMPLE_RATE";
-double fin;	assign fin to "{uut}:0:SIG:CLK_EXT:FREQ";
+double fin;	assign fin to "{uut}:${fin}";
 double Fm;	assign Fm  to "{uut}:0:SIG:CLK_MB:FREQ";
 
 double Fmod;

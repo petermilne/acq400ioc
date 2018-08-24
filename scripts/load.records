@@ -806,6 +806,10 @@ load_mb_sync() {
 	if [ $HAS_ACQ43X -ne 0 ] && [ $ACQ43X_SET_SAMPLE_RATE -ge 0 ]; then
 			case $MB_MODEL in
 			acq2106*)
+				(
+				echo "dbpf ${HOST}:SYS:CLK:FPMUX XCLK"
+				echo "seq $ssr \"uut=${HOST},fin=SYS:XCLK\""
+				) >>/tmp/st_post.cmd;;
 				;;
 			*)
 				# ACQ1001, ACQ2006 REVA has no ZCLK (and hardly ever XCLK)
@@ -814,7 +818,7 @@ load_mb_sync() {
 				else
 					ssr=acq43x_setSampleRate
 				fi
-				echo >>/tmp/st_post.cmd "seq $ssr \"uut=${HOST}\"";;
+				echo >>/tmp/st_post.cmd "seq $ssr \"uut=${HOST},fin=0:SIG:CLK_EXT:FREQ\"";;
 			esac
 	fi
 	
