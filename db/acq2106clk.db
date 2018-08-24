@@ -92,7 +92,9 @@ record (bo, "${UUT}:SYS:CLK:DIST_CLK_SRC") {
 	field(OUT, "@/dev/gpio/CLK/DIST_CLK_HDMI")
 # NB inverted	
 	field(ZNAM, "HDMI")
-	field(ONAM, "Si5326")	
+	field(ONAM, "Si5326")
+	field(VAL,  "1")
+	field(PINI, "YES")	
 }
 
 record (bi, "${UUT}:SYS:CLK:lol") {
