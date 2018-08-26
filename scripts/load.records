@@ -737,7 +737,7 @@ load_mb_sync() {
 				acq2106*)
 					zrst="MCLK"; thst="COMM_B";;
 				*)
-					thst="nc";
+					zrst="MCLK"; thst="nc";
 				esac;;
 		*) 		echo ERROR undefined FUN;;
 #nobt=1; onst="HDMI";  twst="nc"; thst="nc";;
