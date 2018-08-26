@@ -46,7 +46,6 @@ double clk_mb_set; assign clk_mb_set to "{uut}:0:SIG:CLK_MB:SET";
 
 int state_not_idle; assign state_not_idle to "{uut}:MODE:TRANS_ACT:STATE_NOT_IDLE";
 
-double fp_clk_user; assign fp_clk_user to "{uut}:0:SIG:USER_FPCLK";
 double clk_mb_fin;  assign clk_mb_fin to "{uut}:0:SIG:CLK_MB:FIN";
 
 int HS_MAX=50000;
@@ -182,14 +181,7 @@ ss rate_set
 		} state action
 		
 		when(fp_mux == 2){ 	/* FPCLK */
-			pvGet(fp_clk_user);
-			if (fp_clk_user >= 1000000){
-				printf("using user clock %.1f\n", fp_clk_user);
-				clk_mb_fin = fp_clk_user;
-			}else{
-				printf("going with FPCLK=%.1f\n", clk_mb_fin);
-				clk_mb_fin = fin;
-			}
+			printf("going with FPCLK=%.1f\n", clk_mb_fin);
 		} state action
 		
 		when (fp_mux == 3){ 	/* ZCLK */

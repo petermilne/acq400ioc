@@ -3,10 +3,6 @@ record(stringin, "${UUT}:SITELIST") {
 	field(INP,  "@mb.proto getSitelist ${SPORT}")
 	field(PINI, "YES")
 }
-record(longout, "${UUT}:0:SIG:USER_FPCLK") {
-	field(DTYP, "Soft Channel")
-	field(DESC, "user definition of front panel clock")
-}
 
 record (longin, "${UUT}:0:NCHAN") {
 	field(DTYP, "stream")

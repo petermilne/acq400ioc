@@ -85,11 +85,6 @@ record (bo, "${UUT}:SYS:CLK:OE_CLK1_ZYNQ") {
 	field(VAL,  "0")	
 }
 
-# clone this for ACQ1001
-record (longin "${UUT}:SYS:FPCLK") {
-	field(DTYP, "Soft Channel")	 	
-}
-
 record (bi, "${UUT}:SYS:CLK:lol") {
 	field(DTYP, "biAcqHost")
 	field(INP,  "@/dev/gpio/CLK/LOL")

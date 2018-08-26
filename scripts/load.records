@@ -810,7 +810,7 @@ load_mb_sync() {
 				echo "dbpf ${HOST}:SYS:CLK:FPMUX XCLK"
 				echo "dbpf ${HOST}:SYS:FPCLK: 32768000"
 				ssr=acq43x_setSampleRate
-				echo "seq $ssr \"uut=${HOST},fin=SYS:FPCLK\""				
+				echo "seq $ssr \"uut=${HOST},fin=0:SIG:CLK_MB:FIN\""
 				) >>/tmp/st_post.cmd;;
 			*)
 				# ACQ1001, ACQ2006 REVA has no ZCLK (and hardly ever XCLK)
