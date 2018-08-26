@@ -7,8 +7,7 @@ cp /usr/local/CARE/acq400_streamd.0.conf-soft_trigger \
         /etc/sysconfig/acq400_streamd.0.conf
 
 init_common() {
-    	set.site 0 SYS:CLK:BYPASS=0
-		set.site 0 SYS:CLK:DIST_CLK_SRC Si5326
+    	set.site 0 SYS:CLK:BYPASS=0		
 		set.site 0 SYS:CLK:OE_CLK1_ZYNQ=1
 		set.site 0 SIG:SRC:CLK:1=MCLK
 

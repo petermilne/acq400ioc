@@ -85,21 +85,9 @@ record (bo, "${UUT}:SYS:CLK:OE_CLK1_ZYNQ") {
 	field(VAL,  "0")	
 }
 
-record (longin "${UUT}:SYS:XCLK") {
-	field(DTYP, "Soft Channel")
-	field(PINI, "YES")
-	field(VAL,  "32768000")	 	
-}
-
-record (bo, "${UUT}:SYS:CLK:DIST_CLK_SRC") {
-	field(DTYP, "boAcqHost")
-	field(DESC, "sel inp to Si53315 (NC)")	
-	field(OUT, "@/dev/gpio/CLK/DIST_CLK_HDMI")
-# NB inverted	
-	field(ZNAM, "HDMI")
-	field(ONAM, "Si5326")
-	field(VAL,  "1")
-	field(PINI, "YES")	
+# clone this for ACQ1001
+record (longin "${UUT}:SYS:FPCLK") {
+	field(DTYP, "Soft Channel")	 	
 }
 
 record (bi, "${UUT}:SYS:CLK:lol") {
