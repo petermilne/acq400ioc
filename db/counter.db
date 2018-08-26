@@ -110,7 +110,7 @@ record(calc, "${UUT}:${SITE}:SIG:${lname}:FREQ") {
 	field(INPL, "${UUT}:${SITE}:SIG:${lname}:filcount")
 	field(CALC, "A==0?0: L<12? A/K: 0.25*B/(L*K)+0.75*VAL")
 #                    1234567890123456789012345678901234567890
-	field(PREC, "0")
+	field(PREC, "3")
 	field(EGU,  "Hz")
 	field(DESC, "CLK FREQ ${lname}")
 }
