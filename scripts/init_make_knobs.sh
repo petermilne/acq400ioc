@@ -25,6 +25,21 @@ make_site0_knobs() {
 }
 
 
+make_reset_knobs() {
+	for site in $* do
+		if [ -e /etc/acq400/$site ]; then
+			case $site in
+			12)	re=:B:;;
+			13) re=:A:;;
+			*)  re=:$site:;;
+			esac
+			grep $re.*RESET /tmp/records.dbl | \
+				sed -e 's/^/caput /' -e 's/$/ 1/' \
+				>/etc/acq400/$site/RESET_CTR
+			chmod a+rx /etc/acq400/$site/RESET_CTR
+		fi
+	done
+}
 make_epics_knobs() {
 	if [ -e /tmp/epics_knobs_done ]; then
 		return
@@ -129,7 +144,9 @@ make_epics_knobs() {
 				make_caget $PV $kn1 0
 			fi
 		fi
-	done	
+	done
+	make_reset_knobs 0 12 13
+		
 	make_site0_knobs	
 
 	killall voltsmon
