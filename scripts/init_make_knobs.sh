@@ -36,7 +36,7 @@ make_reset_knobs() {
 			(
 			echo '#!/bin/sh';
 			grep $re.*RESET /tmp/records.dbl | \
-				sed -e 's/^/caput /' -e 's/$/ 1/' \
+				sed -e 's/^/caput -t /' -e 's/$/ 1/' \
 			) >/etc/acq400/$site/RESET_CTR
 			chmod a+rx /etc/acq400/$site/RESET_CTR
 		fi
