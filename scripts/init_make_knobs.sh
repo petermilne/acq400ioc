@@ -26,7 +26,7 @@ make_site0_knobs() {
 
 
 make_reset_knobs() {
-	for site in $* do
+	for site in $*; do
 		if [ -e /etc/acq400/$site ]; then
 			case $site in
 			12)	re=:B:;;
