@@ -48,12 +48,12 @@ getAggregatorEn {
 
 getDistributor {
 	out "distributor";
-	in "reg=0x%08x %*s comms=%*c %*s";
+	in "reg=0x%08x %*s comms=%*s %*s";
 };
 
 # this probably wouldn't work because it aliases. in any case, no Dist on MGT?
 getDistributorSites{
-	in "reg=0x%*08x sites=%s comms=%*c %*s";
+	in "reg=0x%*08x sites=%s comms=%*s %*s";
 }
 
 getDistributorComms{
@@ -61,5 +61,5 @@ getDistributorComms{
 }
 
 getDistributorEn {
-	in "reg=0x%*08x %*s comms=%*c DATA_MOVER_EN=%{off|on}";
+	in "reg=0x%*08x %*s comms=%*s DATA_MOVER_EN=%{off|on}";
 }
