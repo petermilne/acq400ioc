@@ -2,7 +2,7 @@ record(longin, "${UUT}:${SITE}:AS:${X}:rc") {
 	field(SCAN, "1 second")
 	field(DTYP, "stream")
 	#            12345678901234567890123456789012345678901234567890123456789012345678901234567890
-	field(INP,  "@mgt400.proto getAstats(${X},${UUT}:${SITE}:AS,${N1},${N2},${N3},${N4}) ${SPORT}")	
+	field(INP,  "@mgt400.proto getAstats2(${X},${UUT}:${SITE}:AS,${N1},${N2}) ${SPORT}")	
 	field(DESC, "Event count")	
 	field(PRIO, "HIGH")
 }
@@ -12,13 +12,5 @@ record(longin, "${UUT}:${SITE}:AS:${N1}:rc") {
 }
 
 record(longin, "${UUT}:${SITE}:AS:${N2}:rc") {
-
-}
-
-record(longin, "${UUT}:${SITE}:AS:${N3}:rc") {
-
-}
-
-record(longin, "${UUT}:${SITE}:AS:${N4}:rc") {
 
 }
