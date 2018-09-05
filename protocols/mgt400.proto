@@ -48,7 +48,7 @@ getAggregatorEn {
 
 getDistributor {
 	out "distributor";
-	in "reg=0x%08x %*s comms=%*s %*s";
+	in "reg=0x%08x";
 };
 
 # this probably wouldn't work because it aliases. in any case, no Dist on MGT?
