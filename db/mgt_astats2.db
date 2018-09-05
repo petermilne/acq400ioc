@@ -5,6 +5,12 @@ record(longin, "${UUT}:${SITE}:AS:${X}:rc") {
 	field(INP,  "@mgt400.proto getAstats2(${X},${UUT}:${SITE}:AS,${N1},${N2}) ${SPORT}")	
 	field(DESC, "Event count")	
 	field(PRIO, "HIGH")
+	field(FLNK, "${UUT}:${SITE}:AS:${X}:fan")
+}
+
+record(fanout, "${UUT}:${SITE}:AS:${X}:fan") {
+	field(LNK1, "${UUT}:${SITE}:AS:${N1}:rc")
+	field(LNK2, "${UUT}:${SITE}:AS:${N2}:rc")		
 }
 
 record(longin, "${UUT}:${SITE}:AS:${N1}:rc") {
