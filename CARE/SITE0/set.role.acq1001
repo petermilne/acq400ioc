@@ -43,7 +43,6 @@ set_slave() {
 		set.site 0 SIG:SRC:CLK:1 HDMI
 		set.site 0 SIG:SRC:TRG:0 HDMI_TRG
 		set.site 0 SIG:SRC:SYNC:0 HDMI
-		set.site 1 
 		set.site 1 "CLK=1; CLK:DX=d1; CLK:SENSE=${CLK_SENSE}"
 		set.site 1 "TRG=1; TRG:DX=d0; TRG:SENSE=${TRG_SENSE}"
 		set.site 1 "SYNC=1; SYNC:DX=d0; SYNC:SENSE=rising"
