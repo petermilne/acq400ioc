@@ -9,7 +9,9 @@ make_site_custom_knobs() {
 	for file in /usr/local/epics/scripts/SITE${site}/*${special} ; do
 		if [ -e $file ]; then
 			fn=$(basename $file)
-			ln -s $file /etc/acq400/${site}/${fn%.${special}}
+			generic=${fn%.${special}}
+			knob=${generic/./_}
+			ln -s $file /etc/acq400/${site}/$knob
 		fi
 	done
 }
