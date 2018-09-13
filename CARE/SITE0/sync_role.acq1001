@@ -1,6 +1,6 @@
 #!/bin/sh
-# set.role.acq1001
-# set.site 0 set.role fpmaster\|master\|slave 
+# sync_role.acq1001
+# set.site 0 sync_role fpmaster\|master\|solo\|slave 
 
 /usr/local/epics/scripts/wait_ioc_ready
 
@@ -28,16 +28,18 @@ done
 # The MASTER syncs the SITE trigger, SLAVES MUST leave it untouched.
 
 set_common() {	
+		set.site 0 SIG:*:RESET=1
+}
+
+set_out() {	
 		set.site 0 SIG:SYNC_OUT:CLK CLK
 		set.site 0 SIG:SYNC_OUT:CLK:DX d1
 		set.site 0 SIG:SYNC_OUT:TRG TRG
 		set.site 0 SIG:SYNC_OUT:TRG:DX d2
-	
-		set.site 0 SIG:*:RESET=1
 }
 
 set_slave() {	
-		set_common
+		set_out
 		sync_trg_to_clk 0
 		
 		set.site 0 SIG:SRC:CLK:1 HDMI
@@ -49,20 +51,18 @@ set_slave() {
 		echo set_slave >/dev/shm/role
 }
 
-set_common_master() {
-		set_common
-		
+set_common_master() {		
 		set.site 0 SIG:SRC:CLK:1 MCLK
 		set.site 1 "SYNC=0"
 		sync_trg_to_clk 1
 }
 set_master() {
 		set_common_master
-        	set.site 0 SYS:CLK:FPMUX ZCLK
-        	set.site 0 SIG:ZCLK_SRC INT33M	       
-        	set.site 0 SIG:CLK_MB:FIN 33333000
-        	set.site 0 SIG:CLK_MB:SET $1
-        	set.site 1 CLKDIV 1
+        set.site 0 SYS:CLK:FPMUX ZCLK
+        set.site 0 SIG:ZCLK_SRC INT33M	       
+        set.site 0 SIG:CLK_MB:FIN 33333000
+        set.site 0 SIG:CLK_MB:SET $1
+        set.site 1 CLKDIV 1
  		set.site 1 "CLK=1; CLK:DX=d1; CLK:SENSE=${CLK_SENSE}"
  		set.site 1 "TRG=1; TRG:DX=d1; TRG:SENSE=${TRG_SENSE}"
 		echo set_master >/dev/shm/role
@@ -86,11 +86,20 @@ case $1 in
 	else
 		echo "role not set"
 	fi;;
-fpmaster)	
+fpmaster)
+		set_common
+		set_out	
     	set_fpmaster ${2:-1000000} ${3:-1000000};;
 master)
+		set_common
+		set_out
+		set_master ${2:-1000000};;
+solo)
+		set_common
 		set_master ${2:-1000000};;
 slave)	
+		set_common
+		set_out
 		set_slave;;
 *)
 		echo "USAGE set.role fpmaster\|master\|slave [CLKHZ] [FIN] [CLK|TRG:SENSE=falling|rising]";;
