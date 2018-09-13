@@ -102,6 +102,6 @@ slave)
 		set_out
 		set_slave;;
 *)
-		echo "USAGE sync_role fpmaster\|master\|slave\|solo [CLKHZ] [FIN] [CLK|TRG:SENSE=falling|rising]";;
+	echo "USAGE sync_role {fpmaster|master|slave|solo} [CLKHZ] [FIN] [CLK|TRG:SENSE=falling|rising]";;
 esac
 
