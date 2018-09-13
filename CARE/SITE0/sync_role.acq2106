@@ -2,7 +2,7 @@
 # sync_role.acq2106
 # set.site 0 sync_fole fpmaster\|master\|solo\|slave 
 
-/usr/local/epics/scripts/wait_ioc_ready
+/usr/local/epics/scripts/wait_ioc_ready 2>&1 >/dev/null
 
 sync_trg_to_clk() {
 	[ -e /etc/acq400/1/sync_trg_to_clk ] && \
@@ -101,6 +101,6 @@ slave)
 		set_out
 		set_slave;;
 *)
-		echo "USAGE set.role fpmaster\|master\|slave\|solo [CLKHZ] [FIN] [CLK|TRG:SENSE=falling|rising]";;
+		echo "USAGE sync_role fpmaster\|master\|slave\|solo [CLKHZ] [FIN] [CLK|TRG:SENSE=falling|rising]";;
 esac
 
