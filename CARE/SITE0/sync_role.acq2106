@@ -13,11 +13,20 @@ TRG_SENSE=rising
 CLK_SENSE=rising
 
 for k in $*; do
-	case $k in
-	TRG:SENSE=falling)
-		TRG_SENSE=falling;;
-	CLK:SENSE=falling)
-		CLK_SENSE=falling;;
+	key=${k%=*}; val=${k#*=}
+	case $key in
+	TRG:SENSE)
+		TRG_SENSE=$val;;
+	CLK:SENSE)
+		CLK_SENSE=$val;;
+	TRG:DX)
+		TRG_DX=$val;;		# not previously defined
+	CLK:DX)
+		CLK_DX=$val;;
+	CLKDIV)
+		CLKDIV=$val;;
+	*)
+		echo "error $key not defined";;
 	esac
 done
 
@@ -46,6 +55,7 @@ set_slave() {
 		set.site 1 "CLK=1; CLK:DX=d1; CLK:SENSE=${CLK_SENSE}"
 		set.site 1 "TRG=1; TRG:DX=d0; TRG:SENSE=${TRG_SENSE}"
 		set.site 1 "SYNC=1; SYNC:DX=d0; SYNC:SENSE=rising"
+		set.site 1 CLKDIV=${CLKDIV:-1}
 		echo set_slave >/dev/shm/role
 }
 
@@ -54,6 +64,7 @@ set_common_master() {
 		set.site 0 SIG:SRC:CLK:1 MCLK
 		sync_trg_to_clk 1
 		set.site 1 "SYNC=0"
+		set.site 1 CLKDIV=${CLKDIV:-1}
 }
 set_local_clock() {
 		set_common_master
@@ -62,8 +73,8 @@ set_local_clock() {
         set.site 0 SIG:CLK_MB:FIN 33333000
         set.site 0 SIG:CLK_MB:SET $1
         set.site 1 CLKDIV 1
- 		set.site 1 "CLK=1; CLK:DX=d1; CLK:SENSE=${CLK_SENSE}"
- 		set.site 1 "TRG=1; TRG:DX=d1; TRG:SENSE=${TRG_SENSE}"
+ 		set.site 1 "CLK=1; CLK:DX=${CLK_DX:-d1}; CLK:SENSE=${CLK_SENSE}"
+ 		set.site 1 "TRG=1; TRG:DX=${TRG_DX:-d1}; TRG:SENSE=${TRG_SENSE}"
 		echo set_master >/dev/shm/role
 }
 
@@ -73,8 +84,8 @@ set_fpmaster() {
     	set.site 0 SIG:CLK_MB:FIN $2
         set.site 0 SIG:CLK_MB:SET $1
         set.site 1 CLKDIV 1
- 		set.site 1 "CLK=1; CLK:DX=d1; CLK:SENSE=${CLK_SENSE}"
- 		set.site 1 "TRG=1; TRG:DX=d0; TRG:SENSE=${TRG_SENSE}"        
+ 		set.site 1 "CLK=1; CLK:DX=${CLK_DX:-d1}; CLK:SENSE=${CLK_SENSE}"
+ 		set.site 1 "TRG=1; TRG:DX=${CLK_DX:-d0}; TRG:SENSE=${TRG_SENSE}"        
     	echo set_fpmaster >/dev/shm/role
 }
 
@@ -101,6 +112,7 @@ slave)
 		set_out
 		set_slave;;
 *)
-	echo "USAGE sync_role {fpmaster|master|slave|solo} [CLKHZ] [FIN] [CLK|TRG:SENSE=falling|rising]";;
+		echo "USAGE sync_role {fpmaster|master|slave|solo} [CLKHZ] [FIN]"
+		echo "modifiers [CLK|TRG:SENSE=falling|rising] [CLK|TRG:DX=d0|d1]";;
 esac
 
