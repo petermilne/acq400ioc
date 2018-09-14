@@ -30,6 +30,32 @@ for k in $*; do
 	esac
 done
 
+set_mbclk() {
+		set.site 0 SIG:CLK_MB:SET $1
+		set.site 1 CLKDIV $CLKDIV
+}
+
+set_acq43x_sample_rate() {
+		set.site 1 ACQ43X_SAMPLE_RATE $1
+}
+set_mb=set_mbclk
+
+
+select_lo_zclk() {
+		set.site 0 SYS:CLK:FPMUX ZCLK
+		set.site 0 SIG:ZCLK_SRC INT33M
+		set.site 0 SIG:CLK_MB:FIN 33333000
+}
+select_lo_xclk() {
+		set.site 0 SYS:CLK:FPMUX XCLK
+		set.site 0 SIG:CLK_MB:FIN 32768000
+}
+select_lo=select_lo_zclk
+
+if [ -e /etc/acq400/1/ACQ43X_SAMPLE_RATE ]; then
+		select_lo=select_lo_xclk
+		set_mb=acq43x_sample_rate
+fi
 
 # common to all
 # even a slave can master another link in the chain..
@@ -62,17 +88,15 @@ set_slave() {
 set_common_master() {		
 		set.site 0 SYS:CLK:OE_CLK1_ZYNQ 1
 		set.site 0 SIG:SRC:CLK:1 MCLK
+		set.site 0 SYS:CLK:BYPASS 0
 		sync_trg_to_clk 1
 		set.site 1 "SYNC=0"
 		set.site 1 CLKDIV=${CLKDIV:-1}
 }
-set_local_clock() {
+set_master() {
 		set_common_master
-        set.site 0 SYS:CLK:FPMUX ZCLK
-        set.site 0 SIG:ZCLK_SRC INT33M	       
-        set.site 0 SIG:CLK_MB:FIN 33333000
-        set.site 0 SIG:CLK_MB:SET $1
-        set.site 1 CLKDIV 1
+        $select_lo
+        $set_mb $1
  		set.site 1 "CLK=1; CLK:DX=${CLK_DX:-d1}; CLK:SENSE=${CLK_SENSE}"
  		set.site 1 "TRG=1; TRG:DX=${TRG_DX:-d1}; TRG:SENSE=${TRG_SENSE}"
 		echo set_master >/dev/shm/role
@@ -80,12 +104,11 @@ set_local_clock() {
 
 set_fpmaster() {
 		set_common_master
-    	set.site 0 SYS:CLK:FPMUX FPCLK               
-    	set.site 0 SIG:CLK_MB:FIN $2
-        set.site 0 SIG:CLK_MB:SET $1
-        set.site 1 CLKDIV 1
- 		set.site 1 "CLK=1; CLK:DX=${CLK_DX:-d1}; CLK:SENSE=${CLK_SENSE}"
- 		set.site 1 "TRG=1; TRG:DX=${CLK_DX:-d0}; TRG:SENSE=${TRG_SENSE}"        
+		set.site 0 SYS:CLK:FPMUX FPCLK               
+		set.site 0 SIG:CLK_MB:FIN $2
+		$set_mb $1
+		set.site 1 "CLK=1; CLK:DX=${CLK_DX:-d1}; CLK:SENSE=${CLK_SENSE}"
+		set.site 1 "TRG=1; TRG:DX=${CLK_DX:-d0}; TRG:SENSE=${TRG_SENSE}"        
     	echo set_fpmaster >/dev/shm/role
 }
 
@@ -113,6 +136,7 @@ slave)
 		set_slave;;
 *)
 		echo "USAGE sync_role {fpmaster|master|slave|solo} [CLKHZ] [FIN]"
-		echo "modifiers [CLK|TRG:SENSE=falling|rising] [CLK|TRG:DX=d0|d1]";;
+		echo "modifiers [CLK|TRG:SENSE=falling|rising] [CLK|TRG:DX=d0|d1]"
+		echo "modifiers [CLKDIV=div] # use slave mode with ACQ43x";;
 esac
 
