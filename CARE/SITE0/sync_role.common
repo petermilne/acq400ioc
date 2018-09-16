@@ -37,9 +37,7 @@ set_mbclk() {
 		set.site 1 CLKDIV $CLKDIV
 }
 
-set_acq43x_sample_rate() {
-		set.site 1 ACQ43X_SAMPLE_RATE $1
-}
+
 set_mb=set_mbclk
 
 select_lo_zclk() {
@@ -53,9 +51,13 @@ select_lo_xclk() {
 }
 select_lo=select_lo_zclk
 
+set_acq43x_sample_rate() {
+		set.site 1 ACQ43X_SAMPLE_RATE $1
+}
+
 if [ -e /etc/acq400/1/ACQ43X_SAMPLE_RATE ]; then
 		select_lo=select_lo_xclk
-		set_mb=acq43x_sample_rate
+		set_mb=set_acq43x_sample_rate
 fi
 
 set_slave_acq1001() {	
