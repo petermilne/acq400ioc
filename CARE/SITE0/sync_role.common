@@ -68,7 +68,8 @@ if [ -e /etc/acq400/1/ACQ43X_SAMPLE_RATE ]; then
 		set_mb=set_acq43x_sample_rate
 fi
 
-set_slave_acq1001() {	
+set_slave_acq1001() {
+		set.site 0 SYS:CLK:FPMUX OFF
 		sync_trg_to_clk 0
 		set.site 0 SIG:SRC:CLK:1 HDMI
 		set.site 0 SIG:SRC:TRG:0 HDMI_TRG
