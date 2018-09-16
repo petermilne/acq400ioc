@@ -1,5 +1,5 @@
 #!/bin/sh
-# sync_role.acq1001
+# sync_role.common
 # set.site 0 sync_role fpmaster\|master\|solo\|slave 
 
 /usr/local/epics/scripts/wait_ioc_ready 2>&1 >/dev/null
@@ -11,27 +11,25 @@ sync_trg_to_clk() {
 
 TRG_SENSE=rising
 CLK_SENSE=rising
-# ics527 minimum output rate
-FMIN=4000000
 
 CMDLINE="$*"
 
 for k in $*; do
-	key=${k%=*}; val=${k#*=}
-	case $key in
-	TRG:SENSE)
-		TRG_SENSE=$val;;
-	CLK:SENSE)
-		CLK_SENSE=$val;;
-	TRG:DX)
-		TRG_DX=$val;;		# not previously defined
-	CLK:DX)
-		CLK_DX=$val;;
-	CLKDIV)
-		CLKDIV=$val;;
-	*)
-		[ $key != $val ] && echo "error $key not defined";;
-	esac
+		key=${k%=*}; val=${k#*=}
+		case $key in
+		TRG:SENSE)
+				TRG_SENSE=$val;;
+		CLK:SENSE)
+				CLK_SENSE=$val;;
+		TRG:DX)
+				TRG_DX=$val;;		# not previously defined
+		CLK:DX)
+				CLK_DX=$val;;
+		CLKDIV)
+				CLKDIV=$val;;
+		*)
+				[ $key != $val ] && echo "error $key not defined";;
+		esac
 done
 
 set_mbclk() {
@@ -60,6 +58,50 @@ if [ -e /etc/acq400/1/ACQ43X_SAMPLE_RATE ]; then
 		set_mb=acq43x_sample_rate
 fi
 
+set_slave_acq1001() {	
+		sync_trg_to_clk 0
+		set.site 0 SIG:SRC:CLK:1 HDMI
+		set.site 0 SIG:SRC:TRG:0 HDMI_TRG
+		set.site 0 SIG:SRC:SYNC:0 HDMI
+		set.site 1 "CLK=1; CLK:DX=d1; CLK:SENSE=${CLK_SENSE}"
+		set.site 1 "TRG=1; TRG:DX=d0; TRG:SENSE=${TRG_SENSE}"
+		set.site 1 "SYNC=1; SYNC:DX=d0; SYNC:SENSE=rising"
+		set.site 1 CLKDIV=${CLKDIV:-1}
+}
+
+set_slave_acq2106() {
+		set.site 0 SYS:CLK:OE_CLK1_ZYNQ 0
+		set_slave_acq1001
+}
+
+set_common_master_acq1001() {		
+		set.site 0 SIG:SRC:CLK:1 MCLK
+		set.site 1 "SYNC=0"
+		sync_trg_to_clk 1
+		set.site 1 CLKDIV=${CLKDIV:-1}
+}
+
+set_common_master_acq2106() {
+		set.site 0 SYS:CLK:OE_CLK1_ZYNQ 1
+		set.site 0 SYS:CLK:BYPASS 0
+		set_common_master_acq1001
+}
+
+MOD=$(get.site 0 MODEL)
+
+if [ "${MOD:0:7}" = "acq2106" ]; then
+		set_slave=set_slave_acq2106
+		set_common_master=set_common_master_acq2106
+# Si5326 minimum output rate
+		FMIN=20000		
+else
+		set_slave=set_slave_acq1001
+		set_common_master_set_common_master_acq1001
+# ics527 minimum output rate
+		FMIN=4000000		
+fi
+
+
 # common to all
 # even a slave can master another link in the chain..
 # we share the MB clock and the SITE trigger 
@@ -74,24 +116,6 @@ set_out() {
 		set.site 0 SIG:SYNC_OUT:CLK:DX d1
 		set.site 0 SIG:SYNC_OUT:TRG TRG
 		set.site 0 SIG:SYNC_OUT:TRG:DX d2
-}
-
-set_slave() {	
-		sync_trg_to_clk 0
-		set.site 0 SIG:SRC:CLK:1 HDMI
-		set.site 0 SIG:SRC:TRG:0 HDMI_TRG
-		set.site 0 SIG:SRC:SYNC:0 HDMI
-		set.site 1 "CLK=1; CLK:DX=d1; CLK:SENSE=${CLK_SENSE}"
-		set.site 1 "TRG=1; TRG:DX=d0; TRG:SENSE=${TRG_SENSE}"
-		set.site 1 "SYNC=1; SYNC:DX=d0; SYNC:SENSE=rising"
-		set.site 1 CLKDIV=${CLKDIV:-1}
-}
-
-set_common_master() {		
-		set.site 0 SIG:SRC:CLK:1 MCLK
-		set.site 1 "SYNC=0"
-		sync_trg_to_clk 1
-		set.site 1 CLKDIV=${CLKDIV:-1}
 }
 
 find_valid_set() {
@@ -135,13 +159,13 @@ case $1 in
 fpmaster)
 		set_common
 		set_out
-		set_common_master
-    		set_fpmaster ${2:-1000000} ${3:-1000000}
+		$set_common_master
+		set_fpmaster ${2:-1000000} ${3:-1000000}
 		echo $CMDLINE > /dev/shm/role;;
 master)
 		set_common
 		set_out
-		set_common_master
+		$set_common_master
 		set_local_clock ${2:-1000000}
 		echo $CMDLINE > /dev/shm/role;;
 solo)
@@ -151,7 +175,7 @@ solo)
 slave)	
 		set_common
 		set_out
-		set_slave
+		$set_slave
 		echo $CMDLINE > /dev/shm/role;;
 help)
 		echo "USAGE sync_role {fpmaster|master|slave|solo} [CLKHZ] [FIN]"
