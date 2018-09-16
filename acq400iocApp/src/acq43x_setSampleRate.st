@@ -41,7 +41,7 @@ string info;	assign info to "{uut}:1:ACQ43X_SAMPLE_RATE:INFO";
 string srcname; assign srcname to "{uut}:1:ACQ43X_SRCNAME";
 string srcfreq; assign srcfreq to "{uut}:1:ACQ43X_SRCFREQ";
 
-string model;	assign model to "{uut:0:MODEL}";
+string model;	assign model to "{uut}:0:MODEL";
 
 
 double clk_mb_set; assign clk_mb_set to "{uut}:0:SIG:CLK_MB:SET";
