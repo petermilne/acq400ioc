@@ -87,7 +87,6 @@ set_slave_acq2106() {
 
 set_common_master_acq1001() {		
 		set.site 0 SIG:SRC:CLK:1 MCLK
-		set.site 1 "SYNC=0"
 		sync_trg_to_clk 1
 		set.site 1 CLKDIV=${CLKDIV:-1}
 }
@@ -123,10 +122,12 @@ set_common() {
 }
 
 set_out() {	
-		set.site 0 SIG:SYNC_OUT:CLK CLK
-		set.site 0 SIG:SYNC_OUT:CLK:DX d1
-		set.site 0 SIG:SYNC_OUT:TRG TRG
-		set.site 0 SIG:SYNC_OUT:TRG:DX d2
+		set.site 0 SIG:SYNC_OUT:CLK 	CLK
+		set.site 0 SIG:SYNC_OUT:CLK:DX 	d1
+		set.site 0 SIG:SYNC_OUT:TRG 	TRG
+		set.site 0 SIG:SYNC_OUT:TRG:DX 	d2
+		set.site 0 SIG:SYNC_OUT:SYNC 	SYNC
+		set.site 0 SIG:SYNC_OUT:SYNC:DX d2
 }
 
 set_local_clock() {	 
