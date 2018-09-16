@@ -108,7 +108,7 @@ fi
 # The MASTER syncs the SITE trigger, SLAVES MUST leave it untouched.
 
 set_common() {	
-		set.site 0 SIG:*:RESET=1
+		set.site 0 SIG:*:RESET=1  &
 }
 
 set_out() {	
