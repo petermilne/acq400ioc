@@ -14,6 +14,8 @@ CLK_SENSE=rising
 # ics527 minimum output rate
 FMIN=4000000
 
+CMDLINE="$*"
+
 for k in $*; do
 	key=${k%=*}; val=${k#*=}
 	case $key in
@@ -75,9 +77,7 @@ set_out() {
 }
 
 set_slave() {	
-		set_out
 		sync_trg_to_clk 0
-		
 		set.site 0 SIG:SRC:CLK:1 HDMI
 		set.site 0 SIG:SRC:TRG:0 HDMI_TRG
 		set.site 0 SIG:SRC:SYNC:0 HDMI
@@ -85,7 +85,6 @@ set_slave() {
 		set.site 1 "TRG=1; TRG:DX=d0; TRG:SENSE=${TRG_SENSE}"
 		set.site 1 "SYNC=1; SYNC:DX=d0; SYNC:SENSE=rising"
 		set.site 1 CLKDIV=${CLKDIV:-1}
-		echo set_slave >/dev/shm/role
 }
 
 set_common_master() {		
@@ -109,51 +108,56 @@ find_valid_set() {
 
 
 
-set_master() {
-		set_common_master
+set_local_clock() {	
 		find_valid_set $1
 		$select_lo
 		$set_mb $FS
 		set.site 1 "CLK=1; CLK:DX=${CLK_DX:-d1}; CLK:SENSE=${CLK_SENSE}"
 		set.site 1 "TRG=1; TRG:DX=${TRG_DX:-d1}; TRG:SENSE=${TRG_SENSE}"
-		echo set_master >/dev/shm/role
 }
 
 set_fpmaster() {
-		set_common_master
 		find_valid_set $1
 		set.site 0 SYS:CLK:FPMUX FPCLK               
 		set.site 0 SIG:CLK_MB:FIN $2
 		$set_mb $FS
  		set.site 1 "CLK=1; CLK:DX=${CLK_DX:-d1}; CLK:SENSE=${CLK_SENSE}"
  		set.site 1 "TRG=1; TRG:DX=${CLK_DX:-d0}; TRG:SENSE=${TRG_SENSE}"  
-    	echo set_fpmaster >/dev/shm/role
 }
 
 case $1 in
 "")
-	if [ -e /dev/shm/role ]; then
-		cat /dev/shm/role
-	else
-		echo "role not set"
-	fi;;
+		if [ -e /dev/shm/role ]; then
+				cat /dev/shm/role
+		else
+				echo "role not set"
+		fi;;
 fpmaster)
 		set_common
-		set_out	
-    	set_fpmaster ${2:-1000000} ${3:-1000000};;
+		set_out
+		set_common_master
+    		set_fpmaster ${2:-1000000} ${3:-1000000}
+		echo $CMDLINE > /dev/shm/role;;
 master)
 		set_common
 		set_out
-		set_master ${2:-1000000};;
+		set_common_master
+		set_local_clock ${2:-1000000}
+		echo $CMDLINE > /dev/shm/role;;
 solo)
 		set_common
-		set_master ${2:-1000000};;
+		set_local_clock ${2:-1000000}
+		echo $CMDLINE > /dev/shm/role;;
 slave)	
 		set_common
 		set_out
-		set_slave;;
-*)
+		set_slave
+		echo $CMDLINE > /dev/shm/role;;
+help)
 		echo "USAGE sync_role {fpmaster|master|slave|solo} [CLKHZ] [FIN]"
 		echo "modifiers [CLK|TRG:SENSE=falling|rising] [CLK|TRG:DX=d0|d1]"
-		echo "modifiers [CLKDIV=div] # use slave mode with ACQ43x";;
+		echo "modifiers [CLKDIV=div]";;
+*)
+		echo "ERROR: role $1 not valid";;
 esac
+
