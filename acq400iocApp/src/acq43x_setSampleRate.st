@@ -41,6 +41,8 @@ string info;	assign info to "{uut}:1:ACQ43X_SAMPLE_RATE:INFO";
 string srcname; assign srcname to "{uut}:1:ACQ43X_SRCNAME";
 string srcfreq; assign srcfreq to "{uut}:1:ACQ43X_SRCFREQ";
 
+string model;	assign model to "{uut:0:MODEL}";
+
 
 double clk_mb_set; assign clk_mb_set to "{uut}:0:SIG:CLK_MB:SET";
 
@@ -69,7 +71,11 @@ ss rate_set
 {
 	state init {
 		when() {
-			printf("init\n");
+			pvGet(model);
+			if (strncmp(model, "acq2106", 6) == 0){
+				S01_min = 1000000;
+			}
+			printf("init model: %s  S01_min %.0f\n", model, S01_min);
 			pvGet(adc_mode);
 			adc_mode0 = adc_mode;
 			pvGet(Fs);
