@@ -41,9 +41,6 @@ string info;	assign info to "{uut}:1:ACQ43X_SAMPLE_RATE:INFO";
 string srcname; assign srcname to "{uut}:1:ACQ43X_SRCNAME";
 string srcfreq; assign srcfreq to "{uut}:1:ACQ43X_SRCFREQ";
 
-string model;	assign model to "{uut}:0:MODEL";
-
-
 double clk_mb_set; assign clk_mb_set to "{uut}:0:SIG:CLK_MB:SET";
 
 int state_not_idle; assign state_not_idle to "{uut}:MODE:TRANS_ACT:STATE_NOT_IDLE";
@@ -67,15 +64,17 @@ int retry;
 int max_retry = 5;
 int Fmin = 1000000;
 
+char *uut;
+
 ss rate_set
 {
 	state init {
 		when() {
-			pvGet(model);
-			if (strncmp(model, "acq2106", 6) == 0){
+			uut = macValueGet("uut");			
+			if (strncmp(uut, "acq2106", 6) == 0){
 				S01_min = 1000000;
 			}
-			printf("init model: %s  S01_min %.0f\n", model, S01_min);
+			printf("init model: %s  S01_min %.0f\n", uut, S01_min);
 			pvGet(adc_mode);
 			adc_mode0 = adc_mode;
 			pvGet(Fs);
