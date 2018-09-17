@@ -106,7 +106,7 @@ if [ "${MOD:0:7}" = "acq2106" ]; then
 		FMIN=20000		
 else
 		set_slave=set_slave_acq1001
-		set_common_master_set_common_master_acq1001
+		set_common_master=set_common_master_acq1001
 # ics527 minimum output rate
 		FMIN=4000000		
 fi
