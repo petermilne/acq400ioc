@@ -154,7 +154,6 @@ set_fpmaster() {
  		set.site 1 "TRG=1; TRG:DX=${CLK_DX:-d0}; TRG:SENSE=${TRG_SENSE}"  
 }
 
-eval $(egu2int FS=${2:-200000} FIN=${3:-1000000})
 
 case $1 in
 "")
@@ -167,16 +166,19 @@ fpmaster)
 		set_common
 		set_out
 		$set_common_master
+		eval $(egu2int FS=${2:-200000} FIN=${3:-1000000})
 		set_fpmaster $FS $FIN
 		echo $CMDLINE > /dev/shm/role;;
 master)
 		set_common
 		set_out
 		$set_common_master
+		eval $(egu2int FS=${2:-200000})
 		set_local_clock $FS
 		echo $CMDLINE > /dev/shm/role;;
 solo)
 		set_common
+		eval $(egu2int FS=${2:-200000})
 		set_local_clock $FS
 		echo $CMDLINE > /dev/shm/role;;
 slave)	
