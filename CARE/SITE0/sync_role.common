@@ -130,6 +130,15 @@ set_out() {
 		set.site 0 SIG:SYNC_OUT:SYNC:DX d2
 }
 
+set_out_slave() {
+		set.site 0 SIG:SYNC_OUT:CLK 	CLK
+		set.site 0 SIG:SYNC_OUT:CLK:DX 	d1
+		set.site 0 SIG:SYNC_OUT:TRG 	TRG
+		set.site 0 SIG:SYNC_OUT:TRG:DX 	d0
+		set.site 0 SIG:SYNC_OUT:SYNC 	SYNC
+		set.site 0 SIG:SYNC_OUT:SYNC:DX d0
+}
+
 set_local_clock() {	 
 		$select_lo
 		$set_mb $1
@@ -170,7 +179,7 @@ solo)
 		echo $CMDLINE > /dev/shm/role;;
 slave)	
 		set_common
-		set_out
+		set_out_slave
 		$set_slave
 		echo $CMDLINE > /dev/shm/role;;
 help)
