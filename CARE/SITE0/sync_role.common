@@ -37,11 +37,11 @@ set_mbclk() {
 		let fs=$1
 		let clkdiv=1
 		if [ $fs -lt $FMIN ]; then
-			let clkdiv="10*$FMIN/$fs"
+			let clkdiv="5*$FMIN/$fs"
 			clkdiv=$(printf "%d" $clkdiv)
 			let fs=$clkdiv*$fs
 		fi
-		set.site 0 SIG:CLK_MB:SET $1
+		set.site 0 SIG:CLK_MB:SET $fs
 		set.site 1 CLKDIV $clkdiv
 }
 
