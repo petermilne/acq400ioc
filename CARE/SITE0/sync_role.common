@@ -151,7 +151,7 @@ set_fpmaster() {
 		set.site 0 SIG:CLK_MB:FIN $2
 		$set_mb $1
  		set.site 1 "CLK=1; CLK:DX=${CLK_DX:-d1}; CLK:SENSE=${CLK_SENSE}"
- 		set.site 1 "TRG=1; TRG:DX=${CLK_DX:-d0}; TRG:SENSE=${TRG_SENSE}"  
+		set.site 1 "TRG=1; TRG:DX=${TRG_DX:-d0}; TRG:SENSE=${TRG_SENSE}"
 }
 
 
