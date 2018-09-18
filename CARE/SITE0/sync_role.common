@@ -113,14 +113,15 @@ fi
 
 
 # common to all
-# even a slave can master another link in the chain..
-# we share the MB clock and the SITE trigger 
-# The MASTER syncs the SITE trigger, SLAVES MUST leave it untouched.
-
-set_common() {	
+# report init status - this will be overwritten on successful completion
+set_common() {
+		echo "WARNING:$CMDLINE incomplete" > /dev/shm/role;;
 		set.site 0 SIG:*:RESET=1  &
 }
 
+# even a slave can master another link in the chain..
+# we share the MB clock and the SITE trigger 
+# The MASTER syncs the SITE trigger, SLAVES MUST leave it untouched.
 set_out() {	
 		set.site 0 SIG:SYNC_OUT:CLK 	CLK
 		set.site 0 SIG:SYNC_OUT:CLK:DX 	d1
