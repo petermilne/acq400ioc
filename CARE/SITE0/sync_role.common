@@ -140,19 +140,33 @@ set_out_slave() {
 		set.site 0 SIG:SYNC_OUT:SYNC:DX d0
 }
 
+# PV readback on triplet en,dx,edge can cause errors, so lock it
+PV_BASE=$(hostname)
+pv_read_lock() {
+	caput $PV_BASE:1:$1:r.DISA $2
+}
+
 set_local_clock() {	 
 		$select_lo
 		$set_mb $1
+		pv_read_lock CLK 1
 		set.site 1 "CLK=1; CLK:DX=${CLK_DX:-d1}; CLK:SENSE=${CLK_SENSE}"
+		pv_read_lock CLK 0
+		pv_read_lock TRG 1
 		set.site 1 "TRG=1; TRG:DX=${TRG_DX:-d1}; TRG:SENSE=${TRG_SENSE}"
+		pv_read_lock TRG 0
 }
 
 set_fpmaster() {
 		set.site 0 SYS:CLK:FPMUX FPCLK               
 		set.site 0 SIG:CLK_MB:FIN $2
 		$set_mb $1
+		pv_read_lock CLK 1
  		set.site 1 "CLK=1; CLK:DX=${CLK_DX:-d1}; CLK:SENSE=${CLK_SENSE}"
+ 		pv_read_lock CLK 0
+ 		pv_read_lock TRG 1
 		set.site 1 "TRG=1; TRG:DX=${TRG_DX:-d0}; TRG:SENSE=${TRG_SENSE}"
+		pv_read_lock TRG 0
 }
 
 
