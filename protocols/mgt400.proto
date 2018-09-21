@@ -66,5 +66,5 @@ getDistributorComms{
 }
 
 getDistributorEn {
-	in "reg=0x%*08x %*s comms=%*s DATA_MOVER_EN=%{off|on}";
+	in "reg=0x%*08x %*s comms=%*s pad=%*d DATA_MOVER_EN=%{off|on}";
 }
