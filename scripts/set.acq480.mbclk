@@ -1,5 +1,6 @@
 #!/bin/sh
-HN=$(hostname)
+source /etc/profile.d/epics.sh
+HN=${IOC_HOST}
 
 for site in 1 2 3 4 5 6; do
 	caput ${HN}:SYS:CLK:OE_CLK1_ELF${site} 1

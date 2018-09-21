@@ -1,6 +1,6 @@
 #!/bin/sh
-
-HN=$(hostname)
+source /etc/profile.d/epics.sh
+HN=${IOC_HOST}
 PV=${HN}:0:GPG:DBG:RSTATE
 
 case $1 in

@@ -1,6 +1,6 @@
 #!/bin/sh
-
-HN=$(hostname)
+source /etc/profile.d/epics.sh
+HN=${IOC_HOST}
 SX=${1:-S0}
 EN=${2:-1}
 

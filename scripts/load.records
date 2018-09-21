@@ -1,6 +1,6 @@
 #!/bin/sh
 
-HOST=${HOST:-$(hostname)}
+HOST=${IOC_HOST:-$(hostname)}
 SIZE=${SIZE:-4096}
 TYPE=${TYPE:-SHORT}
 FNAME=AI
@@ -13,7 +13,8 @@ CTR28=268435456
 CTR16=65536
 CTR20=1048576
 
-SN=${HOST#*_}
+source /tmp/u-boot_env
+SN=${dtsn:5:8}
 SN=${SN#0}
 SN=${SN#0}
 
@@ -208,7 +209,7 @@ load_AO() {
 			do
 				cid=$(printf "%02d" $ch)
 				dblr '"db/ao424fmc.db","'${cprams},cid=$cid'"'
-				echo "seq ao424_range_set \"UUT=$(hostname),SITE=${site},CID=$cid\"" >>/tmp/st_post.cmd
+				echo "seq ao424_range_set \"UUT=${HOST},SITE=${site},CID=$cid\"" >>/tmp/st_post.cmd
 			done
 			dblr '"db/aoALL.db","'${cprams},SPORT=S${site}'"'
 			has_range=0
@@ -883,7 +884,7 @@ load_mb() {
 	fi
 	if [[ -e /dev/acq400.12.knobs || -e /dev/acq400.13.knobs ]]; then
 		source /usr/local/epics/scripts/load.mgt400
-		echo "seq mgtStopOnLinkDown \"uut=$(hostname)\"" >>/tmp/st_post.cmd
+		echo "seq mgtStopOnLinkDown \"uut=${HOST}\"" >>/tmp/st_post.cmd
 	fi	
 }
 

@@ -15,7 +15,12 @@ if [ -f /mnt/local/epics.sh ]; then
 	source /mnt/local/epics.sh
 fi
 if [ -f /mnt/local/sysconfig/epics.sh ]; then
-	source /mnt/local/sysconfig/epics.sh
+	if [ -z $EPICS_LOCAL_SYSCONFIG ]; then 
+		source /mnt/local/sysconfig/epics.sh
+		(cat /mnt/local/sysconfig/epics.sh
+		[ -z $IOC_HOST ] && echo export IOC_HOST=$(hostname)
+		echo export EPICS_LOCAL_SYSCONFIG=1) >> /etc/profile.d/epics.sh
+	fi
 fi
 
 source /usr/local/epics/scripts/init_support.sh

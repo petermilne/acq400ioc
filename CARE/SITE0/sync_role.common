@@ -141,7 +141,8 @@ set_out_slave() {
 }
 
 # PV readback on triplet en,dx,edge can cause errors, so lock it
-PV_BASE=$(hostname)
+source /etc/profile.d/epics.sh
+PV_BASE=${IOC_HOST}
 pv_read_lock() {
 		caput -t $PV_BASE:1:$1:r.DISA $2 >/dev/null
 }

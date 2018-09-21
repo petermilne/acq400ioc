@@ -1,9 +1,9 @@
 #!/bin/sh
-
+source /etc/profile.d/epics.sh
 set +e
 
 
-PV=$(hostname):IOC_READY
+PV=${IOC_HOST}:IOC_READY
 RDY=$(caget -nt $PV)
 
 if [ "x$RDY" = "x1" ]; then

@@ -1,6 +1,6 @@
 #!/bin/sh
-
-HOST=${1:-$(hostname)}
+source /etc/profile.d/epics.sh
+HOST=${1:-${IOC_HOST}}
 SITE=${2:-2}
 
 source ./scripts/record_support.sh

@@ -2,8 +2,13 @@
 
 set +e
 
-
-PV=$(hostname):IOC_READY
+while [ -z $IOC_HOST ]; do
+	while [ ! -e /etc/profile.d/epics.sh ]; do
+		sleep 1
+	done
+	source /etc/profile.d/epics.sh
+done
+PV=${IOC_HOST}:IOC_READY
 
 RDY=""
 

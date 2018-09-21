@@ -98,7 +98,7 @@ make_epics_knobs() {
 		SITE=${NU:0:1}
 		make_caput $PV ${NU#*:} ${NU:0:1}		
 	done
-	for PV in $(grep $(hostname):SYS:CLK $RL | grep -v [a-z]$ | grep -v clk0$ )
+	for PV in $(grep :SYS:CLK $RL | grep -v [a-z]$ | grep -v clk0$ )
 	do
 		make_caput $PV ${PV#*:} 0
 	done
