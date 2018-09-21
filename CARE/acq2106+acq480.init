@@ -2,6 +2,8 @@
 # configure ACQ480 with internal clock.
 # for fpclk, call acq2106+acq42x.init fpclk SR FIN AFTER this program.
 
+source /etc/profile.d/epics.sh
+
 cp /usr/local/CARE/acq480_streamd.0.conf /etc/sysconfig/acq400_streamd.0.conf
 
 PNAME=$(basename $0)

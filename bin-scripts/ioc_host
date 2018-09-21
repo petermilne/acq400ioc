@@ -1,0 +1,3 @@
+#!/bin/sh
+source /etc/profile.d/epics.sh
+echo $IOC_HOST
