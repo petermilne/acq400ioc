@@ -86,7 +86,7 @@ make_epics_knobs() {
 		make_caput $PV ${NU#*:} ${SITE}
 	done
 	
-	for PV in $(grep DECIM $RL)
+	for PV in $(egrep -e DECIM -e OSR $RL)
 	do
 		NU=${PV#*:}
 		make_caget $PV ${NU#*:} ${NU:0:1}
