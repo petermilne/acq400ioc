@@ -8,6 +8,9 @@ getSi5326config {
 	in "%s";		
 }
 
+setSi5326config {
+	out "load.si5326  si5326_33M333-%dM.txt	";
+}
 getSi5326bypass {
 	out "si5326bypass";
 	in "%d";
