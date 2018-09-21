@@ -1,4 +1,7 @@
 
+** EXPERIMENTAL: change the PV PREFIX from $(hostname)
+export IOC_HOST=ioc_119
+
 To trace streamdevice operation:
 ./scripts/set.epics-trace
 
@@ -43,3 +46,6 @@ echo -1 > /etc/acq400/0/OVERSAMPLING
 GPG_MON=y # enable gpg_monitor 
 #recommended for testing gpg, you can also set it after the event with
 # /usr/local/epics/scripts/gpg_monitor 1 
+
+
+
