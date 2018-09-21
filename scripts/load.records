@@ -1,6 +1,6 @@
 #!/bin/sh
 
-HOST=${1:-$(hostname)}
+HOST=${HOST:-$(hostname)}
 SIZE=${SIZE:-4096}
 TYPE=${TYPE:-SHORT}
 FNAME=AI
