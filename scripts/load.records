@@ -288,20 +288,17 @@ load_400() {
 		esac;;
 	
 	
-	$MT_ACQ435|$MT_ACQ430|$MT_ACQ437)
+	$MT_ACQ435|$MT_ACQ430|$MT_ACQ437|$MT_ACQ436)
 		is_adc="ds"
 		case $model in
 		$MT_ACQ437)
+			gains="G0=10,G1=5,G2=2,G3=1"
 			has_ch_gains=1;;
 		esac
-		
 		
 		if [ "x${site}" = "x1" ]; then
 			HAS_ACQ43X=1
 			echo 1>&2 "HAS_ACQ43X Detected: $HAS_ACQ43X"
-		fi
-		if [ $model = 6	]; then
-				gains="G0=10,G1=5,G2=2,G3=1"				
 		fi		
 		let LO=$LO/256;;
 	$MT_ACQ480)		
