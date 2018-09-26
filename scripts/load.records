@@ -696,24 +696,21 @@ load_mb_sync() {
 	for FUN in SYNC TRG CLK
 	do		 
 		lprams="FUN=${FUN},fun=$(toLower ${FUN})"
-		# d0
-		zrst="EXT";	frst="nc"
+		# d0  defaults
+		zrst="EXT"; onst="HDMI"; twst="nc";	thst="nc"; frst="nc"
 		
 		case $FUN in
-		CLK)	nobt=2; onst="HDMI"; 	twst="HDMI";		
+		CLK)	nobt=2; 		 twst="HDMI";		
                 case $MB_MODEL in
-                acq2106*)
-						zrst=SyncE
-						thst="COMM_A";;
-				*)
-						thst="nc";;
+                acq2106*) 	
+                	zrst=SyncE; thst="COMM_A";;				
 				esac;;
 		TRG)	if [ $(has_dsp_trg $MB_MODEL) -ne 0 ]; then
-					nobt=3; zrst="EXT"; onst="HDMI_TRG"; twst="HOSTB"; thst="GPG0"; frst="DSP0"
+					nobt=3; twst="HOSTB"; 		thst="GPG0"; frst="DSP0"
 				else
-					nobt=2; onst="HDMI";    twst="HDMI_GPIO";  	thst="GPG0"
+					nobt=2; twst="HDMI_GPIO";  	thst="GPG0"
 				fi;;
-		SYNC)	nobt=1; onst="HDMI"; 	twst="nc";		thst="nc";;
+		SYNC)	nobt=1;;
 		esac
 		dblr '"db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=0,ZRST=${zrst},ONST=${onst},TWST=${twst},THST=${thst},FRST=${frst},NOBT=${nobt}'"'
 		
@@ -724,18 +721,16 @@ load_mb_sync() {
 				else				
 					case $MB_MODEL in
 					acq2106*)
-						nobt=2; zrst="STRIG"; onst="HOSTA"; twst="HOSTB"; 	thst="GPG1";;
+						nobt=2; zrst="STRIG"; onst="HOSTA"; twst="HOSTB"; 	  thst="GPG1";;
 					*)
-						nobt=2; zrst="STRIG"; onst="HDMI";  twst="HDMI_GPIO"; thst="GPG1";;
+						nobt=2; zrst="STRIG"; 				twst="HDMI_GPIO"; thst="GPG1";;
 					esac
 				fi;;				
-		SYNC) 	nobt=1; zrst="EXT";   onst="HDMI";  twst="nc"; thst="nc";;
-		CLK)	nobt=2; onst="HDMI"; 	twst="HDMI";
+		SYNC) 	nobt=1;;
+		CLK)	nobt=2; zrst="MCLK"; twst="HDMI"
 				case $MB_MODEL in
 				acq2106*)
-					zrst="MCLK"; thst="COMM_B";;
-				*)
-					zrst="MCLK"; thst="nc";
+					thst="COMM_B";;
 				esac;;
 		*) 		echo ERROR undefined FUN;;
 #nobt=1; onst="HDMI";  twst="nc"; thst="nc";;

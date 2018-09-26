@@ -72,7 +72,7 @@ set_slave_acq1001() {
 		set.site 0 SYS:CLK:FPMUX OFF
 		sync_trg_to_clk 0
 		set.site 0 SIG:SRC:CLK:1 HDMI
-		set.site 0 SIG:SRC:TRG:0 HDMI_TRG
+		set.site 0 SIG:SRC:TRG:0 HDMI
 		set.site 0 SIG:SRC:SYNC:0 HDMI
 		set.site 1 "CLK=1; CLK:DX=d1; CLK:SENSE=${CLK_SENSE}"
 		set.site 1 "TRG=1; TRG:DX=d0; TRG:SENSE=${TRG_SENSE}"
