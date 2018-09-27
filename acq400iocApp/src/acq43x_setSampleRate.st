@@ -186,6 +186,8 @@ ss rate_set
 		} state action
 		
 		when(fp_mux == 2){ 	/* FPCLK */
+			printf("pvGet clk_mb_fin=%.1f\n", clk_mb_fin);
+			pvGet(clk_mb_fin);
 			printf("going with FPCLK=%.1f\n", clk_mb_fin);
 		} state action
 		
