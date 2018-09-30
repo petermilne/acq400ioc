@@ -127,10 +127,9 @@ record (calc, "${UUT}:SYS:CLK:Si5326:PLAN_EN"){
 	field(CALC, "A==3 && B==0")
 }
 record (mbbo, "${UUT}:SYS:CLK:Si5326:PLAN") {
-	field(DTYP, "stream")
-	field(DESC, "loads PLAN when 33.333MHz src")
-	field(OUT,  "@acq2106clk.proto setSi5326config ${SPORT}")
-	field(NOBT, "3")
+	field(DTYP, "Soft Channel")
+	field(DESC, "loads PLAN when 33.333MHz src")	
+	field(NOBT, "8")
 	field(ZRVL, "10")
 	field(ONVL, "20")
 	field(TWVL, "24")
@@ -153,7 +152,15 @@ record(longout, "${UUT}:0:SIG:CLK_MB:SET:clr") {
 	field(DTYP, "Soft Channel")
 	field(OMSL, "closed_loop")
 	field(DOL,  "0")
-	field(OUT, "${UUT}:0:SIG:CLK_MB:SET")	
+	field(OUT, "${UUT}:0:SIG:CLK_MB:SET PP")
+	field(FLNK, "${UUT}:SYS:CLK:Si5326:PLAN:w")
+}
+
+record(longout, "${UUT}:SYS:CLK:Si5326:PLAN:w") {
+	field(DTYP, "stream")
+	field(OUT,  "@acq2106clk.proto setSi5326config ${SPORT}")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:SYS:CLK:Si5326:PLAN.RVAL")
 }
 
 # Set Output Enable when FP signals configured as OUTPUTS
