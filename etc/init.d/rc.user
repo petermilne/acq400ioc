@@ -3,7 +3,8 @@
 
 if [ -x /mnt/local/rc.user ]; then
 	echo "+++ /etc/init.d/rc.user .. deferring /mnt/local/rc.user"
-	(/usr/local/epics/scripts/wait_oic_ready; 
+	(/usr/local/epics/scripts/wait_ioc_ready; 
+	 echo "+++ calling /mnt/local/rc.user"
 	 /mnt/local/rc.user
 	 echo "+++ /mnt/local/rc.user complete" ) &
 else
