@@ -12,10 +12,11 @@ while [ -z $IOC_HOST ]; do
 done
 PV=${IOC_HOST}:IOC_READY
 
-RDY=""
+RDY=$(caget -nt $PV)
 
 while [ "x$RDY" != "x1" ]; do
 	echo wait_ioc_ready $PV
+	sleep 1
 	RDY=$(caget -nt $PV)
 done
 
