@@ -1,0 +1,12 @@
+#!/bin/sh
+
+
+if [ -x /mnt/local/rc.user ]; then
+	echo "+++ /etc/init.d/rc.user .. deferring /mnt/local/rc.user"
+	(/usr/local/epics/scripts/wait_oic_ready; 
+	 /mnt/local/rc.user
+	 echo "+++ /mnt/local/rc.user complete" ) &
+else
+	echo "--- WARNING: /mnt/local/rc.user NOT FOUND"
+fi
+

@@ -18,4 +18,4 @@ init_mb_clk() {
 	set.site 1 trg=1,0,0
 }
 
-(init_mb_clk ${1:-50000000}) & 
+init_mb_clk ${1:-50000000}

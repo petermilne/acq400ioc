@@ -2,6 +2,8 @@
 
 set +e
 
+[ -e /dev/shm/ioc_ready ] && exit 0
+
 while [ -z $IOC_HOST ]; do
 	while [ ! -e /etc/profile.d/epics.sh ]; do
 		sleep 1
@@ -17,5 +19,8 @@ while [ "x$RDY" != "x1" ]; do
 	RDY=$(caget -nt $PV)
 done
 
-echo $PV all good now $RDY
+UPTIME=$(cat /proc/uptime | awk '{ print $1 }')
+
+echo "UPTIME $UPTIME $PV all good now $RDY"
+echo "UPTIME $UPTIME $PV all good now $RDY" >/dev/shm/ioc_ready
 

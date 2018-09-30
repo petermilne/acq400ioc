@@ -21,9 +21,7 @@ init_mb_clk_fp() {
 
 case $1 in
 fpclk)
-       (init_mb_clk_fp ${2:-1000000} ${3:-37000}) &
-       ;;
+       init_mb_clk_fp ${2:-1000000} ${3:-37000};;
 *)
-       (init_mb_clk ${1:-37000}) &
-       ;;
+       init_mb_clk ${1:-37000};;
 esac

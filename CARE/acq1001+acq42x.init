@@ -32,12 +32,10 @@ init_mb_clk_fp() {
 case $1 in
 fpclk)
 	# FP_CLK, 1MHz multiply to 16MHz, CLKDIV=16 => 1MHz
-	(init_mb_clk_fp ${2:-1000000} ${3:-16000000} ${4:-16}) & 
-	;;
+	init_mb_clk_fp ${2:-1000000} ${3:-16000000} ${4:-16};;
 *)
 	# MB_CLK, 16MHz / 16 = 1MHz
-	(init_mb_clk ${1:-16000000} ${2:-16}) &
-	;;
+	init_mb_clk ${1:-16000000} ${2:-16};;
 esac
 
 
