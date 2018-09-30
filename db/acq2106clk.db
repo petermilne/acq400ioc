@@ -116,9 +116,20 @@ record (bi, "${UUT}:SYS:CLK:Si570_OE") {
 	field(SCAN, "10 second")
 }
 
-record (mbbo, "${UUT}:SYS:CLK:Si5326:INTCLK_SET") {
+record (bi, "${UUT}:SYS:CLK:Si5326:PLAN_EN:t") {
+	field(DTYP, "Soft Channel")
+	field(SCAN, "1 second")
+	field(FLNK, "${UUT}:SYS:CLK:Si5326:PLAN_EN")
+}
+record (calc, "${UUT}:SYS:CLK:Si5326:PLAN_EN"){
+	field(INPA, "${UUT}:SYS:CLK:FPMUX")
+	field(INPB, "${UUT}:0:SIG:ZCLK_SRC")
+	field(CALC, "A==3 && B==0")
+}
+record (mbbo, "${UUT}:SYS:CLK:Si5326:PLAN") {
 	field(DTYP, "stream")
-	field(OUT,  "@acq2106clk.proto acq480_init_clk ${SPORT}")
+	field(DESC, "loads PLAN when 33.333MHz src")
+	field(OUT,  "@acq2106clk.proto setSi5326config ${SPORT}")
 	field(NOBT, "8")
 	field(ZRVL, "10")
 	field(ONVL, "20")
@@ -131,7 +142,9 @@ record (mbbo, "${UUT}:SYS:CLK:Si5326:INTCLK_SET") {
 	field(TWST, "24M")
 	field(THST, "40M")
 	field(FRST, "50M")
-	field(FVST, "80M") 
+	field(FVST, "80M")
+	field(DISA, "${UUT}:SYS:CLK:Si5326:PLAN_EN")
+	field(DISV, "0")
 }
 
 # Set Output Enable when FP signals configured as OUTPUTS
