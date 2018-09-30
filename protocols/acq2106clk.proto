@@ -9,7 +9,8 @@ getSi5326config {
 }
 
 setSi5326config {
-	out "load.si5326  si5326_33M333-%dM.txt	";
+	out "load.si5326 si5326_33M333-%dM.txt";
+	in;
 }
 getSi5326bypass {
 	out "si5326bypass";

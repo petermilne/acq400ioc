@@ -130,7 +130,7 @@ record (mbbo, "${UUT}:SYS:CLK:Si5326:PLAN") {
 	field(DTYP, "stream")
 	field(DESC, "loads PLAN when 33.333MHz src")
 	field(OUT,  "@acq2106clk.proto setSi5326config ${SPORT}")
-	field(NOBT, "8")
+	field(NOBT, "3")
 	field(ZRVL, "10")
 	field(ONVL, "20")
 	field(TWVL, "24")
@@ -143,8 +143,17 @@ record (mbbo, "${UUT}:SYS:CLK:Si5326:PLAN") {
 	field(THST, "40M")
 	field(FRST, "50M")
 	field(FVST, "80M")
-	field(DISA, "${UUT}:SYS:CLK:Si5326:PLAN_EN")
+	field(SDIS, "${UUT}:SYS:CLK:Si5326:PLAN_EN")
 	field(DISV, "0")
+# stub load freq by formula 	
+	field(FLNK, "${UUT}:0:SIG:CLK_MB:SET:clr")
+}
+
+record(longout, "${UUT}:0:SIG:CLK_MB:SET:clr") {
+	field(DTYP, "Soft Channel")
+	field(OMSL, "closed_loop")
+	field(DOL,  "0")
+	field(OUT, "${UUT}:0:SIG:CLK_MB:SET")	
 }
 
 # Set Output Enable when FP signals configured as OUTPUTS
