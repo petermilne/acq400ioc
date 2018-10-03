@@ -538,17 +538,18 @@ load_intmon() {
 }
 
 load_gpg() {
-	PRAMS="UUT=${HOST},SITE=0,SPORT=S0,ZNAM=internal,ONAM=external"
+	PG="UUT=${HOST},SPORT=SG"
+	PRAMS="${PG},SITE=0,ZNAM=internal,ONAM=external"
 	if [ "x$GPG_MON" = "xy" ]; then
 		mondis=0
 	else
 		mondis=1
 	fi
-	dblr '"db/gpg.db","UUT='${HOST}',SPORT=S0,MONDIS='${mondis}'"'	
+	dblr '"db/gpg.db","'${PG}',MONDIS='${mondis}'"'	
 	dblr '"db/signal.db","'${PRAMS},FNAM=GPG_CLK,FN=gpg_clk,DISV=1'"'	
 	dblr '"db/signal.db","'${PRAMS},FNAM=GPG_TRG,FN=gpg_trg,DISV=1'"'
 	dblr '"db/signal.db","'${PRAMS},FNAM=GPG_SYNC,FN=gpg_sync,DISV=1'"'
-		
+	create_asyn_channel SG 127.0.0.1:4220	
 }
 load_mb_base() {
 	ns=$1
