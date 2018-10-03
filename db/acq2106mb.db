@@ -12,7 +12,7 @@ record(longout, "${UUT}:0:SIG:CLK_MB:FIN") {
 	field(DESC, "best input frequency for MB_CLK if set")
 	field(EGU,  "Hz")
 	field(LOPR, "0")
-	field(HOPR, "100000000")	
+	field(HOPR, "200000000")	
 }
 # setMB_Hz fin fout 
 # ie OVAL, A, when A!=0
