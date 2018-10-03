@@ -1,3 +1,5 @@
+DDC_ATTEN=${DDC_ATTEN:-20}
+
 make_AI() {
 	site=$1
 	type=SHORT
@@ -27,7 +29,7 @@ make_AI() {
 			rawi=$(printf "%02d" $rawix)
 			let rawqx=$ch
 			rawq=$(printf "%02d" $rawqx)
-			cp="cid=${cid},cid2=${cid2},rawi=${rawi},rawq=${rawq},ATTEN=1"
+			cp="cid=${cid},cid2=${cid2},rawi=${rawi},rawq=${rawq},ATTEN=${DDC_ATTEN}"
 			dblr \"db/wfSpecDDC.db\",\"${wprams},${cp}\"
 		fi
 		
