@@ -1,0 +1,130 @@
+# waveform shows DDC output; AI:WF MUST be ?data32? type
+# ?data32? ... loks like shorts to me ..
+
+# ${PFX}  eg $HN:1:CH%02d:REF%d:
+# ${IQ}   eg I or Q
+
+record(aSub, "${UUT}:${SITE}:AI:WF:${cid2}:V") {
+	field(FLNK, "${UUT}:${SITE}:AI:WF:cplx:${cid}")
+}
+
+record(fanout, "${UUT}:${SITE}:AI:WF:cplx:${cid}") {
+	field(LNK1, "${UUT}:${SITE}:AI:WF:POLAR:${cid}")
+	field(LNK2, "${UUT}:${SITE}:AI:WF:FDDC")		
+	field(LNK4, "${UUT}:${SITE}:AI:WF:PS:${cid}")
+}
+
+
+# LNK1
+
+# INPA : raw waveform
+# INPB : maxcode bits
+# INPC : vmax		: ALT: INPC=aslo, INPB=1
+# INPD : alarm threshold
+# INPO : aoff
+
+record(aSub, "${UUT}:${SITE}:AI:WF:POLAR:${cid}") {	
+	field(SNAM, "cart2pol")
+	
+	field(FTA,  "SHORT")
+	field(NOA,  "${size}")
+	field(INPA, "${UUT}:${SITE}:AI:WF:${rawi}")
+
+	field(FTB,  "SHORT")
+	field(NOB,  "${size}")
+	field(INPB, "${UUT}:${SITE}:AI:WF:${rawq}")	
+# Fs
+	field(FTC,  "FLOAT")
+	field(NOC,  "1")
+	field(INPC, "${UUT}:${SITE}:AI:WF:FOUT")
+# IS CPLX : YES	
+	field(FTD,  "ULONG")
+	field(NOD,  "1")
+	field(INPD, "1")
+	
+	field(FTVA, "FLOAT")
+	field(NOVA, "${size}")
+	field(DESC, "complex WF in polar A=R B=T")
+	
+	field(FTVB, "FLOAT")
+	field(NOVB, "${size}")
+	#window		
+	field(FTVC,  "FLOAT")
+	field(NOVC,  "${LEN}")
+	
+	field(FLNK, "${UUT}:2:AI:WF:${cid}")
+}
+
+record(waveform, "${UUT}:2:AI:WF:${cid}") {
+	field(DTYP, "Soft Channel")
+	field(FTVL, "FLOAT")
+	field(NELM, "${size}")
+	field(INP,  "${UUT}:${SITE}:AI:WF:POLAR:${cid}.VALA")
+	field(FLNK, "${UUT}:3:AI:WF:${cid}")
+	field(DESC, "I value for Site 1")
+}
+
+record(waveform, "${UUT}:3:AI:WF:${cid}") {
+	field(DTYP, "Soft Channel")
+	field(FTVL, "FLOAT")
+	field(NELM, "${size}")
+	field(INP,  "${UUT}:${SITE}:AI:WF:POLAR:${cid}.VALB")
+	field(DESC, "Q value for Site 1")	
+}
+
+
+
+
+
+# LNK2
+
+record(calc, "${UUT}:${SITE}:AI:WF:FDDC" ) {
+	field(INPA, "${UUT}:0:SIG:CLK_S1:FREQ")
+	field(INPB,  "16")
+	field(CALC, "100*FLOOR(A/100)/B")	
+	field(DESC,  "Fout from DDC")
+	field(FLNK,  "${UUT}:${SITE}:AI:WF:FMIXER")
+}
+
+record(calc, "${UUT}:${SITE}:AI:WF:FMIXER") {
+	field(INPA, "${UUT}:0:SIG:CLK_S1:FREQ")
+	field(INPB, "4")
+	field(CALC, "100*FLOOR(A/100)/B")
+	field(DESC, "DDC Mixer (center) frequency")
+}
+
+
+record(aSub, "${UUT}:${SITE}:AI:WF:PS:${cid}") {
+	field(SNAM, "spectrum")
+# I	
+	field(FTA,  "SHORT")
+	field(NOA,  "${size}")
+	field(INPA, "${UUT}:${SITE}:AI:WF:${rawi}")
+# Q
+	field(FTB,  "SHORT")
+	field(NOB,  "${size}")
+	field(INPB, "${UUT}:${SITE}:AI:WF:${rawq}")	
+# Fs
+	field(FTC,  "FLOAT")
+	field(NOC,  "1")
+	field(INPC, "${UUT}:${SITE}:AI:WF:FDDC")	
+
+# IS CPLX : YES	
+	field(FTD,  "ULONG")
+	field(NOD,  "1")
+	field(INPD, "1")
+	
+# single sided power spectrum
+	field(FTVA, "FLOAT")
+	field(NOVA, "${size}")
+	field(DESC, "complex PS in polar A=R B=T C=Window")
+	
+# BINS - 
+	field(FTVB, "FLOAT")
+	field(NOVB, "${size}")
+#window		
+	field(FTVC,  "FLOAT")
+	field(NOVC,  "${size}")	
+}
+
+
