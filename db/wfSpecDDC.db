@@ -1,8 +1,4 @@
-# waveform shows DDC output; AI:WF MUST be ?data32? type
-# ?data32? ... loks like shorts to me ..
-
-# ${PFX}  eg $HN:1:CH%02d:REF%d:
-# ${IQ}   eg I or Q
+# waveform shows DDC output
 
 record(aSub, "${UUT}:${SITE}:AI:WF:${cid2}:V") {
 	field(FLNK, "${UUT}:${SITE}:AI:WF:cplx:${cid}")
@@ -81,7 +77,7 @@ record(waveform, "${UUT}:3:AI:WF:${cid}") {
 record(calc, "${UUT}:${SITE}:AI:WF:FDDC" ) {
 	field(INPA, "${UUT}:0:SIG:CLK_S1:FREQ")
 	field(INPB,  "16")
-	field(CALC, "100*FLOOR(A/100)/B")	
+	field(CALC, "FLOOR(A*1000/B + 0.5)/1000")	
 	field(DESC,  "Fout from DDC")
 	field(FLNK,  "${UUT}:${SITE}:AI:WF:FMIXER")
 }
