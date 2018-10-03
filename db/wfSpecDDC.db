@@ -11,6 +11,17 @@ record(fanout, "${UUT}:${SITE}:AI:WF:cplx:${cid}") {
 }
 
 
+
+record(ao, "${UUT}:AI:WF:PS:SMOO") {
+	field(DTYP, "Soft Channel")
+	field(PINI, "YES")
+	field(VAL,  "0")
+	field(DRVH, "1")
+	field(DRVL, "0")
+	field(EGUL, "0")
+	field(EGUF, "1")	
+}
+
 # LNK1
 
 # INPA : raw waveform
@@ -29,14 +40,6 @@ record(aSub, "${UUT}:${SITE}:AI:WF:POLAR:${cid}") {
 	field(FTB,  "SHORT")
 	field(NOB,  "${size}")
 	field(INPB, "${UUT}:${SITE}:AI:WF:${rawq}")	
-# Fs
-	field(FTC,  "FLOAT")
-	field(NOC,  "1")
-	field(INPC, "${UUT}:${SITE}:AI:WF:FOUT")
-# IS CPLX : YES	
-	field(FTD,  "ULONG")
-	field(NOD,  "1")
-	field(INPD, "1")
 	
 	field(FTVA, "FLOAT")
 	field(NOVA, "${size}")
@@ -109,8 +112,19 @@ record(aSub, "${UUT}:${SITE}:AI:WF:PS:${cid}") {
 	field(FTD,  "ULONG")
 	field(NOD,  "1")
 	field(INPD, "1")
+
+# Attenuation                                 
+    field(FTF,  "FLOAT")                  
+    field(NOF,  "1")    
+    field(INPF, "${ATTEN}")  
+        
+# SMOOTHING : 0 : no smoothing, 1: infinite
+	field(FTS,   "DOUBLE")
+	field(NOS,   "1")
+	field(INPS,  "${UUT}:AI:WF:PS:SMOO")
 	
-# single sided power spectrum
+			
+# double sided power spectrum
 	field(FTVA, "FLOAT")
 	field(NOVA, "${size}")
 	field(DESC, "complex PS in polar A=R B=T C=Window")

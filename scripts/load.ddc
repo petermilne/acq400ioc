@@ -27,7 +27,7 @@ make_AI() {
 			rawi=$(printf "%02d" $rawix)
 			let rawqx=$ch
 			rawq=$(printf "%02d" $rawqx)
-			cp="cid=${cid},cid2=${cid2},rawi=${rawi},rawq=${rawq}"
+			cp="cid=${cid},cid2=${cid2},rawi=${rawi},rawq=${rawq},ATTEN=1"
 			dblr \"db/wfSpecDDC.db\",\"${wprams},${cp}\"
 		fi
 		
