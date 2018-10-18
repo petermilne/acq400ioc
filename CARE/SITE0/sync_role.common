@@ -14,6 +14,7 @@ CLK_SENSE=rising
 
 CMDLINE="$*"
 FMIN=4000000
+CLKDIV=1
 
 for k in $*; do
 		key=${k%=*}; val=${k#*=}
@@ -35,14 +36,17 @@ done
 
 set_mbclk() {
 		let fs=$1
-		let clkdiv=1
 		if [ $fs -lt $FMIN ]; then
+			# ensure a valid fs, ignore any user CLKDIV
 			let clkdiv="5*$FMIN/$fs"
 			clkdiv=$(printf "%d" $clkdiv)
 			let fs=$clkdiv*$fs
+			set.site 1 CLKDIV $clkdiv
+		else
+			# assert CLKDIV, possibly user
+			set.site 1 CLKDIV $CLKDIV
 		fi
 		set.site 0 SIG:CLK_MB:SET $fs
-		set.site 1 CLKDIV $clkdiv
 }
 
 
