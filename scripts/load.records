@@ -701,11 +701,12 @@ load_mb_sync() {
 		zrst="EXT"; onst="HDMI"; twst="nc";	thst="nc"; frst="nc"
 		
 		case $FUN in
-		CLK)	nobt=2; 		 twst="HDMI";		
-                case $MB_MODEL in
-                acq2106*) 	
-                	zrst=SyncE; thst="COMM_A";;				
-				esac;;
+		CLK)	nobt=2; 		 
+			twst="HDMI";		
+               		case $MB_MODEL in
+                	acq2106*) 	
+                		zrst=SyncE; thst="COMM_A" frst="INT33M";;				
+			esac;;
 		TRG)	if [ $(has_dsp_trg $MB_MODEL) -ne 0 ]; then
 					nobt=3; twst="HOSTB"; 		thst="GPG0"; frst="DSP0"
 				else
