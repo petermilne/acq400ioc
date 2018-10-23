@@ -178,22 +178,15 @@ set_fpmaster() {
 is_48x() {
 	echo $MEZ | grep -q ACQ48
 }
-set_48x_master_override() {
-        # Configure clock - This is NOT valid for FPCLK
-        set.site 0 SIG:SRC:CLK:0 nc # nc changed to INT33M
-        set.site 0 SYS:CLK:FPMUX ZCLK
-        set.site 0 SIG:ZCLK_SRC CLK.d0
-        set.site 0 SIG:CLK_MB:FIN 33333000
-	$set_mb $1
-        set.site 0 SYS:CLK:OE_CLK1_ZYNQ 1
-        set.site 1 CLKDIV=${CLKDIV:-1}
-        # Configure HDMI Clock out
-        set.site 0 SIG:SYNC_OUT:CLK:DX  d0
-}
 
-set_48x_slave_override() {
+set_48x_override() {
         # Configure clock
-        set.site 0 SIG:SRC:CLK:0 HDMI
+	if [ "$2" = "master" ]; then
+        	# Configure clock - This is NOT valid for FPCLK
+        	set.site 0 SIG:SRC:CLK:0 nc # nc changed to INT33M
+	else
+        	set.site 0 SIG:SRC:CLK:0 HDMI
+	fi
         set.site 0 SYS:CLK:FPMUX ZCLK
         set.site 0 SIG:ZCLK_SRC CLK.d0
         set.site 0 SIG:CLK_MB:FIN 33333000
@@ -226,7 +219,7 @@ master)
 		$set_common_master
 		eval $(egu2int FS=${2:-200000})
 		set_local_clock $FS
-		is_48x && set_48x_master_override $FS
+		is_48x && set_48x_override $FS master
 		echo $CMDLINE > /dev/shm/role;;
 solo)
 		set_common
@@ -238,7 +231,7 @@ slave)
 		set_out_slave
 		$set_slave
 		eval $(egu2int FS=${2:-200000})
-		is_48x && set_48x_master_override $FS
+		is_48x && set_48x_override $FS slave
 		echo $CMDLINE > /dev/shm/role;;
 help)
 		echo "USAGE sync_role {fpmaster|master|slave|solo} [CLKHZ] [FIN]"
