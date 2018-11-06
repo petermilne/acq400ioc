@@ -247,6 +247,7 @@ load_400() {
 	model=$(cat /dev/acq400.${site}.knobs/module_type)
 	name=$(nameFromMT $model)
 	has_output=$(hasOutput $model)
+	has_rgm=0
 	
 	echo 1>&2 "load.records:load_400 site:$site model:$model name:$name"
 	
@@ -275,6 +276,7 @@ load_400() {
 	case $model in
 	$MT_ACQ420|$MT_ACQ420F|$MT_ACQ424|$MT_ACQ425|$MT_ACQ425F|$MT_ACQ427|$MT_ACQ427F|$MT_BOLO8|$MT_BOLO8B|$MT_ACQ423)
 		is_adc="sar"
+		has_rgm=1
 		calmon=calmon42x
 		case $model in
 		$MT_ACQ423)
@@ -290,6 +292,7 @@ load_400() {
 	
 	$MT_ACQ435|$MT_ACQ430|$MT_ACQ437|$MT_ACQ436)
 		is_adc="ds"
+		has_rgm=1
 		case $model in
 		$MT_ACQ437)
 			gains="G0=10,G1=5,G2=2,G3=1"
@@ -311,6 +314,7 @@ load_400() {
 			ACQ480_S1=$site
 		fi
 		is_adc="sar"
+		has_rgm=1
 		# gains are digital.
 		maxhz=80000000
 		has_ch_gains=1
@@ -408,7 +412,7 @@ load_400() {
 
 	if [ ${site} -eq $FIRST_SITE ]; then
 		mprams="UUT=${HOST},SITE=${site},SPORT=S${site}M"
-		has_rgm=0
+
 		if [ $HAS_ACQ43X -eq 1 ]; then
 			dblr '"db/acq4xx_rgm.db","'${mprams},SRTM=SRTM'"'
 			echo 1>&2 "HAS_ACQ43X Detected: $HAS_ACQ43X"
@@ -416,9 +420,8 @@ load_400() {
 			# MUST  be AFTER acq420fmc.d to hook the right DT0
 			dblr '"db/acq430fmc.db","'${mprams},LO=$LO'"'
 			has_rgm=1
-		elif [ "x$model" == "x$MT_ACQ480" ]; then
+		elif [ $has_rgm -eq 1 ]; then
 			dblr '"db/acq4xx_rgm.db","'${mprams},SRTM="nc"'"'
-			has_rgm=1
 		fi
 		dblr '"db/has_rgm.db","'${mprams},HAS_RGM=$has_rgm'"'
 		create_asyn_channel S${site}M 127.0.0.1:422${site}	
