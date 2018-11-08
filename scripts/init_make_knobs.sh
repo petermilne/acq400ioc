@@ -24,6 +24,7 @@ make_site0_knobs() {
 	)
 	make_site_custom_knobs 0 common
 	make_site_custom_knobs 0 $(cat /proc/device-tree/chosen/compatible_model)
+	ln -s /dev/shm/state /etc/acq400/0/cstate
 }
 
 

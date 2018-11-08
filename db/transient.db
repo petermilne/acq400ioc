@@ -6,6 +6,20 @@ record(bo, "${UUT}:MODE:CONTINUOUS") {
 	field(OUT,  "@mb.proto setContinuous ${SPORT}")
 }
 
+record(mbbi, "${UUT}:MODE:CONTINUOUS:STATE") {
+	field(DTYP, "stream")
+	field(INP,  "@mb.proto getState ${SPORT}")
+	field(SCAN, ".2 second")
+	field(SDIS, "${UUT}:MODE:CONTINUOUS")
+	field(DISV, "0")
+	field(NOBT, "3")
+	field(ZRST, "IDLE")
+	field(ONST, "ARM")
+	field(TWST, "RUN")
+	field(THST, "RUN2")
+	field(FRST, "POST_PROCESS")
+	field(FVST, "CLEANUP")
+}
 record(stringin, "${UUT}:MODE:CONTINUOUS:STATUS") {
 	field(DTYP, "stream")
 	field(INP,  "@continuous.proto getContinuousStatus ${NPORT}")

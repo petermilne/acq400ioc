@@ -83,7 +83,7 @@ setAbort {
 
 getState {
 	out "state";
-	in "%d %(\$1:PRE)d %(\$1:POST)d %(\$1:TOTSAM)d";
+	in "%d %*d %*d %*d %*d";
 }
 
 setReboot {
