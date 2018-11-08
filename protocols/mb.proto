@@ -81,8 +81,8 @@ setAbort {
 	in;
 }
 
-getState {
-	out "state";
+getCState {
+	out "cstate";
 	in "%d %*d %*d %*d %*d";
 }
 
