@@ -124,7 +124,7 @@ make_epics_knobs() {
 		esac
 	done
 
-	for PV in $(egrep -e MODE:TRANSIENT $RL | grep -v [a-z]$)
+	for PV in $(egrep -e MODE:TRANSIENT -e MODE:CONTINUOUS $RL | grep -v [a-z]$)
 	do
 		pv1=${PV#*:}
 		make_caput $PV ${pv1#*:} 0
