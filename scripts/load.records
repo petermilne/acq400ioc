@@ -476,6 +476,7 @@ load_400() {
 	dblr '"db/signal.db","'${cprams}',FNAM=SYNC,FN=sync,ZNAM=internal,ONAM=external,DISV=1"'
 	dblr '"db/signal.db","'${cprams}',FNAM=EVENT1,FN=event1,ZNAM=disable,ONAM=enable,DISV=-1"'
 	dblr '"db/signal.db","'${cprams}',FNAM=EVENT0,FN=event0,ZNAM=disable,ONAM=enable,DISV=-1"'
+
 	if [ "x$model" = "x$MT_ACQ480" ]; then
 		let sp1=$site+1		
 		dblr '"db/acq480fmc99.db","'${cprams},SITEP1=${sp1},div=$(acq480_div)'"' \
@@ -542,7 +543,8 @@ load_intmon() {
 
 load_gpg() {
 	PG="UUT=${HOST},SPORT=SG"
-	PRAMS="${PG},SITE=0,ZNAM=internal,ONAM=external"
+	PG0="${PG},SITE=0"
+	PRAMS="${PG0},ZNAM=internal,ONAM=external"
 	if [ "x$GPG_MON" = "xy" ]; then
 		mondis=0
 	else
@@ -552,6 +554,7 @@ load_gpg() {
 	dblr '"db/signal.db","'${PRAMS},FNAM=GPG_CLK,FN=gpg_clk,DISV=1'"'	
 	dblr '"db/signal.db","'${PRAMS},FNAM=GPG_TRG,FN=gpg_trg,DISV=1'"'
 	dblr '"db/signal.db","'${PRAMS},FNAM=GPG_SYNC,FN=gpg_sync,DISV=1'"'
+	dblr '"db/signal.db","'${PG0}',FNAM=SPAD1_US,FN=spad1_us,ZNAM=disable,ONAM=enable,DISV=1"'
 	create_asyn_channel SG 127.0.0.1:4220	
 }
 load_mb_base() {
