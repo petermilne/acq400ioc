@@ -3,10 +3,10 @@
 record (mbbo, "${UUT}:${SITE}:GAIN:${CH}") {	
 	field(DTYP, "Soft Channel")	
 	field(NOBT, "2")	
-	field(ZRST, "${G0}")
-	field(ONST, "${G1}")
-	field(TWST, "${G2}")
-	field(THST, "${G3}")
+	field(ZRST, "${G0}V")
+	field(ONST, "${G1}V")
+	field(TWST, "${G2}V")
+	field(THST, "${G3}V")
 	field(FLNK, "${UUT}:${SITE}:GAIN:fan1")    	
 }
 

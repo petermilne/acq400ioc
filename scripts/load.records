@@ -266,7 +266,11 @@ load_400() {
 	[ -e /dev/sites/$site/gains.sh ] && source /dev/sites/$site/gains.sh	
 	#gains=${GAINS:-G0=10,G1=5,G2=2.5,G3=1.25}
 	gains=${GAINS:-G0=10,G1=5,G2=2,G3=1}
-	gain_file_pfx="gain"
+	if echo $gains | grep -q X; then
+		gain_file_pfx="gain"
+	else
+		gain_file_pfx="range"
+	fi
 	
 	is_adc="no"
 	has_ch_gains=0
@@ -295,7 +299,6 @@ load_400() {
 		has_rgm=1
 		case $model in
 		$MT_ACQ437)
-			gains="G0=10,G1=5,G2=2,G3=1"
 			has_ch_gains=1;;
 		esac
 		
