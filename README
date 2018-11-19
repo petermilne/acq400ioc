@@ -11,6 +11,19 @@ export IOC_PREINIT=./scripts/load.SpecReal
 [ -e /dev/shm/window ] || \
 	ln -s /usr/local/CARE/hanning-float.bin /dev/shm/window
 
+SPECTRUM NOTES
+
+# try 8K length. Stub window file to allow generated 8K triangle..
+# or, ideally substitute an 8K hanning window file.
+export SIZE=8192
+export EPICS_CA_MAX_ARRAY_BYTES=500000
+#[ -e /dev/shm/window ] || \
+#    ln -s /usr/local/CARE/hanning-float.bin /dev/shm/window
+
+# for ADC with DATA32 eg ACQ43x, ACQ42x unpacked:
+export IOC_PREINIT=./scripts/load.SpecReal32
+
+Without a signal, it looks pretty much the same on plot. Interesting that we seem to have NO 50Hz at all..
 DDC:
 /mnt/local/sysconfig/epics.sh:
 export IOC_PREINIT=./scripts/load.ddc
