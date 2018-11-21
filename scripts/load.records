@@ -278,7 +278,7 @@ load_400() {
 	decim=1;
 
 	case $model in
-	$MT_ACQ420|$MT_ACQ420F|$MT_ACQ424|$MT_ACQ425|$MT_ACQ425F|$MT_ACQ427|$MT_ACQ427F|$MT_BOLO8|$MT_BOLO8B|$MT_ACQ423)
+	$MT_ACQ420|$MT_ACQ420F|$MT_ACQ424|$MT_ACQ425|$MT_ACQ425F|$MT_ACQ427|$MT_ACQ427F|$MT_ACQ423)
 		is_adc="sar"
 		has_rgm=1
 		calmon=calmon42x
@@ -293,6 +293,10 @@ load_400() {
 			has_ch_gains=1;;						
 		esac;;
 	
+	$MT_BOLO8|$MT_BOLO8B)
+		is_adc="sar"		
+		calmon=calmon42x		
+		has_ch_gains=1;;
 	
 	$MT_ACQ435|$MT_ACQ430|$MT_ACQ437|$MT_ACQ436)
 		is_adc="ds"
