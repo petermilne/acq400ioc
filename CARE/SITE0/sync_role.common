@@ -17,227 +17,237 @@ FMIN=4000000
 CLKDIV=1
 
 for k in $*; do
-		key=${k%=*}; val=${k#*=}
-		case $key in
-		TRG:SENSE)
-				TRG_SENSE=$val;;
-		CLK:SENSE)
-				CLK_SENSE=$val;;
-		TRG:DX)
-				TRG_DX=$val;;		# not previously defined
-		CLK:DX)
-				CLK_DX=$val;;
-		CLKDIV)
-				CLKDIV=$val;;
-		*)
-				[ $key != $val ] && echo "error $key not defined";;
-		esac
+    key=${k%=*}; val=${k#*=}
+    case $key in
+    TRG:SENSE)
+        TRG_SENSE=$val;;
+    CLK:SENSE)
+        CLK_SENSE=$val;;
+    TRG:DX)
+        TRG_DX=$val;;		# not previously defined
+    CLK:DX)
+        CLK_DX=$val;;
+    CLKDIV)
+        CLKDIV=$val;;
+    *)
+        [ $key != $val ] && echo "error $key not defined";;
+    esac
 done
 
 set_mbclk() {
-		let fs=$1
-		if [ $fs -lt $FMIN ]; then
-			# ensure a valid fs, ignore any user CLKDIV
-			let clkdiv="5*$FMIN/$fs"
-			clkdiv=$(printf "%d" $clkdiv)
-			let fs=$clkdiv*$fs
-			set.site 1 CLKDIV $clkdiv
-		else
-			# assert CLKDIV, possibly user
-			set.site 1 CLKDIV $CLKDIV
-		fi
-		set.site 0 SIG:CLK_MB:SET $fs
+    let fs=$1
+    if [ $fs -lt $FMIN ]; then
+    # ensure a valid fs, ignore any user CLKDIV
+        let clkdiv="5*$FMIN/$fs"
+        clkdiv=$(printf "%d" $clkdiv)
+        let fs=$clkdiv*$fs
+        set.site 1 CLKDIV $clkdiv
+    else
+        # assert CLKDIV, possibly user
+        set.site 1 CLKDIV $CLKDIV
+    fi
+    set.site 0 SIG:CLK_MB:SET $fs
 }
 
 
 set_mb=set_mbclk
 
 select_lo_zclk() {
-		set.site 0 SYS:CLK:FPMUX ZCLK
-		set.site 0 SIG:ZCLK_SRC INT33M
-		set.site 0 SIG:CLK_MB:FIN 33333000
+    set.site 0 SYS:CLK:FPMUX ZCLK
+    set.site 0 SIG:ZCLK_SRC INT33M
+    set.site 0 SIG:CLK_MB:FIN 33333000
 }
 select_lo_xclk() {
-		set.site 0 SYS:CLK:FPMUX XCLK
-		set.site 0 SIG:CLK_MB:FIN 32768000
+    set.site 0 SYS:CLK:FPMUX XCLK
+    set.site 0 SIG:CLK_MB:FIN 32768000
 }
 select_lo=select_lo_zclk
 
 set_acq43x_sample_rate() {
-		set.site 1 ACQ43X_SAMPLE_RATE $1
+    set.site 1 ACQ43X_SAMPLE_RATE $1
 }
 
 if [ -e /etc/acq400/1/ACQ43X_SAMPLE_RATE ]; then
-		select_lo=select_lo_xclk
-		set_mb=set_acq43x_sample_rate
+    select_lo=select_lo_xclk
+    set_mb=set_acq43x_sample_rate
 fi
 
 set_slave_acq1001() {
-		set.site 0 SYS:CLK:FPMUX OFF
-		sync_trg_to_clk 0
-		set.site 0 SIG:SRC:CLK:1 HDMI
-		set.site 0 SIG:SRC:TRG:0 HDMI
-		set.site 0 SIG:SRC:SYNC:0 HDMI
-		set.site 1 "CLK=1; CLK:DX=d1; CLK:SENSE=${CLK_SENSE}"
-		set.site 1 "TRG=1; TRG:DX=d0; TRG:SENSE=${TRG_SENSE}"
-		set.site 1 "SYNC=1; SYNC:DX=d0; SYNC:SENSE=rising"
-		set.site 1 CLKDIV=${CLKDIV:-1}
+    set.site 0 SYS:CLK:FPMUX OFF
+    sync_trg_to_clk 0
+    set.site 0 SIG:SRC:CLK:1 HDMI
+    set.site 0 SIG:SRC:TRG:0 HDMI
+    set.site 0 SIG:SRC:SYNC:0 HDMI
+    set.site 1 "CLK=1; CLK:DX=d1; CLK:SENSE=${CLK_SENSE}"
+    set.site 1 "TRG=1; TRG:DX=d0; TRG:SENSE=${TRG_SENSE}"
+    set.site 1 "SYNC=1; SYNC:DX=d0; SYNC:SENSE=rising"
+    set.site 1 CLKDIV=${CLKDIV:-1}
 }
 
 set_slave_acq2106() {
-		set.site 0 SYS:CLK:OE_CLK1_ZYNQ 0
-		set_slave_acq1001
+    set.site 0 SYS:CLK:OE_CLK1_ZYNQ 0
+    set_slave_acq1001
 }
 
 set_common_master_acq1001() {		
-		set.site 0 SIG:SRC:CLK:1 MCLK
-		sync_trg_to_clk 1
-		set.site 1 CLKDIV=${CLKDIV:-1}
+    set.site 0 SIG:SRC:CLK:1 MCLK
+    sync_trg_to_clk 1
+    set.site 1 CLKDIV=${CLKDIV:-1}
 }
 
 set_common_master_acq2106() {
-		set.site 0 SYS:CLK:OE_CLK1_ZYNQ 1
-		set.site 0 SYS:CLK:BYPASS 0
-		set_common_master_acq1001
+    set.site 0 SYS:CLK:OE_CLK1_ZYNQ 1
+    set.site 0 SYS:CLK:BYPASS 0
+    set_common_master_acq1001
 }
 
 MOD=$(get.site 0 MODEL)
 MEZ=$(get.site 1 MODEL)
 
+is_48x() {
+    echo $MEZ | grep -q ACQ48
+}
+
+is_42x() {	
+    echo $MEZ | egrep -q ACQ42\|AO42
+}
+
+
+CLKDX_OUT=d1
+
 if [ "${MOD:0:7}" = "acq2106" ]; then
-		set_slave=set_slave_acq2106
-		set_common_master=set_common_master_acq2106
+    set_slave=set_slave_acq2106
+    set_common_master=set_common_master_acq2106
 # Si5326 minimum output rate
-		FMIN=20000		
+    FMIN=20000
 else
-		set_slave=set_slave_acq1001
-		set_common_master=set_common_master_acq1001
+    set_slave=set_slave_acq1001
+    set_common_master=set_common_master_acq1001
 # ics527 minimum output rate
-		FMIN=4000000		
+    FMIN=4000000
+# avoid local clkdiv on slow SLAVE SAR devices		
+    is_42x && CLKDX_OUT=d2
 fi
 
 
 # common to all
 # report init status - this will be overwritten on successful completion
 set_common() {
-		echo "WARNING:$CMDLINE incomplete" > /dev/shm/role
-		set.site 0 SIG:*:RESET=1  &
+    echo "WARNING:$CMDLINE incomplete" > /dev/shm/role
+    set.site 0 SIG:*:RESET=1  &
 }
 
 # even a slave can master another link in the chain..
 # we share the MB clock and the SITE trigger 
 # The MASTER syncs the SITE trigger, SLAVES MUST leave it untouched.
 set_out() {	
-		set.site 0 SIG:SYNC_OUT:CLK 	CLK
-		set.site 0 SIG:SYNC_OUT:CLK:DX 	d1
-		set.site 0 SIG:SYNC_OUT:TRG 	TRG
-		set.site 0 SIG:SYNC_OUT:TRG:DX 	d2
-		set.site 0 SIG:SYNC_OUT:SYNC 	SYNC
-		set.site 0 SIG:SYNC_OUT:SYNC:DX d2
+    set.site 0 SIG:SYNC_OUT:CLK 	CLK
+    set.site 0 SIG:SYNC_OUT:CLK:DX 	${CLKDX_OUT}
+    set.site 0 SIG:SYNC_OUT:TRG 	TRG
+    set.site 0 SIG:SYNC_OUT:TRG:DX 	d2
+    set.site 0 SIG:SYNC_OUT:SYNC 	SYNC
+    set.site 0 SIG:SYNC_OUT:SYNC:DX d2
 }
 
 set_out_slave() {
-		set.site 0 SIG:SYNC_OUT:CLK 	CLK
-		set.site 0 SIG:SYNC_OUT:CLK:DX 	d1
-		set.site 0 SIG:SYNC_OUT:TRG 	TRG
-		set.site 0 SIG:SYNC_OUT:TRG:DX 	d0
-		set.site 0 SIG:SYNC_OUT:SYNC 	SYNC
-		set.site 0 SIG:SYNC_OUT:SYNC:DX d0
+    set.site 0 SIG:SYNC_OUT:CLK 	CLK
+    set.site 0 SIG:SYNC_OUT:CLK:DX 	d1
+    set.site 0 SIG:SYNC_OUT:TRG 	TRG
+    set.site 0 SIG:SYNC_OUT:TRG:DX 	d0
+    set.site 0 SIG:SYNC_OUT:SYNC 	SYNC
+    set.site 0 SIG:SYNC_OUT:SYNC:DX d0
 }
 
 # PV readback on triplet en,dx,edge can cause errors, so lock it
 source /etc/profile.d/epics.sh
 PV_BASE=${IOC_HOST}
 pv_read_lock() {
-		caput -t $PV_BASE:1:$1:r.DISA $2 >/dev/null
+    caput -t $PV_BASE:1:$1:r.DISA $2 >/dev/null
 }
 
 set_local_clock() {	 
-		$select_lo
-		$set_mb $1
-		pv_read_lock CLK 1
-		set.site 1 "CLK=1; CLK:DX=${CLK_DX:-d1}; CLK:SENSE=${CLK_SENSE}"
-		pv_read_lock CLK 0
-		pv_read_lock TRG 1
-		set.site 1 "TRG=1; TRG:DX=${TRG_DX:-d1}; TRG:SENSE=${TRG_SENSE}"
-		pv_read_lock TRG 0
+    $select_lo
+    $set_mb $1
+    pv_read_lock CLK 1
+    set.site 1 "CLK=1; CLK:DX=${CLK_DX:-d1}; CLK:SENSE=${CLK_SENSE}"
+    pv_read_lock CLK 0
+    pv_read_lock TRG 1
+    set.site 1 "TRG=1; TRG:DX=${TRG_DX:-d1}; TRG:SENSE=${TRG_SENSE}"
+    pv_read_lock TRG 0
 }
 
 set_fpmaster() {
-		set.site 0 SYS:CLK:FPMUX FPCLK               
-		set.site 0 SIG:CLK_MB:FIN $2
-		$set_mb $1
-		pv_read_lock CLK 1
- 		set.site 1 "CLK=1; CLK:DX=${CLK_DX:-d1}; CLK:SENSE=${CLK_SENSE}"
- 		pv_read_lock CLK 0
- 		pv_read_lock TRG 1
-		set.site 1 "TRG=1; TRG:DX=${TRG_DX:-d0}; TRG:SENSE=${TRG_SENSE}"
-		pv_read_lock TRG 0
+    set.site 0 SYS:CLK:FPMUX FPCLK               
+    set.site 0 SIG:CLK_MB:FIN $2
+    $set_mb $1
+    pv_read_lock CLK 1
+    set.site 1 "CLK=1; CLK:DX=${CLK_DX:-d1}; CLK:SENSE=${CLK_SENSE}"
+    pv_read_lock CLK 0
+    pv_read_lock TRG 1
+    set.site 1 "TRG=1; TRG:DX=${TRG_DX:-d0}; TRG:SENSE=${TRG_SENSE}"
+    pv_read_lock TRG 0
 }
 
-is_48x() {
-	echo $MEZ | grep -q ACQ48
-}
 
 set_48x_override() {
-        # Configure clock
-	if [ "$2" = "master" ]; then
-        	# Configure clock - This is NOT valid for FPCLK
-        	set.site 0 SIG:SRC:CLK:0 INT33M
-	else
-        	set.site 0 SIG:SRC:CLK:0 HDMI
-	fi
-        set.site 0 SYS:CLK:FPMUX ZCLK
-        set.site 0 SIG:ZCLK_SRC CLK.d0
-        set.site 0 SIG:CLK_MB:FIN 33333000
-        $set_mb $1
-        set.site 0 SIG:SRC:CLK:1 MCLK
-        set.site 0 SYS:CLK:OE_CLK1_ZYNQ 1
-        set.site 1 CLKDIV=${CLKDIV:-1}
-        # Configure HDMI Clock out
-        set.site 0 SIG:SYNC_OUT:CLK:DX  d0
+    # Configure clock
+    if [ "$2" = "master" ]; then
+        # Configure clock - This is NOT valid for FPCLK
+        set.site 0 SIG:SRC:CLK:0 INT33M
+    else
+        set.site 0 SIG:SRC:CLK:0 HDMI
+    fi
+    set.site 0 SYS:CLK:FPMUX ZCLK
+    set.site 0 SIG:ZCLK_SRC CLK.d0
+    set.site 0 SIG:CLK_MB:FIN 33333000
+    $set_mb $1
+    set.site 0 SIG:SRC:CLK:1 MCLK
+    set.site 0 SYS:CLK:OE_CLK1_ZYNQ 1
+    set.site 1 CLKDIV=${CLKDIV:-1}
+    # Configure HDMI Clock out
+    set.site 0 SIG:SYNC_OUT:CLK:DX  d0
 }
 
 
 case $1 in
 "")
-		if [ -e /dev/shm/role ]; then
-				cat /dev/shm/role
-		else
-				echo "role not set"
-		fi;;
+    if [ -e /dev/shm/role ]; then
+        cat /dev/shm/role
+    else
+        echo "role not set"
+    fi;;
 fpmaster)
-		set_common
-		set_out
-		$set_common_master
-		eval $(egu2int FS=${2:-200000} FIN=${3:-1000000})
-		set_fpmaster $FS $FIN
-		echo $CMDLINE > /dev/shm/role;;
+    set_common
+    set_out
+    $set_common_master
+    eval $(egu2int FS=${2:-200000} FIN=${3:-1000000})
+    set_fpmaster $FS $FIN
+    echo $CMDLINE > /dev/shm/role;;
 master)
-		set_common
-		set_out
-		$set_common_master
-		eval $(egu2int FS=${2:-200000})
-		set_local_clock $FS
-		is_48x && set_48x_override $FS master
-		echo $CMDLINE > /dev/shm/role;;
+    set_common
+    set_out
+    $set_common_master
+    eval $(egu2int FS=${2:-200000})
+    set_local_clock $FS
+    is_48x && set_48x_override $FS master
+    echo $CMDLINE > /dev/shm/role;;
 solo)
-		set_common
-		eval $(egu2int FS=${2:-200000})
-		set_local_clock $FS
-		echo $CMDLINE > /dev/shm/role;;
+    set_common
+    eval $(egu2int FS=${2:-200000})
+    set_local_clock $FS
+    echo $CMDLINE > /dev/shm/role;;
 slave)	
-		set_common
-		set_out_slave
-		$set_slave
-		eval $(egu2int FS=${2:-200000})
-		is_48x && set_48x_override $FS slave
-		echo $CMDLINE > /dev/shm/role;;
+    set_common
+    set_out_slave
+    $set_slave
+    eval $(egu2int FS=${2:-200000})
+    is_48x && set_48x_override $FS slave
+    echo $CMDLINE > /dev/shm/role;;
 help)
-		echo "USAGE sync_role {fpmaster|master|slave|solo} [CLKHZ] [FIN]"
-		echo "modifiers [CLK|TRG:SENSE=falling|rising] [CLK|TRG:DX=d0|d1]"
-		echo "modifiers [CLKDIV=div]";;
+    echo "USAGE sync_role {fpmaster|master|slave|solo} [CLKHZ] [FIN]"
+    echo "modifiers [CLK|TRG:SENSE=falling|rising] [CLK|TRG:DX=d0|d1]"
+    echo "modifiers [CLKDIV=div]";;
 *)
-		echo "ERROR: role $1 not valid";;
+    echo "ERROR: role $1 not valid";;
 esac
 
