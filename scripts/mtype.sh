@@ -26,6 +26,7 @@ MT_BOLO8B=64
 MT_DIOB=67
 MT_AO420=40
 MT_AO424=41
+MT_AO4220=42
 MT_PIG_CELF=68
 MT_RAD_CELF=69
 MT_AO428=6A
@@ -57,7 +58,8 @@ nameFromMT() {
 	$MT_PMODAD1)	echo "pmodad1";;
 	$MT_BOLO8B)		echo "bolo8B";;
 	$MT_DIOB)		echo "diobiscuit";;
-	$MT_AO420)		echo "ao420";;
+	$MT_AO420|$MT_AO4220)		
+	                echo "ao420";;
 	$MT_AO424)		echo "ao424";;
 	$MT_PIG_CELF)	echo "pig-celf";;
 	$MT_RAD_CELF)	echo "rad-celf";;
