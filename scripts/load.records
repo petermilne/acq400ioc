@@ -349,7 +349,8 @@ load_400() {
 		done
 		[ $t50r -ne 0 ] && dblr '"db/acq480fmc50R.db","'${mprams},CH=,RAW='"';;
 	$MT_AO420|$MT_AO424|$MT_AO428|$MT_AO4220)
-		dblr '"db/awg.db","'${cprams}'"'	
+	    create_asyn_channel S${site}A 127.0.0.1:422${site}
+		dblr '"db/awg.db","UUT=${HOST},SITE=${site},SPORT=S${site}A'"'	
 		load_AO $site $model $cprams		
 		let LO=66000000;;
 #	@@todo : different flavour of calmon for SAR ADC needed	
