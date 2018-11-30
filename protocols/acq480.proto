@@ -59,3 +59,13 @@ get2LM {
 	out "acq480_two_lane_mode";
 	in "%d";
 }
+
+getStack {
+    out "acq480_stack";
+    in "%s";   
+}
+
+setStack {
+       out "acq480_stack %s";
+         in;   
+}
