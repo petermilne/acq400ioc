@@ -66,6 +66,6 @@ getStack {
 }
 
 setStack {
-       out "acq480_stack %s";
-         in;   
+    out "acq480_stack %s";
+    in;   
 }

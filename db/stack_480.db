@@ -13,7 +13,7 @@ record (mbbo, "${UUT}:0:STACK_480") {
 record (mbbo, "${UUT}:0:STACK_480:w") {
     field(DTYP, "mbboAcqHost")
     field(NOBT, "2")
-    field(OUT,  "@acq480.proto setStack ${SPORT}")") 
+    field(OUT,  "@acq480.proto setStack ${SPORT}") 
     field(PINI, "YES")  
     field(DISV, "1")
     field(SDIS, "${UUT}:0:STACK_480:s.PACT")
@@ -29,7 +29,7 @@ record (mbbi, "${UUT}:0:STACK_480:r") {
     field(TWST, "2x8")
     field(THST, "4x8")
     field(FRST, "6x8")    
-    field(INP,  "@acq480.proto getStack ${SPORT}"")
+    field(INP,  "@acq480.proto getStack ${SPORT}")
     field(SCAN, "5 second")
     field(PINI, "YES")
     field(FLNK, "${UUT}:0:STACK_480:s")  
