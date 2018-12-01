@@ -22,3 +22,10 @@ record (stringin, "${UUT}:${SITE}:SERIAL") {
 	field(PINI, "YES")	
 }
 
+record (mbbo, "${UUT}:0:STACK_480") {
+    field(DTYP, "Soft Channel")
+    field(NOBT, "3")
+    field(ZRST, "none")
+    field(PINI, "YES")
+}
+
