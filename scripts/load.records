@@ -568,8 +568,9 @@ load_gpg() {
 
 load_mb_acq2106() {
     hs=/dev/acq400.0.knobs/has_axi_dma_stack
+    create_asyn_channel S0B 127.0.0.1:4220   
     if [ -e $hs ] && [ $(cat $hs) != "0" ]; then
-        dblr '"db/stack_480.db","'UUT=${HOST}',SITE=0,SPORT=S0"'             
+        dblr '"db/stack_480.db","'UUT=${HOST}',SITE=0,SPORT=S0B"'             
     fi  
 }
 load_mb_base() {
