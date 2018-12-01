@@ -61,11 +61,11 @@ get2LM {
 }
 
 getStack {
-    out "acq480_stack";
+    out "stack_480";
     in "%s";   
 }
 
 setStack {
-    out "acq480_stack %s";
+    out "stack_480 %s";
     in;   
 }
