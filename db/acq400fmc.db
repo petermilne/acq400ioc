@@ -20,9 +20,20 @@ record (longout, "${UUT}:${SITE}:INTCLK_HZ") {
 
 record (longin, "${UUT}:${SITE}:SHOT") {
 	field(DTYP, "longinAcqHost")
-	field(INP, "@/dev/acq400.${SITE}.knobs/shot")
-	field(SCAN, "1 second")
-	field(PINI, "YES")		
+	field(INP,  "@/dev/acq400.${SITE}.knobs/shot")
+	field(SCAN, ".2 second")	
+	field(FLNK, "${UUT}:${SITE}:COMPLETED_SHOT")		
 }
 
+record (longin, "${UUT}:${SITE}:COMPLETED_SHOT") {
+    field(DTYP, "longinAcqHost")
+    field(INP,  "@/dev/acq400.${SITE}.knobs/completed_shot")        
+    field(FLNK, "${UUT}:${SITE}:SHOT_IN_PROGRESS")     
+}
+
+record(calcout, "${UUT}:${SITE}:SHOT_IN_PROGRESS") {
+    field(INPA, "${UUT}:${SITE}:SHOT")
+    field(INPB, "${UUT}:${SITE}:COMPLETED_SHOT")
+    field(CALC, "A != B")
+}
 
