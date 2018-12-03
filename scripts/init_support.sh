@@ -11,6 +11,7 @@ make_caget() {
 cat - >$VERB <<EOF
 #!/bin/sh
 PV=${PFX}:\$(basename \${0})
+export EPICS_CA_AUTO_ADDR_LIST=NO EPICS_CA_ADDR_LIST=127.0.0.1
 VALUE=\$(caget -s \${PV})
 if [ \$? -eq 0 ]; then
 	echo \${VALUE#${PFX}:}
@@ -31,6 +32,7 @@ make_caget_w() {
 cat - >$VERB <<EOF
 #!/bin/sh
 PV=${PFX}:\$(basename \${0})
+export EPICS_CA_AUTO_ADDR_LIST=NO EPICS_CA_ADDR_LIST=127.0.0.1
 VALUE=\$(caget \${PV})
 if [ \$? -eq 0 ]; then
 	echo \${VALUE#${PFX}:}
@@ -46,11 +48,13 @@ EOF
 make_caput() {
 	[ -L /etc/acq400/$3 ] && return
 	PFX=${1%*:$2}
+	
 	VERB=/usr/local/bin/caput_$PFX
 	if [ ! -e $VERB ]; then
 cat - >$VERB <<EOF
 #!/bin/sh
 PV=${PFX}:\$(basename \${0})
+export EPICS_CA_AUTO_ADDR_LIST=NO EPICS_CA_ADDR_LIST=127.0.0.1
 if [ "\$1" = "" ]; then
 	VALUE=\$(caget -s \${PV})
 	if [ \$? -eq 0 ]; then
