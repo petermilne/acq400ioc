@@ -4,6 +4,7 @@ record (longin, "${UUT}:${SITE}:AWG:LENGTH") {
     field(SCAN, ".2 second")
     field(DESC, "AWG waveform length in samples")
     field(PINI, "YES")
+    field(FLNK, "${UUT}:${SITE}:AWG:LENGTH:PCT")   
 }
 
 record (longout, "${UUT}:${SITE}:AWG:MAXLEN") {
@@ -24,7 +25,6 @@ record(calc, "${UUT}:${SITE}:AWG:CURSOR:PCT") {
     field(CALC, "(C? A/C: A/B)*100")
     field(LOPR, "0")
     field(HOPR, "100")
-    field(FLNK, "${UUT}:${SITE}:AWG:LENGTH:PCT")   
 }
 
 record(calc, "${UUT}:${SITE}:AWG:LENGTH:PCT") {
@@ -34,8 +34,6 @@ record(calc, "${UUT}:${SITE}:AWG:LENGTH:PCT") {
     field(CALC, "(C? B/C: 1)*100")
     field(LOPR, "0")
     field(HOPR, "100")
-    field(DISV, "0")
-    field(SDIS, "${UUT}:${SITE}:AWG:MAXLEN")        
 }
 record (longin, "${UUT}:${SITE}:AWG:REPS") {
 	field(DTYP, "stream")
