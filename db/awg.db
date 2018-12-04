@@ -1,11 +1,14 @@
 record (longin, "${UUT}:${SITE}:AWG:LENGTH") {
     field(DTYP, "stream")
     field(INP, "@awg.proto getML(${UUT}:${SITE}:AWG:MODE) ${SPORT}")
-    field(SCAN, "2 second")
+    field(SCAN, ".2 second")
     field(DESC, "AWG waveform length in samples")
     field(PINI, "YES")
 }
 
+record (longout, "${UUT}:${SITE}:AWG:MAXLEN") {
+    field(DTYP, "Soft Channel")   
+}
 record (longin, "${UUT}:${SITE}:AWG:CURSOR") {
 	field(DTYP, "stream")
 	field(INP, "@awg.proto getCursor ${SPORT}")
@@ -17,9 +20,22 @@ record (longin, "${UUT}:${SITE}:AWG:CURSOR") {
 record(calc, "${UUT}:${SITE}:AWG:CURSOR:PCT") {
     field(INPA, "${UUT}:${SITE}:AWG:CURSOR")
     field(INPB, "${UUT}:${SITE}:AWG:LENGTH")
-    field(CALC, "A/B*100")
+    field(INPC, "${UUT}:${SITE}:AWG:MAXLEN")
+    field(CALC, "(C? A/C: A/B)*100")
     field(LOPR, "0")
-    field(HOPR, "100")   
+    field(HOPR, "100")
+    field(FLNK, "${UUT}:${SITE}:AWG:LENGTH:PCT")   
+}
+
+record(calc, "${UUT}:${SITE}:AWG:LENGTH:PCT") {
+    field(INPA, "${UUT}:${SITE}:AWG:CURSOR")
+    field(INPB, "${UUT}:${SITE}:AWG:LENGTH")
+    field(INPC, "${UUT}:${SITE}:AWG:MAXLEN")
+    field(CALC, "(C? B/C: 1)*100")
+    field(LOPR, "0")
+    field(HOPR, "100")
+    field(DISV, "0")
+    field(SDIS, "${UUT}:${SITE}:AWG:MAXLEN")        
 }
 record (longin, "${UUT}:${SITE}:AWG:REPS") {
 	field(DTYP, "stream")
@@ -41,4 +57,20 @@ record (mbbi, "${UUT}:${SITE}:AWG:MODE") {
 	field(DESC, "AWG operating mode")
 	field(NOBT, "2")	
 }
+
+record (longin, "${UUT}:${SITE}:AWG:COMPLETED_SHOT") {
+    field(DTYP, "stream")
+    field(INP, "@awg.proto getCompletedShot ${SPORT}")
+    field(SCAN, ".2 second")
+    field(DESC, "Shot number last complete shot")
+    field(PINI, "YES")
+    field(FLNK, "${UUT}:${SITE}:AWG:SHOT_COMPLETE")
+}
+
+record (calc, "${UUT}:${SITE}:AWG:SHOT_COMPLETE") {
+    field(INPA, "${UUT}:${SITE}:SHOT")  
+    field(INPB, "${UUT}:${SITE}:AWG:COMPLETED_SHOT")
+    field(CALC, "A && A==B")       
+}
+
 

@@ -20,3 +20,8 @@ getML {
 	out "playloop_length";
 	in "%d %(\$1)d";
 }
+
+getCompletedShot {
+    out "completed_shot";
+    in "%d";
+}
