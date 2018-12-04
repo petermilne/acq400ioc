@@ -193,7 +193,7 @@ set_48x_override() {
     # Configure clock
     if [ "$2" = "master" ]; then
         # Configure clock - This is NOT valid for FPCLK
-        set.site 0 SIG:SRC:CLK:0 INT33M
+        set.site 0 SIG:SRC:CLK:0 INT01M
     else
         set.site 0 SIG:SRC:CLK:0 HDMI
     fi
