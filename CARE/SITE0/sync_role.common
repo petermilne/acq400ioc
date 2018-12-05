@@ -199,7 +199,7 @@ set_48x_override() {
     fi
     set.site 0 SYS:CLK:FPMUX ZCLK
     set.site 0 SIG:ZCLK_SRC CLK.d0
-    set.site 0 SIG:CLK_MB:FIN 33333000
+    set.site 0 SIG:CLK_MB:FIN 1000000
     $set_mb $1
     set.site 0 SIG:SRC:CLK:1 MCLK
     set.site 0 SYS:CLK:OE_CLK1_ZYNQ 1
