@@ -87,11 +87,17 @@ make_epics_knobs() {
 		make_caput $PV ${NU#*:} ${SITE}
 	done
 	
-	for PV in $(egrep -e DECIM -e OSR -e AWG $RL)
+	for PV in $(egrep -e DECIM -e OSR $RL)
 	do
 		NU=${PV#*:}
 		make_caget $PV ${NU#*:} ${NU:0:1}
 	done
+	
+    for PV in $(egrep -e AWG $RL)
+    do
+        NU=${PV#*:}
+        make_caput $PV ${NU#*:} ${NU:0:1}
+    done	
 	for PV in $(egrep -e FIR:01$ -e HPF:0[1-8] -e T50R \
 			-e LFNS -e INVERT $RL | grep -v [a-z]$)
 	do
