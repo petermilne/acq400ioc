@@ -1,18 +1,20 @@
 record (longin, "${UUT}:${SITE}:AWG:LENGTH") {
     field(DTYP, "stream")
-    field(INP, "@awg.proto getML(${UUT}:${SITE}:AWG:MODE) ${SPORT}")
+    field(INP,  "@awg.proto getML(${UUT}:${SITE}:AWG:MODE) ${SPORT}")
     field(SCAN, ".2 second")
-    field(DESC, "AWG waveform length in samples")
-    field(PINI, "YES")
+    field(DESC, "AWG waveform length in samples")    
     field(FLNK, "${UUT}:${SITE}:AWG:LENGTH:PCT")   
 }
 
-record (longout, "${UUT}:${SITE}:AWG:MAXLEN") {
-    field(DTYP, "Soft Channel")   
+record (longin, "${UUT}:${SITE}:AWG:MAXLEN") {
+    field(DTYP, "stream")
+    field(INP,  "@awg.proto getMaxlen ${SPORT}")
+    field(DESC, "AWG expected waveform length")
+    field(SCAN, ".2 second")    
 }
 record (longin, "${UUT}:${SITE}:AWG:CURSOR") {
 	field(DTYP, "stream")
-	field(INP, "@awg.proto getCursor ${SPORT}")
+	field(INP,  "@awg.proto getCursor ${SPORT}")
 	field(DESC, "AWG current playback position")
 	field(SCAN, ".2 second")
 	field(FLNK, "${UUT}:${SITE}:AWG:CURSOR:PCT")

@@ -21,6 +21,11 @@ getML {
 	in "%d %(\$1)d";
 }
 
+getMaxlen {
+      out "playloop_maxlen";
+      in "%d";   
+}
+
 getCompletedShot {
     out "completed_shot";
     in "%d";
