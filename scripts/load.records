@@ -32,6 +32,7 @@ if [ -e /dev/acq400.12.knobs ]; then
 	LOAD_INTMON=y
 fi
 
+CLOCKMONITOR=${CLOCKMONITOR:-1}
 
 source ./scripts/mtype.sh
 source ./scripts/record_support.sh
@@ -841,8 +842,8 @@ load_mb_sync() {
 				echo >>/tmp/st_post.cmd "seq $ssr \"uut=${HOST},fin=0:SIG:CLK_EXT:FREQ\"";;
 			esac
 	fi
-	
-	echo >>/tmp/st_post.cmd "seq setMB_ClockMonitor \"uut=${HOST}\""			
+	[ "$CLOCKMONITOR" = "1" ] && \
+	   echo >>/tmp/st_post.cmd "seq setMB_ClockMonitor \"uut=${HOST}\""
 	echo >>/tmp/st_post.cmd "seq onSetTransient \"uut=${HOST}\""
 	echo >>/tmp/st_post.cmd "seq autoRepeat \"uut=${HOST}\""
 }
