@@ -1,0 +1,16 @@
+# include "base.dbd"
+# local menu, record, device, driver, breakpoint definitions
+# THIS IS THE MASTER FILE ... editable
+device(ai,INST_IO,devAiAcqHost,"aiAcqHost")
+device(bi,INST_IO,devBiAcqHost,"biAcqHost")
+device(bo,INST_IO,devBoAcqHost,"boAcqHost")
+device(mbbi,INST_IO,devMbbiAcqHost,"mbbiAcqHost")
+device(mbbo,INST_IO,devMbboAcqHost,"mbboAcqHost")
+device(longin,INST_IO,devLiAcqHost,"longinAcqHost")
+device(longout,INST_IO,devLoAcqHost,"longoutAcqHost")
+device(waveform,INST_IO,devWfAcqHost,"wfAcqHost")
+device(waveform,INST_IO,devWfAwgAcqHost, "wfAWGAcqHost")
+device(waveform,INST_IO,devWfRawAcqHost, "wfAWGRawHost")
+device(bo,INST_IO,devBoAcqCommand,"boAcqCommand")
+registrar(raw_to_uvolts_Registrar)
+registrar(drvAsynSerialPortRegisterCommands)
