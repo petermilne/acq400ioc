@@ -1,4 +1,4 @@
 #!/bin/sh
 sep=${1:-.}
-ifconfig eth0 | grep inet | tr ':' ' ' | awk '{print $3}' | tr "." "$sep"
+ifconfig eth0 | grep 'inet addr' | tr ':' ' ' | awk '{print $3}' | tr "." "$sep"
 
