@@ -3,7 +3,13 @@
 DC=$(date +%y%m%d%H%M)
 SEQ=40
 
+if [ "x$EPICS_BASE" = "x" ]; then
+	echo ERROR: please run epics setup.env
+	exit 1
+fi
+
 rm -Rf opkg/*
+mkdir -p release
 mkdir -p opkg/usr/local/bin/ opkg/usr/local/init/ \
 	opkg/etc/ \
 	opkg/usr/local/lib/ \
@@ -13,7 +19,7 @@ mkdir -p opkg/usr/local/bin/ opkg/usr/local/init/ \
 	opkg/usr/local/epics/scripts \
 	opkg/usr/local/CARE
 
-cp CARE/* opkg/usr/local/CARE
+cp -r CARE/* opkg/usr/local/CARE
 (cd opkg/usr/local/CARE;ln -s acq2106+acq42x.init acq2106+acq424.init)
 (cd opkg/usr/local/CARE;ln -s acq1001+acq42x.init acq1001+acq424.init)
 (cd opkg/usr/local/CARE;ln -s acq2106+acq480.init acq2106+acq48x.init)
@@ -31,13 +37,13 @@ cp db/* opkg/usr/local/epics/db
 cp protocols/* opkg/usr/local/epics/protocols
 cp scripts/* opkg/usr/local/epics/scripts
 cp -a CARE/SITE0 opkg/usr/local/epics/scripts
-cp -a ../base/lib/linux-arm/* opkg/usr/local/lib
-cp -a ../base/bin/linux-arm/ca* opkg/usr/local/bin
-cp -a ../seq/lib/linux-arm/libpv.so ../seq/lib/linux-arm/libseq.so opkg/usr/local/lib
+cp -a ${EPICS_BASE}/lib/linux-arm/* opkg/usr/local/lib
+cp -a ${EPICS_BASE}/bin/linux-arm/ca* opkg/usr/local/bin
+#cp -a ../seq/lib/linux-arm/libpv.so ../seq/lib/linux-arm/libseq.so opkg/usr/local/lib
 
 tar cvzf release/${SEQ}-acq400ioc-${DC}.tgz -C opkg .
 echo git tag -a -m R${DC} R${DC}
 ls -l release/${SEQ}-acq400ioc-${DC}.tgz
-rm -f ../../../PACKAGES/${SEQ}-acq400ioc*
-cp release/${SEQ}-acq400ioc-${DC}.tgz ../../../PACKAGES/
+rm -f ../PACKAGES/${SEQ}-acq400ioc*
+cp release/${SEQ}-acq400ioc-${DC}.tgz ../PACKAGES/
 
