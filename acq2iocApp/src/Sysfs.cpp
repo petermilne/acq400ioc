@@ -92,6 +92,8 @@ public:
 		args(filespec),
 		path("/dev/null"), mode(_mode), fmt(_fmt), is_command(0) {
 		decode(filespec);
+
+		dbg(1, "filespec:%s path:%s", filespec, path);
 	}	
 };
 
@@ -241,16 +243,20 @@ class SimpleSysfsReader : public SysfsHandlerRO {
 public:
 	SimpleSysfsReader(const char* _filespec) :
 		SysfsHandlerRO(_filespec) 
-	{};
+	{
+		dbg(1, "SimpleSysfsReader() %s", _filespec);
+	};
 public:
 	virtual int read(RECORD _record){
 		aiRecord* record = (aiRecord*)_record;
+		dbg(1, "SimpleSysfsReader::read() %s", filespec);
 		FileClosure f(filespec, "r");
 
 		if (f.getfp()){
 			char myline[80];
 			fgets(myline, 80, f.getfp());
 			record->rval = strtol(myline,0,0);
+			dbg(1, "SimpleSysfsReader::read() ans:%s", myline);
 			return 0;
 		}
 		return -1;
@@ -597,7 +603,11 @@ SysfsHandler* SysfsHandler::create(const char* _filespec)
 		}else if (strcmp(spec.mode, "rb4") == 0){
 			return new BinarySysfsReader<long>(spec.path);
 		}else{
-			return new SimpleSysfsReader(spec.path);
+			dbg(1, " create SimpleSysfsReader %s %s", _filespec);
+		        if (_filespec[0] == '@'){
+		        	++_filespec;
+		        }
+			return new SimpleSysfsReader(_filespec);
 		}
 	}
 }
@@ -774,7 +784,8 @@ public:
 
 public:
 	virtual int signon() {
-		dbg(1, "type %d", record->inp.type);
+		dbg(1, "%s type %d", __func__, record->inp.type);
+		dbg(1, "SysfsAdapterAI::signon() type %d", record->inp.type);
 	
 		switch (record->inp.type) {
 		case INST_IO:
@@ -792,6 +803,7 @@ public:
 	}
 
 	virtual int createHandler(const char* hspec) {
+		dbg(1, "%s type hspec %s", __func__, hspec);
 		setHandler(SysfsHandler::create(hspec));
 		return 0;
 	}
