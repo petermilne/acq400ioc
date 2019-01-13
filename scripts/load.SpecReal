@@ -36,7 +36,10 @@ make_AI() {
 
 for ACQ400 in /dev/acq400.[123456]
 do
-	if [ -e $ACQ400 ]; then
-		make_AI ${ACQ400##*.}
+	if [ -e ${ACQ400}/module_type ]; then
+		model=$(cat ${ACQ400}/module_type)
+	    if [ "$(hasInput $model)" = "yes" ]; then		
+			make_AI $(cat $ACQ400/site);;
+		fi
 	fi
 done

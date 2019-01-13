@@ -25,11 +25,9 @@ for ACQ400 in /dev/acq400.[123456].knobs/
 do
 	if [ -e ${ACQ400}/module_type ]; then
 		model=$(cat ${ACQ400}/module_type)
-	
-		case $model in
-		$MT_ACQ425F|$MT_ACQ425|$MT_ACQ427F|$MT_ACQ427|$MT_ACQ435|$MT_ACQ430|$MT_ACQ437)
+	    if [ "$(hasInput $model)" = "yes" ]; then		
 			make_AI $(cat $ACQ400/site);;
-		esac
+		fi
 	fi
 done
 

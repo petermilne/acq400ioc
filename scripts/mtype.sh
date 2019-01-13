@@ -68,6 +68,12 @@ nameFromMT() {
 	esac					
 }
 
+hasInput() {
+case $(nameFromMT $1) in
+	acq*|bolo*) echo "yes";;
+	*) echo "no";;
+	esac	
+}
 hasOutput() {
 	case $1 in
 	$MT_DIO432|$MT_DIO432P|$MT_DIO482|$MT_AO420|$MT_AO424|$MT_AO428) echo "yes";;
