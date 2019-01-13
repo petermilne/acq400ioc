@@ -39,7 +39,7 @@ do
 	if [ -e ${ACQ400}/module_type ]; then
 		model=$(cat ${ACQ400}/module_type)
 	    if [ "$(hasInput $model)" = "yes" ]; then		
-			make_AI $(cat $ACQ400/site);;
+			make_AI $(cat $ACQ400/site)
 		fi
 	fi
 done
