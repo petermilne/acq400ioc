@@ -350,8 +350,7 @@ load_400() {
 		done
 		[ $t50r -ne 0 ] && dblr '"db/acq480fmc50R.db","'${mprams},CH=,RAW='"';;
 	$MT_AO420|$MT_AO424|$MT_AO428|$MT_AO4220)
-	    create_asyn_channel S${site}A 127.0.0.1:422${site}
-		dblr '"db/awg.db","'UUT=${HOST},SITE=${site},SPORT=S${site}A'"'	
+	    create_asyn_channel S${site}A 127.0.0.1:422${site}		
 		load_AO $site $model $cprams		
 		let LO=66000000;;
 #	@@todo : different flavour of calmon for SAR ADC needed	
@@ -415,7 +414,7 @@ load_400() {
 	
 	dblr '"db/acq400fmc.db","'${cprams},'MAXHZ='${maxhz}'"'
 		
-	if [ "x$model" != "x$MT_ACQ480" ] && [ $HAS_ACQ43X -eq 0 ]; then
+	if [ "x$model" != "x$MT_ACQ480" ] && [ "$is_adc" != "ds" ]; then
 		dblr '"db/acq420fmc.db","'${cprams},'LO='${LO}'"'
 	fi
 
