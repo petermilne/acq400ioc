@@ -186,17 +186,20 @@ load_AO() {
 		cprams=$3
 		
 		case $mtype in
-		$MT_AO420)			
-			for ch in $(seq 1 4)
+		$MT_AO420|$MT_ACQ436)
+			if [ "$mtype" = "$MT_AO420" ]; then
+				cmax=4;
+				dblr '"db/aoALL.db","'${cprams}'"'
+			else
+				cmax=2
+			fi
+			for ch in $(seq 1 $cmax)
 			do
 				dblr '"db/ao420fmc.db","'${cprams},cid=$ch'"'
 				echo "seq ao420_range_set \"UUT=${HOST},SITE=${site},CID=$ch\"" >>/tmp/st_post.cmd
 				# PINI fails to set VAL on AO record. set GAIN (attenuation) to 100%
 				echo "dbpf ${HOST}:${site}:AWG:G:${ch} 100" >> /tmp/st_post.cmd
-			done
-			dblr '"db/aoALL.db","'${cprams}'"'			
-			#echo 'dbLoadRecords("db/ao420fmc.db","'${cprams},cid=32'")'
-			;;
+			done;;
 		$MT_AO428)
 			for ch in $(seq 1 8)
 			do
