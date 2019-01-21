@@ -191,7 +191,7 @@ load_AO() {
 				cmax=4;
 				dblr '"db/aoALL.db","'${cprams}'"'
 			else
-				site=$((site+100))
+				site=$(($site+100))
 				cmax=2
 			fi
 			for ch in $(seq 1 $cmax)
