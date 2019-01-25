@@ -60,7 +60,7 @@ make_epics_knobs() {
 	for PV in $(egrep SIG $RL | grep -v .[a-z]$ | grep -v rawc64)
 	do
 		NU=${PV#*:}
-		SITE=${NU:0:1}
+		SITE=${NU%%:*}
 		case $PV in
 			*SET|*READY|*BSY|*SRC*|*FIN|*OUT*|*USER*|*TRAIN_REQ|*SIG:DDS:FREQ|*SIG:FP*)
 				make_caput $PV ${NU#*:} ${SITE};;
@@ -71,19 +71,19 @@ make_epics_knobs() {
 	for PV in $(egrep GAIN\|RANGE $RL | grep -v .[a-z]$ )
 	do
 		NU=${PV#*:}
-		SITE=${NU:0:1}
+		SITE=${NU%%:*}
 		make_caput $PV ${NU#*:} ${SITE}	
 	done
 	for PV in $(egrep CAL:E $RL | grep -v .[a-z]$)
 	do
 		NU=${PV#*:}
-		SITE=${NU:0:1}
+		SITE=${NU%%:*}
 		make_caget_w $PV ${NU#*:} ${SITE}	
 	done	
 	for PV in $(grep ACQ4.X_SAMPLE_RATE $RL)
 	do
 		NU=${PV#*:}
-		SITE=${NU:0:1}
+		SITE=${NU%%:*}
 		make_caput $PV ${NU#*:} ${SITE}
 	done
 	
@@ -102,7 +102,7 @@ make_epics_knobs() {
 			-e LFNS -e INVERT $RL | grep -v [a-z]$)
 	do
 		NU=${PV#*:}
-		SITE=${NU:0:1}
+		SITE=${NU%%:*}
 		make_caput $PV ${NU#*:} ${NU:0:1}		
 	done
 	for PV in $(grep :SYS:CLK $RL | grep -v [a-z]$ | grep -v clk0$ )

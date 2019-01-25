@@ -22,6 +22,7 @@ FIRST_SITE=-1
 
 source /etc/sysconfig/acq400.conf
 
+source /etc/sites
 
 # gains are loaded last, as they tweak other WF records, must be there first..
 echo '#  gains_last'  > /tmp/gains_last
@@ -244,7 +245,7 @@ OUTX="ABCDEFGH"
 load_400() {
 	site=$1
 	
-	if [ $site -lt 1 ] || [ $site -gt 6 ]; then 
+	if [ $site -lt 1 ] || [ $site -gt 6 ] && [ $site -lt 101 ] || [ $site -gt 106 ]; then 
 		echo 1>&2 "load.records:error site:$site"
 		exit 1	
 	fi
@@ -918,7 +919,7 @@ load_mod_present()
 # execution starts here
 
 cp protocols/continuous-400.proto protocols/continuous.proto
-for site in 1 2 3 4 5 6
+for site in $(echo $vg_sites | tr , ' '  )
 do
 	ACQ400=/dev/acq400.$site
 	if [ -e $ACQ400 ]; then
