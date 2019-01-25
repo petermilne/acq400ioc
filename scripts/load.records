@@ -190,7 +190,7 @@ load_AO() {
 		$MT_AO420)
 		    if [ $site -ge 101 ]; then		    	
 				cmax=2
-				load_421 $site 6
+				# need a mux db for 12 bits, one knob. MBBI? load_421 $site 6
 			else
 				cmax=4;
 				dblr '"db/aoALL.db","'${cprams}'"'
