@@ -90,20 +90,20 @@ make_epics_knobs() {
 	for PV in $(egrep -e DECIM -e OSR $RL)
 	do
 		NU=${PV#*:}
-		make_caget $PV ${NU#*:} ${NU:0:1}
+		make_caget $PV ${NU#*:} ${NU%%:*}
 	done
 	
     for PV in $(egrep -e AWG $RL)
     do
         NU=${PV#*:}
-        make_caput $PV ${NU#*:} ${NU:0:1}
+        make_caput $PV ${NU#*:} ${NU%%:*}
     done	
 	for PV in $(egrep -e FIR:01$ -e HPF:0[1-8] -e T50R \
 			-e LFNS -e INVERT $RL | grep -v [a-z]$)
 	do
 		NU=${PV#*:}
 		SITE=${NU%%:*}
-		make_caput $PV ${NU#*:} ${NU:0:1}		
+		make_caput $PV ${NU#*:} ${NU%%:*}		
 	done
 	for PV in $(grep :SYS:CLK $RL | grep -v [a-z]$ | grep -v clk0$ )
 	do

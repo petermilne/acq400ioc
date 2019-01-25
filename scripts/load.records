@@ -187,13 +187,13 @@ load_AO() {
 		cprams=$3
 		
 		case $mtype in
-		$MT_AO420|$MT_ACQ436)
-			if [ "$mtype" = "$MT_AO420" ]; then
+		$MT_AO420)
+		    if [ $site -ge 101 ]; then		    	
+				cmax=2
+				load_421 $site 6
+			else
 				cmax=4;
 				dblr '"db/aoALL.db","'${cprams}'"'
-			else
-				site=$(($site+100))
-				cmax=2
 			fi
 			for ch in $(seq 1 $cmax)
 			do
@@ -520,6 +520,7 @@ load_400() {
 
 load_421() {
 	SITE=$1
+	muxmax=${2:-20}
 	KB=/dev/acq400.${SITE}.knobs
 	PRAMS="UUT=${HOST},SITE=${SITE}"
 	for CX in 1 2
