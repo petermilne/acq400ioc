@@ -99,7 +99,8 @@ public:
 
 
 void Filespec::decode(const char* _filespec) {
-
+#ifdef E7_COMOUT
+	// strange corruption at beginning of string. drop this ..
 	Tokenizer<list<string> > pathspec(args.list().begin()->c_str(), ",");
 
 	int itok = 0;
@@ -150,6 +151,12 @@ void Filespec::decode(const char* _filespec) {
 
 		path = mypath;
 	}
+#else
+	path = _filespec;
+	if (*path == '@'){
+		++path;
+	}
+#endif
 }
 
 
