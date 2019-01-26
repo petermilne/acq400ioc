@@ -1,0 +1,6 @@
+record(longin, "${UUT}:${SITE}:${MUXNAME}"){
+	field(DTYP, "stream")
+	field(INP,  "@awg.proto getMux(${mknob}) ${SPORT}")
+	field(SCAN, ".5 second")
+	field(DESC,  "polls mux state")
+}

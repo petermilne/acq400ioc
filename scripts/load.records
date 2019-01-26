@@ -190,7 +190,10 @@ load_AO() {
 		$MT_AO420)
 		    if [ $site -ge 101 ]; then		    	
 				cmax=2
-				# need a mux db for 12 bits, one knob. MBBI? load_421 $site 6
+				dblr '"db/dac_mux.db","'${cprams},MUXNAME=DAC_MUX,mknob=dac_mux'"'
+				if [ -e /etc/acq400/$site/dac_mux_master ]; then
+					dblr '"db/dac_mux.db","'${cprams},MUXNAME=DAC_MUX_MASTER,mknob=dac_mux_master'"'
+				fi
 			else
 				cmax=4;
 				dblr '"db/aoALL.db","'${cprams}'"'

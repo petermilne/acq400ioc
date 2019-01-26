@@ -30,3 +30,8 @@ getCompletedShot {
     out "completed_shot";
     in "%d";
 }
+
+getMux {
+	out "\$1";
+	in "%x";
+}
