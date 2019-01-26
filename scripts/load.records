@@ -265,7 +265,7 @@ load_400() {
 	fi
 	cprams="UUT=${HOST},SITE=${site},SPORT=S${site}"
 	dblr '"db/acq400.db","'${cprams}'"'
-	create_asyn_channel S${site} 127.0.0.1:422${site}
+	create_asyn_channel S${site} 127.0.0.1:$((4220+${site}))
 
 	# temporary hack. define in epics.sh eg 
 	# export GAINS=G0=10,G1=5,G2=2,G3=1
@@ -334,7 +334,7 @@ load_400() {
 		calmon=calmon480
 		
 		mprams="UUT=${HOST},SITE=${site},SPORT=S${site}_480"
-		create_asyn_channel S${site}_480 127.0.0.1:422${site}
+		create_asyn_channel S${site}_480 127.0.0.1:$((4220+${site}))
 		create_asyn_channel S${site}_480t 127.0.0.1:432${site}
 		
 		t50r=0; jcp=0; 
@@ -355,7 +355,7 @@ load_400() {
 		done
 		[ $t50r -ne 0 ] && dblr '"db/acq480fmc50R.db","'${mprams},CH=,RAW='"';;
 	$MT_AO420|$MT_AO424|$MT_AO428|$MT_AO4220)
-	    create_asyn_channel S${site}A 127.0.0.1:422${site}		
+	    create_asyn_channel S${site}A 127.0.0.1:$((4220+${site}))		
 		load_AO $site $model $cprams		
 		let LO=66000000;;
 #	@@todo : different flavour of calmon for SAR ADC needed	
@@ -437,11 +437,12 @@ load_400() {
 			dblr '"db/acq4xx_rgm.db","'${mprams},SRTM="nc"'"'
 		fi
 		dblr '"db/has_rgm.db","'${mprams},HAS_RGM=$has_rgm'"'
-		create_asyn_channel S${site}M 127.0.0.1:422${site}	
+		create_asyn_channel S${site}M 127.0.0.1:$((4220+${site}))	
 	fi	
-				
-	HPRAMS="${cprams},size=$HSIZE,type=LONG,fname=HG.${site}"
-	dblr '"db/hgAcqHost.db","'${HPRAMS}'"'
+	if [ "${is_adc}" != "no" ]; then		
+		HPRAMS="${cprams},size=$HSIZE,type=LONG,fname=HG.${site}"
+		dblr '"db/hgAcqHost.db","'${HPRAMS}'"'
+	fi
 	
 	CTPR="${cprams},CTRMAX=$CTR28,DT=1,DTC=1"
 	dblr '"db/counter.db","'${CTPR},lname=clk_count,pname=clk_count'"'
