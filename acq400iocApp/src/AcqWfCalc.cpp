@@ -130,6 +130,7 @@ long raw_to_volts(aSubRecord *prec) {
 	float* p_mean = (float*)prec->vale;
 	float* p_stddev = (float*)prec->valf;
 	float* p_rms = (float*)prec->valg;
+	float* p_cv = (float*)prec->valh;			// Coefficient of variance, VALE and VALF MUST be defined!
 	long min_value;
 	long max_value;
 	long over_range = 0;
@@ -180,6 +181,7 @@ long raw_to_volts(aSubRecord *prec) {
 
 	if (p_rms)	*p_rms = sqrt(sumsq/len)*aslo + aoff;
 	if (p_stddev)	*p_stddev = sqrt((sumsq - (sum*sum)/len)/len) * aslo;
+	if (p_cv)	*p_cv = *p_stddev / *p_mean;
 	return 0;
 }
 
