@@ -395,7 +395,21 @@ load_400() {
 		dblr '"db/awg.db","'${aprams}'"'
 	fi
 	
-	hwmondb=db/hwmon_${name}.db
+	if [ "${name}" = "acq480" ]; then
+		source /dev/sites/${site}/details
+		if [ "${FRU_PROD_NAME}" = "ACQ482ELF" ]; then
+			case $site in
+			1|3|5)
+				hwmondb="db/hwmon_acq482.db";;
+			*)
+				hwmondb="/nowhere/filedoesnotexist";;
+			esac
+		else
+			hwmondb="db/hwmon_${name}.db"
+	else
+		hwmondb="db/hwmon_${name}.db"
+	fi
+	
 	if [ -e ${hwmondb} ]; then
 		let hmb=$site
 		case $MB_MODEL in
