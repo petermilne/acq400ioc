@@ -1,0 +1,5 @@
+#!/bin/sh
+
+PVS=$(egrep -e SYS:V.[PN] -e SYS:[0-9]:.*V.*[PN]  /tmp/records.dbl | sort)
+
+for pv in $PVS; do caget $pv; done
