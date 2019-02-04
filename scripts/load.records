@@ -406,6 +406,7 @@ load_400() {
 			esac
 		else
 			hwmondb="db/hwmon_${name}.db"
+		fi
 	else
 		hwmondb="db/hwmon_${name}.db"
 	fi
