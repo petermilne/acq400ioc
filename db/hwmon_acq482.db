@@ -55,7 +55,7 @@ record(calc, "${UUT}:SYS:${SITE}:VAN") {
 	field(INPA, "${UUT}:SYS:${SITE}:3V3P")
 	field(INPB, "${UUT}:SYS:${SITE}:_van")
 #	field(CALC, "6.6*B - 5.6*A")
-	field(CALC, "11*B - 10*A"
+	field(CALC, "11*B - 10*A")
 	field(PREC, "1")	
 	field(DESC, "Analog Rail Neg")
 	field(HOPR, "0")
