@@ -37,8 +37,8 @@ record(ai, "${UUT}:SYS:${SITE}:3V3P") {
 	field(DTYP, "dsSysfsAi")   
 	field(INP, "@/dev/hwmon/${HMB}/in3")
 	field(DESC, "Analogue 3.3V Rail")       
-# 2/1000                                
-	field(ASLO, "0.002")     
+# 4/1000                                
+	field(ASLO, "0.004")     
 	field(LINR, "LINEAR")           
 	field(EGU,  "V")         
 	field(PINI, "YES")   
