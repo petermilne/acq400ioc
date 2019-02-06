@@ -4,7 +4,7 @@ ETOP=/usr/local/epics
 STCMD=/tmp/st.cmd
 PIDF=/var/run/acq400ioc.pid
 LOG=/var/log/epics.log
-NICE=5
+NICE=10
 LG="logger -t acq400ioc.init"
 RL=/tmp/records.dbl
 
@@ -66,10 +66,9 @@ bump()
 
 start_ioc() {
 	/usr/local/bin/procServ \
-		-c ${ETOP} -p $PIDF -L $LOG \
-		2222 \
-	/bin/nice -n $NICE /usr/local/bin/acq400ioc ${STCMD}
-	$LG start_ioc PID $(cat $PIDF)
+		-c ${ETOP} -p $PIDF -L $LOG 2222 \
+		/bin/nice -n $NICE /usr/local/bin/acq400ioc ${STCMD}
+	$LG start_ioc PID $(cat $PIDF) ioc $(pidof acq400ioc)
 }
 
 stop_ioc() {
@@ -105,7 +104,10 @@ start|"")
 	restart;;
 stop)
 	stop_ioc;;
-
+suspend)
+	kill -STOP $(pidof acq400ioc);;
+resume)
+	kill -CONT $(pidof acq400ioc);;
 *)
-	echo usage acq400ioc.init start\|stop\|forcestart;;
+	echo 'usage acq400ioc.init start|stop|forcestart|suspend|resume';;
 esac
