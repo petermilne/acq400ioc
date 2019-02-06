@@ -51,7 +51,7 @@ cp scripts/* opkg/usr/local/epics/scripts
 cp -a CARE/SITE0 opkg/usr/local/epics/scripts
 tar cf - --exclude=lib*.a --exclude=libtest* --exclude=libdevTestGpib.so -C ${EPICS_BASE}/lib/linux-arm/ . | tar xf - -C opkg/usr/local/lib
 cp -a ${EPICS_BASE}/bin/linux-arm/ca* opkg/usr/local/bin
-strip_alll opkg/usr/local/bin
+strip_all opkg/usr/local/bin
 #cp -a ../seq/lib/linux-arm/libpv.so ../seq/lib/linux-arm/libseq.so opkg/usr/local/lib
 
 tar cvzf release/${SEQ}-acq400ioc-${DC}.tgz -C opkg .
