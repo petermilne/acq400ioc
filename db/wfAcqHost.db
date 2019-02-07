@@ -5,6 +5,8 @@ record(waveform, "${UUT}:${SITE}:AI:WF:${cid}") {
 	field(DESC, "AI waveform record raw")
 	field(NELM,"${size}")
 	field(FTVL,"${type}")
+	field(SDIS, "${UUT}:0:QS:XOFF")
+	field(DISV, "1")
 	field(FLNK,"${UUT}:${SITE}:AI:WF:${cid}:V")
 }
 

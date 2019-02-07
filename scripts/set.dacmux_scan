@@ -1,0 +1,12 @@
+#!/bin/sh
+source /etc/profile.d/epics.sh
+
+case $1 in
+1)	RATE=".1 second";;
+*)	RATE=".5 second";;
+esac
+
+(for PV in $(grep DAC_MUX /tmp/records.dbl); do
+	echo "dbpf ${PV}.SCAN \"${RATE}\""
+done)	| acq4xx-epics-console
+

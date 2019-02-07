@@ -1,0 +1,12 @@
+#!/bin/sh
+source /etc/profile.d/epics.sh
+HN=${IOC_HOST}
+PV=${HN}:0:SIG:SYNC_BUS:IN:SYNC
+
+case $1 in
+1)	RATE=".1 second";;
+*)	RATE="1 second";;
+esac
+
+echo "dbpf ${PV}.SCAN \"${RATE}\"" | acq4xx-epics-console
+

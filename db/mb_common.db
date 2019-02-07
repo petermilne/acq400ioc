@@ -70,8 +70,36 @@ record(longin, "${UUT}:0:QS:EMPTY"){
 	field(DTYP, "stream")
 	field(INP,  "@mb.proto getQstatsEmpty(${UUT}:0:QS) ${SPORT}")
 	field(SCAN, "1 second")
+	field(FLNK, "${UUT}:0:QS:BUSY")
 }
-record(longin, "${UUT}:0:QS:FILLING"){}
-record(longin, "${UUT}:0:QS:FULL"){}
-record(longin, "${UUT}:0:QS:FULL_APP"){}
-record(longin, "${UUT}:0:QS:DROPS"){}
+record(longin, "${UUT}:0:QS:FILLING") {}
+record(longin, "${UUT}:0:QS:FULL") {}
+record(longin, "${UUT}:0:QS:FULL_APP") {}
+record(longin, "${UUT}:0:QS:DROPS") {}
+
+record(calcout, "${UUT}:0:QS:BUSY") {
+	field(INPA, "${UUT}:0:QS:EMPTY")
+	field(INPB, "${UUT}:0:QS:FULL")
+	# disable at THRESHOLD C
+	field(INPC, "0.3")
+	# enable at THRESHOLD D
+	field(INPD, "0.1")
+	field(INPE, "${UUT}:0:QS:XOFF")
+	field(CALC, "B/A")
+	field(OUT,  "${UUT}:0:QS:XOFF PP")
+	field(OOPT, "On Change")
+	field(DOPT, "Use OCAL")
+# hysterisis if XOFF, stay XOFF > ENABLE_TH else go XOFF if > DISABLE_TH
+	field(OCAL, "B/A > (E==1?D:C)")
+}
+
+record(bo, "${UUT}:0:QS:XOFF") {
+	field(DTYP, "Soft Channel")
+	field(VAL, "0")
+	field(PINI, "YES")
+	field(ZNAM, "OFF")
+	field(ONAM, "ON")
+}
+
+
+

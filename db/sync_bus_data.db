@@ -1,27 +1,27 @@
 record (bi, "${UUT}:0:SIG:SYNC_BUS:IN:SYNC") {
 	field(DTYP, "biAcqHost")
 	field(INP,  "@/dev/acq400.0.knobs/sync_in_sync")
-	field(SCAN, ".1 second")
+	field(SCAN, "1 second")
+	field(FLNK, "${UUT}:0:SIG:SYNC_BUS:IN:TRG")
 	field(PINI, "YES")	
 }
 record (bi, "${UUT}:0:SIG:SYNC_BUS:IN:TRG") {
 	field(DTYP, "biAcqHost")
 	field(INP,  "@/dev/acq400.0.knobs/sync_in_trg")
-	field(SCAN, ".1 second")
+	field(FLNK, "${UUT}:0:SIG:SYNC_BUS:IN:GPIO")
 	field(PINI, "YES")	
 }
 
 record (bi, "${UUT}:0:SIG:SYNC_BUS:IN:GPIO") {
 	field(DTYP, "biAcqHost")
 	field(INP,  "@/dev/acq400.0.knobs/sync_in_gpio")
-	field(SCAN, ".1 second")
+	field(FLNK, "${UUT}:0:SIG:SYNC_BUS:IN:CLK")
 	field(PINI, "YES")	
 }
 
 record (bi, "${UUT}:0:SIG:SYNC_BUS:IN:CLK") {
 	field(DTYP, "biAcqHost")
-	field(INP,  "@/dev/acq400.0.knobs/sync_in_clk")
-	field(SCAN, ".1 second")
+	field(INP,  "@/dev/acq400.0.knobs/sync_in_clk")	
 	field(PINI, "YES")	
 }
 

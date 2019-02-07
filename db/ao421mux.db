@@ -15,7 +15,7 @@ record(bo, "${UUT}:${SITE}:${lname}:w") {
 record(bi, "${UUT}:${SITE}:${lname}:r") {
 	field(DTYP, "biAcqHost")
 	field(INP,  "@${pname}")
-	field(SCAN, ".1 second")
+	field(SCAN, ".5 second")
 	field(PINI, "YES")
 	field(FLNK, "${UUT}:${SITE}:${lname}:s")
 }
