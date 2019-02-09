@@ -54,7 +54,7 @@ record (mbbo, "${UUT}:0:SIG:SYNC_OUT:${FUN}:DX") {
 
 record (mbbo, "${UUT}:0:SIG:SYNC_OUT:${FUN}:DX:w") {
 	field(DTYP, "mbboAcqHost")
-	field(NOBT, "2")
+	field(NOBT, "3")
 	field(OUT,  "@/dev/acq400.0.knobs/sync_out_src_${fun}_dx")	
 	field(PINI, "YES")	
 	field(DISV, "1")
@@ -65,7 +65,7 @@ record (mbbo, "${UUT}:0:SIG:SYNC_OUT:${FUN}:DX:w") {
 
 record (mbbi, "${UUT}:0:SIG:SYNC_OUT:${FUN}:DX:r") {
 	field(DTYP, "mbbiAcqHost")
-	field(NOBT, "2")	
+	field(NOBT, "3")	
 	field(INP,  "@/dev/acq400.0.knobs/sync_out_src_${fun}_dx")
 	field(SCAN, "1 second")
 	field(PINI, "YES")
@@ -74,7 +74,7 @@ record (mbbi, "${UUT}:0:SIG:SYNC_OUT:${FUN}:DX:r") {
 
 record (mbbo, "${UUT}:0:SIG:SYNC_OUT:${FUN}:DX:s") {
 	field(DTYP,  "Soft Channel")
-	field(NOBT,  "2")
+	field(NOBT,  "3")
 	field(OMSL,  "closed_loop")
 	field(DOL,   "${UUT}:0:SIG:SYNC_OUT:${FUN}:DX:r NPP")
 	field(OUT,   "${UUT}:0:SIG:SYNC_OUT:${FUN}:DX PP")

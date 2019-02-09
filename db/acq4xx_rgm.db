@@ -43,14 +43,14 @@ record(mbbo, "${UUT}:${SITE}:RGM:DX") {
 	field(DTYP, "Soft Channel")
 	field(NOBT, "3")
 	field(ZRST, "d0")
-    	field(ONST, "d1")
-    	field(TWST, "d2")
-    	field(THST, "d3")
-    	field(FRST, "d4")
-    	field(FVST, "d5")
-    	field(SXST, "d6")
-    	field(SVST, "d7")    
-    	field(FLNK, "${UUT}:${SITE}:RGM:DX:w PP")
+    field(ONST, "d1")
+    field(TWST, "d2")
+    field(THST, "d3")
+    field(FRST, "d4")
+    field(FVST, "d5")
+    field(SXST, "d6")
+    field(SVST, "d7")    
+    field(FLNK, "${UUT}:${SITE}:RGM:DX:w PP")
 }     
 
 record(mbbi, "${UUT}:${SITE}:RGM:DX:r") {
