@@ -19,7 +19,7 @@ record (mbbo, "${UUT}:${SITE}:GAIN:${CH}")	{
 record (mbbo, "${UUT}:${SITE}:GAIN:${CH}:w")	{
 	field(DTYP, "stream")
 	field(OUT,  "@acq42x.proto setGain(${IX}) ${SPORT}")	
-	field(NOBT, "2")
+	field(NOBT, "3")
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:GAIN:${CH}:s.PACT")
 	field(OMSL, "closed_loop")
@@ -46,7 +46,7 @@ record (mbbi, "${UUT}:${SITE}:GAIN:${CH}:r") {
 
 record (mbbo, "${UUT}:${SITE}:GAIN:${CH}:s") {
 	field(DTYP, "Soft Channel")
-		field(NOBT, "3")	
+	field(NOBT, "3")	
 	field(ZRST, "OFF")
 	field(ONST, "+/-10V")
 	field(TWST, "+/-5V")
