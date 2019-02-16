@@ -1,4 +1,20 @@
 record(bo, "${UUT}:MODE:CONTINUOUS") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "continuous stream start/stop")
+	field(ZNAM, "stop")
+	field(ONAM, "start")
+	field(FLNK, "${UUT}:MODE:CONTINUOUS:c")
+}
+
+record(calcout, "${UUT}:MODE:CONTINUOUS:c") {
+	field(INPA, "${UUT}:MODE:CONTINUOUS")
+	field(CALC, "A")
+	field(OUT, "${UUT}:MODE:CONTINUOUS:w PP")
+	field(DOPT, "Use CALC")
+	field(OOPT, "On Change")
+}
+
+record(bo, "${UUT}:MODE:CONTINUOUS:w") {
 	field(DTYP, "stream")
 	field(DESC, "continuous stream start/stop")
 	field(ZNAM, "stop")
