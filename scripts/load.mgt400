@@ -82,7 +82,7 @@ load_mgt400() {
 #tr '[:upper:]' '[:lower:]'
 
 # kmcu sfp gpio do no exist
-[ "$MB_MODEL" = "acq2106sfp" ] && load_mgt400_sfp
+[ -e /dev/gpio/MGT482/SFP1/PRESENT ] && load_mgt400_sfp
 
 for SITE in 11 12 13; do
 	case $SITE in
