@@ -738,6 +738,20 @@ has_dsp_trg() {
 	fi
 	echo $rc
 }
+
+load_sig_bus_x() {
+	lp=$1
+	zrst=${2:-}
+	onst=${3:-}
+	twst=${4:-}
+	thst=${5:-}
+	frst=${6:-}
+	fvst=${7:-}
+	sxst=${8:-}
+
+	dblr '"db/sig_bus_x_cntrl.db","'$lp,ZRST=${zrst},ONST=${onst},TWST=${twst},THST=${thst},FRST=${frst},NOBT=${nobt},FVST=${fvst},SXST=${sxst}'"'
+}
+
 load_mb_sync() {
 	KB=$1 
 	
@@ -749,44 +763,44 @@ load_mb_sync() {
 		# d0  defaults
 		zrst="EXT"; onst="HDMI"; twst="";	thst=""; frst=""; fvst=""; sxst="";
 		
+		
 		case $FUN in
-		CLK)	nobt=3; 		 
-			twst="GPG0";		
-               		case $MB_MODEL in
+		CLK)    case $MB_MODEL in
                 	acq2106*) 	
-                        zrst=SyncE; thst="COMM_A" frst="INT01M";;
+				load_sig_bus_x ${CPRAMS},${lprams},BIT=0,NOBT=3 SyncE HDMI GPG0 COMM_A INIT01M;;
+			*)
+				load_sig_bus_x ${CPRAMS},${lprams},BIT=0,NOBT=3 EXT HDMI GPG0;;
 			esac;;
 		TRG)	if [ $(has_dsp_trg $MB_MODEL) -ne 0 ]; then
-					nobt=3; twst="HOSTB"; 		thst="GPG0"; frst="DSP0"
-				else
-					nobt=2; twst="HDMI_GPIO";  	thst="GPG0"
-				fi;;
-		SYNC)	nobt=1;;
+				load_sig_bus_x ${CPRAMS},${lprams},BIT=0,NOBT=3 EXT HDMI HOSTB GPG0 DSP0
+			else
+				load_sig_bus_x ${CPRAMS},${lprams},BIT=0,NOBT=2 EXT HDMI_GPIO GPG0
+			fi;;
+		SYNC)		load_sig_bus_x ${CPRAMS},${lprams},BIT=0,NOBT=1 EXT HDMI;;			
 		esac
-		dblr '"db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=0,ZRST=${zrst},ONST=${onst},TWST=${twst},THST=${thst},FRST=${frst},NOBT=${nobt},FVST=${fvst},SXST=${sxst}'"'
 		
 		# d1
 		case $FUN in
+		CLK)	case $MB_MODEL in
+			acq2106*)
+				load_sig_bus_x ${CPRAMS},${lprams},BIT=1,NOBT=2 MCLK HDMI GPG1 COMM_B;;
+			*)
+				load_sig_bus_x ${CPRAMS},${lprams},BIT=1,NOBT=2 MCLK HDMI GPG1;;
+			esac;;
 		TRG)	if [ $(has_dsp_trg $MB_MODEL) -ne 0 ]; then
-					nobt=3; zrst="STRIG"; onst="HOSTA"; twst="HDMI_GPIO"; thst="GPG1"; frst="DSP1"; fvst="FP_SYNC"; sxst="FP_GPIO"
-				else				
-					case $MB_MODEL in
-					acq2106*)
-						nobt=2; zrst="STRIG"; onst="HOSTA"; twst="HOSTB"; thst="GPG1";;
-					*)
-						nobt=2; zrst="STRIG"; 				twst="HDMI_GPIO"; thst="GPG1";;
-					esac
-				fi;;				
-		SYNC) 	nobt=1;;
-		CLK)	nobt=2; zrst="MCLK"; twst="GPG1"; frst="";
+				load_sig_bus_x ${CPRAMS},${lprams},BIT=1,NOBT=3 STRIG HOSTA HDMI_GPIO GPG1 DSP1 FP_SYNC FP_GPIO
+			else				
 				case $MB_MODEL in
 				acq2106*)
-					thst="COMM_B";;
-				esac;;
-		*) 		echo ERROR undefined FUN;;
-#nobt=1; onst="HDMI";  twst=""; thst="";;
+				load_sig_bus_x ${CPRAMS},${lprams},BIT=1,NOBT=2 STRIG HOSTA HOSTB GPG1;;
+				*)
+				load_sig_bus_x ${CPRAMS},${lprams},BIT=1,NOBT=2 STRIG HDMI_GPIO GPG1;;
+				esac
+			fi;;				
+		SYNC) 		load_sig_bus_x ${CPRAMS},${lprams},BIT=1,NOBT=1 EXT HDMI;;
+		*) 		
+			echo ERROR undefined FUN;;
 		esac
-		dblr '"db/sig_bus_x_cntrl.db","'${CPRAMS},${lprams},BIT=1,ZRST=${zrst},ONST=${onst},TWST=${twst},THST=${thst},FRST=${frst},FVST=${fvst},SXST=${sxst},NOBT=${nobt}'"'
 	done
 	 
 	if [ "$(cat /dev/acq400.0.knobs/module_role)" = "CLKOUT" ]; then
