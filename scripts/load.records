@@ -749,7 +749,7 @@ lsb_x() {
 	fvst=${7:-}
 	sxst=${8:-}
 
-	dblr '"db/sig_bus_x_cntrl.db","'$lp,ZRST=${zrst},ONST=${onst},TWST=${twst},THST=${thst},FRST=${frst},NOBT=${nobt},FVST=${fvst},SXST=${sxst}'"'
+	dblr '"db/sig_bus_x_cntrl.db","'$lp,ZRST=${zrst},ONST=${onst},TWST=${twst},THST=${thst},FRST=${frst},FVST=${fvst},SXST=${sxst}'"'
 }
 
 load_mb_sync() {
