@@ -60,5 +60,10 @@ GPG_MON=y # enable gpg_monitor
 #recommended for testing gpg, you can also set it after the event with
 # /usr/local/epics/scripts/gpg_monitor 1 
 
+# Clock Monitor. Enabled by default, but can cause issues, disable:
+CLOCKMONITOR=0
+
+# OnSetTransient. Ensures Trigger is SET. Not good for new Sample On Demand mode, to disable:
+ONSETTRANSIENT=0
 
 
