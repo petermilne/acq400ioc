@@ -765,8 +765,8 @@ load_mb_sync() {
 		lp0="${lprams},BIT=0"
 		case $FUN in
 		CLK)    case $MB_MODEL in
-                	acq2106*) 	
-				lsb_x ${lp0},NOBT=3 SyncE HDMI GPG0 COMM_A INIT01M;;
+            acq2106*) 	
+				lsb_x ${lp0},NOBT=3 SyncE HDMI GPG0 COMM_A INT01M;;
 			*)
 				lsb_x ${lp0},NOBT=3 EXT HDMI GPG0;;
 			esac;;
