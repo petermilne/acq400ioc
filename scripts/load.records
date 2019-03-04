@@ -768,7 +768,7 @@ load_mb_sync() {
             acq2106*) 	
 				lsb_x ${lp0},NOBT=3 SyncE HDMI GPG0 COMM_A INT01M;;
 			*)
-				lsb_x ${lp0},NOBT=3 EXT HDMI GPG0;;
+				lsb_x ${lp0},NOBT=3 EXT HDMI GPG0 	"" INT01M;;
 			esac;;
 		TRG)	if [ $(has_dsp_trg $MB_MODEL) -ne 0 ]; then
 				lsb_x ${lp0},NOBT=3 EXT HDMI HOSTB GPG0 DSP0
