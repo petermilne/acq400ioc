@@ -4,6 +4,7 @@
 MT_ACQ2006=80
 MT_ACQ1001=81
 MT_ACQ2106=82
+MT_CPSC2=85
 
 MT_ACQ420=1
 MT_ACQ420F=A1
@@ -30,7 +31,9 @@ MT_AO4220=42
 MT_PIG_CELF=68
 MT_RAD_CELF=69
 MT_AO428=6A
+MT_CPDAC=43
 MT_DIO482=6B
+MT_CPCOM=96
 
 
 nameFromMT() {
@@ -38,6 +41,7 @@ nameFromMT() {
 	$MT_ACQ2006)	echo "acq2006";;
 	$MT_ACQ1001)	echo "acq1001";;
 	$MT_ACQ2106)	echo "acq2106";;
+	$MT_CPSC2)		echo "cpsc2";;
 	$MT_ACQ420|$MT_ACQ420F)
 					echo "acq420";;	
 	$MT_ACQ435)		echo "acq435";;
@@ -64,6 +68,8 @@ nameFromMT() {
 	$MT_PIG_CELF)	echo "pig-celf";;
 	$MT_RAD_CELF)	echo "rad-celf";;
 	$MT_AO428)		echo "ao428elf";;
+	$MT_CPDAC)		echo "cpsc2-dac";;
+	$MT_COCOM)		echo "cpsc2-com";;
 	# no default	
 	esac					
 }
@@ -76,7 +82,7 @@ case $(nameFromMT $1) in
 }
 hasOutput() {
 	case $1 in
-	$MT_DIO432|$MT_DIO432P|$MT_DIO482|$MT_AO420|$MT_AO424|$MT_AO428|$MT_ACQ436) echo "yes";;
+	$MT_DIO432|$MT_DIO432P|$MT_DIO482|$MT_AO420|$MT_AO424|$MT_AO428|$MT_ACQ436|$MT_CPDAC) echo "yes";;
 	*) echo "no";;
 	esac
 }

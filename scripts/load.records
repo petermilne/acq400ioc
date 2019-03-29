@@ -20,7 +20,7 @@ SN=${SN#0}
 
 FIRST_SITE=-1
 
-source /etc/sysconfig/acq400.conf
+[ -e /etc/sysconfig/acq400.conf ] && source /etc/sysconfig/acq400.conf
 
 source /etc/sites
 
@@ -206,11 +206,13 @@ load_AO() {
 				# PINI fails to set VAL on AO record. set GAIN (attenuation) to 100%
 				echo "dbpf ${HOST}:${site}:AWG:G:${ch} 100" >> /tmp/st_post.cmd
 			done;;
-		$MT_AO428)
+		$MT_AO428|$MT_CPDAC)
 			for ch in $(seq 1 8)
 			do
 				cid=$(printf "%02d" $ch)
-				dblr '"db/ao428elf.db","'${cprams},cid=$cid'"'
+				pfx="AO"
+				[ "$mtype" = "$MT_CPDAC"] && pfx="offset"
+				dblr '"db/ao428elf.db","'${cprams},pfx=${pfx},cid=$cid'"'
 			done
 			#echo 'dbLoadRecords("db/ao420fmc.db","'${cprams},cid=32'")'
 			;;
@@ -378,6 +380,9 @@ load_400() {
 		is_adc="sar"
 		dblr '"db/pigcelf.db","'${cprams}'"'
 		calmon=none;;
+	$MT_CPCOM)
+		dblr '"db/cpcom.db","'${cprams},CH=1'"'
+		dblr '"db/cpcom.db","'${cprams},CH=2'"';;
 	esac
 	
 	echo 1>&2 "is_adc $is_adc"
@@ -695,6 +700,8 @@ load_mb_sites() {
 	)
 
 	case $MB_MODEL in
+		cpsc2*)
+			;;
 		kmcu*)
 			;;
 		acq2106*)
@@ -927,6 +934,8 @@ load_mb() {
 		acq1014)
 				source ./scripts/acq1014_init
 				ns=1; mt=acq1001;;
+		cpsc2*)
+		        ns=3; mt=cpsc2;;
 		*)
 				ns=1; mt=acq1001;;
 	esac		
