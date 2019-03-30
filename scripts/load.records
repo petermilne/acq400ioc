@@ -208,6 +208,11 @@ load_AO() {
 			done;;
 		$MT_AO428|$MT_CPDAC)			
 			if [ "$mtype" = "$MT_CPDAC" ]; then
+				ctprams="${cprams},CTRMAX=$CTR16,DT=1,DTC=1"
+				dblr '"db/counter.db","'${ctprams},lname=SFP1_PKT,pname=scount_SFP1_PKT_CNT'"'
+				dblr '"db/counter.db","'${ctprams},lname=SFP1_SKIP_PKT,pname=scount_SFP1_SKIP_PKT_CNT'"'
+				dblr '"db/counter.db","'${ctprams},lname=SFP2_PKT,pname=scount_SFP2_PKT_CNT'"'
+				dblr '"db/counter.db","'${ctprams},lname=SFP2_SKIP_PKT,pname=scount_SFP2_SKIP_PKT_CNT'"'								
 				pfx="offset"
 			else
 				pfx="AO"
@@ -291,7 +296,9 @@ load_400() {
 	has_ch_gains=0
 	calmon="calmon"
 	decim=1;
-
+	mname=$(cat /dev/acq400.$site.knobs/module_name)
+	[ -e ./scripts/load.$mname ] && ./scripts/load.$mname $HOST $site
+	
 	case $model in
 	$MT_ACQ420|$MT_ACQ420F|$MT_ACQ424|$MT_ACQ425|$MT_ACQ425F|$MT_ACQ427|$MT_ACQ427F|$MT_ACQ423)
 		is_adc="sar"
@@ -367,13 +374,8 @@ load_400() {
 	    create_asyn_channel S${site}A 127.0.0.1:$((4220+${site}))		
 		load_AO $site $model $cprams		
 		let LO=66000000;;
-#	@@todo : different flavour of calmon for SAR ADC needed	
-	$MT_DIO432|$MT_DIO432P|$MT_DIO482)
-	# probably should be common to all @@todo
-		name=$(cat /dev/acq400.$site.knobs/module_name)
-		[ -e ./scripts/load.$name ] && ./scripts/load.$name $HOST $site;;		
-	$MT_DIOB)		
-		name=$(cat /dev/acq400.$site.knobs/module_name)
+#	@@todo : different flavour of calmon for SAR ADC needed		
+	$MT_DIOB)				
 		[ -e ./scripts/load.$name ] && ./scripts/load.$name $HOST $site
 		return;;
 	$MT_RAD_CELF)
@@ -383,9 +385,6 @@ load_400() {
 		is_adc="sar"
 		dblr '"db/pigcelf.db","'${cprams}'"'
 		calmon=none;;
-	$MT_CPCOM)
-		dblr '"db/cpcom.db","'${cprams},CH=1'"'
-		dblr '"db/cpcom.db","'${cprams},CH=2'"';;
 	esac
 	
 	echo 1>&2 "is_adc $is_adc"
