@@ -297,7 +297,15 @@ load_400() {
 	calmon="calmon"
 	decim=1;
 	mname=$(cat /dev/acq400.$site.knobs/module_name)
-	[ -e ./scripts/load.$mname ] && ./scripts/load.$mname $HOST $site
+	if [ -e ./scripts/load.$mname ]; then
+		if [ -x ./scripts/load.$mname ]; then
+			echo >&2 "exec ./scripts/load.$mname"
+			./scripts/load.$mname $HOST $site
+		else
+			echo >&2 "source ./scripts/load.$mname"
+			source ./scripts/load.$mname
+		fi
+	fi
 	
 	case $model in
 	$MT_ACQ420|$MT_ACQ420F|$MT_ACQ424|$MT_ACQ425|$MT_ACQ425F|$MT_ACQ427|$MT_ACQ427F|$MT_ACQ423)

@@ -1,7 +1,7 @@
 # must be sourced from load.records
 		
 dblr '"db/cpcom.db","'${cprams},CH=1'"'
-dblr '"db/cpcom.db","'${cprams},CH=2'"';;
+dblr '"db/cpcom.db","'${cprams},CH=2'"'
 
 ctprams="${cprams},CTRMAX=${CTR8},DT=1,DTC=1"
 
