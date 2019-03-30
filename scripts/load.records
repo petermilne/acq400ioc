@@ -641,7 +641,7 @@ load_mb_base() {
 				echo 'dbLoadRecords("db/acq2006sites.db","'${cprams}'")'
 		done
 		dblr '"db/acq1001leds.db","UUT='${HOST}'"' ;;
-	acq2106*|acq2006|acq2006b|cpsc2)
+	acq2106*|acq2006|acq2006b)
 		for site in $(seq 1 $ns)
 		do
 			cprams="UUT=${HOST},site=${site}"

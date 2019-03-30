@@ -1,6 +1,6 @@
 # cpcom.db comms module  CH={1|2}
 
-record(mbbi, "${UUT}:${CH}:AURORA:UP") {
+record(bi, "${UUT}:${CH}:AURORA:UP") {
 	field(DTYP, "dsSysfsBi")
 	field(INP, "@/dev/acq400.${SITE}.knobs/aurora${CH}_lane_up")
 	field(ZNAM, "DOWN")
@@ -8,7 +8,7 @@ record(mbbi, "${UUT}:${CH}:AURORA:UP") {
     field(SCAN, "1 second")
 }
 
-record(longin, "${UUT}:${CH}:AURORA:ERR") {
+record(bi, "${UUT}:${CH}:AURORA:ERR") {
 	field(DTYP, "dsSysfsBi")
 	field(INP,  "@/dev/acq400.${SITE}.knobs/aurora${CH}_hard_err")
 	field(ZNAM, "OK")
