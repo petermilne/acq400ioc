@@ -212,7 +212,9 @@ load_AO() {
 				dblr '"db/counter.db","'${ctprams},lname=SFP1_PKT,pname=scount_SFP1_PKT_CNT'"'
 				dblr '"db/counter.db","'${ctprams},lname=SFP1_SKIP_PKT,pname=scount_SFP1_SKIP_PKT_CNT'"'
 				dblr '"db/counter.db","'${ctprams},lname=SFP2_PKT,pname=scount_SFP2_PKT_CNT'"'
-				dblr '"db/counter.db","'${ctprams},lname=SFP2_SKIP_PKT,pname=scount_SFP2_SKIP_PKT_CNT'"'								
+				dblr '"db/counter.db","'${ctprams},lname=SFP2_SKIP_PKT,pname=scount_SFP2_SKIP_PKT_CNT'"'
+				dblr '"db/cpdac.db","'${ctprams},CH=A,ch=a'"'
+				dblr '"db/cpdac.db","'${ctprams},CH=A,ch=a'"'							
 				pfx="offset"
 			else
 				pfx="AO"

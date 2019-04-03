@@ -1,0 +1,14 @@
+Terminator = LF;
+ExtraInput = Ignore;
+ReplyTimeout = 2500;
+
+
+getMathSTA {
+	out "math_\${1}_sta";
+	in "%x";
+}
+
+clrMathSTA {
+	out "math_\${1}_sta %x";
+	in;
+}

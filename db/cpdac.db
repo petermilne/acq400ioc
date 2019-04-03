@@ -1,0 +1,13 @@
+
+
+record(mbbiDirect, "${UUT}:${SITE}:MATHSTA:${CH}") {
+	field(DTYP, "stream")
+	field(INP,  "@anatrg.proto getMathSTA(${ch}) ${SPORT}")
+	field(SCAN, ".1 second")
+}
+
+record(mbbiDirect, "${UUT}:${SITE}:MATHSTA:${CH}:CLR") {
+	field(DTYP, "stream")
+	field(INP,  "@anatrg.proto clrMathSTA(${ch}) ${SPORT}")
+	field(VAL,  "0xff")
+}
