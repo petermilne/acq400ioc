@@ -12,3 +12,13 @@ clrMathSTA {
 	out "math_\${1}_sta %x";
 	in;
 }
+
+getProcSTA {
+	out "proc_\${1}_sta";
+	in "%x";
+}
+
+clrProcSTA {
+	out "proc_\${1}_sta %x";
+	in;
+}

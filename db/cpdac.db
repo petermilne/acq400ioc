@@ -35,9 +35,7 @@ record(bo, "${UUT}:${SITE}:MATHSTA:${CH}:1:OVER") {
 	field(DTYP, "Soft Channel")
 	field(DOL, 	"${UUT}:${SITE}:MATHSTA:${CH}.B4")
 	field(OMSL, "closed_loop")
-	field(FLNK, "${UUT}:${SITE}:MATHSTA:${CH}:2:OVER")
-#	field(ZNAM, "0")
-#	field(ONAM, "1")		
+	field(FLNK, "${UUT}:${SITE}:MATHSTA:${CH}:2:OVER")		
 }
 record(bo, "${UUT}:${SITE}:MATHSTA:${CH}:2:OVER") {
 	field(DTYP, "Soft Channel")
@@ -63,13 +61,51 @@ record(mbbiDirect, "${UUT}:${SITE}:MATHSTA:${CH}:CLR") {
 	field(VAL,  "0xff")
 }
 
-record(bi, "${UUT}:${SITE}:PROCSTA:${CH}:RX_SHORT") {
-	field(DOL, 	"${UUT}:${SITE}:MATHSTA:${CH}.B0")
+
+record(mbbiDirect, "${UUT}:${SITE}:PROCSTA:${CH}") {
+	field(DTYP, "stream")
+	field(INP,  "@cpdac.proto getProcSTA(${ch}) ${SPORT}")
+	field(SCAN, ".5 second")
+	field(FLNK, "${UUT}:${SITE}:PROCSTA:${CH}:RX_SHORT")
+}
+
+
+record(bo, "${UUT}:${SITE}:PROCSTA:${CH}:RX_SHORT") {
+	field(DTYP, "Soft Channel")
+	field(DOL, 	"${UUT}:${SITE}:PROCSTA:${CH}.B0")
+	field(OMSL, "closed_loop")
+	field(FLNK, "${UUT}:${SITE}:PROCSTA:${CH}:RX_LONG")		
+}
+
+record(bo, "${UUT}:${SITE}:PROCSTA:${CH}:RX_LONG") {
+	field(DTYP, "Soft Channel")
+	field(DOL, 	"${UUT}:${SITE}:PROCSTA:${CH}.B1")
+	field(OMSL, "closed_loop")
+	field(FLNK, "${UUT}:${SITE}:PROCSTA:${CH}:TOO_SLOW")		
+}
+
+record(bo, "${UUT}:${SITE}:PROCSTA:${CH}:TOO_SLOW") {
+	field(DTYP, "Soft Channel")
+	field(DOL, 	"${UUT}:${SITE}:PROCSTA:${CH}.B2")
+	field(OMSL, "closed_loop")
+	field(FLNK, "${UUT}:${SITE}:PROCSTA:${CH}:TOO_FAST")	
+}
+
+record(bo, "${UUT}:${SITE}:PROCSTA:${CH}:TOO_FAST") {
+	field(DTYP, "Soft Channel")
+	field(DOL, 	"${UUT}:${SITE}:PROCSTA:${CH}.B3")
+	field(OMSL, "closed_loop")
+	field(FLNK, "${UUT}:${SITE}:PROCSTA:${CH}:TOO_SOON")	
+}
+record(bo, "${UUT}:${SITE}:PROCSTA:${CH}:TOO_SOON") {
+	field(DTYP, "Soft Channel")
+	field(DOL, 	"${UUT}:${SITE}:PROCSTA:${CH}.B3")
 	field(OMSL, "closed_loop")		
 }
 
-record(bi, "${UUT}:${SITE}:PROCSTA:${CH}:RX_LONG") {
-	field(DOL, 	"${UUT}:${SITE}:MATHSTA:${CH}.B1")
-	field(OMSL, "closed_loop")		
+record(mbbiDirect, "${UUT}:${SITE}:PROCSTA:${CH}:CLR") {
+	field(DTYP, "stream")
+	field(INP,  "@cpdac.proto clrProcSTA(${ch}) ${SPORT}")
+	field(VAL,  "0xff")
 }
 
