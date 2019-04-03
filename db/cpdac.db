@@ -3,7 +3,58 @@
 record(mbbiDirect, "${UUT}:${SITE}:MATHSTA:${CH}") {
 	field(DTYP, "stream")
 	field(INP,  "@cpdac.proto getMathSTA(${ch}) ${SPORT}")
-	field(SCAN, ".1 second")
+	field(SCAN, ".5 second")
+	field(FLNK, "${UUT}:${SITE}:MATHSTA:${CH}:1:UNDER")
+}
+
+record(bo, "${UUT}:${SITE}:MATHSTA:${CH}:1:UNDER") {
+	field(DTYP, "Soft Channel")
+	field(DOL, 	"${UUT}:${SITE}:MATHSTA:${CH}.B0")
+	field(OMSL, "closed_loop")
+	field(FLNK, "${UUT}:${SITE}:MATHSTA:${CH}:2:UNDER") 	
+}
+record(bo, "${UUT}:${SITE}:MATHSTA:${CH}:2:UNDER") {
+	field(DTYP, "Soft Channel")
+	field(DOL, 	"${UUT}:${SITE}:MATHSTA:${CH}.B1")
+	field(OMSL, "closed_loop")
+	field(FLNK, "${UUT}:${SITE}:MATHSTA:${CH}:3:UNDER")	
+}
+record(bo, "${UUT}:${SITE}:MATHSTA:${CH}:3:UNDER") {
+	field(DTYP, "Soft Channel")
+	field(DOL, 	"${UUT}:${SITE}:MATHSTA:${CH}.B2")
+	field(OMSL, "closed_loop")
+	field(FLNK, "${UUT}:${SITE}:MATHSTA:${CH}:4:UNDER")	
+}
+record(bo, "${UUT}:${SITE}:MATHSTA:${CH}:4:UNDER") {
+	field(DTYP, "Soft Channel")
+	field(DOL, 	"${UUT}:${SITE}:MATHSTA:${CH}.B3")
+	field(OMSL, "closed_loop")
+	field(FLNK, "${UUT}:${SITE}:MATHSTA:${CH}:1:OVER")		
+}
+record(bo, "${UUT}:${SITE}:MATHSTA:${CH}:1:OVER") {
+	field(DTYP, "Soft Channel")
+	field(DOL, 	"${UUT}:${SITE}:MATHSTA:${CH}.B4")
+	field(OMSL, "closed_loop")
+	field(FLNK, "${UUT}:${SITE}:MATHSTA:${CH}:2:OVER")
+#	field(ZNAM, "0")
+#	field(ONAM, "1")		
+}
+record(bo, "${UUT}:${SITE}:MATHSTA:${CH}:2:OVER") {
+	field(DTYP, "Soft Channel")
+	field(DOL, 	"${UUT}:${SITE}:MATHSTA:${CH}.B5")
+	field(OMSL, "closed_loop")
+	field(FLNK, "${UUT}:${SITE}:MATHSTA:${CH}:3:OVER")
+}
+record(bo, "${UUT}:${SITE}:MATHSTA:${CH}:3:OVER") {
+	field(DTYP, "Soft Channel")
+	field(DOL, 	"${UUT}:${SITE}:MATHSTA:${CH}.B6")
+	field(OMSL, "closed_loop")
+	field(FLNK, "${UUT}:${SITE}:MATHSTA:${CH}:4:OVER")
+}
+record(bo, "${UUT}:${SITE}:MATHSTA:${CH}:4:OVER") {
+	field(DTYP, "Soft Channel")
+	field(DOL, 	"${UUT}:${SITE}:MATHSTA:${CH}.B7")
+	field(OMSL, "closed_loop")		
 }
 
 record(mbbiDirect, "${UUT}:${SITE}:MATHSTA:${CH}:CLR") {
@@ -11,3 +62,14 @@ record(mbbiDirect, "${UUT}:${SITE}:MATHSTA:${CH}:CLR") {
 	field(INP,  "@cpdac.proto clrMathSTA(${ch}) ${SPORT}")
 	field(VAL,  "0xff")
 }
+
+record(bi, "${UUT}:${SITE}:PROCSTA:${CH}:RX_SHORT") {
+	field(DOL, 	"${UUT}:${SITE}:MATHSTA:${CH}.B0")
+	field(OMSL, "closed_loop")		
+}
+
+record(bi, "${UUT}:${SITE}:PROCSTA:${CH}:RX_LONG") {
+	field(DOL, 	"${UUT}:${SITE}:MATHSTA:${CH}.B1")
+	field(OMSL, "closed_loop")		
+}
+
