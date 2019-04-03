@@ -69,14 +69,15 @@ nameFromMT() {
 	$MT_RAD_CELF)	echo "rad-celf";;
 	$MT_AO428)		echo "ao428elf";;
 	$MT_CPDAC)		echo "cpsc2-dac";;
-	$MT_COCOM)		echo "cpsc2-com";;
+	$MT_CPCOM)		echo "cpsc2-com";;
 	# no default	
 	esac					
 }
 
 hasInput() {
+	echo "hasInput name $(nameFromMT $1)"
 case $(nameFromMT $1) in
-	acq*|bolo*) echo "yes";;
+	acq*|bolo*|cpsc2-com) echo "yes";;
 	*) echo "no";;
 	esac	
 }
