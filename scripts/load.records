@@ -1041,6 +1041,9 @@ make_psu_DIO
 echo "dbLoadRecords(\"db/cpsc2trigs.db\", \"UUT=${HOST}\")"
 echo "dbLoadRecords(\"db/cpsc2leds.db\", \"UUT=${HOST}\")"
 echo "dbLoadRecords(\"db/cpsc2controls.db\", \"UUT=${HOST}\")"
+for site in 1 2; do
+	echo "dbLoadRecords(\"db/cpsc2sites.db\", \"UUT=${HOST},SITE=$site\")"
+done
 
 dblr '"db/mirror.db","UUT='${HOST}'"'
 

@@ -90,6 +90,8 @@ record(ai, "${UUT}:SYS:UPTIME") {
 	field(DESC, "Linux Uptime")
 }
 
+
+~      
 #record(stringin, "${UUT}:SYS:IP") {
 #	field(DTYP, "dsSysfsStringin")
 #	field(INP, "@#!/usr/local/bin/get.ipaddr")
