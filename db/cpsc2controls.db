@@ -1,0 +1,122 @@
+record(ai, "${UUT}:SYS:TEMP:BB:0") {
+	field(DTYP, "dsSysfsAi")
+	field(INP, "@/dev/hwmon/0/temp")
+	field(SCAN, "10 second")
+	field(DESC, "Temperature Base Board 0")
+	field(ESLO, 0.001)
+	field(LINR, "LINEAR")
+	field(EGU, "C")
+}
+
+alias("${UUT}:SYS:TEMP:BB:0", "${UUT}:SYS:TEMP:BB:1")
+alias("${UUT}:SYS:TEMP:BB:0", "${UUT}:SYS:TEMP:BB:2")
+
+record(ai, "${UUT}:SYS:TEMP:DAC") {
+	field(DTYP, "dsSysfsAi")
+	field(INP, "@/dev/hwmon/1/temp")
+	field(SCAN, "10 second")
+	field(DESC, "Temperature DAC")
+	field(ESLO, 0.001)
+	field(LINR, "LINEAR")
+	field(EGU,  "C")
+}
+record(ai, "${UUT}:SYS:TEMP:ADC") {
+	field(DTYP, "dsSysfsAi")
+	field(INP, "@/dev/hwmon/2/temp")
+	field(SCAN, "10 second")
+	field(DESC, "Temperature ADC")
+	field(ESLO, 0.001)
+	field(LINR, "LINEAR")
+	field(EGU,  "C")
+}
+record(ai, "${UUT}:SYS:V1p8") {
+	field(DTYP, "dsSysfsAi")
+	field(INP, "@/dev/hwmon/0/1V8")
+	field(SCAN, "10 second")
+	field(DESC, "Power Rail 1V8")
+	field(ESLO, 0.001)
+	field(LINR, "LINEAR")
+	field(HOPR, "2.0")
+	field(LOPR, "1.6")
+	field(HIGH, "1.9")
+	field(LOW,  "1.75")
+	field(EGU,  "V")
+}
+record(ai, "${UUT}:SYS:V5p0") {
+	field(DTYP, "dsSysfsAi")
+	field(INP, "@/dev/hwmon/0/5V")
+	field(SCAN, "10 second")
+	field(DESC, "Power Rail 5V")
+	field(ESLO, 0.001)
+	field(LINR, "LINEAR")
+	field(HOPR, "6")
+	field(LOPR, "4")
+	field(HIGH, "5.10")
+	field(LOW,  "4.90")
+	field(EGU,  "V")
+}
+record(ai, "${UUT}:SYS:VP15") {
+	field(DTYP, "dsSysfsAi")
+	field(INP, "@/dev/hwmon/0/15VAP")
+	field(SCAN, "10 second")
+	field(DESC, "Power Rail +15V")
+	field(ESLO, 0.001)
+	field(LINR, "LINEAR")
+	field(HOPR, "16")
+	field(LOPR, "14")
+	field(HIGH, "15.5")
+	field(LOW,  "14.5")
+	field(EGU,  "V")
+}
+record(ai, "${UUT}:SYS:VN15") {
+	field(DTYP, "dsSysfsAi")
+	field(INP, "@/dev/hwmon/0/15VAP")
+	field(SCAN, "10 second")
+	field(DESC, "Power Rail -15V")
+	field(ESLO, 0.001)
+	field(LINR, "LINEAR")
+	field(HOPR, "-14")
+	field(LOPR, "-16")
+	field(HIGH, "-15.5")
+	field(LOW,  "-14.5")
+	field(EGU,  "V")
+}
+
+
+record(ai, "${UUT}:SYS:UPTIME") {
+	field(DTYP, "dsSysfsAi")
+	field(INP, "@/proc/uptime")
+	field(SCAN, "1 second")
+	field(DESC, "Linux Uptime")
+}
+
+#record(stringin, "${UUT}:SYS:IP") {
+#	field(DTYP, "dsSysfsStringin")
+#	field(INP, "@#!/usr/local/bin/get.ipaddr")
+#	field(PINI, "YES")
+#	field(DESC, "reports unit ip address .. EPICS DNS!")
+#}
+
+#record(stringin, "${UUT}:SYS:RELEASE") {
+#	field(DTYP, "dsSysfsStringin")
+#	field(INP, "@/etc/d-tacq_release")
+#	field(PINI, "YES")
+#	field(DESC, "reports D-TACQ software version")
+#}
+
+#record(stringin, "${UUT}:SYS:FPGA") {
+#	field(DTYP, "dsSysfsStringin")
+#	field(INP, "@/dev/cpsc.0/STAT/REVID")
+#	field(PINI, "YES")
+#	field(DESC, "reports FPGA version")
+#}
+#record(stringin, "${UUT}:AI:stream_service") {
+#	field(DTYP, "dsSysfsStringin")
+#	field(INP, "@#!stream_service_controller")
+#	field(PINI, "YES")
+#	field(DESC, "checks&selects trig/free run AI")
+#}
+record(stringout, "${UUT}:CARE:OWNER") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "Records current test user")
+}

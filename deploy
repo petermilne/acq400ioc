@@ -1,0 +1,6 @@
+PKG='40-acq400ioc-*.tgz'
+set -x
+ssh peter@eigg-fs 'rm /home/cpsc2/usr/local/packages/'$PKG
+scp ../PACKAGES/$PKG peter@eigg-fs:/home/cpsc2/usr/local/packages/
+ssh peter@eigg-fs 'cd /home/cpsc2; tar xvzf usr/local/packages/'$PKG
+

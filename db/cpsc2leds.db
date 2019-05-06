@@ -1,0 +1,37 @@
+record(bo, "${UUT}:SIG:LED:1:GREEN") {
+        field(DTYP, "boAcqHost")
+        field(OUT, "@/dev/gpio/LED/LED1")
+        field(DESC, "LED cpsc:1:green:idle")
+        field(ZNAM, "OFF")
+        field(ONAM, "ON")
+        field(PINI, "YES")
+}
+
+record(bo, "${UUT}:SIG:LED:2:RED") {
+        field(DTYP, "boAcqHost")
+        field(OUT, "@/dev/gpio/LED/LED2")
+        field(DESC, "LED cpsc:2:red:heartbeat")
+        field(ZNAM, "OFF")
+        field(ONAM, "ON")
+        field(PINI, "YES")
+}
+
+record(bo, "${UUT}:SIG:LED:3:AMBER") {
+        field(DTYP, "boAcqHost")
+        field(OUT, "@/dev/gpio/LED/LED3")
+        field(DESC, "LED cpsc:3:amber")
+        field(ZNAM, "OFF")
+        field(ONAM, "ON")
+        field(PINI, "YES")
+}
+
+
+record(bo, "${UUT}:SIG:LED:4:BLUE") {
+        field(DTYP, "boAcqHost")
+        field(OUT, "@/dev/gpio/LED/LED4")
+        field(DESC, "LED cpsc:4:blue")
+        field(ZNAM, "OFF")
+        field(ONAM, "ON")
+        field(PINI, "YES")
+}
+

@@ -13,3 +13,44 @@ record(bi, "${UUT}:PSU:FAULT") {
 	field(SCAN, ".1 second")
 }
 
+record(bo, "${UUT}:TRGOUT") {
+	field(DTYP, "Soft Channel")
+	field(OUT,  "1")
+	field(DESC, "Front Panel TRG OUT")
+	field(PINI, "YES")	
+}
+
+record(bo, "${UUT}:PACKOUT") {
+	field(DTYP, "Soft Channel")
+	field(OUT,  "1")
+	field(DESC, "Front Panel PACKET OUT")
+	field(PINI, "YES")	
+}
+
+record(bi, "${UUT}:SYS:FSCLK") {
+	field(DTYP, "Soft Channel")
+	field(INP,  "1")
+	field(DESC, "FP FAST SET CLK")
+	field(PINI, "YES")	
+}
+
+record(bi, "${UUT}:SYS:SSCLK") {
+	field(DTYP, "Soft Channel")
+	field(INP,  "1")
+	field(DESC, "FP SLOW SET CLK")
+	field(PINI, "YES")	
+}
+
+record(bi, "${UUT}:SYS:MASTRIG") {
+	field(DTYP, "Soft Channel")
+	field(INP,  "1")
+	field(DESC, "FP Master TRG")
+	field(PINI, "YES")	
+}
+
+record(bi, "${UUT}:SYS:WAVTRIG") {
+	field(DTYP, "Soft Channel")
+	field(INP,  "1")
+	field(DESC, "FP Waveform TRG")
+	field(PINI, "YES")	
+}
