@@ -1,6 +1,6 @@
 record(bo, "${UUT}:SIG:LED:1:GREEN") {
         field(DTYP, "boAcqHost")
-        field(OUT, "@/dev/gpio/LED/LED1")
+        field(OUT, "@/dev/gpio/LED1")
         field(DESC, "LED cpsc:1:green:idle")
         field(ZNAM, "OFF")
         field(ONAM, "ON")
@@ -9,7 +9,7 @@ record(bo, "${UUT}:SIG:LED:1:GREEN") {
 
 record(bo, "${UUT}:SIG:LED:2:RED") {
         field(DTYP, "boAcqHost")
-        field(OUT, "@/dev/gpio/LED/LED2")
+        field(OUT, "@/dev/gpio/LED2")
         field(DESC, "LED cpsc:2:red:heartbeat")
         field(ZNAM, "OFF")
         field(ONAM, "ON")
@@ -18,7 +18,7 @@ record(bo, "${UUT}:SIG:LED:2:RED") {
 
 record(bo, "${UUT}:SIG:LED:3:AMBER") {
         field(DTYP, "boAcqHost")
-        field(OUT, "@/dev/gpio/LED/LED3")
+        field(OUT, "@/dev/gpio/LED3")
         field(DESC, "LED cpsc:3:amber")
         field(ZNAM, "OFF")
         field(ONAM, "ON")
@@ -28,10 +28,17 @@ record(bo, "${UUT}:SIG:LED:3:AMBER") {
 
 record(bo, "${UUT}:SIG:LED:4:BLUE") {
         field(DTYP, "boAcqHost")
-        field(OUT, "@/dev/gpio/LED/LED4")
+        field(OUT, "@/dev/gpio/LED4")
         field(DESC, "LED cpsc:4:blue")
         field(ZNAM, "OFF")
         field(ONAM, "ON")
         field(PINI, "YES")
 }
 
+alias("${UUT}:1:AURORA:UP", "${UUT}:SFP:1:TXUP")
+alias("${UUT}:1:AURORA:UP", "${UUT}:SFP:1:RXUP")
+
+alias("${UUT}:2:AURORA:UP", "${UUT}:SFP:2:TXUP")
+alias("${UUT}:2:AURORA:UP", "${UUT}:SFP:2:RXUP")
+
+ 
