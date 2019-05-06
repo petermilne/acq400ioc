@@ -1,10 +1,10 @@
-record (bi, "${UUT}:MOD:${site}:GOOD") {
+record (bi, "${UUT}:MOD:${SITE}:GOOD") {
         field(DTYP, "Soft Channel")
         field(INP, "1")
         field(PINI, "YES")
 }
 
-record (bi, "${UUT}:MOD:${site}:FAIL") {
+record (bi, "${UUT}:MOD:${SITE}:FAIL") {
         field(DTYP, "biAcqHost")
 		field(DTYP, "Soft Channel")
         field(INP, "0")
