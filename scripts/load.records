@@ -1016,7 +1016,7 @@ done
 
 psu_present()
 {
-	if [ -e /dev/gpio/PSU/$1 ] then
+	if [ -e /dev/gpio/PSU/$1 ]; then
 			echo 1
 	else
 			echo 0
