@@ -1,63 +1,15 @@
-record(bi, "${UUT}:SYS:digout1") {
-	field(DTYP, "biAcqHost")
-	field(INP,  "@%g gpio40")
-	field(DESC, "front panel output 1 TRIGOUT")
-	field(SCAN, "1 second")
-}
-
-record(bi, "${UUT}:SYS:digout2") {
-	field(DTYP, "biAcqHost")
-	field(INP, "@%g gpio25")
-	field(DESC, "front panel output 2 PACKOUT")
-	field(SCAN, "1 second")
-}
-
-record(bi, "${UUT}:SYS:extclk1") {
-	field(DTYP, "biAcqHost")
-	field(INP, "@%g gpio36")
-	field(DESC, "front panel input FSCLK")
-	field(SCAN, "1 second")
-}
-
-record(bi, "${UUT}:SYS:extclk2") {
-	field(DTYP, "biAcqHost")
-	field(INP,  "@%g gpio43")
-	field(DESC, "front panel input SSCLK")
-	field(SCAN, "1 second")
-}
-
-record(bi, "${UUT}:SYS:exttrg1") {
-	field(DTYP, "biAcqHost")
-	field(INP,  "@%g gpio30")
-	field(DESC, "front panel input MASTRIG")
-	field(SCAN, "1 second")
-}
-
-record(bi, "${UUT}:SYS:exttrg2") {
-	field(DTYP, "biAcqHost")
-	field(INP,  "@%g gpio22")
-	field(DESC, "front panel input WAVTRIG")
-	field(SCAN, "1 second")
-}
 
 record(bi, "${UUT}:SYS:pwrgood") {
-	field(DTYP, "biAcqHost")
-	field(INP,  "@%g gpio48")
+	field(DTYP, "Soft Channel")
+	field(INP,  "1")
 	field(DESC, "cpsc card power good signal")
-	field(SCAN, "1 second")
+	field(PINI, "YES")	
 }
 
 record(bi, "${UUT}:PSU:FAULT") {
 	field(DTYP, "biAcqHost")
-	field(INP,  "@%g gpio28")
+	field(INP,  "@/dev/gpio/FAULT")
 	field(DESC, "PSU chassis global fault")
 	field(SCAN, ".1 second")
 }
 
-
-alias("${UUT}:SYS:digout1", "${UUT}:SIG:TRIGOUT")
-alias("${UUT}:SYS:digout2", "${UUT}:SIG:PACKOUT")
-alias("${UUT}:SYS:extclk1", "${UUT}:SIG:FSCLK")
-alias("${UUT}:SYS:extclk2", "${UUT}:SIG:SSCLK")
-alias("${UUT}:SYS:exttrg1", "${UUT}:SIG:MASTRIG")
-alias("${UUT}:SYS:exttrg2", "${UUT}:SIG:WAVTRIG")

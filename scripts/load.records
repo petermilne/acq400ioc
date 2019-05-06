@@ -1038,6 +1038,7 @@ make_psu_DIO() {
 }
 
 make_psu_DIO
+echo "dbLoadRecords(\"db/cpsc2trigs.db\", "UUT=${HOST}")"
 
 dblr '"db/mirror.db","UUT='${HOST}'"'
 
