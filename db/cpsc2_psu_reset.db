@@ -1,0 +1,32 @@
+record(bo, "${UUT}:PSU:RESET:${cid}") {
+	field(DTYP, "boAcqHost")
+	field(OUT, "@/dev/gpio/BP/RST${cid}")
+	field(DESC, "reset PSU ${cid}")
+	field(ZNAM, "OK")
+	field(ONAM, "ERR")
+	field(PINI, "YES")
+}
+
+record(bo, "${UUT}:PSU:DISABLE:${cid}") {
+	field(DTYP, "boAcqHost")
+	field(OUT, "@/dev/gpio/BP/DIS${cid}")
+	field(DESC, "disable PSU ${cid}")
+	field(ZNAM, "OK")
+	field(ONAM, "ERR")
+	field(PINI, "YES")
+	field(FLNK, "${UUT}:PSU:IS_ENABLED:${cid}")
+}
+
+record(calc, "${UUT}:PSU:IS_ENABLED:${cid}") {
+	field(INPA, "${UUT}:PSU:DISABLE:${cid}")
+	field(CALC, "! A")
+	field(DESC, "reports PSU ${cid} is enabled")
+}
+record(bi, "${UUT}:PSU:PRESENT:${cid}") {
+	field(DTYP, "Raw Soft Channel")
+	field(INP, "${psu_present}")
+	field(ZNAM, "NO")
+	field(ONAM, "YES")
+	field(PINI, "YES")
+	field(DESC, "reports PSU ${cid} is present")
+}

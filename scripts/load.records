@@ -1014,6 +1014,31 @@ do
 	fi
 done
 
+psu_present()
+{
+	if [ -e /dev/gpio/PSU/$1 ] then
+			echo 1
+	else
+			echo 0
+	fi
+}
+
+make_psu_DIO() {
+	for psu in $(seq 8)
+	do
+		PP=$(psu_present $psu)
+		echo "dbLoadRecords(\"db/cpsc2_psu_reset.db\", \
+			\"UUT=${HOST},cid=${psu},psu_present=${PP}\")"
+
+		if [ $PP -ne 0 ]; then
+			echo "dbLoadRecords(\"db/cpsc2_psu_fault.db\",\
+			\"UUT=${HOST},cid=${psu}\")"			
+		fi 
+	done
+}
+
+make_psu_DIO
+
 dblr '"db/mirror.db","UUT='${HOST}'"'
 
 for file in /usr/local/epics/init.d/*init*

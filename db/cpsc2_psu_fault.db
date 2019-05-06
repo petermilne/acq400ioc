@@ -1,0 +1,101 @@
+
+record(bi, "${UUT}:PSU:FAULT:${cid}:IOVL") {
+	field(DTYP, "biAcqHost")
+	field(INP,  "/dev/gpio/PSU/${cid}/P0")
+	field(DESC, "PSU ${cid} IOVL Fault")
+	field(ZNAM, "PSU_OK")
+	field(ONAM, "PSU_FAULT")
+	field(FLNK, "${UUT}:PSU:FAULT:${cid}")
+	field(SCAN, "1 second")
+}
+
+record(bi, "${UUT}:PSU:FAULT:${cid}:VOVL") {
+	field(DTYP, "biAcqHost")
+	field(INP,  "/dev/gpio/PSU/${cid}/P1")
+	field(DESC, "PSU ${cid} VOVL Fault")
+	field(ZNAM, "PSU_OK")
+	field(ONAM, "PSU_FAULT")
+	field(FLNK, "${UUT}:PSU:FAULT:${cid}")
+	field(SCAN, "1 second")
+}
+
+record(bi, "${UUT}:PSU:FAULT:${cid}:HVPOWER") {
+	field(DTYP, "biAcqHost")
+	field(INP,  "/dev/gpio/PSU/${cid}/P2")
+	field(DESC, "PSU ${cid} HVPOWER Fault")
+	field(ZNAM, "PSU_OK")
+	field(ONAM, "PSU_FAULT")
+	field(FLNK, "${UUT}:PSU:FAULT:${cid}")
+	field(SCAN, "1 second")
+}
+
+record(bi, "${UUT}:PSU:FAULT:${cid}:PWM_POWER") {
+	field(DTYP, "biAcqHost")
+	field(INP,  "/dev/gpio/PSU/${cid}/P3")
+	field(DESC, "PSU ${cid} PWM_POWER Fault")
+	field(ZNAM, "PSU_OK")
+	field(ONAM, "PSU_FAULT")
+	field(FLNK, "${UUT}:PSU:FAULT:${cid}")
+	field(SCAN, "1 second")
+}
+
+record(bi, "${UUT}:PSU:FAULT:${cid}:T_SINK") {
+	field(DTYP, "biAcqHost")
+	field(INP,  "/dev/gpio/PSU/${cid}/P4")
+	field(DESC, "PSU ${cid} T_SINK Fault")
+	field(ZNAM, "PSU_OK")
+	field(ONAM, "PSU_FAULT")
+	field(FLNK, "${UUT}:PSU:FAULT:${cid}")
+	field(SCAN, "1 second")
+}
+
+record(bi, "${UUT}:PSU:FAULT:${cid}:T_R1") {
+	field(DTYP, "biAcqHost")
+	field(INP,  "/dev/gpio/PSU/${cid}/P5")
+	field(DESC, "LRU:${UUT}.${cid} PSU T_R1 Fault")
+	field(ZNAM, "PSU_OK")
+	field(ONAM, "PSU_FAULT")
+	field(FLNK, "${UUT}:PSU:FAULT:${cid}")
+	field(SCAN, "1 second")
+}
+
+record(bi, "${UUT}:PSU:FAULT:${cid}:T_R2") {
+	field(DTYP, "biAcqHost")
+	field(INP,  "/dev/gpio/PSU/${cid}/P6")
+	field(DESC, "PSU ${cid} T_R2 Fault")
+	field(ZNAM, "PSU_OK")
+	field(ONAM, "PSU_FAULT")
+	field(FLNK, "${UUT}:PSU:FAULT:${cid}")
+	field(SCAN, "1 second")
+}
+
+record(bi, "${UUT}:PSU:FAULT:${cid}:DISABLE") {
+	field(DTYP, "biAcqHost")
+	field(INP,  "/dev/gpio/PSU/${cid}/P7")
+	field(DESC, "PSU ${cid} DISABLE Fault")
+	field(ZNAM, "PSU_OK")
+	field(ONAM, "PSU_FAULT")
+	field(FLNK, "${UUT}:PSU:FAULT:${cid}")
+	field(SCAN, "1 second")
+}
+
+record(calc, "${UUT}:PSU:FAULT:${cid}") {
+	field(INPA,"${UUT}:PSU:FAULT:${cid}:IOVL")
+ 	field(INPC,"${UUT}:PSU:FAULT:${cid}:HVPOWER")
+ 	field(INPD,"${UUT}:PSU:FAULT:${cid}:PWM_POWER")
+ 	field(INPE,"${UUT}:PSU:FAULT:${cid}:T_SINK")
+ 	field(INPF,"${UUT}:PSU:FAULT:${cid}:T_R1")
+ 	field(INPG,"${UUT}:PSU:FAULT:${cid}:T_R2")
+  	field(CALC,"A || C || D || E || F || G" )
+	field(FLNK, "${UUT}:PSU:I2C_OK:${cid}")
+	field(DESC, "PSU ${cid} fault summary")
+}
+
+record(calc, "${UUT}:PSU:I2C_OK:${cid}") {
+	field(INPA, "${UUT}:PSU:FAULT:${cid}")
+	field(INPB, "${UUT}:PSU:DISABLE:${cid}")
+	field(INPC, "${UUT}:PSU:FAULT:${cid}:DISABLE")
+	field(CALC, "C = (A || B)")
+	field(DESC, "i2c is consistent for psu ${cid}")
+}
+
