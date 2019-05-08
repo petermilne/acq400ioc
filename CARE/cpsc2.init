@@ -1,0 +1,38 @@
+# cpsc2 default init .. call me from /mnt/local/rc.user
+echo cpsc2.init 01
+# DEFAULT init for acq435, 43500 Hz, auto soft trigger
+#/usr/local/CARE/acqc2_0\+acq43x.init
+ls -l /usr/local/CARE/acq400_streamd.0.conf-soft_trigger
+mkdir -p /etc/sysconfig
+cp /usr/local/CARE/acq400_streamd.0.conf-soft_trigger /etc/sysconfig/acq400_streamd.0.conf
+# Local clock and soft trigger
+#set.site 0 sync_role master 43500
+# Alternate front panel clock and front panel trigger
+#set.site 0 sync_role fpmaster 43500 1000000
+
+# For other combinations try 'set.site 0 sync_role help'
+
+ln -s /usr/bin/expect  /usr/local/bin/
+(cd /usr/local/init/pl330dbg;./pl330dbg.init)
+
+cp /mnt/local/etc/sysconfig/* /etc/sysconfig
+chmod a+rx /etc/sysconfig/*
+
+
+echo /mnt/local/rc.user 88 spawn post load settings
+
+(
+/usr/local/epics/scripts/wait_ioc_ready
+set -x
+
+set.site 1 clk 1,0,1  # new 15.587M
+set.site 1 clkdiv 1
+set.site 1 hi_res_mode 1
+
+set.site 1 trg 1,1,1
+set.site 2 trg 1,1,1
+set.site 2 clk 1,0,1
+set.site 2 clkdiv 157
+echo cpsc2.init 99
+) &
+
