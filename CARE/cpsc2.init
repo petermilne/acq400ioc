@@ -18,6 +18,9 @@ ln -s /usr/bin/expect  /usr/local/bin/
 cp /mnt/local/etc/sysconfig/* /etc/sysconfig
 chmod a+rx /etc/sysconfig/*
 
+NB=$(cat /sys/module/acq420fmc/parameters/nbuffers)
+echo $(($NB-10)) > /sys/module/acq420fmc/parameters/distributor_first_buffer
+set.sys /sys/module/acq420fmc/parameters/xo_distributor_sample_size 32
 
 echo /mnt/local/rc.user 88 spawn post load settings
 
@@ -27,12 +30,16 @@ set -x
 
 set.site 1 clk 1,0,1  # new 15.587M
 set.site 1 clkdiv 1
+# 15.587/512=30.443kHz
 set.site 1 hi_res_mode 1
 
 set.site 1 trg 1,1,1
 set.site 2 trg 1,1,1
 set.site 2 clk 1,0,1
-set.site 2 clkdiv 157
+# run DAC at same rate as ADC
+#set.site 2 CLKDIV 512
+# run it faster to avoid 3x.3 overruns
+set.site 2 CLKDIV 220
 echo cpsc2.init 99
 ) &
 
