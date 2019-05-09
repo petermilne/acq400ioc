@@ -37,9 +37,7 @@ set.site 1 trg 1,1,1
 set.site 2 trg 1,1,1
 set.site 2 clk 1,0,1
 # run DAC at same rate as ADC
-#set.site 2 CLKDIV 512
-# run it faster to avoid 3x.3 overruns
-set.site 2 CLKDIV 220
+set.site 2 CLKDIV 512
 echo cpsc2.init 99
 ) &
 
