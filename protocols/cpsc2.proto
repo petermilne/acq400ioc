@@ -1,0 +1,20 @@
+Terminator = LF;
+ExtraInput = Ignore;
+
+get_rfd_div {
+	out "rfd_div";
+	in "%x";
+}
+
+set_rfd_div {
+	out "rfd_div %x";
+}
+
+set_apd {
+	out "aurora\$1_pwrdn %d";
+}
+
+get_apd {
+	out "aurora\$1_pwrdn";
+	in "%d";
+}

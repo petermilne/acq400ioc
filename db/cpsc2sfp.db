@@ -1,0 +1,81 @@
+record (bo, "${UUT}:SFP:${CH}:TX_DISABLE") {
+		field(DTYP, "boAcqHost")
+		field(OUT, 	"@/dev/gpio/SFP/${CH}/TX_DISABLE")
+		field(ONAM, "ON")
+		field(ZNAM, "OFF")
+		field(PINI, "YES")
+		field(VAL,  "OFF")	
+}
+
+record (bo, "${UUT}:SFP:${CH}:LED:PRESENT") {
+		field(DTYP, "boAcqHost")
+		field(OUT, 	"@/dev/gpio/SFP/${CH}/LED")
+		field(ONAM, "ON")
+		field(ZNAM, "OFF")
+		field(PINI, "YES")
+		field(VAL,  "OFF")	
+}
+
+record (bo, "${UUT}:SFP:${CH}:LED:HB") {
+field(DTYP, "boAcqHost")
+		field(OUT, 	"@/dev/gpio/SFP/${CH}/HB")
+		field(ONAM, "ON")
+		field(ZNAM, "OFF")
+		field(PINI, "YES")
+		field(VAL,  "OFF")	
+}
+
+record(bi, "${UUT}:SFP:${CH}:PRESENT") {
+		field(DTYP, "biAcqHost")
+		field(INP,  "@/dev/gpio/SFP/${CH}/PRESENT")
+		field(ZNAM, "FALSE")
+		field(ONAM, "TRUE")
+		field(SCAN, "1 second")	
+}
+
+record(bi, "${UUT}:SFP:${CH}:LOS") {
+		field(DTYP, "biAcqHost")
+		field(INP,  "@/dev/gpio/SFP/${CH}/LOS")
+		field(ZNAM, "FALSE")
+		field(ONAM, "TRUE")
+		field(SCAN, "1 second")	
+}
+
+record(bo, "${UUT}:SFP:${CH}:PWRDN") {
+		field(DTYP, "stream")		
+		field(OUT,  "@cpsc2.proto set_apd(${CH}) ${S3}")
+		field(VAL,  "0")
+		field(PINI, "YES")
+		field(ZNAM, "FALSE")
+		field(ONAM, "TRUE")		
+} 
+
+record(longout, "${UUT}:0:RFD") {
+		field(DTYP, "Soft Channel")
+		field(DESC, "Revolution Frequency Divider")
+		field(DRVL, "19")
+		field(DRVH, "57")
+		field(FLNK, "${UUT}:0:RFD:w")
+}
+
+record(longout, "${UUT}:0:RFD:w") {
+		field(DTYP, "stream")
+		field(OUT,  "@cpsc2.proto set_rfd_div ${S0}")
+		field(DISV, "1")
+		field(SDIS, "${UUT}:0:RFD:s.PACT")
+}
+
+record(longin, "${UUT}:0:RFD:r") {
+		field(DTYP, "stream")
+		field(INP,  "@cpsc2.prot get_rfd_div ${S0}")
+		field(SCAN, "1 second")
+		field(FLNK, "${UUT}:0:RFD:s")
+} 
+
+record(longout, "${UUT}:0:RFD:s") {
+		field(DTYP, "Soft Channel")
+		field(DOL,  "${UUT}:0:RFD:r NPP")
+		field(OMSL, "closed_loop")
+		field(OUT,  "${UUT}:0:RFD PP")
+}
+
