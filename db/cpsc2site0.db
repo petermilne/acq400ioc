@@ -1,0 +1,31 @@
+record(longout, "${UUT}:0:RFD") {
+		field(DTYP, "Soft Channel")
+		field(DESC, "Revolution Frequency Divider")
+		field(DRVL, "19")
+		field(DRVH, "57")
+		field(FLNK, "${UUT}:0:RFD:w")
+}
+
+record(longout, "${UUT}:0:RFD:w") {
+		field(DTYP, "stream")
+		field(OUT,  "@cpsc2.proto set_rfd_div ${SPORT}")
+		field(DISV, "1")
+		field(SDIS, "${UUT}:0:RFD:s.PACT")
+		field(OMSL, "closed_loop")
+		field(DOL, "${UUT}:0:RFD PP")
+}
+
+record(longin, "${UUT}:0:RFD:r") {
+		field(DTYP, "stream")
+		field(INP,  "@cpsc2.proto get_rfd_div ${SPORT}")
+		field(SCAN, "1 second")
+		field(FLNK, "${UUT}:0:RFD:s")
+} 
+
+record(longout, "${UUT}:0:RFD:s") {
+		field(DTYP, "Soft Channel")
+		field(DOL,  "${UUT}:0:RFD:r NPP")
+		field(OMSL, "closed_loop")
+		field(OUT,  "${UUT}:0:RFD PP")
+}
+
