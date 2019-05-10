@@ -51,11 +51,11 @@ record(calc, "${UUT}:0:SIG:CLK_S5:FREQ") {
 record(bo, "${UUT}:SIG:MASTRIG") {
 	field(DTYP, "Soft Channel")
 	field(DOL,  "${UUT}:0:SIG:TRG_S4:ACTIVE NPP")
-	field(OMSL, "closed_loop")
+	field(OMSL, "closed_loop")	
 }
 
 record(calc, "${UUT}:0:SIG:TRG_S4:FREQ") {
-	field(FLNK, "${UUT}:SIG:MASTRG")
+	field(FLNK, "${UUT}:SIG:MASTRIG")
 }
 record(bo, "${UUT}:SIG:WAVTRIG") {
 	field(DTYP, "Soft Channel")
@@ -64,6 +64,6 @@ record(bo, "${UUT}:SIG:WAVTRIG") {
 }
 
 record(calc, "${UUT}:0:SIG:TRG_S5:FREQ") {
-	field(FLNK, "${UUT}:SIG:WAVTRG")
+	field(FLNK, "${UUT}:SIG:WAVTRIG")
 }
 
