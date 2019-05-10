@@ -1,7 +1,7 @@
 
 # cpsc2_002:3:SIG:AURORA:1:RXPKTS:ACTIVE
 record(calc, "${UUT}:3:SIG:AURORA:${CH}:RXPKTS:FREQ") {
-		field(FLNK, "${UUT}:SFP:${CH}:LED:HB"
+		field(FLNK, "${UUT}:SFP:${CH}:LED:HB")
 }
 record (bo, "${UUT}:SFP:${CH}:LED:HB") {
 		field(OMSL, "closed_loop")

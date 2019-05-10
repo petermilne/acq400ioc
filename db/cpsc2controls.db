@@ -82,7 +82,6 @@ record(ai, "${UUT}:SYS:VN15") {
 	field(EGU,  "V")
 }
 
-~      
 #record(stringin, "${UUT}:SYS:IP") {
 #	field(DTYP, "dsSysfsStringin")
 #	field(INP, "@#!/usr/local/bin/get.ipaddr")

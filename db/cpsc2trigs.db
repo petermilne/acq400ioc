@@ -27,31 +27,43 @@ record(bo, "${UUT}:SYS:PACKOUT") {
 	field(PINI, "YES")	
 }
 
-record(bi, "${UUT}:SIG:FSCLK") {
+record(bo, "${UUT}:SIG:FSCLK") {
 	field(DTYP, "Soft Channel")
-	field(INP,  "1")
-	field(DESC, "FP FAST SET CLK")
-	field(PINI, "YES")	
+	field(DOL,  "${UUT}:0:SIG:CLK_S4:ACTIVE NPP")
+	field(OMSL, "closed_loop")
 }
 
-record(bi, "${UUT}:SIG:SSCLK") {
-	field(DTYP, "Soft Channel")
-	field(INP,  "1")
-	field(DESC, "FP SLOW SET CLK")
-	field(PINI, "YES")	
+record(calc, "${UUT}:0:SIG:CLK_S4:FREQ") {
+	field(FLNK, "${UUT}:SIG:FSCLK")
 }
 
-record(bi, "${UUT}:SIG:MASTRIG") {
-	field(DTYP, "Soft Channel")
-	field(INP,  "1")
-	field(DESC, "FP Master TRG")
-	field(PINI, "YES")	
+record(bo, "${UUT}:SIG:SSCLK") {
+	field(DTYP, "Soft Channel")	
+	field(DOL,  "${UUT}:0:SIG:CLK_S5:ACTIVE NPP")
+	field(OMSL, "closed_loop")	
 }
 
-record(bi, "${UUT}:SIG:WAVTRIG") {
+record(calc, "${UUT}:0:SIG:CLK_S5:FREQ") {
+	field(FLNK, "${UUT}:SIG:SSCLK")
+}
+
+
+record(bo, "${UUT}:SIG:MASTRIG") {
 	field(DTYP, "Soft Channel")
-	field(INP,  "1")
-	field(DESC, "FP Waveform TRG")
-	field(PINI, "YES")	
+	field(DOL,  "${UUT}:0:SIG:TRG_S4:ACTIVE NPP")
+	field(OMSL, "closed_loop")
+}
+
+record(calc, "${UUT}:0:SIG:TRG_S4:FREQ") {
+	field(FLNK, "${UUT}:SIG:MASTRG")
+}
+record(bo, "${UUT}:SIG:WAVTRIG") {
+	field(DTYP, "Soft Channel")
+	field(DOL,  "${UUT}:0:SIG:TRG_S5:ACTIVE NPP")
+	field(OMSL, "closed_loop")	
+}
+
+record(calc, "${UUT}:0:SIG:TRG_S5:FREQ") {
+	field(FLNK, "${UUT}:SIG:WAVTRG")
 }
 
