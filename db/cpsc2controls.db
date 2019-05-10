@@ -82,15 +82,6 @@ record(ai, "${UUT}:SYS:VN15") {
 	field(EGU,  "V")
 }
 
-
-record(ai, "${UUT}:SYS:UPTIME") {
-	field(DTYP, "dsSysfsAi")
-	field(INP, "@/proc/uptime")
-	field(SCAN, "1 second")
-	field(DESC, "Linux Uptime")
-}
-
-
 ~      
 #record(stringin, "${UUT}:SYS:IP") {
 #	field(DTYP, "dsSysfsStringin")

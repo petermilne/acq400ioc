@@ -4,7 +4,7 @@ record (bo, "${UUT}:SFP:${CH}:TX_DISABLE") {
 		field(ONAM, "ON")
 		field(ZNAM, "OFF")
 		field(PINI, "YES")
-		field(VAL,  "OFF")	
+		field(VAL,  "0")	
 }
 
 record (bo, "${UUT}:SFP:${CH}:LED:PRESENT") {
@@ -12,8 +12,8 @@ record (bo, "${UUT}:SFP:${CH}:LED:PRESENT") {
 		field(OUT, 	"@/dev/gpio/SFP/${CH}/LED")
 		field(ONAM, "ON")
 		field(ZNAM, "OFF")
-		field(PINI, "YES")
-		field(VAL,  "OFF")	
+		field(DOL,  "${UUT}:SFP:${CH}:PRESENT NPP")
+		field(OMSL, "closed_loop")		
 }
 
 record (bo, "${UUT}:SFP:${CH}:LED:HB") {
@@ -22,7 +22,7 @@ field(DTYP, "boAcqHost")
 		field(ONAM, "ON")
 		field(ZNAM, "OFF")
 		field(PINI, "YES")
-		field(VAL,  "OFF")	
+		field(VAL,  "0")	
 }
 
 record(bi, "${UUT}:SFP:${CH}:PRESENT") {
@@ -30,7 +30,8 @@ record(bi, "${UUT}:SFP:${CH}:PRESENT") {
 		field(INP,  "@/dev/gpio/SFP/${CH}/PRESENT")
 		field(ZNAM, "FALSE")
 		field(ONAM, "TRUE")
-		field(SCAN, "1 second")	
+		field(SCAN, "1 second")
+		field(FLNK, "${UUT}:SFP:${CH}:LED:PRESENT")
 }
 
 record(bi, "${UUT}:SFP:${CH}:LOS") {
@@ -67,7 +68,7 @@ record(longout, "${UUT}:0:RFD:w") {
 
 record(longin, "${UUT}:0:RFD:r") {
 		field(DTYP, "stream")
-		field(INP,  "@cpsc2.prot get_rfd_div ${S0}")
+		field(INP,  "@cpsc2.proto get_rfd_div ${S0}")
 		field(SCAN, "1 second")
 		field(FLNK, "${UUT}:0:RFD:s")
 } 
