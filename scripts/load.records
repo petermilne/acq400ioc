@@ -1048,6 +1048,9 @@ done
 for sfp in 1 2 3; do
 	echo "dbLoadRecords(\"db/cpsc2sfp.db\",\"UUT=${HOST},CH=${sfp},SPORT=S3\")"
 done
+for sfp in 1 2; do
+	echo "dbLoadRecords(\"db/cpsc2sfp_auto.db\",\"UUT=${HOST},CH=${sfp}\")"
+done
 echo "dbLoadRecords(\"db/cpsc2site0.db\",\"UUT=${HOST},CH=${sfp},SPORT=S0\")"
 
 dblr '"db/mirror.db","UUT='${HOST}'"'

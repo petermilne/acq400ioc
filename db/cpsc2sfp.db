@@ -17,7 +17,7 @@ record (bo, "${UUT}:SFP:${CH}:LED:PRESENT") {
 }
 
 record (bo, "${UUT}:SFP:${CH}:LED:HB") {
-field(DTYP, "boAcqHost")
+		field(DTYP, "boAcqHost")
 		field(OUT, 	"@/dev/gpio/SFP/${CH}/HB")
 		field(ONAM, "ON")
 		field(ZNAM, "OFF")
