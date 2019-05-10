@@ -1,0 +1,74 @@
+/*
+ * if SFP is connected by LANE is not up, try an aurora reset
+ */
+ 
+
+program cpsc2_sfp_laneup_monitor
+
+option +r;
+ 
+ 
+int sfp_present;   assign sfp_present to "{uut}:SFP:{ch}:PRESENT"; monitor sfp_present;
+ 
+int aurora_lane_up; assign aurora_lane_up to "{uut}:{ch}:AURORA:UP"; monitor aurora_lane_up;
+ 
+int aurora_pwr_down; assign aurora_pwr_down to "{uut}:SFP:{ch}:PWRDN";
+ 
+char* ch;
+
+   
+ss lane_monitor
+{
+	state init {
+	    entry {
+	    	ch = macValueGet("ch");
+	    }
+		when (aurora_lane_up){
+			printf("%s init: aurora_lane_up\n", ch);
+		} state lane_up
+			
+		when (!aurora_lane_up && sfp_present) {
+			printf("%s init: sfp_present, but aurora_lane_up false, reset it\n", ch);
+		} state reset1
+	}
+	
+	state reset1 {
+		when(delay(0.1)) {
+		
+		} state reset2
+	}
+	
+	state reset2 {
+		when (aurora_lane_up){
+			printf("%s reset2: lane came up by itself\n", ch);
+		} state lane_up
+		when (!aurora_lane_up) {
+			printf("%s reset2: assert PWRDN\n", ch);
+			aurora_pwr_down = 1; pvPut(aurora_pwr_down);
+		} state reset3
+	}
+	state reset3 {
+		when(delay(0.1)){
+		
+		} state reset4
+	}
+	state reset4 {
+		entry {
+			aurora_pwr_down = 0; pvPut(aurora_pwr_down);
+			printf("%s reset2: clear PWRDN\n", ch);
+		}
+		when (delay(1)){
+		
+		} state init
+	}
+	
+	state lane_up {
+		entry {
+			printf("%s aurora_lane_up\n", ch);
+		}
+		when (!aurora_lane_up) {
+			printf("%s lane_up:aurora_lane_up LOST\n", ch);
+		} state init
+	}
+	
+}
