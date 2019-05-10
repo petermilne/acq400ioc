@@ -640,6 +640,8 @@ load_mb_base() {
 
 	kmcu*)
 			dblr '"db/hwmonvolts_mtca-rtm-2.db","UUT='${HOST}'"';;
+	cpsc2)
+			dblr '"db/hwmonvolts_cpsc2.db","UUT='${HOST}'"';;
 	*)
 			dblr '"db/hwmonvolts.db","UUT='${HOST}'"';;
 	esac
