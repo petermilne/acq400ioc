@@ -1,2 +1,3 @@
 registrar(cpsc2_sfp_laneup_monitorRegistrar)
+registrar(cpsc2_aurora_status_flasherRegistrar)
 

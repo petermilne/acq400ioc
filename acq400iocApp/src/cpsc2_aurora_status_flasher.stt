@@ -1,0 +1,88 @@
+/*
+ * cpsc2_aurora_status_flasher: 
+ * LANE_UP, no packets: solid,
+ * < 10 pps : 1 flash, 
+ * < 100 pps : 2 flash
+ * < 1000 pps : 3 flash
+ * < 10000 pps : 4 flash
+ * < 100000 pps : 5 flash
+ * divide the second into 10 periods, 0.09s each
+
+seq cpsc2_aurora_status_flasher "uut=cpsc2_002,ch=1"
+ */
+ 
+
+program cpsc2_aurora_status_flasher
+
+option +r;
+ 
+ 
+int aurora_lane_up; 	assign aurora_lane_up to "{uut}:{ch}:AURORA:UP"; monitor aurora_lane_up;
+ 
+int aurora_pwr_down; 	assign aurora_pwr_down to "{uut}:SFP:{ch}:PWRDN";
+
+int led; 		assign led to "{uut}:SFP:{ch}:LED:HB";
+
+int pps;		assign pps to "{uut}:3:SIG:AURORA:{ch}:RXPKTS:FREQ";
+ 
+char* ch;
+
+int PAT_OFF = 0;
+int PAT_1 = 1;
+int PAT_2 = 2;
+int PAT_3 = 3;
+int PAT_4 = 4;
+int PAT_5 = 5;
+int PAT_ON = 6;
+
+int patterns[7][10] = {
+/*      0  1  2  3  4  5  6  7  8  9   */
+{	0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },		/* 0 */
+{	1, 0, 0, 0, 0, 0, 0, 0, 0, 0 },		/* 1 */
+{	1, 0, 1, 0, 0, 0, 0, 0, 0, 0 },		/* 2 */
+{	1, 0, 1, 0, 1, 0, 0, 0, 0, 0 },		/* 3 */
+{	1, 0, 1, 0, 1, 0, 1, 0, 0, 0 },		/* 4 */
+{	1, 0, 1, 0, 1, 0, 1, 0, 1, 0 },		/* 5 */
+{	1, 1, 1, 1, 1, 1, 1, 1, 0, 0 }		/* 6 */
+};
+
+int ipat = 0;
+int iflash = 0;
+
+ss lane_monitor
+{
+	state init {
+	    entry {
+	    	ch = macValueGet("ch");
+	    }
+	    when() {
+
+	    } state s0
+	}
+	state  s0 {
+		when(delay(0.09)) {
+			pvGet(aurora_lane_up);
+			if (!aurora_lane_up){
+				ipat = 0;
+			} else {
+				pvGet(pps);
+				if (pps == 0){
+					ipat = PAT_ON;
+				} else if (pps < 10){
+					ipat = PAT_1;
+				} else if (pps < 100){
+					ipat = PAT_2;
+				} else if (pps < 1000){
+					ipat = PAT_3;
+				} else if (pps < 10000){
+					ipat = PAT_4;
+				} else {
+					ipat = PAT_5;
+				}
+			}
+			
+			led = patterns[ipat][iflash]; pvPut(led);
+			if (++iflash > 9) iflash = 0;
+		} state s0
+	}
+}

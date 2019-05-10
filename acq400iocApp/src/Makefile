@@ -68,6 +68,7 @@ acq400ioc_SRCS += v2f_cal.st
 acq400ioc_SRCS += pvmirror.st
 acq400ioc_SRCS += on_delay.st
 acq400ioc_SRCS += cpsc2_sfp_laneup_monitor.st
+acq400ioc_SRCS += cpsc2_aurora_status_flasher.st
 
 # Build the main IOC entry point on workstation OSs.
 acq400ioc_SRCS_DEFAULT += acq400iocMain.cpp \

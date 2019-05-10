@@ -1054,6 +1054,8 @@ for sfp in 1 2; do
 	echo "dbLoadRecords(\"db/cpsc2sfp_auto.db\",\"UUT=${HOST},CH=${sfp}\")"
 	echo >> /tmp/st_final.cmd \
 		"seq cpsc2_sfp_laneup_monitor \"uut=${HOST},ch=${sfp}\""
+	echo >> /tmp/st_final.cmd \
+		"seq cpsc2_aurora_status_flasher \"uut=${HOST},ch=${sfp}\""
 done
 echo "dbLoadRecords(\"db/cpsc2site0.db\",\"UUT=${HOST},CH=${sfp},SPORT=S0\")"
 
