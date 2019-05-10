@@ -64,6 +64,8 @@ record(longout, "${UUT}:0:RFD:w") {
 		field(OUT,  "@cpsc2.proto set_rfd_div ${S0}")
 		field(DISV, "1")
 		field(SDIS, "${UUT}:0:RFD:s.PACT")
+		field(OMSL, "closed_loop")
+		field(DOL, "${UUT}:0:RFD PP")
 }
 
 record(longin, "${UUT}:0:RFD:r") {
