@@ -111,9 +111,9 @@ template <class T> double square(T raw) {
 }
 
 template <class T, int SHR> T scale(T raw) { return raw >> SHR; }
+template <class T, int SHL> T scaleup(T raw) { return raw << SHL; }
 
-
-template <class T, int SHR>
+template <class T, int SHL, int SHR>
 long raw_to_volts(aSubRecord *prec) {
 	double yy;
 	T *raw = (T *)prec->a;
@@ -153,11 +153,11 @@ long raw_to_volts(aSubRecord *prec) {
 		printf("%s : aslo:%.6e aoff:%.6e\n", prec->name, aslo, aoff);
 	}
 
-	min_value = scale<T, SHR>(raw[0]);
-	max_value = scale<T, SHR>(raw[0]);
+	min_value = scale<T, SHR>(scaleup<T, SHL>(raw[0]));
+	max_value = scale<T, SHR>(scaleup<T, SHL>(raw[0]));
 
 	for (int ii=0; ii <len; ii++) {
-		T rx = scale<T, SHR>(raw[ii]);
+		T rx = scale<T, SHR>(scaleup<T, SHL>(raw[0]));
 
 		if (rx > max_value) max_value = rx;
 		if (rx < min_value) min_value = rx;
@@ -184,6 +184,7 @@ long raw_to_volts(aSubRecord *prec) {
 	if (p_cv)	*p_cv = *p_stddev / *p_mean;
 	return 0;
 }
+
 
 
 /* ARGS:  T: short or long
@@ -411,8 +412,9 @@ long spectrum(aSubRecord *prec)
 
 static registryFunctionRef my_asub_Ref[] = {
        {"raw_to_uvolts", (REGISTRYFUNCTION) raw_to_uvolts},
-       {"raw_to_volts_LONG",  (REGISTRYFUNCTION) raw_to_volts<long, 8>},
-       {"raw_to_volts_SHORT",  (REGISTRYFUNCTION) raw_to_volts<short, 0>},
+       {"raw_to_volts_LONG",  (REGISTRYFUNCTION) raw_to_volts<long, 0, 8>},
+       {"raw_to_volts_DAC20",  (REGISTRYFUNCTION) raw_to_volts<long, 12, 12>},
+       {"raw_to_volts_SHORT",  (REGISTRYFUNCTION) raw_to_volts<short, 0, 0>},
        {"cart2pol", (REGISTRYFUNCTION) cart2pol<short>},
        {"cart2pol_LONG", (REGISTRYFUNCTION) cart2pol<long>},
        {"cart2pol_SHORT", (REGISTRYFUNCTION) cart2pol<short>},

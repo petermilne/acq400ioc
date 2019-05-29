@@ -53,7 +53,7 @@ make_AI() {
 			type=LONG
 			maxcode=2147483648
 	fi
-	nchan=$(get_nchan $site)
+	nchan=${2:-$(get_nchan $site)}
 	vmax=$(get_range $site)
 	eslo=$(echo $vmax $maxcode | awk '{ print $1/$2 }')
 
@@ -381,6 +381,7 @@ load_400() {
 		done
 		[ $t50r -ne 0 ] && dblr '"db/acq480fmc50R.db","'${mprams},CH=,RAW='"';;
 	$MT_AO420|$MT_AO424|$MT_AO428|$MT_AO4220|$MT_CPDAC)
+		is_adc="ds"
 	    create_asyn_channel S${site}A 127.0.0.1:$((4220+${site}))		
 		load_AO $site $model $cprams		
 		let LO=66000000;;
@@ -395,12 +396,18 @@ load_400() {
 		is_adc="sar"
 		dblr '"db/pigcelf.db","'${cprams}'"'
 		calmon=none;;
+	*)
+		echo # WARNING MT $model NOT processed;;
 	esac
 	
 	echo 1>&2 "is_adc $is_adc"
 	
 	if [ "$is_adc" != "no" ]; then
-		make_AI $site
+		if [ "x$MB_MODEL" = "xcpsc2" ]; then
+			make_AI $site 32
+		else
+			make_AI $site
+		fi
 		aprams="UUT=${HOST},SITE=${site},CHG=${has_ch_gains}"
 		dblr '"db/adc-'${is_adc}'.db","'$aprams'"'
 		if [ "x${calmon}" != "xnone" ]; then
@@ -1045,6 +1052,10 @@ echo "dbLoadRecords(\"db/cpsc2leds.db\", \"UUT=${HOST}\")"
 echo "dbLoadRecords(\"db/cpsc2controls.db\", \"UUT=${HOST}\")"
 for site in 1 2; do
 	echo "dbLoadRecords(\"db/cpsc2sites.db\", \"UUT=${HOST},SITE=$site\")"
+done
+
+for cid in 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16; do
+	echo "dbLoadRecords(\"db/cpsc2spy.db\", \"UUT=${HOST},cid=${cid}\")"
 done
 
 for sfp in 1 2 3; do

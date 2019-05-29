@@ -1,0 +1,4 @@
+record(aSub, "${UUT}:2:AI:WF:${cid}:V"){
+	field(SNAM, "raw_to_volts_DAC20")
+}
+
