@@ -157,7 +157,7 @@ long raw_to_volts(aSubRecord *prec) {
 	max_value = scale<T, SHR>(scaleup<T, SHL>(raw[0]));
 
 	for (int ii=0; ii <len; ii++) {
-		T rx = scale<T, SHR>(scaleup<T, SHL>(raw[0]));
+		T rx = scale<T, SHR>(scaleup<T, SHL>(raw[ii]));
 
 		if (rx > max_value) max_value = rx;
 		if (rx < min_value) min_value = rx;
