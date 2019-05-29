@@ -47,6 +47,15 @@ make_stcmd() {
 		./scripts/load.records > ${STCMD}
 	) fi
 	touch /dev/shm/AI
+	rm /dev/shm/AI.2.wf/CH08
+	ln -s /dev/shm/AI.0.wf/CH41 /dev/shm/AI.2.wf/CH09
+	ln -s /dev/shm/AI.0.wf/CH42 /dev/shm/AI.2.wf/CH10
+	ln -s /dev/shm/AI.0.wf/CH43 /dev/shm/AI.2.wf/CH11
+	ln -s /dev/shm/AI.0.wf/CH44 /dev/shm/AI.2.wf/CH12
+	ln -s /dev/shm/AI.0.wf/CH45 /dev/shm/AI.2.wf/CH13
+	ln -s /dev/shm/AI.0.wf/CH46 /dev/shm/AI.2.wf/CH14
+	ln -s /dev/shm/AI.0.wf/CH47 /dev/shm/AI.2.wf/CH15
+
 }
 
 make_aliases_loop() {
