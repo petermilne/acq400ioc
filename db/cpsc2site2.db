@@ -1,0 +1,68 @@
+record(mbbo, "${UUT}:2:SFP_MODE") {
+		field(DTYP, "Soft Channel")
+		field(NOBT, "2")
+		field(ZRST, "CH4")
+		field(ONST, "CH4X")
+		field(TWST, "CH81")
+		field(THST, "CH82")
+		field(DESC, "Selects SFP decode")
+		field(FLNK, "${UUT}:2:SFP_MODE:w")
+}
+
+record(mbbo, "${UUT}:2:SFP_MODE:w") {
+		field(DTYP, "stream")
+		field(OUT,  "@cpsc2.proto set_sfp_mode ${SPORT}")
+		field(NOBT, "2")
+		field(DISV, "1")
+		field(SDIS, "${UUT}:2:SFP_MODE:s.PACT")
+		field(OMSL, "closed_loop")
+		field(DOL, "${UUT}:2:SFP_MODE PP")
+}
+
+record(mbbi, "${UUT}:2:SFP_MODE:r") {
+		field(DTYP, "stream")
+		field(INP,  "@cpsc2.proto get_sfp_mode ${SPORT}")
+		field(NOBT, "2")
+		field(SCAN, "1 second")
+		field(FLNK, "${UUT}:2:SFP_MODE:s")
+} 
+
+record(mbbo, "${UUT}:2:SFP_MODE:s") {
+		field(DTYP, "Soft Channel")
+		field(NOBT, "2")
+		field(DOL,  "${UUT}:2:SFP_MODE:r NPP")
+		field(OMSL, "closed_loop")
+		field(OUT,  "${UUT}:2:SFP_MODE PP")
+}
+
+record(bo, "${UUT}:2:PACKET_CLEAR") {
+		field(DTYP, "Soft Channel")
+        field(ZNAM, "RUN")
+        field(ONAM, "HOLD")			
+		field(DESC, "Clear PACKET input to DAC SUM")
+		field(FLNK, "${UUT}:2:PACKET_CLEAR:w")
+}
+
+record(bo, "${UUT}:2:PACKET_CLEAR:w") {
+		field(DTYP, "stream")
+		field(OUT,  "@cpsc2.proto set_packet_clear ${SPORT}")		
+		field(DISV, "1")
+		field(SDIS, "${UUT}:2:PACKET_CLEAR:s.PACT")
+		field(OMSL, "closed_loop")
+		field(DOL, "${UUT}:2:PACKET_CLEAR PP")
+}
+
+record(bi, "${UUT}:2:PACKET_CLEAR:r") {
+		field(DTYP, "stream")
+		field(INP,  "@cpsc2.proto get_packet_clear ${SPORT}")
+		field(SCAN, "1 second")
+		field(FLNK, "${UUT}:2:PACKET_CLEAR:s")
+} 
+
+record(bo, "${UUT}:2:PACKET_CLEAR:s") {
+		field(DTYP, "Soft Channel")
+		field(DOL,  "${UUT}:2:PACKET_CLEAR:r NPP")
+		field(OMSL, "closed_loop")
+		field(OUT,  "${UUT}:2:PACKET_CLEAR PP")
+}
+

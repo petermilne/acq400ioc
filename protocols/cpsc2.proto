@@ -18,3 +18,21 @@ get_apd {
 	out "aurora\$1_pwrdn";
 	in "%d";
 }
+
+set_sfp_mode {
+	out "sfp_mode %d";
+}
+
+get_sfp_mode {
+	out "sfp_mode";
+	in "%d";
+}
+
+set_packet_clear {
+	out "packet_clear %d";
+}
+
+get_packet_clear {
+	out "packet_clear";
+	in "%d";
+}

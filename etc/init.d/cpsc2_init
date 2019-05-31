@@ -49,7 +49,7 @@ for sfp in 1 2; do
 	echo >> /tmp/st_final.cmd \
 		"seq cpsc2_aurora_status_flasher \"uut=${HOST},ch=${sfp}\""
 done
-echo "dbLoadRecords(\"db/cpsc2site0.db\",\"UUT=${HOST},CH=${sfp},SPORT=S0\")"
-
+echo "dbLoadRecords(\"db/cpsc2site0.db\",\"UUT=${HOST},SPORT=S0\")"
+echo "dbLoadRecords(\"db/cpsc2site2.db\",\"UUT=${HOST},SPORT=S2\")"
 
 echo '# cpsc2_init 99'
