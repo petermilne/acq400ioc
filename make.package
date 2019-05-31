@@ -17,6 +17,7 @@ mkdir -p opkg/usr/local/bin/ opkg/usr/local/init/ \
 	opkg/usr/local/epics/db  \
 	opkg/usr/local/epics/protocols \
 	opkg/usr/local/epics/scripts \
+	opkg/usr/local/epics/init.d \
 	opkg/usr/local/CARE
 
 cp -r CARE/* opkg/usr/local/CARE
@@ -35,6 +36,7 @@ strip_all()
 	done
 ) }
 
+cp -R etc/ opkg/usr/local/epics
 cp bin/linux-arm/acq400ioc opkg/usr/local/bin
 cp bin-scripts/* opkg/usr/local/bin
 cp init/* opkg/usr/local/init/

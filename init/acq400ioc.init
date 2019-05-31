@@ -91,7 +91,9 @@ stop_ioc() {
 restart() {
 	if [ "$1" = "force" ]; then
 		rm -f ${STCMD}
-	fi	
+	fi
+	[ -e /usr/local/epics/init.d/rc.user ] && \
+		cp /usr/local/epics/init.d/rc.user /etc/init.d/rc.user	
 	make_stcmd
 	stop_ioc
 	start_ioc
