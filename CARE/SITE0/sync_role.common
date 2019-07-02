@@ -16,6 +16,11 @@ CMDLINE="$*"
 FMIN=4000000
 CLKDIV=1
 
+P1=norole
+P2=0
+P3=0
+
+let px=1
 for k in $*; do
     key=${k%=*}; val=${k#*=}
     case $key in
@@ -30,9 +35,25 @@ for k in $*; do
     CLKDIV)
         CLKDIV=$val;;
     *)
-        [ $key != $val ] && echo "error $key not defined";;
+        if [ $key = $val ]; then
+        	case $px in
+        	1)	P1=$k;;
+        	2)  P2=$k;;
+        	3)	P3=$k;;
+        	*)  echo "error discard parameter $px $k";;
+        	esac
+        	px=$(($px+1))
+	    else
+        	echo "error $key not defined";;
+    	fi
     esac
 done
+
+echo "P1 $P1 P2 $P2 P3"
+ROLE=$P1
+eval $(egu2int FS=${P2:-200000} FIN=${P3:-1000000})
+echo "ROLE $ROLE FS $FS FIN $FIN"
+
 
 set_mbclk() {
     let fs=$1
@@ -176,8 +197,7 @@ set_local_clock() {
     pv_read_lock TRG 0
 }
 
-set_fpmaster() {
-    set.site 0 SYS:CLK:FPMUX FPCLK               
+set_master() {
     set.site 0 SIG:CLK_MB:FIN $2
     $set_mb $1
     pv_read_lock CLK 1
@@ -209,7 +229,8 @@ set_48x_override() {
 }
 
 
-case $1 in
+
+case $ROLE in
 "")
     if [ -e /dev/shm/role ]; then
         cat /dev/shm/role
@@ -220,32 +241,36 @@ fpmaster)
     set_common
     set_out
     $set_common_master
-    eval $(egu2int FS=${2:-200000} FIN=${3:-1000000})
-    set_fpmaster $FS $FIN
+    set.site 0 SYS:CLK:FPMUX FPCLK
+    set_master $FS $FIN
     echo $CMDLINE > /dev/shm/role;;
+rpmaster)
+	set_common
+    set_out
+    $set_common_master
+    set.site 0 SYS:CLK:FPMUX ZCLK
+    set.site 0 SIG:ZCLK_SRC CLK.d0
+    set_master $FS $FIN
+    echo $CMDLINE > /dev/shm/role;;    
 master)
     set_common
     set_out
     $set_common_master
-    eval $(egu2int FS=${2:-200000})
     set_local_clock $FS
     is_48x && set_48x_override $FS master
     echo $CMDLINE > /dev/shm/role;;
 solo)
     set_common
-    eval $(egu2int FS=${2:-200000})
     set_local_clock $FS
     echo $CMDLINE > /dev/shm/role;;
 slave)	
     set_common
     set_out_slave
     $set_slave
-    eval $(egu2int FS=${2:-200000})
-    set_local_clock $FS
     is_48x && set_48x_override $FS slave
     echo $CMDLINE > /dev/shm/role;;
 help)
-    echo "USAGE sync_role {fpmaster|master|slave|solo} [CLKHZ] [FIN]"
+    echo "USAGE sync_role {fpmaster|rpmaster|master|slave|solo} [CLKHZ] [FIN]"
     echo "modifiers [CLK|TRG:SENSE=falling|rising] [CLK|TRG:DX=d0|d1]"
     echo "modifiers [CLKDIV=div]";;
 *)
