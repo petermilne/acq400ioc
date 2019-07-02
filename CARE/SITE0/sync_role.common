@@ -49,10 +49,10 @@ for k in $*; do
     esac
 done
 
-echo "P1 $P1 P2 $P2 P3"
+#echo "P1 $P1 P2 $P2 P3"
 ROLE=$P1
 eval $(egu2int FS=${P2:-200000} FIN=${P3:-1000000})
-echo "ROLE $ROLE FS $FS FIN $FIN"
+#echo "ROLE $ROLE FS $FS FIN $FIN"
 
 
 set_mbclk() {
