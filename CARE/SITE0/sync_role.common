@@ -16,9 +16,9 @@ CMDLINE="$*"
 FMIN=4000000
 CLKDIV=1
 
-P1=norole
-P2=0
-P3=0
+P1=help
+P2=
+P3=
 
 let px=1
 for k in $*; do
@@ -44,8 +44,8 @@ for k in $*; do
         	esac
         	px=$(($px+1))
 	    else
-        	echo "error $key not defined";;
-    	fi
+        	echo "error $key not defined"
+    	fi;;
     esac
 done
 
@@ -247,6 +247,7 @@ fpmaster)
 rpmaster)
 	set_common
     set_out
+    $set_slave
     $set_common_master
     set.site 0 SYS:CLK:FPMUX ZCLK
     set.site 0 SIG:ZCLK_SRC CLK.d0
