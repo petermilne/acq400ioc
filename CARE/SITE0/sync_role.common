@@ -241,6 +241,7 @@ slave)
     set_out_slave
     $set_slave
     eval $(egu2int FS=${2:-200000})
+    set_local_clock $FS
     is_48x && set_48x_override $FS slave
     echo $CMDLINE > /dev/shm/role;;
 help)
