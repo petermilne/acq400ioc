@@ -92,7 +92,7 @@ if [ -e /etc/acq400/1/ACQ43X_SAMPLE_RATE ]; then
     select_lo=select_lo_xclk
     set_mb=set_acq43x_sample_rate
 fi
-git d
+
 set_slave_acq1001() {
     set.site 0 SYS:CLK:FPMUX OFF
     sync_trg_to_clk 0
