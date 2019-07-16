@@ -13,4 +13,18 @@ record(ao, "${UUT}:${SITE}:AO:SLOW_SET:CH:ALL") {
         field(EGU,  "V")
 }
 
+record(ao, "${UUT}:${SITE}:AO:DELAY") {
+        field(DTYP, "dsSysfsAo")
+        field(OUT, "@/dev/acq400.${SITE}.knobs/delay66")
+        field(SCAN, "Passive")
+        field(DESC, "Set delay 66 value")
+        field(DRVL, "0")
+        field(DRVH, "62")
+        field(LINR, "LINEAR")
+        field(ESLO, "0.0151515")
+        field(HOPR, "62")
+        field(LOPR, "0")
+        field(EGU,  "usec")
+}
+
 

@@ -111,7 +111,7 @@ make_epics_knobs() {
 	done
 	
 	for PV in $(egrep -e :[1-6]:CLK -e :[1-6]:TRG  -e :[1-6]:SYNC -e :[1-6]:EVE \
-			  -e :1:RGM -e :1:RTM -e :[1-6]:XDT -e :1:DT $RL \
+			  -e :1:RGM -e :1:RTM -e :[1-6]:XDT -e :1:DT :[1-6]:AO:DELAY $RL \
 			| grep -v ':[0-9a-z_]*$' )
 	do		
 		pv1=${PV#*:}
