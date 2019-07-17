@@ -1,8 +1,6 @@
 #!/bin/sh
 # sync_role.common
-# set.site 0 sync_role fpmaster\|master\|solo\|slave 
-
-/usr/local/epics/scripts/wait_ioc_ready 2>&1 >/dev/null
+# set.site 0 sync_role fpmaster|rpmaster|master|solo|slave FS FIN [opts] 
 
 sync_trg_to_clk() {
 	[ -e /etc/acq400/1/sync_trg_to_clk ] && \
@@ -19,6 +17,9 @@ CLKDIV=1
 P1=help
 P2=
 P3=
+
+FIN_DEF=1000000
+FIN_CLKSTAR=20000000
 
 let px=1
 for k in $*; do
@@ -49,10 +50,6 @@ for k in $*; do
     esac
 done
 
-#echo "P1 $P1 P2 $P2 P3"
-ROLE=$P1
-eval $(egu2int FS=${P2:-200000} FIN=${P3:-1000000})
-#echo "ROLE $ROLE FS $FS FIN $FIN"
 
 
 set_mbclk() {
@@ -134,6 +131,7 @@ is_42x() {
 }
 
 
+
 CLKDX_OUT=d1
 
 if [ "${MOD:0:7}" = "acq2106" ]; then
@@ -150,6 +148,7 @@ else
     is_42x && CLKDX_OUT=d2
 fi
 
+FS_DEF=200000; is_48x && FS_DEF=20000000
 
 # common to all
 # report init status - this will be overwritten on successful completion
@@ -228,53 +227,104 @@ set_48x_override() {
     set.site 0 SIG:SYNC_OUT:CLK:DX  d0
 }
 
+# execution here...
 
+ROLE=$P1
+eval $(egu2int FS=${P2:-$FS_DEF} FIN=${P3:-$FIN_DEF})
 
-case $ROLE in
-"")
-    if [ -e /dev/shm/role ]; then
-        cat /dev/shm/role
-    else
-        echo "role not set"
-    fi;;
-fpmaster)
-    set_common
-    set_out
-    $set_common_master
-    set.site 0 SYS:CLK:FPMUX FPCLK
-    set_master $FS $FIN
-    echo $CMDLINE > /dev/shm/role;;
-rpmaster)
-	set_common
-    set_out
-    $set_slave 0
-    $set_common_master
-    set.site 0 SYS:CLK:FPMUX ZCLK
-    set.site 0 SIG:ZCLK_SRC CLK.d0
-    set_master $FS $FIN
-    echo $CMDLINE > /dev/shm/role;;    
-master)
-    set_common
-    set_out
-    $set_common_master
-    set_local_clock $FS
-    is_48x && set_48x_override $FS master
-    echo $CMDLINE > /dev/shm/role;;
-solo)
-    set_common
-    set_local_clock $FS
-    echo $CMDLINE > /dev/shm/role;;
-slave)	
-    set_common
-    set_out_slave
-    $set_slave
-    is_48x && set_48x_override $FS slave
-    echo $CMDLINE > /dev/shm/role;;
-help)
-    echo "USAGE sync_role {fpmaster|rpmaster|master|slave|solo} [CLKHZ] [FIN]"
-    echo "modifiers [CLK|TRG:SENSE=falling|rising] [CLK|TRG:DX=d0|d1]"
-    echo "modifiers [CLKDIV=div]";;
-*)
-    echo "ERROR: role $1 not valid";;
-esac
+role_set=0
 
+if [ "${MOD:0:7}" = "acq1014" ]; then	
+	acq1014_clk_src=$(get.site 2 acq1014_clk)
+	case $ROLE in
+	master|solo)
+		set_common
+		/usr/local/bin/acq1014_select_clk_src int $FS $FIN_CLKSTAR;;
+	fpmaster)	
+		if [ $acq1014_clk_src == 2 ]; then
+			echo "ERROR: RPCLK has priority"; exit 1
+		else
+			/usr/local/bin/acq1014_select_clk_src ext $FS $FIN
+		fi;;
+	rpmaster)
+		set_common
+		if [ $acq1014_clk_src != 2 ]; then
+			echo "ERROR: RP CABLE NOT CONNECTED"; exit 1
+		else
+			/usr/local/bin/acq1014_select_clk_src ext $FS $FIN
+		fi;;		
+	slave)
+		set_common
+        # Be careful with FIN. For slaves this is 20MHz for
+        # rear panel masters this will be 1MHz.
+    	fin=$FIN_CLKSTAR; [ "x$P3" != "x" ] && fin=$FIN
+    	/usr/local/bin/acq1014_select_clk_src ext $FS $fin;;	
+	*)
+		role_set=-1;;	
+	esac
+	if [ $role_set != -1 ]; then
+    	# Set the trigger independent of the role. The second
+    	# argument below is for setting the trigger in pre-post
+    	# mode.
+    	if [ "$TRG_DX" = "d1" ]; then
+	        trg_dx="int"
+	    else
+        	trg_dx="ext"
+    	fi
+    	/usr/local/bin/acq1014_select_trg_src $trg_dx post $TRG_SENSE
+	fi    
+else		
+	case $ROLE in
+	fpmaster)
+	    set_common
+	    set_out
+	    $set_common_master
+	    set.site 0 SYS:CLK:FPMUX FPCLK
+	    set_master $FS $FIN;;	    
+	rpmaster)
+		set_common
+	    set_out
+	    $set_slave 0
+	    $set_common_master
+	    set.site 0 SYS:CLK:FPMUX ZCLK
+	    set.site 0 SIG:ZCLK_SRC CLK.d0
+	    set_master $FS $FIN;;  
+	master)
+	    set_common
+	    set_out
+	    $set_common_master
+	    set_local_clock $FS
+	    is_48x && set_48x_override $FS master;;	   
+	solo)
+	    set_common
+	    set_local_clock $FS;;	    
+	slave)	
+	    set_common
+	    set_out_slave
+	    $set_slave
+	    is_48x && set_48x_override $FS slave;;	    
+	*)
+		role_set=-1;;
+	esac
+fi
+
+if [ $role_set == 0 ]; then
+	echo $CMDLINE > /dev/shm/role
+	exit 0
+else
+	case $ROLE in
+	"")
+	    if [ -e /dev/shm/role ]; then
+	        cat /dev/shm/role
+	    else
+	        echo "role not set"
+	    fi;;		
+	help)
+	    echo "USAGE sync_role {fpmaster|rpmaster|master|slave|solo} [CLKHZ] [FIN]"
+	    echo "modifiers [CLK|TRG:SENSE=falling|rising] [CLK|TRG:DX=d0|d1]"
+	    echo "modifiers [CLKDIV=div]";;
+	*)
+	    echo "ERROR: role $1 not valid"; exit 1;;
+	esac		
+fi
+exit 0
