@@ -241,14 +241,14 @@ if [ "${MOD:0:7}" = "acq1014" ]; then
 		set_common
 		/usr/local/bin/acq1014_select_clk_src int $FS $FIN_CLKSTAR;;
 	fpmaster)	
-		if [ $acq1014_clk_src == 2 ]; then
+		if [ "$acq1014_clk_src" = "2" ]; then
 			echo "ERROR: RPCLK has priority"; exit 1
 		else
 			/usr/local/bin/acq1014_select_clk_src ext $FS $FIN
 		fi;;
 	rpmaster)
 		set_common
-		if [ $acq1014_clk_src != 2 ]; then
+		if [ "$acq1014_clk_src" != "2" ]; then
 			echo "ERROR: RP CABLE NOT CONNECTED"; exit 1
 		else
 			/usr/local/bin/acq1014_select_clk_src ext $FS $FIN
@@ -266,11 +266,13 @@ if [ "${MOD:0:7}" = "acq1014" ]; then
     	# Set the trigger independent of the role. The second
     	# argument below is for setting the trigger in pre-post
     	# mode.
-    	if [ "$TRG_DX" = "d1" ]; then
-	        trg_dx="int"
-	    else
-        	trg_dx="ext"
-    	fi
+        if [ "$TRG_DX" = "d1" ]; then
+                trg_dx="int"
+        elif [ "$TRG_DX" = "d0" ]; then
+                trg_dx="ext"
+        else
+                trg_dx=$TRG_DX
+        fi
     	/usr/local/bin/acq1014_select_trg_src $trg_dx post $TRG_SENSE
 	fi    
 else		
