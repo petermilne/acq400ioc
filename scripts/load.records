@@ -1014,7 +1014,7 @@ if [ "x$IOC_PREINIT" != "x" ]; then
 fi
 for file in "/tmp/st_pre*.cmd"; do
 	[ -e $file ] && cat $file
-fi
+done
 
 if [ -e "/mnt/local/sysconfig/site-aliases.db" ]; then
 		dblr '"/mnt/local/sysconfig/site-aliases.db","UUT='${HOST}'"'
