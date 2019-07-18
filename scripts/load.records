@@ -1012,7 +1012,7 @@ if [ "x$IOC_PREINIT" != "x" ]; then
 		source $IOC_PREINIT
 	fi
 fi
-for file in "/tmp/st_pre*.cmd"; do
+for file in /tmp/st_pre*.cmd; do
 	[ -e $file ] && cat $file
 done
 
