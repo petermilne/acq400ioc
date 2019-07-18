@@ -7,6 +7,7 @@ sync_trg_to_clk() {
 		set.site 1 sync_trg_to_clk $1
 }
 
+TRG=
 TRG_SENSE=rising
 CLK_SENSE=rising
 
@@ -29,7 +30,11 @@ for k in $*; do
         TRG_SENSE=$val;;
     CLK:SENSE)
         CLK_SENSE=$val;;
-
+	TRG)
+    	TRG=$val			# int or ext, pick dX defaults for most boxes
+    	[ "$TRG" = "int" ] && TRG_DX=d1
+    	[ "$TRG" = "ext" ] && TRG_DX=d0
+    	;;
     TRG:DX)
         TRG_DX=$val;;		# not previously defined. actual dX line..
     CLK:DX)
@@ -235,19 +240,22 @@ eval $(egu2int FS=${P2:-$FS_DEF} FIN=${P3:-$FIN_DEF})
 
 role_set=0
 
-if [ "${MOD:0:7}" = "acq1014" ]; then	
+if [ "${MOD:0:7}" = "acq1014" ]; then
+	TRG=${TRG:-ext}
 	acq1014_clk_src=$(get.site 2 acq1014_clk)
 	case $ROLE in
 	master|solo)
+		TRG=${TRG:-int}
 		set_common
 		/usr/local/bin/acq1014_select_clk_src int $FS $FIN_CLKSTAR;;
-	fpmaster)	
+	fpmaster)		
+		set_common
 		if [ $acq1014_clk_src -eq 2 ]; then
 			echo "ERROR: RPCLK has priority"; exit 1
 		else
 			/usr/local/bin/acq1014_select_clk_src ext $FS $FIN
 		fi;;
-	rpmaster)
+	rpmaster)			
 		set_common
 		if [ $acq1014_clk_src -ne 2 ]; then
 			echo "ERROR: RP CABLE NOT CONNECTED"; exit 1
@@ -263,16 +271,10 @@ if [ "${MOD:0:7}" = "acq1014" ]; then
 	*)
 		role_set=-1;;	
 	esac
-	if [ $role_set != -1 ]; then
-    	# Set the trigger independent of the role. The second
-    	# argument below is for setting the trigger in pre-post
-    	# mode.
-    	if [ "$TRG_DX" = "d1" ]; then
-	        trg_dx="int"
-	    else
-        	trg_dx="ext"
-    	fi
-    	/usr/local/bin/acq1014_select_trg_src $trg_dx post $TRG_SENSE
+	if [ $role_set -ne -1 ]; then
+    	# Set the trigger dependent on role or TRG= override on command line
+    	# Assume post mode. TRG_DX is ignored for ACQ1014
+    	/usr/local/bin/acq1014_select_trg_src $TRG post $TRG_SENSE
 	fi    
 else		
 	case $ROLE in
@@ -309,7 +311,7 @@ else
 	esac
 fi
 
-if [ $role_set == 0 ]; then
+if [ $role_set -eq 0 ]; then
 	echo $CMDLINE > /dev/shm/role
 	exit 0
 else
@@ -323,6 +325,7 @@ else
 	help)
 	    echo "USAGE sync_role {fpmaster|rpmaster|master|slave|solo} [CLKHZ] [FIN]"
 	    echo "modifiers [CLK|TRG:SENSE=falling|rising] [CLK|TRG:DX=d0|d1]"
+	    echo "modifiers [TRG=int|ext]"
 	    echo "modifiers [CLKDIV=div]";;
 	*)
 	    echo "ERROR: role $1 not valid"; exit 1;;
