@@ -1012,8 +1012,8 @@ if [ "x$IOC_PREINIT" != "x" ]; then
 		source $IOC_PREINIT
 	fi
 fi
-if [ -e "/tmp/st_pre.cmd" ]; then
-	cat /tmp/st_pre.cmd
+for file in "/tmp/st_pre*.cmd"; do
+	[ -e $file ] && cat $file
 fi
 
 if [ -e "/mnt/local/sysconfig/site-aliases.db" ]; then
