@@ -29,8 +29,9 @@ for k in $*; do
         TRG_SENSE=$val;;
     CLK:SENSE)
         CLK_SENSE=$val;;
+
     TRG:DX)
-        TRG_DX=$val;;		# not previously defined
+        TRG_DX=$val;;		# not previously defined. actual dX line..
     CLK:DX)
         CLK_DX=$val;;
     CLKDIV)
@@ -241,14 +242,14 @@ if [ "${MOD:0:7}" = "acq1014" ]; then
 		set_common
 		/usr/local/bin/acq1014_select_clk_src int $FS $FIN_CLKSTAR;;
 	fpmaster)	
-		if [ $acq1014_clk_src == 2 ]; then
+		if [ $acq1014_clk_src -eq 2 ]; then
 			echo "ERROR: RPCLK has priority"; exit 1
 		else
 			/usr/local/bin/acq1014_select_clk_src ext $FS $FIN
 		fi;;
 	rpmaster)
 		set_common
-		if [ $acq1014_clk_src != 2 ]; then
+		if [ $acq1014_clk_src -ne 2 ]; then
 			echo "ERROR: RP CABLE NOT CONNECTED"; exit 1
 		else
 			/usr/local/bin/acq1014_select_clk_src ext $FS $FIN
