@@ -111,13 +111,20 @@ make_epics_knobs() {
 	done
 	
 	for PV in $(egrep -e :[1-6]:CLK -e :[1-6]:TRG  -e :[1-6]:SYNC -e :[1-6]:EVE \
-			  -e :1:RGM -e :1:RTM -e :[1-6]:XDT -e :1:DT -e :[1-6]:FETCH_DELAY $RL \
+			  -e :1:RGM -e :1:RTM -e :[1-6]:XDT -e :1:DT \
 			| grep -v ':[0-9a-z_]*$' )
 	do		
 		pv1=${PV#*:}
 		site=${pv1%%:*}
 		make_caput $PV ${pv1#*:} $site
 	done
+	for PV in $(egrep -e :[1-6]:FETCH_DELAY $RL \
+			| grep -v ':[0-9a-z_]*$' )
+	do		
+		pv1=${PV#*:}
+		site=${pv1%%:*}
+		make_caput $PV ${pv1#*:} $site -n
+	done	
 	
 	for PV in $(grep GPG /tmp/records.dbl | grep -v :[a-z]$)
 	do
