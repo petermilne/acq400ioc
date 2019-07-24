@@ -27,4 +27,70 @@ record(ao, "${UUT}:${SITE}:FETCH_DELAY") {
         field(EGU,  "usec")
 }
 
+record(ai, "${UUT}:${SITE}:READ_LAT:MEAN") {
+		field(DTYP, "stream")
+		field(INP, "@ao424.proto getReadLat(${UUT}:${SITE}:READ_LAT) ${SPORT}")
+		field(SCAN, "1 second")		
+		field(EGU,  "usec")
+		field(PREC,  "3")
+		field(EOFF, "0")
+		field(EGUL, "0")
+		field(EGUF, "63")
+		field(LINR, "LINEAR")		
+		field(ESLO, "0.015151515")
+		field(HOPR, "63")
+		field(LOPR, "0")
+		field(FLNK, "${UUT}:${SITE}:READ_LAT:CUR PP")			
+}
+
+record(ai, "${UUT}:${SITE}:READ_LAT:CUR") {
+		field(DTYP, "Soft Channel")
+		field(EGU,  "usec")
+		field(PREC,  "3")
+		field(EOFF, "0")
+		field(EGUL, "0")
+		field(EGUF, "63")
+		field(LINR, "LINEAR")		
+		field(ESLO, "0.015151515")
+		field(HOPR, "63")
+		field(LOPR, "0")
+		field(FLNK, "${UUT}:${SITE}:READ_LAT:MAX PP")				
+}
+
+record(ai, "${UUT}:${SITE}:READ_LAT:MAX") {
+		field(DTYP, "Soft Channel")
+		field(EGU,  "usec")
+		field(PREC,  "3")
+		field(EOFF, "0")
+		field(EGUL, "0")
+		field(EGUF, "63")
+		field(LINR, "LINEAR")		
+		field(ESLO, "0.015151515")
+		field(HOPR, "63")
+		field(LOPR, "0")
+		field(FLNK, "${UUT}:${SITE}:READ_LAT:MIN PP")				
+}
+
+record(ai, "${UUT}:${SITE}:READ_LAT:MIN") {
+		field(DTYP, "Soft Channel")
+		field(EGU,  "usec")
+		field(PREC,  "3")
+		field(EOFF, "0")
+		field(EGUL, "0")
+		field(EGUF, "63")
+		field(LINR, "LINEAR")		
+		field(ESLO, "0.015151515")
+		field(HOPR, "63")
+		field(LOPR, "0")
+		field(FLNK, "${UUT}:${SITE}:LATENCY PP")			
+}
+
+record(calc, "${UUT}:${SITE}:LATENCY") {
+		field(INPA, "${UUT}:${SITE}:FETCH_DELAY")
+		field(INPB, "${UUT}:${SITE}:READ_LAT:MEAN")
+		field(CALC, "A!=0 && B!=0? A+B: -1")
+		field(DESC, "XO N MODEround trip latency from clock")	
+}
+
+
 
