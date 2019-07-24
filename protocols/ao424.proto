@@ -60,6 +60,6 @@ getOdds {
 
 getReadLat {
 	out "read_latency";
-	in "%(\$1:MEAN)u,%(\$1:CUR.RVAL)u,%(\$1:MAX.RVAL)u,%(\$1:MIN.RVAL)u";
+	in "%u,%(\$1:cur)u,%(\$1:max)u,%(\$1:min)u";
 }
 

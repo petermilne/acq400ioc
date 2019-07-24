@@ -56,7 +56,7 @@ cat - >$VERB <<EOF
 PV=${PFX}:\$(basename \${0})
 export EPICS_CA_AUTO_ADDR_LIST=NO EPICS_CA_ADDR_LIST=127.0.0.1
 if [ "\$1" = "" ]; then
-	VALUE=\$(caget ${4:-s} \${PV})
+	VALUE=\$(caget ${4:--s} \${PV})
 	if [ \$? -eq 0 ]; then
 			echo \${VALUE#${PFX}:}
 	else
