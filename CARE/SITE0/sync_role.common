@@ -15,7 +15,7 @@ CMDLINE="$*"
 FMIN=4000000
 CLKDIV=1
 
-P1=help
+P1=
 P2=
 P3=
 
