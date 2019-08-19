@@ -13,7 +13,21 @@ record(ao, "${UUT}:${SITE}:AO:SLOW_SET:CH:ALL") {
         field(EGU,  "V")
 }
 
+record(ao, "${UUT}:${SITE}:OUTPUT_DELAY") {
+		field(DTYP, "Soft Channel")
+		field(FLNK, "${UUT}:${SITE}:OUTPUT_DELAY:c")
+		field(PREC, "1")
+}
 
+record(calcout, "${UUT}:${SITE}:OUTPUT_DELAY:c") {
+		field(INPA, "${UUT}:${SITE}:OUTPUT_DELAY")
+		field(CALC, "A<2? 0: A")
+		field(OUT,  "${UUT}:${SITE}:FETCH_DELAY")
+		field(OOPT, "Every Time")
+		field(DOPT, "CALC")
+		field(FLNK, "${UUT}:${SITE}:FETCH_DELAY")
+}
+		
 record(ao, "${UUT}:${SITE}:FETCH_DELAY") {
         field(DTYP, "dsSysfsAo")
         field(OUT, "@/dev/acq400.${SITE}.knobs/delay66")
