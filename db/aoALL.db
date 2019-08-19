@@ -21,7 +21,7 @@ record(ao, "${UUT}:${SITE}:OUTPUT_DELAY") {
 
 record(calcout, "${UUT}:${SITE}:OUTPUT_DELAY:c") {
 		field(INPA, "${UUT}:${SITE}:OUTPUT_DELAY")
-		field(CALC, "A<2? 0: A")
+		field(CALC, "A<2.3? 0: A")
 		field(OUT,  "${UUT}:${SITE}:FETCH_DELAY")
 		field(OOPT, "Every Time")
 		field(DOPT, "CALC")
