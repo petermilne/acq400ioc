@@ -1,0 +1,9 @@
+#!/bin/sh
+PV=$(hostname)${1}
+export EPICS_CA_AUTO_ADDR_LIST=NO EPICS_CA_ADDR_LIST=127.0.0.1
+VALUE=$(caget -t ${PV})
+if [ $? -eq 0 ]; then
+	echo ${VALUE#acq1001_389:}
+else
+	echo ${VALUE}
+fi
