@@ -765,8 +765,9 @@ load_mb_sync() {
 		lp0="${lprams},BIT=0"
 		case $FUN in
 		CLK)    case $MB_MODEL in
-            acq2106*) 	
-				lsb_x ${lp0},NOBT=3 SyncE HDMI GPG0 COMM_A INT01M;;
+            acq2106*)
+             	#                   0     1    2    3      4      5
+				lsb_x ${lp0},NOBT=3 SyncE HDMI GPG0 COMM_A INT01M WR01M;;
 			*)
 				lsb_x ${lp0},NOBT=3 EXT HDMI GPG0 	"" INT01M;;
 			esac;;
@@ -775,7 +776,7 @@ load_mb_sync() {
 			else
 				lsb_x ${lp0},NOBT=2 EXT HDMI_GPIO GPG0
 			fi;;
-		SYNC)		lsb_x ${lp0},NOBT=1 EXT HDMI;;
+		SYNC)		lsb_x ${lp0},NOBT=2 EXT HDMI WR01M;;
 		esac
 		
 		# d1
@@ -797,7 +798,7 @@ load_mb_sync() {
 				lsb_x ${lp1},NOBT=2 STRIG HDMI_GPIO GPG1;;
 				esac
 			fi;;				
-		SYNC) 		lsb_x ${lp1},NOBT=1 EXT HDMI;;
+		SYNC) 		lsb_x ${lp1},NOBT=2 EXT HDMI WR01M;;
 		*) 		
 			echo ERROR undefined FUN;;
 		esac
