@@ -20,7 +20,7 @@ setAnaTrgAnd {
 getAnaTrgSrc {
 	out "status_latch";
 	in "0x%x";
-	out "status_latch 0x%x";
+#	out "status_latch 0x%x";
 }
 
 setDelTrg {
