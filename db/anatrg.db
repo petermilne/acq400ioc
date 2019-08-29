@@ -105,6 +105,6 @@ record(mbboDirect, "${UUT}:${SITE}:ANATRG:AND:1") {
 record(mbbiDirect, "${UUT}:${SITE}:ANATRG:SRC") {
 	field(DTYP, "stream")
 	field(INP,  "@anatrg.proto getAnaTrgSrc ${SPORT}")
-	field(SCAN, ".1 second")
+	field(SCAN, ".5 second")
 }
 
