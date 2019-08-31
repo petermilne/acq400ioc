@@ -19,7 +19,7 @@ record(mbbiDirect, "${UUT}:${SITE}:COS:STATUS:L16") {
 	field(PINI, "YES")
 	field(VAL,  "0")
 	field(DESC, "Change Of State Status, low 16 chan")
-	field(SCAN, ".2 second")
+	field(SCAN, ".5 second")
 }
 
 record(mbbiDirect, "${UUT}:${SITE}:COS:STATUS:H16") {
@@ -51,7 +51,8 @@ record(mbboDirect, "${UUT}:${SITE}:COS:EN:L16") {
 	field(PINI, "YES")
 	field(VAL,  "0")
 	field(DESC, "Change Of State Enable, low 16 chan")
-	field(SCAN, ".2 second")
+	field(NOBT, "16")
+#	field(SCAN, ".2 second")
 }
 
 record(mbboDirect, "${UUT}:${SITE}:COS:EN:H16") {
@@ -59,4 +60,5 @@ record(mbboDirect, "${UUT}:${SITE}:COS:EN:H16") {
 	field(PINI, "YES")
 	field(VAL,  "0")
 	field(DESC, "Change Of State Enable, high 16 chan")
+	field(NOBT, "16")
 }
