@@ -15,7 +15,7 @@ record(mbbi, "${UUT}:${SITE}:AWG:STATE") {
 
 record(mbbiDirect, "${UUT}:${SITE}:COS:STATUS:L16") {
 	field(DTYP, "stream")
-	field(INP,  "@dio.proto getCosSta(${UUT}:${SITE}:COS:STATUS, L16, H16) ${SPORT}")
+	field(INP,  "@dio432.proto getCosSta(${UUT}:${SITE}:COS:STATUS, L16, H16) ${SPORT}")
 	field(PINI, "YES")
 	field(VAL,  "0")
 	field(DESC, "Change Of State Status, low 16 chan")
@@ -31,7 +31,7 @@ record(mbbiDirect, "${UUT}:${SITE}:COS:STATUS:H16") {
 
 record(mbbiDirect, "${UUT}:${SITE}:DI:INST:L16") {
 	field(DTYP, "stream")
-	field(INP,  "@dio.proto getInstDI(${UUT}:${SITE}:DI:INST, L16, H16) ${SPORT}")
+	field(INP,  "@dio432.proto getInstDI(${UUT}:${SITE}:DI:INST, L16, H16) ${SPORT}")
 	field(PINI, "YES")
 	field(VAL,  "0")
 	field(DESC, "Instantaneous DI, low 16 chan")
@@ -47,7 +47,7 @@ record(mbbiDirect, "${UUT}:${SITE}:DI:INST:H16") {
 
 record(mbboDirect, "${UUT}:${SITE}:COS:EN:L16") {
 	field(DTYP, "stream")
-	field(INP,  "@dio.proto setCosEn(${UUT}:${SITE}:COS:EN, L16, H16) ${SPORT}")
+	field(OUT,  "@dio432.proto setCosEn(${UUT}:${SITE}:COS:EN, L16, H16) ${SPORT}")
 	field(PINI, "YES")
 	field(VAL,  "0")
 	field(DESC, "Change Of State Enable, low 16 chan")
