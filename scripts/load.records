@@ -366,7 +366,7 @@ load_400() {
 	$MT_DIO432|$MT_DIO432P|$MT_DIO482)
 	# probably should be common to all @@todo
 		name=$(cat /dev/acq400.$site.knobs/module_name)
-		[ "$model" = "$MT_DIO482" ] && [ "$SUPPORT_COS" != "" ] && source ./scripts.load.dio482
+		[ "$model" = "$MT_DIO482" ] && [ "$SUPPORT_COS" != "" ] && ./scripts/load.dio482 $HOST $site
 		[ -e ./scripts/load.$name ] && ./scripts/load.$name $HOST $site;;		
 	$MT_DIOB)		
 		name=$(cat /dev/acq400.$site.knobs/module_name)
