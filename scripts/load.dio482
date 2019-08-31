@@ -1,0 +1,8 @@
+
+
+
+create_asyn_channel S${site}C 127.0.0.1:$((4220+${site}))
+HSS="UUT=${uut},SITE=${site},SPORT=S${site}C"
+
+
+dblr '"db/cos.db","'${HSS}'"'
