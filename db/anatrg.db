@@ -71,37 +71,6 @@ record(mbbo, "${UUT}:${SITE}:ANATRG:${CH}:H") {
 	field(VAL,  "1")
 }
 
-record(mbboDirect, "${UUT}:${SITE}:ANATRG:OR:0") {
-	field(DTYP, "stream")
-	field(OUT,  "@anatrg.proto setAnaTrgOr(${UUT}:${SITE}:ANATRG:OR) ${SPORT}")
-	field(PINI, "YES")
-	field(VAL,  "0")
-	field(DESC, "anatrg OR mask, low 16 chan")
-}
-
-record(mbboDirect, "${UUT}:${SITE}:ANATRG:OR:1") {
-	field(DTYP, "stream")
-	field(OUT,  "@anatrg.proto setAnaTrgOr(${UUT}:${SITE}:ANATRG:OR) ${SPORT}")
-	field(PINI, "YES")
-	field(VAL,  "0")
-	field(DESC, "anatrg OR mask, hi 16 chan")
-}
-record(mbboDirect, "${UUT}:${SITE}:ANATRG:AND:0") {
-	field(DTYP, "stream")
-	field(OUT,  "@anatrg.proto setAnaTrgAnd(${UUT}:${SITE}:ANATRG:AND) ${SPORT}")
-	field(PINI, "YES")
-	field(VAL,  "0")
-	field(DESC, "anatrg AND mask, low 16 chan")
-}
-record(mbboDirect, "${UUT}:${SITE}:ANATRG:AND:1") {
-	field(DTYP, "stream")
-	field(OUT,  "@anatrg.proto setAnaTrgAnd(${UUT}:${SITE}:ANATRG:AND) ${SPORT}")
-	field(PINI, "YES")
-	field(VAL,  "0")
-	field(DESC, "anatrg AND mask, hi 16 chan")
-}
-
-
 record(mbbiDirect, "${UUT}:${SITE}:ANATRG:SRC") {
 	field(DTYP, "stream")
 	field(INP,  "@anatrg.proto getAnaTrgSrc ${SPORT}")
