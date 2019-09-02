@@ -118,7 +118,7 @@ make_epics_knobs() {
 		site=${pv1%%:*}
 		make_caput $PV ${pv1#*:} $site
 	done
-	for PV in $(egrep -e :[1-6]:ANATRG -e :[1-6]:COS | grep -v ':[0-9a-z_]*$' )
+	for PV in $(egrep -e :[1-6]:ANATRG -e :[1-6]:COS $RL | grep -v ':[0-9a-z_]*$' )
 	do
 		pv1=${PV#*:}
 		site=${pv1%%:*}
