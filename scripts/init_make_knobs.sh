@@ -118,7 +118,7 @@ make_epics_knobs() {
 		site=${pv1%%:*}
 		make_caput $PV ${pv1#*:} $site
 	done
-	for PV in $(egrep -e :[1-6]:ANATRG -e :[1-6]:COS $RL | grep -v ':[0-9a-z_]*$' )
+	for PV in $(egrep -e :[1-6]:ANATRG $RL | grep -v ':[0-9a-z_]*$' )
 	do
 		pv1=${PV#*:}
 		site=${pv1%%:*}
@@ -168,6 +168,12 @@ make_epics_knobs() {
 				make_caget $PV $kn1 0
 			fi
 		fi
+	done
+	for PV in $(egrep -e COS:EN:L16 $RL)
+	do
+		pv1=${PV#*:}
+		site=${pv1%%:*}
+		ln -s /usr/local/epics/scripts/COS_EN /etc/acq400/${site}/
 	done
 	make_reset_knobs 0 12 13
 		

@@ -18,16 +18,15 @@ export EPICS_CA_AUTO_ADDR_LIST=NO EPICS_CA_ADDR_LIST=127.0.0.1
 
 [ -z "$val" ] && echo VAL is Z
 
-if [ -z "$val" ]; then                                                                         
-	VALUE=$(caget -ts ${PV})                                                                        
-        if [ $? -eq 0 ]; then                                                                          
-       		echo ${VALUE#${PV}:}                                                     
-        else                                                                       
-        	echo ${VALUE}                                                                  
-        fi                                                                              
-else                                                                                             
-        caput ${PV} $val                                                                    
-        if [ $? -ne 0 ]; then                                                                          
-                echo ERROR                                                                             
-        fi                                                                                             
-fi      
+if [ -z "$val" ]; then
+	VALUE=$(caget -ts ${PV})
+    if [ $? -eq 0 ]; then
+		echo ${VALUE#${PV}:}
+    else
+    	echo ${VALUE}
+    fi
+else
+        VALUE=$(caput ${PV} $val)
+        [ $? -ne 0 ] && echo ERROR
+fi
+
