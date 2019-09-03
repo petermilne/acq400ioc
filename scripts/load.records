@@ -765,41 +765,47 @@ load_mb_sync() {
 		lprams="${CPRAMS},FUN=${FUN},fun=$(toLower ${FUN})"
 		lp0="${lprams},BIT=0"
 		case $FUN in
-		CLK)    case $MB_MODEL in
+		CLK)    
+			case $MB_MODEL in
             acq2106*)
              	#                   0     1    2    3      4      5
 				lsb_x ${lp0},NOBT=3 SyncE HDMI GPG0 COMM_A INT01M WR01M;;
 			*)
 				lsb_x ${lp0},NOBT=3 EXT HDMI GPG0 	"" INT01M;;
 			esac;;
-		TRG)	if [ $(has_dsp_trg $MB_MODEL) -ne 0 ]; then
-				lsb_x ${lp0},NOBT=3 EXT HDMI HOSTB GPG0 DSP0
+		TRG)
+			if [ $(has_dsp_trg $MB_MODEL) -ne 0 ]; then
+				lsb_x ${lp0},NOBT=3 EXT HDMI HOSTB GPG0 DSP0 WRTT
 			else
 				lsb_x ${lp0},NOBT=2 EXT HDMI_GPIO GPG0
 			fi;;
-		SYNC)		lsb_x ${lp0},NOBT=2 EXT HDMI WR01M WRPPS;;
+		SYNC)
+			lsb_x ${lp0},NOBT=2 EXT HDMI WR01M WRPPS;;
 		esac
 		
 		# d1
 		lp1="${lprams},BIT=1"
 		case $FUN in
-		CLK)	case $MB_MODEL in
+		CLK)
+			case $MB_MODEL in
 			acq2106*)
 				lsb_x ${lp1},NOBT=2 MCLK HDMI GPG1 COMM_B;;
 			*)
 				lsb_x ${lp1},NOBT=2 MCLK HDMI GPG1;;
 			esac;;
-		TRG)	if [ $(has_dsp_trg $MB_MODEL) -ne 0 ]; then
+		TRG)	
+			if [ $(has_dsp_trg $MB_MODEL) -ne 0 ]; then
 				lsb_x ${lp1},NOBT=3 STRIG HOSTA HDMI_GPIO GPG1 DSP1 FP_SYNC FP_GPIO
 			else				
 				case $MB_MODEL in
 				acq2106*)
-				lsb_x ${lp1},NOBT=2 STRIG HOSTA HOSTB GPG1;;
+					lsb_x ${lp1},NOBT=2 STRIG HOSTA HOSTB GPG1;;
 				*)
-				lsb_x ${lp1},NOBT=2 STRIG HDMI_GPIO GPG1;;
+					lsb_x ${lp1},NOBT=2 STRIG HDMI_GPIO GPG1;;
 				esac
 			fi;;				
-		SYNC) 		lsb_x ${lp1},NOBT=2 EXT HDMI WR01M WRPPS;;
+		SYNC)
+			lsb_x ${lp1},NOBT=2 EXT HDMI WR01M WRPPS;;
 		*) 		
 			echo ERROR undefined FUN;;
 		esac
