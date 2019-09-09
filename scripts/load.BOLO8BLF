@@ -1,4 +1,5 @@
-#!/bin/sh
+zix=$(printf "%02d" $ix)
+	ZCH=$(printf "%02d" $c1)#!/bin/sh
 
 HOST=$1
 SITE=$2
@@ -53,7 +54,9 @@ MAGDESC='"Magnitude"'
 for ix in $(seq 1 3 24)
 do	
 	c1=$(($c1+1))
-	dblr '"db/bolo8-wfAcqHost.db","'${PRAMS},ix=${ix},CH=${c1},P1="MAG",pmax=$MAGMAX,desc=$MAGDESC'"'
+	zix=$(printf "%02d" $ix)
+	ZCH=$(printf "%02d" $c1)
+	dblr '"db/bolo8-wfAcqHost.db","'${PRAMS},ix=${zix},CH=${ZCH},P1="MAG",pmax=$MAGMAX,desc=$MAGDESC'"'
 done
 
 PHIMAX=10
@@ -61,7 +64,9 @@ PHIDESC='"Phase"'
 # PHI values 
 for ix in $(seq 2 3 24)
 do
-	dblr '"db/bolo8-wfAcqHost.db","'${PRAMS},ix=${ix},CH=${c1},P1="PHI",pmax=$PHIMAX,desc=$PHIDESC'"'
+	zix=$(printf "%02d" $ix)
+	ZCH=$(printf "%02d" $c1)
+	dblr '"db/bolo8-wfAcqHost.db","'${PRAMS},ix=${zix},CH=${ZCH},P1="PHI",pmax=$PHIMAX,desc=$PHIDESC'"'
 	c1=$(($c1+1))
 done
 
@@ -70,7 +75,9 @@ PWRDESC='"Power"'
 # PWR values 
 for ix in $(seq 2 3 24)
 do
-	dblr '"db/bolo8-wfAcqHost.db","'${PRAMS},ix=${ix},CH=${c1},P1="PWR",pmax=$PWRMAX,desc=$PWRDESC'"'
+	zix=$(printf "%02d" $ix)
+	ZCH=$(printf "%02d" $c1)	
+	dblr '"db/bolo8-wfAcqHost.db","'${PRAMS},ix=${zix},CH=${ZCH},P1="PWR",pmax=$PWRMAX,desc=$PWRDESC'"'
 	c1=$(($c1+1))
 done
 # hwmon
