@@ -44,8 +44,8 @@ do
 	dblr '"db/bolo8-gains.db","'${PRAMS}'"'
 done
 
-c1 = 0;
-PRAMS="UUT=${HOST},SITE=${SITE}
+c1=0;
+PRAMS="UUT=${HOST},SITE=${SITE}"
 
 MAGMAX=10				;# todo
 MAGDESC='"Magnitude"'
