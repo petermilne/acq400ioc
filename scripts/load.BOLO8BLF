@@ -44,6 +44,35 @@ do
 	dblr '"db/bolo8-gains.db","'${PRAMS}'"'
 done
 
+c1 = 0;
+PRAMS="UUT=${HOST},SITE=${SITE}
+
+MAGMAX=10				;# todo
+MAGDESC='"Magnitude"'
+# MAG values 
+for ix in $(seq 1 3 24)
+do	
+	c1=$(($c1+1))
+	dblr '"db/bolo8-wfAcqHost.db","'${PRAMS},ix=${ix},CH=${c1},P1="MAG",pmax=$MAGMAX,desc=$MAGDESC'"'
+done
+
+PHIMAX=10
+PHIDESC='"Phase"'
+# PHI values 
+for ix in $(seq 2 3 24)
+do
+	dblr '"db/bolo8-wfAcqHost.db","'${PRAMS},ix=${ix},CH=${c1},P1="PHI",pmax=$PHIMAX,desc=$PHIDESC'"'
+	c1=$(($c1+1))
+done
+
+PWRMAX=10
+PWRDESC='"Power"'
+# PWR values 
+for ix in $(seq 2 3 24)
+do
+	dblr '"db/bolo8-wfAcqHost.db","'${PRAMS},ix=${ix},CH=${c1},P1="PWR",pmax=$PWRMAX,desc=$PWRDESC'"'
+	c1=$(($c1+1))
+done
 # hwmon
 dblr '"db/bolo8-main.db","'HS=${HS},SITE=${SITE}'"'
 
