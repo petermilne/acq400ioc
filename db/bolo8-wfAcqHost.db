@@ -2,25 +2,25 @@ record(waveform, "${UUT}:${SITE}:AI:WF:${ix}") {
 	field(FLNK,"${UUT}:${SITE}:AI:WF:${CH}:V")
 }
 
-record(aSub, "${UUT}:${SITE}:AI:WF:${CH}:V") {		
+record(aSub, "${UUT}:${SITE}:AI:WF:${ix}:V") {		
 	field(INPA, "${UUT}:${SITE}:AI:WF:${ix}")
 	field(INPC,  "${pmax}")
 	field(INPS,  "${ESLO}")
 	field(DESC,  "${desc}")	
 }	
 
-alias("${UUT}:${SITE}:AI:WF:${CH}:V", "${UUT}:${SITE}:AI:WF:${CH}:${P1}")
+alias("${UUT}:${SITE}:AI:WF:${ix}:V", "${UUT}:${SITE}:AI:WF:${CH}:${P1}")
 
 
 record(waveform, "${UUT}:${SITE}:AI:TW:${ix}") {
-	field(FLNK,"${UUT}:${SITE}:AI:TW:${CH}:V")	
+	field(FLNK,"${UUT}:${SITE}:AI:TW:${ix}:V")	
 }
 
-record(aSub, "${UUT}:${SITE}:AI:TW:${CH}:V") {
+record(aSub, "${UUT}:${SITE}:AI:TW:${ix}:V") {
 	field(INPA, "${UUT}:${SITE}:AI:TW:${ix}")
 	field(INPC,  "${pmax}")
 	field(INPS,  "${ESLO}")
 	field(DESC,  "${desc}")	
 }
 
-alias("${UUT}:${SITE}:AI:TW:${CH}:V", "${UUT}:${SITE}:AI:TW:${CH}:${P1}")
+alias("${UUT}:${SITE}:AI:TW:${ix}:V", "${UUT}:${SITE}:AI:TW:${CH}:${P1}")
