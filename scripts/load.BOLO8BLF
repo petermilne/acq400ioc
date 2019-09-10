@@ -3,7 +3,9 @@ zix=$(printf "%02d" $ix)
 
 HOST=$1
 SITE=$2
-
+if [ -f /mnt/local/epics.sh ]; then
+	source /mnt/local/epics.sh
+fi
 source ./scripts/record_support.sh
 echo "#records added by load.BOLO8BLF $HOST $SITE"
 
@@ -45,6 +47,9 @@ do
 	dblr '"db/bolo8-gains.db","'${PRAMS}'"'
 done
 
+if [ ! -z $BOLO8DSP ] && [ $BOLO8DSP -eq 1 ]; then
+	
+echo '# remapping for BOLODSP'
 c1=0;
 PRAMS="UUT=${HOST},SITE=${SITE}"
 
@@ -80,6 +85,9 @@ do
 	dblr '"db/bolo8-wfAcqHost.db","'${PRAMS},ix=${zix},CH=${ZCH},P1="PWR",pmax=$PWRMAX,desc=$PWRDESC'"'
 	c1=$(($c1+1))
 done
+
+fi
+
 # hwmon
 dblr '"db/bolo8-main.db","'HS=${HS},SITE=${SITE}'"'
 

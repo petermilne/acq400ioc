@@ -304,8 +304,12 @@ load_400() {
 		esac;;
 	
 	$MT_BOLO8|$MT_BOLO8B)
-		is_adc="sar"		
-		calmon=calmon42x		
+		is_adc="sar"
+		if [ ! -z $BOLO8DSP ] && [ $BOLO8DSP -eq 1 ]; then
+			calmon=none
+		else		
+			calmon=calmon42x
+		fi		
 		has_ch_gains=1;;
 	
 	$MT_ACQ435|$MT_ACQ430|$MT_ACQ437|$MT_ACQ436)
