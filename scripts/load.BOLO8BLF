@@ -1,5 +1,3 @@
-zix=$(printf "%02d" $ix)
-	ZCH=$(printf "%02d" $c1)#!/bin/sh
 
 HOST=$1
 SITE=$2
