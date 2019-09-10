@@ -59,7 +59,7 @@ do
 	c1=$(($c1+1))
 	zix=$(printf "%02d" $ix)
 	ZCH=$(printf "%02d" $c1)
-	dblr '"db/bolo8-wfAcqHost.db","'${PRAMS},ix=${zix},CH=${ZCH},P1="MAG",pmax=$MAGMAX,desc=$MAGDESC'"'
+	dblr '"db/bolo8-wfAcqHost.db","'${PRAMS},ix=${zix},CH=${ZCH},P1="MAG",pmax=$MAGMAX,desc=$MAGDESC,ESLO=7.109e-8'"'
 done
 
 PHIMAX=10
@@ -69,7 +69,7 @@ for ix in $(seq 2 3 24)
 do
 	zix=$(printf "%02d" $ix)
 	ZCH=$(printf "%02d" $c1)
-	dblr '"db/bolo8-wfAcqHost.db","'${PRAMS},ix=${zix},CH=${ZCH},P1="PHI",pmax=$PHIMAX,desc=$PHIDESC'"'
+	dblr '"db/bolo8-wfAcqHost.db","'${PRAMS},ix=${zix},CH=${ZCH},P1="PHI",pmax=$PHIMAX,desc=$PHIDESC,ESLO=1.8626e-9'"'
 	c1=$(($c1+1))
 done
 
@@ -80,7 +80,7 @@ for ix in $(seq 2 3 24)
 do
 	zix=$(printf "%02d" $ix)
 	ZCH=$(printf "%02d" $c1)	
-	dblr '"db/bolo8-wfAcqHost.db","'${PRAMS},ix=${zix},CH=${ZCH},P1="PWR",pmax=$PWRMAX,desc=$PWRDESC'"'
+	dblr '"db/bolo8-wfAcqHost.db","'${PRAMS},ix=${zix},CH=${ZCH},P1="PWR",pmax=$PWRMAX,desc=$PWRDESC,ESLO=4.550e-6'"'
 	c1=$(($c1+1))
 done
 

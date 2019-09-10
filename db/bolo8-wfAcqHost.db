@@ -5,6 +5,7 @@ record(waveform, "${UUT}:${SITE}:AI:WF:${ix}") {
 record(aSub, "${UUT}:${SITE}:AI:WF:${CH}:V") {		
 	field(INPA, "${UUT}:${SITE}:AI:WF:${ix}")
 	field(INPC,  "${pmax}")
+	field(INPS,  "${ESLO}")
 	field(DESC,  "${desc}")	
 }	
 
@@ -18,6 +19,7 @@ record(waveform, "${UUT}:${SITE}:AI:TW:${ix}") {
 record(aSub, "${UUT}:${SITE}:AI:TW:${CH}:V") {
 	field(INPA, "${UUT}:${SITE}:AI:TW:${ix}")
 	field(INPC,  "${pmax}")
+	field(INPS,  "${ESLO}")
 	field(DESC,  "${desc}")	
 }
 
