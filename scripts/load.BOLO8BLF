@@ -48,13 +48,13 @@ done
 if [ ! -z $BOLO8DSP ] && [ $BOLO8DSP -eq 1 ]; then
 	
 echo '# remapping for BOLODSP'
-c1=0;
+
 PRAMS="UUT=${HOST},SITE=${SITE}"
 
 MAGMAX=10				;# todo
 MAGDESC='"Magnitude"'
 # MAG values 
-for ix in $(seq 1 3 24)
+c1=0; for ix in $(seq 1 3 24)
 do	
 	c1=$(($c1+1))
 	zix=$(printf "%02d" $ix)
@@ -65,7 +65,7 @@ done
 PHIMAX=10
 PHIDESC='"Phase"'
 # PHI values 
-for ix in $(seq 2 3 24)
+c1=0; for ix in $(seq 2 3 24)
 do
 	zix=$(printf "%02d" $ix)
 	ZCH=$(printf "%02d" $c1)
@@ -76,7 +76,7 @@ done
 PWRMAX=10
 PWRDESC='"Power"'
 # PWR values 
-for ix in $(seq 2 3 24)
+c1=0; for ix in $(seq 2 3 24)
 do
 	zix=$(printf "%02d" $ix)
 	ZCH=$(printf "%02d" $c1)	
