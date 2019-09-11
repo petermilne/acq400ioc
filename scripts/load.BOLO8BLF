@@ -49,7 +49,7 @@ if [ ! -z $BOLO8DSP ] && [ $BOLO8DSP -eq 1 ]; then
 	
 	echo '# remapping for BOLODSP'
 	
-	PRAMS="UUT=${HOST},SITE=${SITE}"
+	PRAMS="UUT=${HOST},SITE=${SITE},SPL_WF_LEN=0,SPL_TW_LEN=0"
 	
 	MAGMAX=10				;# todo
 	MAGDESC='"Magnitude"'
@@ -57,9 +57,9 @@ if [ ! -z $BOLO8DSP ] && [ $BOLO8DSP -eq 1 ]; then
 	c1=0; for ix in $(seq 1 3 24)
 	do	
 		c1=$(($c1+1))
-		zix=$(printf "%02d" $ix)
+		cid=$(printf "%02d" $ix)
 		ZCH=$(printf "%02d" $c1)
-		dblr '"db/bolo8-wfAcqHost.db","'${PRAMS},ix=${zix},CH=${ZCH},P1="MAG",pmax=$MAGMAX,desc=$MAGDESC,ESLO=7.109e-8'"'
+		dblr '"db/bolo8-wfAcqHost.db","'${PRAMS},cid=${cid},CH=${ZCH},P1="MAG",pmax=$MAGMAX,desc=$MAGDESC,ESLO=7.109e-8'"'
 	done
 	
 	PHIMAX=10
@@ -68,20 +68,22 @@ if [ ! -z $BOLO8DSP ] && [ $BOLO8DSP -eq 1 ]; then
 	c1=0; for ix in $(seq 2 3 24)
 	do
 		c1=$(($c1+1))
-		zix=$(printf "%02d" $ix)
+		cid=$(printf "%02d" $ix)
 		ZCH=$(printf "%02d" $c1)
-		dblr '"db/bolo8-wfAcqHost.db","'${PRAMS},ix=${zix},CH=${ZCH},P1="PHI",pmax=$PHIMAX,desc=$PHIDESC,ESLO=1.8626e-9'"'
+		dblr '"db/bolo8-wfAcqHost.db","'${PRAMS},cid=${cid},CH=${ZCH},P1="PHI",pmax=$PHIMAX,desc=$PHIDESC,ESLO=1.8626e-9'"'
 	done
 	
+	# warning : hardcoded lengths
+	PRAMS="UUT=${HOST},SITE=${SITE},SPL_WF_LEN=4096,SPL_TW_LEN=100000"
 	PWRMAX=10
 	PWRDESC='"Power"'
 	# PWR values 
 	c1=0; for ix in $(seq 2 3 24)
 	do
 		c1=$(($c1+1))
-		zix=$(printf "%02d" $ix)
+		cid=$(printf "%02d" $ix)
 		ZCH=$(printf "%02d" $c1)	
-		dblr '"db/bolo8-wfAcqHost.db","'${PRAMS},ix=${zix},CH=${ZCH},P1="PWR",pmax=$PWRMAX,desc=$PWRDESC,ESLO=4.550e-6'"'	
+		dblr '"db/bolo8-wfAcqHost.db","'${PRAMS},cid=${cid},CH=${ZCH},P1="PWR",pmax=$PWRMAX,desc=$PWRDESC,ESLO=4.550e-6'"'		
 	done
 
 fi

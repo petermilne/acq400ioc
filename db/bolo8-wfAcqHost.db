@@ -1,26 +1,37 @@
-record(waveform, "${UUT}:${SITE}:AI:WF:${ix}") {	
-	field(FLNK,"${UUT}:${SITE}:AI:WF:${CH}:V")
-}
+#record(waveform, "${UUT}:${SITE}:AI:WF:${ix}") {	
+#    field(FLNK,"${UUT}:${SITE}:AI:WF:${CH}:V")
+#}
 
-record(aSub, "${UUT}:${SITE}:AI:WF:${ix}:V") {		
-	field(INPA, "${UUT}:${SITE}:AI:WF:${ix}")
+record(aSub, "${UUT}:${SITE}:AI:WF:${cid}:V") {		
+	field(INPA, "${UUT}:${SITE}:AI:WF:${cid}")
 	field(INPC,  "${pmax}")
 	field(INPS,  "${ESLO}")
 	field(DESC,  "${desc}")	
+	
+	field(FTVI, "SHORT")
+	field(NOVI, "${SPL_WF_LEN}")
+	field(FTVJ, "SHORT")
+	field(NOVJ, "${SPL_WF_LEN}")
+	
 }	
 
-alias("${UUT}:${SITE}:AI:WF:${ix}:V", "${UUT}:${SITE}:AI:WF:${CH}:${P1}")
+alias("${UUT}:${SITE}:AI:WF:${cid}:V", "${UUT}:${SITE}:AI:WF:${CH}:${P1}")
 
 
-record(waveform, "${UUT}:${SITE}:AI:TW:${ix}") {
-	field(FLNK,"${UUT}:${SITE}:AI:TW:${ix}:V")	
-}
+#record(waveform, "${UUT}:${SITE}:AI:TW:${ix}") {
+#    field(FLNK,"${UUT}:${SITE}:AI:TW:${ix}:V")	
+#}
 
-record(aSub, "${UUT}:${SITE}:AI:TW:${ix}:V") {
-	field(INPA, "${UUT}:${SITE}:AI:TW:${ix}")
+record(aSub, "${UUT}:${SITE}:AI:TW:${cid}:V") {
+	field(INPA, "${UUT}:${SITE}:AI:TW:${cid}")
 	field(INPC,  "${pmax}")
 	field(INPS,  "${ESLO}")
 	field(DESC,  "${desc}")	
+	
+	field(FTVI, "SHORT")
+	field(NOVI, "${SPL_TW_LEN}")
+	field(FTVJ, "SHORT")
+	field(NOVJ, "${SPL_TW_LEN}")	
 }
 
 alias("${UUT}:${SITE}:AI:TW:${ix}:V", "${UUT}:${SITE}:AI:TW:${CH}:${P1}")
