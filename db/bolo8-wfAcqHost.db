@@ -34,4 +34,4 @@ record(aSub, "${UUT}:${SITE}:AI:TW:${cid}:V") {
 	field(NOVJ, "${SPL_TW_LEN}")	
 }
 
-alias("${UUT}:${SITE}:AI:TW:${ix}:V", "${UUT}:${SITE}:AI:TW:${CH}:${P1}")
+alias("${UUT}:${SITE}:AI:TW:${cid}:V", "${UUT}:${SITE}:AI:TW:${CH}:${P1}")
