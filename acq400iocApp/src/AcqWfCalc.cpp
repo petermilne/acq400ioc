@@ -135,7 +135,7 @@ long raw_to_volts(aSubRecord *prec) {
 	float* p_rms = (float*)prec->valg;
 	float* p_cv = (float*)prec->valh;			// Coefficient of variance, VALE and VALF MUST be defined!
 	short *p_top_half = (short*)prec->vali;
-	short *p_low_half = (short*)prec->valj;
+	unsigned short *p_low_half = (unsigned short*)prec->valj;
 
 	long min_value;
 	long max_value;
@@ -178,12 +178,15 @@ long raw_to_volts(aSubRecord *prec) {
 		}
 	}
 	if (sizeof(T) == 4 && prec->novi == len && prec->novj == len){
-		if (::verbose > 1 && strstr(prec->name, ":01") != 0){
+		int ch01 = strstr(prec->name, ":01") != 0;
+		if (::verbose > 1 /* && ch01 */){
 			printf("%s : splitting lw\n", prec->name);
 		}
+		epicsUInt32* uraw = (epicsUInt32*)raw;
+
 		for (epicsUInt32 ii = 0; ii <len; ii++) {
-			p_top_half[ii] = raw[ii] >> 16;
-			p_low_half[ii] = raw[ii] & 0x0000ffff;
+			p_top_half[ii] = uraw[ii] >> 16;
+			p_low_half[ii] = uraw[ii];
 		}
 	}
 

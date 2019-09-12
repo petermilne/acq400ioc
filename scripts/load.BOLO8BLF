@@ -78,7 +78,7 @@ if [ ! -z $BOLO8DSP ] && [ $BOLO8DSP -eq 1 ]; then
 	PWRMAX=10
 	PWRDESC='"Power"'
 	# PWR values 
-	c1=0; for ix in $(seq 2 3 24)
+	c1=0; for ix in $(seq 3 3 24)
 	do
 		c1=$(($c1+1))
 		cid=$(printf "%02d" $ix)

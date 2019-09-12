@@ -1,7 +1,3 @@
-#record(waveform, "${UUT}:${SITE}:AI:WF:${ix}") {	
-#    field(FLNK,"${UUT}:${SITE}:AI:WF:${CH}:V")
-#}
-
 record(aSub, "${UUT}:${SITE}:AI:WF:${cid}:V") {		
 	field(INPA, "${UUT}:${SITE}:AI:WF:${cid}")
 	field(INPC,  "${pmax}")
@@ -10,17 +6,13 @@ record(aSub, "${UUT}:${SITE}:AI:WF:${cid}:V") {
 	
 	field(FTVI, "SHORT")
 	field(NOVI, "${SPL_WF_LEN}")
-	field(FTVJ, "SHORT")
+	field(FTVJ, "USHORT")
 	field(NOVJ, "${SPL_WF_LEN}")
 	
 }	
 
 alias("${UUT}:${SITE}:AI:WF:${cid}:V", "${UUT}:${SITE}:AI:WF:${CH}:${P1}")
 
-
-#record(waveform, "${UUT}:${SITE}:AI:TW:${ix}") {
-#    field(FLNK,"${UUT}:${SITE}:AI:TW:${ix}:V")	
-#}
 
 record(aSub, "${UUT}:${SITE}:AI:TW:${cid}:V") {
 	field(INPA, "${UUT}:${SITE}:AI:TW:${cid}")
@@ -30,7 +22,7 @@ record(aSub, "${UUT}:${SITE}:AI:TW:${cid}:V") {
 	
 	field(FTVI, "SHORT")
 	field(NOVI, "${SPL_TW_LEN}")
-	field(FTVJ, "SHORT")
+	field(FTVJ, "USHORT")
 	field(NOVJ, "${SPL_TW_LEN}")	
 }
 
