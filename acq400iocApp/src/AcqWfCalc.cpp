@@ -134,7 +134,7 @@ long raw_to_volts(aSubRecord *prec) {
 	float* p_stddev = (float*)prec->valf;
 	float* p_rms = (float*)prec->valg;
 	float* p_cv = (float*)prec->valh;			// Coefficient of variance, VALE and VALF MUST be defined!
-	short *p_top_half = (short*)prec->vali;
+	unsigned short *p_top_half = (unsigned short*)prec->vali;	// user might consider these to be signed we don't care
 	unsigned short *p_low_half = (unsigned short*)prec->valj;
 
 	long min_value;
@@ -178,8 +178,7 @@ long raw_to_volts(aSubRecord *prec) {
 		}
 	}
 	if (sizeof(T) == 4 && prec->novi == len && prec->novj == len){
-		int ch01 = strstr(prec->name, ":01") != 0;
-		if (::verbose > 1 /* && ch01 */){
+		if (::verbose > 1){
 			printf("%s : splitting lw\n", prec->name);
 		}
 		epicsUInt32* uraw = (epicsUInt32*)raw;
