@@ -784,7 +784,7 @@ load_mb_sync() {
 				lsb_x ${lp0},NOBT=2 EXT HDMI_GPIO GPG0
 			fi;;
 		SYNC)
-			lsb_x ${lp0},NOBT=2 EXT HDMI WR01M WRPPS;;
+			lsb_x ${lp0},NOBT=3 EXT HDMI INT01M WRPPS MBCLK;;
 		esac
 		
 		# d1
@@ -809,7 +809,7 @@ load_mb_sync() {
 				esac
 			fi;;				
 		SYNC)
-			lsb_x ${lp1},NOBT=2 EXT HDMI WR01M WRPPS;;
+			lsb_x ${lp1},NOBT=3 EXT HDMI INT01M WRPPS MBCLK;;
 		*) 		
 			echo ERROR undefined FUN;;
 		esac
