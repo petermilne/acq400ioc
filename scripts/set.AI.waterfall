@@ -1,18 +1,17 @@
 #!/bin/sh
 source /etc/profile.d/epics.sh
 SITE=${SITE:-${1:-1}}
-DSLO=2e-5
-DOFF=0.5
+NCHAN=$(get.site $SITE NCHAN)
+DOFF=5
 
 HN=${IOC_HOST}
 eoff=0
 noff=0
 
-for ch in $(seq 1 32)
+for ch in $(seq 1 $NCHAN)
 do
 	CH=$(printf "%02d" $ch)
 	caput ${HN}:${SITE}:AI:CH:${CH}.EOFF ${eoff}
-	caput ${HN}:${SITE}:AI:CH:${CH}.ESLO $DSLO
 
 	if [ $noff -eq 7 ]; then
 		noff=0
