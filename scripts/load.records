@@ -33,6 +33,8 @@ if [ -e /dev/acq400.12.knobs ]; then
 	LOAD_INTMON=y
 fi
 
+[ -e /usr/local/init/bolodsp.init ] && export BOLO8DSP=1
+
 CLOCKMONITOR=${CLOCKMONITOR:-1}
 ONSETTRANSIENT=${ONSETTRANSIENT:-1}
 

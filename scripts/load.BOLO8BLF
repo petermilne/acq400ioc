@@ -1,8 +1,8 @@
 
 HOST=$1
 SITE=$2
-if [ -f /mnt/local/epics.sh ]; then
-	source /mnt/local/epics.sh
+if [ -f /mnt/local/sysconfig/epics.sh ]; then
+	source /mnt/local/sysconfig/epics.sh
 fi
 source ./scripts/record_support.sh
 echo "#records added by load.BOLO8BLF $HOST $SITE"
