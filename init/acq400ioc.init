@@ -99,7 +99,8 @@ restart() {
 	start_ioc
 	wait_ioc_records_loaded
 	stop_ioc
-	make_epics_knobs
+	sleep 1
+	nice make_epics_knobs
 	[ "x$IOC_GLOBAL_ALIAS_PFX" != "x" ] && make_aliases $IOC_GLOBAL_ALIAS_PFX
 	cat /tmp/st_final.cmd >> /tmp/st.cmd
 	start_ioc
