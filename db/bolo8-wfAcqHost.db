@@ -1,4 +1,5 @@
-record(aSub, "${UUT}:${SITE}:AI:WF:${cid}:V") {		
+record(aSub, "${UUT}:${SITE}:AI:WF:${cid}:V") {	
+	field(SNAM, "raw_to_volts_INT24")
 	field(INPA, "${UUT}:${SITE}:AI:WF:${cid}")
 	field(INPC,  "${pmax}")
 	field(INPS,  "${ESLO}")
@@ -15,6 +16,7 @@ alias("${UUT}:${SITE}:AI:WF:${cid}:V", "${UUT}:${SITE}:AI:WF:${CH}:${P1}")
 
 
 record(aSub, "${UUT}:${SITE}:AI:TW:${cid}:V") {
+	field(SNAM, "raw_to_volts_INT24")
 	field(INPA, "${UUT}:${SITE}:AI:TW:${cid}")
 	field(INPC,  "${pmax}")
 	field(INPS,  "${ESLO}")
