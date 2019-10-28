@@ -1,0 +1,34 @@
+# Clkdiv with external clock - go direct.
+
+record (longout, "${UUT}:${SITE}:CLKDIV") {
+	field(DTYP, "Soft Channel")	
+	field(FLNK, "${UUT}:${SITE}:clkdiv:e PP")
+	field(LOPR, "1")
+	field(HOPR, "65535")
+	field(VAL,  "1")
+	field(PINI, "YES")		
+}
+
+record (longout, "${UUT}:${SITE}:clkdiv:e") {
+	field(DTYP, "longoutAcqHost")
+	field(DOL,  "${UUT}:${SITE}:CLKDIV")
+	field(OUT, "@/dev/acq400.${SITE}.knobs/clkdiv")
+	field(OMSL, "closed_loop")
+	field(DISV, "0")
+	field(SDIS, "${UUT}:${SITE}:CLK")	
+}
+
+record(longin, "${UUT}:${SITE}:clkdiv:r") {
+	field(DTYP, "longinAcqHost")
+	field(INP,  "@/dev/acq400.${SITE}.knobs/clkdiv")	
+	field(SCAN, "1 second")
+	field(PINI, "YES")
+	field(FLNK, "${UUT}:${SITE}:clkdiv:s")
+}
+record(longout, "${UUT}:${SITE}:clkdiv:s") {
+	field(DTYP, "Soft Channel")
+	field(DOL,  "${UUT}:${SITE}:clkdiv:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:${SITE}:CLKDIV PP")
+}
+

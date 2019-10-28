@@ -82,25 +82,7 @@ record (calcout, "${UUT}:${SITE}:INTCLK_calc:r") {
 	field(FLNK, "${UUT}:${SITE}:clkdiv:ir")		
 }
 
-# Clkdiv with external clock - go direct.
 
-record (longout, "${UUT}:${SITE}:CLKDIV") {
-	field(DTYP, "Soft Channel")	
-	field(FLNK, "${UUT}:${SITE}:clkdiv:e PP")
-	field(LOPR, "1")
-	field(HOPR, "65535")
-	field(VAL,  "1")
-	field(PINI, "YES")		
-}
-
-record (longout, "${UUT}:${SITE}:clkdiv:e") {
-	field(DTYP, "longoutAcqHost")
-	field(DOL,  "${UUT}:${SITE}:CLKDIV")
-	field(OUT, "@/dev/acq400.${SITE}.knobs/clkdiv")
-	field(OMSL, "closed_loop")
-	field(DISV, "0")
-	field(SDIS, "${UUT}:${SITE}:CLK")	
-}
 
 # but record correct value when internal ..
 

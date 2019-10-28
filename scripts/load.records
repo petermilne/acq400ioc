@@ -381,7 +381,7 @@ load_400() {
 		done
 		[ $t50r -ne 0 ] && dblr '"db/acq480fmc50R.db","'${mprams},CH=,RAW='"';;
 	$MT_AO420|$MT_AO424|$MT_AO428|$MT_AO4220|$MT_CPDAC)
-		is_adc="ds"
+		is_adc="no"
 	    create_asyn_channel S${site}A 127.0.0.1:$((4220+${site}))		
 		load_AO $site $model $cprams		
 		let LO=66000000;;
@@ -464,6 +464,7 @@ load_400() {
 		
 	if [ "x$model" != "x$MT_ACQ480" ] && [ "$is_adc" != "ds" ]; then
 		dblr '"db/acq420fmc.db","'${cprams},'LO='${LO}'"'
+		dblr '"db/clkdiv.db","'${cprams}'"'
 	fi
 
 	if [ ${site} -eq $FIRST_SITE ]; then
