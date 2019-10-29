@@ -99,7 +99,7 @@ record(bo, "${UUT}:${SITE}:PROCSTA:${CH}:TOO_FAST") {
 }
 record(bo, "${UUT}:${SITE}:PROCSTA:${CH}:TOO_SOON") {
 	field(DTYP, "Soft Channel")
-	field(DOL, 	"${UUT}:${SITE}:PROCSTA:${CH}.B3")
+	field(DOL, 	"${UUT}:${SITE}:PROCSTA:${CH}.B4")
 	field(OMSL, "closed_loop")		
 }
 
