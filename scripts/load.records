@@ -35,7 +35,7 @@ fi
 
 [ -e /usr/local/init/bolodsp.init ] && export BOLO8DSP=1
 
-CLOCKMONITOR=${CLOCKMONITOR:-1}
+CLOCKMONITOR=${CLOCKMONITOR:-0}
 ONSETTRANSIENT=${ONSETTRANSIENT:-1}
 
 source ./scripts/mtype.sh
