@@ -102,7 +102,7 @@ public:
 			dbg(1, "write \"%s\" %p nelm %d word_size:%d",
 						ch_fname, pwf->bptr, pwf->nelm, word_size);
 
-			int nwrite = fwrite(pwf->bptr, word_size, pwf->nelm, f.getfp());
+			int nwrite = fwrite(pwf->bptr, word_size, pwf->nord, f.getfp());
 
 			if (wf_awg_debug > 2){
 				FILE* fpdump = popen("hexdump", "w");
