@@ -58,6 +58,13 @@ record (mbbi, "${UUT}:${SITE}:AWG:MODE") {
 	field(NOBT, "2")	
 }
 
+record (bo, "${UUT}:${SITE}:AWG:MODE:ABO") {
+	field(DTYP, "stream")
+	field(OUT,  "@awg.proto setOneShot ${SPORT}" )
+	field(DESC, "AWG operating mode: set oneshot to quit")
+	field(NOBT, "2")	
+}
+
 record (longin, "${UUT}:${SITE}:AWG:COMPLETED_SHOT") {
     field(DTYP, "stream")
     field(INP, "@awg.proto getCompletedShot ${SPORT}")
