@@ -61,6 +61,9 @@ make_epics_knobs() {
 	do
 		NU=${PV#*:}
 		SITE=${NU%%:*}
+		if [ "$SITE" = "SIG" ]; then
+			continue
+		fi
 		case $PV in
 			*SET|*READY|*BSY|*SRC*|*FIN|*OUT*|*USER*|*TRAIN_REQ|*SIG:DDS:FREQ|*SIG:FP*)
 				make_caput $PV ${NU#*:} ${SITE};;
@@ -93,7 +96,7 @@ make_epics_knobs() {
 		make_caget $PV ${NU#*:} ${NU%%:*}
 	done
 	
-    for PV in $(egrep -e AWG $RL)
+    for PV in $(egrep -e 2:AWG $RL)
     do
         NU=${PV#*:}
         make_caput $PV ${NU#*:} ${NU%%:*}
