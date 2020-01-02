@@ -34,10 +34,13 @@ set.site 1 clkdiv 1
 set.site 1 hi_res_mode 1
 
 set.site 1 trg 1,1,1
+set.site 1 event0 1,0,1
 set.site 2 trg 1,1,1
 set.site 2 clk 1,0,1
 # run DAC at same rate as ADC
 set.site 2 CLKDIV 512
+sleep 2
+set.site 0 CONTINUOUS 1
 echo cpsc2.init 99
 ) &
 
