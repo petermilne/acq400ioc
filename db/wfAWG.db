@@ -1,0 +1,8 @@
+record(waveform, "${UUT}:AO:AWG:${cid}") {
+        field(DTYP, "wfAWGAcqHost")
+        field(INP,  "@/dev/shm/AWG.${cid} PP")
+        field(NELM, "${size}")
+        field(FTVL, "${type}")
+        field(DESC, "load raw AWG data")
+}
+
