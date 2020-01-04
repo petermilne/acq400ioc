@@ -29,3 +29,7 @@ record(longout, "${UUT}:0:RFD:s") {
 		field(OUT,  "${UUT}:0:RFD PP")
 }
 
+record(bo, "${UUT}:0:AWG_LOAD_CHANNELS") {
+		field(DTYP, "stream")
+		field(OUT,  "@cpsc2.proto awg_load_channels ${SPORT}")	
+}

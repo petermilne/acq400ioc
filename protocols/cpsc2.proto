@@ -44,3 +44,7 @@ get_packet_clear {
 	out "pkt_clr";
 	in "%d";
 }
+
+awg_load_channels {
+    out "awg_load_channels 2";
+}
