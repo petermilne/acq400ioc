@@ -2,6 +2,7 @@
 
 HOST=${IOC_HOST:-$(hostname)}
 SIZE=${SIZE:-4096}
+AWGSIZE=${AWGSIZE:-4096}
 TYPE=${TYPE:-SHORT}
 FNAME=AI
 
@@ -223,7 +224,7 @@ load_AO() {
 			do
 				cid=$(printf "%02d" $ch)
 				dblr '"db/ao428elf.db","'${cprams},pfx=${pfx},cid=$cid'"'
-				dblr '"db/wfAWG.db","'${cprams},pfx=${pfx},cid=$cid,size=${SIZE},type=LONG'"'
+				dblr '"db/wfAWG.db","'${cprams},pfx=${pfx},cid=$cid,size=${AWGSIZE},type=LONG'"'
 			done
 			#echo 'dbLoadRecords("db/ao420fmc.db","'${cprams},cid=32'")'
 			;;

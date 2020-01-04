@@ -197,7 +197,7 @@ long raw_to_volts(aSubRecord *prec) {
 template <class T>
 long volts_to_raw(aSubRecord *prec) {
 	float * volts = (float *)prec->a;
-	int len = prec->noa;
+	int len = prec->nea;
 	T *raw = (T *)prec->vala;
 	double aoff = *(double*)prec->o;
 	double aslo = *(double*)prec->s;
@@ -207,6 +207,9 @@ long volts_to_raw(aSubRecord *prec) {
 
 		raw[ii] = (long)yy;
 	}
+	/* ideally set NORD in OUTPUT to NORD in input .. */
+	prec->neva = len;
+	return 0;
 }
 
 /* ARGS:  T: short or long
