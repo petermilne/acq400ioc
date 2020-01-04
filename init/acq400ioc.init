@@ -48,6 +48,7 @@ make_stcmd() {
 	) fi
 	touch /dev/shm/AI
 	rm /dev/shm/AI.2.wf/CH08
+	ln -s /dev/shm/AI.0.wf/CH40 /dev/shm/AI.2.wf/CH08
 	ln -s /dev/shm/AI.0.wf/CH41 /dev/shm/AI.2.wf/CH09
 	ln -s /dev/shm/AI.0.wf/CH42 /dev/shm/AI.2.wf/CH10
 	ln -s /dev/shm/AI.0.wf/CH43 /dev/shm/AI.2.wf/CH11
@@ -55,7 +56,7 @@ make_stcmd() {
 	ln -s /dev/shm/AI.0.wf/CH45 /dev/shm/AI.2.wf/CH13
 	ln -s /dev/shm/AI.0.wf/CH46 /dev/shm/AI.2.wf/CH14
 	ln -s /dev/shm/AI.0.wf/CH47 /dev/shm/AI.2.wf/CH15
-
+	ln -s /dev/shm/AI.0.wf/CH48 /dev/shm/AI.2.wf/CH16
 }
 
 make_aliases_loop() {

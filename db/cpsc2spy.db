@@ -1,8 +1,7 @@
 record(aSub, "${UUT}:2:AI:WF:${cid}:V"){
 	field(SNAM, "raw_to_volts_DAC20")
 	field(INPB, "524288")
-	field(INPC,  "10")	
-	field(INPB, "524288")
+	field(INPC,  "10")		
 	field(INPS,  "1.907e-5")	
 }
 
