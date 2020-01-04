@@ -12,7 +12,7 @@ record(aSub, "${UUT}:AO:AWG:${cid}:v2r") {
 
 		field(FTA,  "FLOAT")
 		field(NOA,  "${size}")
-		field(INPA, "${UUT}:${SITE}:AO:AWG:${cid}:V")
+		field(INPA, "${UUT}:AO:AWG:${cid}:V")
 
 		field(FTO, "DOUBLE")
 		field(NOO, "1")
