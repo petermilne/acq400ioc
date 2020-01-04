@@ -3,11 +3,11 @@ record(waveform, "${UUT}:AO:AWG:${cid}:V") {
         field(NELM, "${size}")
         field(FTVL, "FLOAT")
         field(DESC, "load raw AWG data")
-		field(FLNK, "${UUT}:AO:AWG:${cid}:V")
+		field(FLNK, "${UUT}:AO:AWG:${cid}:v2r")
 }
 
 
-record(aSub, "${UUT}:AO:AWG:${cid}:V") {
+record(aSub, "${UUT}:AO:AWG:${cid}:v2r") {
 		field(SNAM, "volts_to_raw_DAC20")
 
 		field(FTA,  "FLOAT")
@@ -22,7 +22,7 @@ record(aSub, "${UUT}:AO:AWG:${cid}:V") {
 		field(FTS, "DOUBLE")
 		field(NOS, "1")
 #	field(INPS, "${UUT}:${SITE}:AI:CH:${cid}.ESLO")
-		field(INPS, "4.656613e-9")						# 10V/2**31 left justified
+		field(INPS, "2.14748e8")						# 2**31/10 left justified
 
 		field(FTVA, "LONG")
 		field(NOVA, "${size}")
