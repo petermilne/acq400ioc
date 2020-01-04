@@ -203,9 +203,13 @@ long volts_to_raw(aSubRecord *prec) {
 	double aslo = *(double*)prec->s;
 
 	for (int ii=0; ii <len; ii++) {
-		float yy = (volts[ii] - aoff) * aslo;
+		double yy = (volts[ii] - aoff) * aslo;
 
-		raw[ii] = (long)yy;
+		raw[ii] = static_cast<T>(yy);
+
+		if (::verbose && ii < 5){
+			printf("volts_to_raw [%d] %.2f -> %ld  # aslo %e aoff %e\n", ii, volts[ii], raw[ii], aslo, aoff);
+		}
 	}
 	/* ideally set NORD in OUTPUT to NORD in input .. */
 	prec->neva = len;
