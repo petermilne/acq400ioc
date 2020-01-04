@@ -49,7 +49,7 @@ for sfp in 1 2 3; do
 done
 for dac in A B; do
 	_dac=$(echo $dac | tr '[:upper:]' '[:lower:]')
-	dblr \"db/cpsc2_dac_wf_n_sfp.db\", \"UUT=${HOST},DAC=${dac},dac=${_dac}\"
+	dblr \"db/cpsc2_dac_wf_n_sfp.db\", \"UUT=${HOST},DAC=${dac},dac=${_dac},SPORT=S2\"
 done
 for sfp in 1 2; do
 	dblr \"db/cpsc2sfp_auto.db\",\"UUT=${HOST},CH=${sfp}\"

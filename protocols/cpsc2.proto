@@ -48,6 +48,7 @@ get_packet_clear {
 set_wf_n_sfp {
 	out "dac_\$1_wf_n_sfp %d";
 }
+
 get wf_n_sfp {
 	out "dac_\$1_wf_n_sfp";
 	in "%d";
