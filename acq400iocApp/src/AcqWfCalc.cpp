@@ -83,7 +83,20 @@ static int verbose;
 
 #define OR_THRESHOLD 32
 
-/* ARGS:
+
+
+
+
+
+template <class T> double square(T raw) {
+	double dr = static_cast<double>(raw);
+	return dr*dr;
+}
+
+template <class T, int SHR> T scale(T raw) { return raw >> SHR; }
+template <class T, int SHL> T scaleup(T raw) { return raw << SHL; }
+
+/** ARGS:
  * INPUTS:
  * INPA : const T raw[size}
  * INPB : long maxcode
@@ -101,18 +114,6 @@ static int verbose;
  * VALF : float* stddev
  * VALG : float* rms
  */
-
-
-
-
-template <class T> double square(T raw) {
-	double dr = static_cast<double>(raw);
-	return dr*dr;
-}
-
-template <class T, int SHR> T scale(T raw) { return raw >> SHR; }
-template <class T, int SHL> T scaleup(T raw) { return raw << SHL; }
-
 template <class T, int SHL, int SHR>
 long raw_to_volts(aSubRecord *prec) {
 	double yy;
@@ -185,7 +186,28 @@ long raw_to_volts(aSubRecord *prec) {
 	return 0;
 }
 
+/** ARGS:
+ * INPUTS:
+ * INPA : const T volts[size]
+ * INPO : double AOFF if set
+ * INPS : double ASLO if set
+ * OUTPUTS:
+ * VALA : link to raw
+ */
+template <class T>
+long volts_to_raw(aSubRecord *prec) {
+	float * volts = (float *)prec->a;
+	int len = prec->noa;
+	T *raw = (T *)prec->vala;
+	double aoff = *(double*)prec->o;
+	double aslo = *(double*)prec->s;
 
+	for (int ii=0; ii <len; ii++) {
+		float yy = (volts[ii] - aoff) * aslo;
+
+		raw[ii] = (long)yy;
+	}
+}
 
 /* ARGS:  T: short or long
  * INPUTS:
@@ -415,6 +437,8 @@ static registryFunctionRef my_asub_Ref[] = {
        {"raw_to_volts_LONG",  (REGISTRYFUNCTION) raw_to_volts<long, 0, 8>},
        {"raw_to_volts_DAC20",  (REGISTRYFUNCTION) raw_to_volts<long, 12, 12>},
        {"raw_to_volts_SHORT",  (REGISTRYFUNCTION) raw_to_volts<short, 0, 0>},
+       {"volts_to_raw_SHORT", (REGISTRYFUNCTION) volts_to_raw<short>},
+       {"volts_to_raw_DAC20", (REGISTRYFUNCTION) volts_to_raw<long>},
        {"cart2pol", (REGISTRYFUNCTION) cart2pol<short>},
        {"cart2pol_LONG", (REGISTRYFUNCTION) cart2pol<long>},
        {"cart2pol_SHORT", (REGISTRYFUNCTION) cart2pol<short>},
