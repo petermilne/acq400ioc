@@ -196,11 +196,11 @@ long raw_to_volts(aSubRecord *prec) {
  */
 template <class T>
 long volts_to_raw(aSubRecord *prec) {
-	float * volts = (float *)prec->a;
+	float * volts = reinterpret_cast<float*>(prec->a);
 	int len = prec->nea;
-	T *raw = (T *)prec->vala;
-	double aoff = *(double*)prec->o;
-	double aslo = *(double*)prec->s;
+	T *raw = reinterpret_cast<T *>(prec->vala);
+	double aoff = *reinterpret_cast<double*>(prec->o);
+	double aslo = *reinterpret_cast<double*>(prec->s);
 
 	for (int ii=0; ii <len; ii++) {
 		double yy = (volts[ii] - aoff) * aslo;
