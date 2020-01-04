@@ -1,0 +1,16 @@
+#cpsc2.2.proto
+# Created on: 4 Jan 2020
+#     Author: pgm
+
+Terminator = LF;
+ExtraInput = Ignore;    
+
+set_wf_n_sfp {
+	out "dac_\$1_wf_n_sfp %d";
+}
+
+get wf_n_sfp {
+	out "dac_\$1_wf_n_sfp";
+	in "%d";
+}
+     

@@ -15,7 +15,7 @@ record(bo, "${UUT}:2:CPSC_DAC_SRC:${DAC}") {
 
 record(bo, "${UUT}:2:CPSC_DAC_SRC:${DAC}:w") {
 		field(DTYP, "stream")
-		field(OUT,  "@cpsc2.proto set_wf_n_sfp(${dac}) ${SPORT}")
+		field(OUT,  "@cpsc2.2.proto set_wf_n_sfp(${dac}) ${SPORT}")
 		field(DISV, "1")
 		field(SDIS, "${UUT}:2:CPSC_DAC_SRC:${DAC}:s.PACT")
 		field(OMSL, "closed_loop")
@@ -24,7 +24,7 @@ record(bo, "${UUT}:2:CPSC_DAC_SRC:${DAC}:w") {
 
 record(bi, "${UUT}:2:CPSC_DAC_SRC:${DAC}:r") {
 		field(DTYP, "stream")
-		field(INP,  "@cpsc2.proto get_wf_n_sfp(${dac}) ${SPORT}")
+		field(INP,  "@cpsc2.2.proto get_wf_n_sfp(${dac}) ${SPORT}")
 		field(SCAN, "1 second")
 		field(FLNK, "${UUT}:2:CPSC_DAC_SRC:${DAC}:s")
 } 
