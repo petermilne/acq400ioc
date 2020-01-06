@@ -45,4 +45,5 @@ record(mbboDirect, "${UUT}:${SITE}:COS:EN:H16") {
 	field(VAL,  "0")
 	field(DESC, "Change Of State Enable, high 16 chan")
 	field(NOBT, "16")
+	field(FLNK, "${UUT}:${SITE}:COS:EN:L16")
 }
