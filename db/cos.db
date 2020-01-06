@@ -9,9 +9,7 @@ record(mbbiDirect, "${UUT}:${SITE}:COS:STATUS:L16") {
 }
 
 record(mbbiDirect, "${UUT}:${SITE}:COS:STATUS:H16") {
-	field(DTYP, "Soft Channel")	
-	field(PINI, "YES")
-	field(VAL,  "0")
+	field(DTYP, "Raw Soft Channel")	
 	field(DESC, "Change Of State Status, high 16 chan")
 	field(NOBT, "16")
 }
@@ -27,9 +25,7 @@ record(mbbiDirect, "${UUT}:${SITE}:DI:INST:L16") {
 }
 
 record(mbbiDirect, "${UUT}:${SITE}:DI:INST:H16") {
-	field(DTYP, "Soft Channel")	
-	field(PINI, "YES")
-	field(VAL,  "0")
+	field(DTYP, "Raw Soft Channel")
 	field(DESC, "Instantaneous DI, high 16 chan")
 	field(NOBT, "16")
 }
