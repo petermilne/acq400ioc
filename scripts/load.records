@@ -893,9 +893,8 @@ load_mb_sync() {
 				fi
 				echo >>/tmp/st_post.cmd "seq $ssr \"uut=${HOST},fin=0:SIG:CLK_EXT:FREQ\"";;
 			esac
-	fi
-	[ "$CLOCKMONITOR" = "1" ] && \
-	   echo >>/tmp/st_post.cmd "seq setMB_ClockMonitor \"uut=${HOST}\""
+	fi	
+	echo >>/tmp/st_post.cmd "seq setMB_ClockMonitor \"uut=${HOST},retry=${CLOCKMONITOR}\""
 	[ "$ONSETTRANSIENT" = "1" ] && \
 		echo >>/tmp/st_post.cmd "seq onSetTransient \"uut=${HOST}\""
 	echo >>/tmp/st_post.cmd "seq autoRepeat \"uut=${HOST}\""

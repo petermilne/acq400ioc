@@ -1,5 +1,6 @@
 /* setting MB clock doesn't always work. So detect change requests and make sure
  * it comes right
+ * macros: uut, retry=1 : RETRY if recurrent fail detected
  */
  
 
@@ -11,6 +12,8 @@ option +r;
 double Fs;	assign Fs to "{uut}:0:SIG:CLK_MB:SET";
 double Fm; 	assign Fm to "{uut}:0:SIG:CLK_MB:FREQ";
 int is_ready;	assign is_ready to "{uut}:0:SIG:CLK_MB:READY";
+
+char* retry = "0";
 
 monitor Fs;
 monitor Fm;
@@ -38,7 +41,8 @@ ss rate_set
 {
 	state init {
 		when() {
-			printf("setMB_ClockMonitor th:%.2f\n", TH);
+			retry = macValueGet("retry");
+			printf("setMB_ClockMonitor th:%.2f retry %s\n", TH, retry);
 			pvGet(Fs);
 			Fs0 = Fs;
 			is_ready = 0; pvPut(is_ready);
@@ -66,9 +70,11 @@ ss rate_set
 			if (++pollcat > 4){
 				is_ready = 0; pvPut(is_ready);
 				Fm0 = Fm;
-				printf("WARNING: MB CLK Fs:%.2f != Fm:%.2f retry\n",
-					Fs, Fm);			
-				pvPut(Fs);
+				printf("WARNING: MB CLK Fs:%.2f != Fm:%.2f,%.2f %s\n",
+					Fs, Fm, Fm0, retry[0] == '1'? "RETRY":"notice");
+				if (retry[0] == '1'){
+					pvPut(Fs);
+				}
 				pollcat = 0;
 			}
 		} state wait_actual
