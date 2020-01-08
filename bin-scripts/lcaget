@@ -1,0 +1,7 @@
+#!/bin/sh
+
+export EPICS_CA_AUTO_ADDR_LIST=NO EPICS_CA_ADDR_LIST=127.0.0.1
+pv=$(hostname)$1
+caget -st $pv
+
+ 

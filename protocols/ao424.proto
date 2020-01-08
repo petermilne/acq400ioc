@@ -56,3 +56,10 @@ getOdds {
 	out "odd_channels";
 	in "%d";
 }
+# read_latency AVG,CUR,MAX,MIN
+
+getReadLat {
+	out "read_latency";
+	in "%u,%(\$1:cur)u,%(\$1:max)u,%(\$1:min)u";
+}
+

@@ -13,6 +13,21 @@ record(ao, "${UUT}:${SITE}:AO:SLOW_SET:CH:ALL") {
         field(EGU,  "V")
 }
 
+record(ao, "${UUT}:${SITE}:OUTPUT_DELAY") {
+		field(DTYP, "Soft Channel")
+		field(FLNK, "${UUT}:${SITE}:OUTPUT_DELAY:c")
+		field(PREC, "1")
+}
+
+record(calcout, "${UUT}:${SITE}:OUTPUT_DELAY:c") {
+		field(INPA, "${UUT}:${SITE}:OUTPUT_DELAY")
+		field(CALC, "A<2.3? 0: A")
+		field(OUT,  "${UUT}:${SITE}:FETCH_DELAY")
+		field(OOPT, "Every Time")
+		field(DOPT, "CALC")
+		field(FLNK, "${UUT}:${SITE}:FETCH_DELAY")
+}
+		
 record(ao, "${UUT}:${SITE}:FETCH_DELAY") {
         field(DTYP, "dsSysfsAo")
         field(OUT, "@/dev/acq400.${SITE}.knobs/delay66")
@@ -26,5 +41,83 @@ record(ao, "${UUT}:${SITE}:FETCH_DELAY") {
         field(LOPR, "0")
         field(EGU,  "usec")
 }
+
+record(longin, "${UUT}:${SITE}:READ_LAT:cur") {
+		field(DTYP, "Soft Channel")		
+}
+record(longin, "${UUT}:${SITE}:READ_LAT:max") {
+		field(DTYP, "Soft Channel")		
+}
+record(longin, "${UUT}:${SITE}:READ_LAT:min") {
+		field(DTYP, "Soft Channel")		
+}
+record(ai, "${UUT}:${SITE}:READ_LAT:MEAN") {
+		field(DTYP, "stream")
+		field(INP, "@ao424.proto getReadLat(${UUT}:${SITE}:READ_LAT) ${SPORT}")
+		field(SCAN, "1 second")		
+		field(EGU,  "usec")
+		field(PREC,  "3")
+		field(EOFF, "0")
+		field(EGUL, "0")
+		field(EGUF, "63")
+		field(LINR, "LINEAR")		
+		field(ESLO, "0.015151515")
+		field(HOPR, "63")
+		field(LOPR, "0")
+		field(FLNK, "${UUT}:${SITE}:READ_LAT:CUR PP")			
+}
+
+record(ai, "${UUT}:${SITE}:READ_LAT:CUR") {
+		field(DTYP, "Raw Soft Channel")
+		field(INP,  "${UUT}:${SITE}:READ_LAT:cur")
+		field(EGU,  "usec")
+		field(PREC,  "3")
+		field(EOFF, "0")
+		field(EGUL, "0")
+		field(EGUF, "63")
+		field(LINR, "LINEAR")		
+		field(ESLO, "0.015151515")
+		field(HOPR, "63")
+		field(LOPR, "0")
+		field(FLNK, "${UUT}:${SITE}:READ_LAT:MAX PP")				
+}
+
+record(ai, "${UUT}:${SITE}:READ_LAT:MAX") {
+		field(DTYP, "Raw Soft Channel")
+		field(INP,  "${UUT}:${SITE}:READ_LAT:max")
+		field(EGU,  "usec")
+		field(PREC,  "3")
+		field(EOFF, "0")
+		field(EGUL, "0")
+		field(EGUF, "63")
+		field(LINR, "LINEAR")		
+		field(ESLO, "0.015151515")
+		field(HOPR, "63")
+		field(LOPR, "0")
+		field(FLNK, "${UUT}:${SITE}:READ_LAT:MIN PP")				
+}
+
+record(ai, "${UUT}:${SITE}:READ_LAT:MIN") {
+		field(DTYP, "Raw Soft Channel")
+		field(INP,  "${UUT}:${SITE}:READ_LAT:min")
+		field(EGU,  "usec")
+		field(PREC,  "3")
+		field(EOFF, "0")
+		field(EGUL, "0")
+		field(EGUF, "63")
+		field(LINR, "LINEAR")		
+		field(ESLO, "0.015151515")
+		field(HOPR, "63")
+		field(LOPR, "0")
+		field(FLNK, "${UUT}:${SITE}:LATENCY PP")			
+}
+
+record(calc, "${UUT}:${SITE}:LATENCY") {
+		field(INPA, "${UUT}:${SITE}:FETCH_DELAY")
+		field(INPB, "${UUT}:${SITE}:READ_LAT:MEAN")
+		field(CALC, "A!=0 && B!=0? A+B: -1")
+		field(DESC, "XO N MODEround trip latency from clock")	
+}
+
 
 

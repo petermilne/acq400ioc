@@ -6,6 +6,8 @@ if [ -x /mnt/local/rc.user ]; then
 	(/usr/local/epics/scripts/wait_ioc_ready; 
 	 echo "+++ calling /mnt/local/rc.user"
 	 /mnt/local/rc.user
+	 echo $(hostname) $(uptime) > /var/www/d-tacq/rc-user-complete
+	 echo $(hostname) $(uptime) > /var/www/d-tacq/rc-local-complete
 	 echo "+++ /mnt/local/rc.user complete" ) &
 else
 	echo "--- WARNING: /mnt/local/rc.user NOT FOUND"

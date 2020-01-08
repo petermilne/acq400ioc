@@ -100,6 +100,9 @@ static int verbose;
  * VALE : float* mean
  * VALF : float* stddev
  * VALG : float* rms
+ * VALH : float* CV
+ * VALI : short* top_half   when splitting a u32
+ * VALJ : short* low_half
  */
 
 
@@ -117,7 +120,7 @@ template <class T, int SHR>
 long raw_to_volts(aSubRecord *prec) {
 	double yy;
 	T *raw = (T *)prec->a;
-	int len = prec->noa;
+	epicsUInt32 len = prec->noa;
 	float * cooked = (float *)prec->vala;
 	long rmax = *(long*)prec->b;
 	float vmax = *(float*)prec->c;
@@ -131,6 +134,9 @@ long raw_to_volts(aSubRecord *prec) {
 	float* p_stddev = (float*)prec->valf;
 	float* p_rms = (float*)prec->valg;
 	float* p_cv = (float*)prec->valh;			// Coefficient of variance, VALE and VALF MUST be defined!
+	unsigned short *p_top_half = (unsigned short*)prec->vali;	// user might consider these to be signed we don't care
+	unsigned short *p_low_half = (unsigned short*)prec->valj;
+
 	long min_value;
 	long max_value;
 	long over_range = 0;
@@ -156,7 +162,7 @@ long raw_to_volts(aSubRecord *prec) {
 	min_value = scale<T, SHR>(raw[0]);
 	max_value = scale<T, SHR>(raw[0]);
 
-	for (int ii=0; ii <len; ii++) {
+	for (epicsUInt32 ii=0; ii <len; ii++) {
 		T rx = scale<T, SHR>(raw[ii]);
 
 		if (rx > max_value) max_value = rx;
@@ -169,6 +175,17 @@ long raw_to_volts(aSubRecord *prec) {
 		cooked[ii] = (float)yy;
 		if (::verbose && ii==0 && strstr(prec->name, ":01") != 0){
 			printf("%s : aslo:%.6e aoff:%.6e rx:%06x yy=%.5e\n", prec->name, aslo, aoff, (unsigned)rx, yy);
+		}
+	}
+	if (sizeof(T) == 4 && prec->novi == len && prec->novj == len){
+		if (::verbose > 1){
+			printf("%s : splitting lw\n", prec->name);
+		}
+		epicsUInt32* uraw = (epicsUInt32*)raw;
+
+		for (epicsUInt32 ii = 0; ii <len; ii++) {
+			p_top_half[ii] = uraw[ii] >> 16;
+			p_low_half[ii] = uraw[ii];
 		}
 	}
 
@@ -412,6 +429,7 @@ long spectrum(aSubRecord *prec)
 static registryFunctionRef my_asub_Ref[] = {
        {"raw_to_uvolts", (REGISTRYFUNCTION) raw_to_uvolts},
        {"raw_to_volts_LONG",  (REGISTRYFUNCTION) raw_to_volts<long, 8>},
+       {"raw_to_volts_INT24",  (REGISTRYFUNCTION) raw_to_volts<long, 0>},
        {"raw_to_volts_SHORT",  (REGISTRYFUNCTION) raw_to_volts<short, 0>},
        {"cart2pol", (REGISTRYFUNCTION) cart2pol<short>},
        {"cart2pol_LONG", (REGISTRYFUNCTION) cart2pol<long>},

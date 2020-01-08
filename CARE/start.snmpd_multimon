@@ -1,0 +1,18 @@
+# append to snmpd.conf
+# snmpget -v 2c -c public acq2106_130 'NET-SNMP-EXTEND-MIB::nsExtendOutput1Line.":SYS:UPTIME"'
+
+cp /usr/local/CARE/snmpd_basic.conf /etc/snmpd.conf
+
+for key in ':SYS:UPTIME' ':SYS:VERSION:SW' ':SYS:VERSION:FPGA' \
+                       ':USER' ':TEST_DESCR' \
+                        ':SYS:0:TEMP' ':1:SHOT' ':MODE:TRANS_ACT:STATE' \
+                         ':0:SIG:CLK_MB:FREQ' ':0:SIG:CLK_MB:SET'; do
+	echo "extend $key /usr/local/bin/lcaget $key"
+done >>/etc/snmpd.conf
+
+/usr/sbin/snmpd -p /var/run/snmpd.pid -a -c /etc/snmpd.conf
+
+
+
+
+

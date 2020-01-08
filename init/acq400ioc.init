@@ -88,7 +88,7 @@ restart() {
 	start_ioc
 	wait_ioc_records_loaded
 	stop_ioc
-	make_epics_knobs
+	nice /usr/local/init/acq400ioc.init make_epics_knobs
 	[ "x$IOC_GLOBAL_ALIAS_PFX" != "x" ] && make_aliases $IOC_GLOBAL_ALIAS_PFX
 	cat /tmp/st_final.cmd >> /tmp/st.cmd
 	start_ioc
@@ -108,6 +108,10 @@ suspend)
 	kill -STOP $(pidof acq400ioc);;
 resume)
 	kill -CONT $(pidof acq400ioc);;
+make_epics_knobs)
+	sleep 1; 
+	echo "+++ make_epics_knobs"
+	make_epics_knobs;;
 *)
 	echo 'usage acq400ioc.init start|stop|forcestart|suspend|resume';;
 esac

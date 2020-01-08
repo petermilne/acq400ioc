@@ -68,42 +68,26 @@ make_epics_knobs() {
 				make_caget $PV ${NU#*:} ${SITE};;
 		esac
 	done
-	for PV in $(egrep GAIN\|RANGE $RL | grep -v .[a-z]$ )
-	do
-		NU=${PV#*:}
-		SITE=${NU%%:*}
-		make_caput $PV ${NU#*:} ${SITE}	
-	done
+
 	for PV in $(egrep CAL:E $RL | grep -v .[a-z]$)
 	do
 		NU=${PV#*:}
 		SITE=${NU%%:*}
 		make_caget_w $PV ${NU#*:} ${SITE}	
 	done	
-	for PV in $(grep ACQ4.X_SAMPLE_RATE $RL)
-	do
-		NU=${PV#*:}
-		SITE=${NU%%:*}
-		make_caput $PV ${NU#*:} ${SITE}
-	done
 	
-	for PV in $(egrep -e DECIM -e OSR $RL)
+	for PV in $(egrep -e DECIM -e OSR -e AWG $RL)
 	do
 		NU=${PV#*:}
 		make_caget $PV ${NU#*:} ${NU%%:*}
 	done
 	
-    for PV in $(egrep -e AWG $RL)
-    do
-        NU=${PV#*:}
-        make_caput $PV ${NU#*:} ${NU%%:*}
-    done	
 	for PV in $(egrep -e FIR:01$ -e HPF:0[1-8] -e T50R \
-			-e LFNS -e INVERT $RL | grep -v [a-z]$)
+			-e LFNS -e INVERT -e ACQ4.X_SAMPLE_RATE -e GAIN -e RANGE $RL | grep -v [a-z]$)
 	do
 		NU=${PV#*:}
 		SITE=${NU%%:*}
-		make_caput $PV ${NU#*:} ${NU%%:*}		
+		make_caput $PV ${NU#*:} ${SITE}		
 	done
 	for PV in $(grep :SYS:CLK $RL | grep -v [a-z]$ | grep -v clk0$ )
 	do
@@ -111,13 +95,21 @@ make_epics_knobs() {
 	done
 	
 	for PV in $(egrep -e :[1-6]:CLK -e :[1-6]:TRG  -e :[1-6]:SYNC -e :[1-6]:EVE \
-			  -e :1:RGM -e :1:RTM -e :[1-6]:XDT -e :1:DT -e :[1-6]:FETCH_DELAY $RL \
+			  -e :1:RGM -e :1:RTM -e :[1-6]:XDT -e :1:DT -e :[1-6]:ANATRG $RL \
 			| grep -v ':[0-9a-z_]*$' )
 	do		
 		pv1=${PV#*:}
 		site=${pv1%%:*}
 		make_caput $PV ${pv1#*:} $site
 	done
+
+	for PV in $(egrep -e :[1-6]:.*_DELAY -e :[1-6]:READ_LAT -e :[1-6]:LATENCY $RL \
+			| grep -v ':[0-9a-z_]*$' )
+	do		
+		pv1=${PV#*:}
+		site=${pv1%%:*}
+		make_caput $PV ${pv1#*:} $site -n
+	done	
 	
 	for PV in $(grep GPG /tmp/records.dbl | grep -v :[a-z]$)
 	do
@@ -141,7 +133,7 @@ make_epics_knobs() {
 		pv1=${PV#*:}
 		make_caput $PV ${pv1#*:} 13
 	done
-
+		
 	for PV in $(egrep -e MODE:T -e IOC_READY $RL | grep -v [wsrft]$)
 	do
 		pv1=${PV#*:}
@@ -155,6 +147,12 @@ make_epics_knobs() {
 				make_caget $PV $kn1 0
 			fi
 		fi
+	done
+	for PV in $(egrep -e COS:EN:L16 $RL)
+	do
+		pv1=${PV#*:}
+		site=${pv1%%:*}
+		ln -s /usr/local/epics/scripts/COS_EN /etc/acq400/${site}/
 	done
 	make_reset_knobs 0 12 13
 		

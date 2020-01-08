@@ -1,0 +1,31 @@
+record(aSub, "${UUT}:${SITE}:AI:WF:${cid}:V") {	
+	field(SNAM, "raw_to_volts_INT24")
+	field(INPA, "${UUT}:${SITE}:AI:WF:${cid}")
+	field(INPC,  "${pmax}")
+	field(INPS,  "${ESLO}")
+	field(DESC,  "${desc}")	
+	
+	field(FTVI, "SHORT")
+	field(NOVI, "${SPL_WF_LEN}")
+	field(FTVJ, "USHORT")
+	field(NOVJ, "${SPL_WF_LEN}")
+	
+}	
+
+alias("${UUT}:${SITE}:AI:WF:${cid}:V", "${UUT}:${SITE}:AI:WF:${CH}:${P1}")
+
+
+record(aSub, "${UUT}:${SITE}:AI:TW:${cid}:V") {
+	field(SNAM, "raw_to_volts_INT24")
+	field(INPA, "${UUT}:${SITE}:AI:TW:${cid}")
+	field(INPC,  "${pmax}")
+	field(INPS,  "${ESLO}")
+	field(DESC,  "${desc}")	
+	
+	field(FTVI, "SHORT")
+	field(NOVI, "${SPL_TW_LEN}")
+	field(FTVJ, "USHORT")
+	field(NOVJ, "${SPL_TW_LEN}")	
+}
+
+alias("${UUT}:${SITE}:AI:TW:${cid}:V", "${UUT}:${SITE}:AI:TW:${CH}:${P1}")
