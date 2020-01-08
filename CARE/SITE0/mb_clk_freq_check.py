@@ -13,20 +13,24 @@ def get_freq(fs_desired):
     return freq_read,setpt_read
 
 
-fs_desired = float(sys.argv[1]) # Always pass desired freq setpoint from sync_role call
-less_1pct = fs_desired - (0.01*fs_desired)
-plus_1pct = fs_desired + (0.01*fs_desired)
+def set_clock():
+    fs_desired = float(sys.argv[1]) # Always pass desired freq setpoint from sync_role call
+    less_1pct = fs_desired - (0.01*fs_desired)
+    plus_1pct = fs_desired + (0.01*fs_desired)
 
-freq_read,setpt_read = get_freq(fs_desired)
+    freq_read,setpt_read = get_freq(fs_desired)
 
 
-while True:
-    if less_1pct <= freq_read <= plus_1pct :
-        break
-    else:
-        time.sleep(0.5)
-        print "\nClock Monitor Catch :: Setpoint = {}, MB_CLK Output = {}".format(fs_desired,freq_read)
-        print "Thresholds {} {}".format(less_1pct,plus_1pct)
-        print "Resetting MB_CLK ",fs_desired
-        freq_read,setpt_read = get_freq(fs_desired)
+    for attempt in range(0, 10): # Only try 10 times to set the clock.
+        if less_1pct <= freq_read <= plus_1pct :
+            return True
+        else:
+            time.sleep(0.5)
+            print "\nClock Monitor Catch :: Setpoint = {}, MB_CLK Output = {}".format(fs_desired,freq_read)
+            print "Thresholds {} {}".format(less_1pct,plus_1pct)
+            print "Resetting MB_CLK ",fs_desired
+            freq_read,setpt_read = get_freq(fs_desired)
+    return False
 
+if not set_clock():
+    print("Max retries met. Clock not set.")
