@@ -725,7 +725,7 @@ load_mb_sites() {
 		load_intmon
 	fi
 	dblr '"db/mb_common.db","UUT='${HOST}',SPORT=S0"'
-	create_asyn_channel S0 127.0.0.1:4220
+	create_asyn_channel S0 127.0.0.1:4220 ${S0_DEBUG}
 	create_asyn_channel NP 127.0.0.1:2226
 	create_asyn_channel SS 127.0.0.1:4220
 	create_asyn_channel ST 127.0.0.1:$(get-port-from-service acq4xx-transient-console)

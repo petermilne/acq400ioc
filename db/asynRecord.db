@@ -5,5 +5,7 @@ record(asyn,"$(P)$(R)")
     field(ADDR,"$(ADDR)")
     field(OMAX,"$(OMAX)")
     field(IMAX,"$(IMAX)")
+	field(TB3,"$(TB0)")
+	field(TIB0,"$(TIB0)")
 }
 

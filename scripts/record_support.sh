@@ -39,7 +39,7 @@ get_range() {
 create_asyn_channel() {
 		cat - <<EOF
 drvAsynIPPortConfigure("$1", "$2")
-dbLoadRecords("db/asynRecord.db","P=${HOST}:,R=asyn:$1,PORT=$1,ADDR=0,IMAX=100,OMAX=100")										
+dbLoadRecords("db/asynRecord.db","P=${HOST}:,R=asyn:$1,PORT=$1,ADDR=0,IMAX=100,OMAX=100,TB3=${3:-0},TIB0=${4:-0}")
 EOF
 			
 }
