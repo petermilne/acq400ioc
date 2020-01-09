@@ -5,5 +5,6 @@ CLKMHZ=${1:-80M}
 set.site 0 SYS:CLK:FPMUX ZCLK
 set.site 0 SIG:ZCLK_SRC WR31M25
 load.si5326 si5326_31M25-${CLKMHZ}.txt
+set.site 0 SIG:CLK_MB:READY 1
 
 
