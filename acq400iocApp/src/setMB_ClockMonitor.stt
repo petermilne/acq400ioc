@@ -1,4 +1,5 @@
-/* setting MB clock doesn't always work. So detect change requests and make sure
+/* setting MB clock doesn't always work. 
+ * So detect change requests and make sure
  * it comes right
  * macros: uut, retry=1 : RETRY if recurrent fail detected
  */
@@ -59,6 +60,7 @@ ss rate_set
 		when(Fs > 0 && Fs != Fs0 ){
 			Fs0 = Fs;
 			pollcat = 0;
+			is_ready = 0; pvPut(is_ready);
 		} state wait_actual
 			
 		when(Fs > 0 && Fm != Fm0 && in_bounds(Fm, Fs, TH)){
@@ -67,14 +69,15 @@ ss rate_set
 		} state wait_actual 
 		
 		when(Fs > 0 && Fm != Fm0 && !in_bounds(Fm, Fs, TH)){
-			if (++pollcat > 4){
-				is_ready = 0; pvPut(is_ready);
+			if (++pollcat > 4){				
 				Fm0 = Fm;
 				printf("WARNING: MB CLK Fs:%.2f != Fm:%.2f,%.2f %s\n",
-					Fs, Fm, Fm0, retry[0] == '1'? "RETRY":"notice");
-				if (retry[0] == '1'){
+					Fs, Fm, Fm0, !is_ready? "FAILED TO TAKE, RETRY": retry[0] == '1'? "LOST, RETRY":"LOST, notice only");
+					
+				if (!is_ready || retry[0] == '1'){
 					pvPut(Fs);
 				}
+				is_ready = 0; pvPut(is_ready);
 				pollcat = 0;
 			}
 		} state wait_actual
