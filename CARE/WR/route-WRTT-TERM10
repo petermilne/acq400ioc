@@ -1,0 +1,4 @@
+set.site 0 SIG:SRC:TRG:0 WRTT
+set.site 0 SIG:SYNC_OUT:TRG TRG
+set.site 0 SIG:SYNC_OUT:TRG:DX d0
+

@@ -1,0 +1,4 @@
+set.site 0 SIG:SRC:SYNC:0 WR01M
+set.site 0 SIG:SYNC_OUT:SYNC SYNC
+set.site 0 SIG:SYNC_OUT:SYNC:DX d0
+

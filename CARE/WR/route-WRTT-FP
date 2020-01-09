@@ -1,0 +1,3 @@
+set.site 0 SIG:SRC:TRG:0 WRTT
+set.site 0 SIG:FP:GPIO=EVT0
+
