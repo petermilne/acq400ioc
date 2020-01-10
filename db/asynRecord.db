@@ -7,5 +7,6 @@ record(asyn,"$(P)$(R)")
     field(IMAX,"$(IMAX)")
 	field(TB3,"$(TB3)")
 	field(TIB0,"$(TIB0)")
+	field(DESC,"dbg trace def $(TB3) $(TIB0)")
 }
 
