@@ -1,19 +1,32 @@
 /* setting MB clock doesn't always work. 
- * So detect change requests and make sure
- * it comes right
- * macros: uut, retry=1 : RETRY if recurrent fail detected
+ * So detect change requests and make sure. Also detect loss of clock and act if requested
+ *
+ * macros: uut, retry=1 : RETRY if recurrent fail detected, else simply notify
  */
- 
-
 
 program setMB_ClockMonitor
 option +r;
 
-
+/* INPUTS */
 double Fs;	assign Fs to "{uut}:0:SIG:CLK_MB:SET";
 double Fm; 	assign Fm to "{uut}:0:SIG:CLK_MB:FREQ";
+/* OUTPUTS */
 int is_ready;	assign is_ready to "{uut}:0:SIG:CLK_MB:READY";
 
+/* Algorithm:
+ *
+ * ON Fs Change: 
+ *    set CLK_MB:READY=FALSE
+ *    on Fm == Fs:
+ *        set CLK_MB:READY
+ * ON Fm Change:
+ *    on fourth time of asking, trigger a retry if retry=2
+ *    reports:
+ *    "FAILED TO TAKE, RETRY" : forcing a retry because a setting didn't stick
+ *    "LOST, RETRY"           : forcing a retry because clock FAILED (retry=1)
+ *    "LOST, notice only"     : notify loss of clock, no retry (retry=0)
+ */
+ 
 char* retry = "0";
 
 monitor Fs;
