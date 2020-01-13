@@ -203,14 +203,14 @@ set_local_clock() {
 }
 
 set_master() {
-    set.site 0 SIG:CLK_MB:FIN $2
-    $set_mb $1
     pv_read_lock CLK 1
     set.site 1 "CLK=1; CLK:DX=${CLK_DX:-d1}; CLK:SENSE=${CLK_SENSE}"
     pv_read_lock CLK 0
     pv_read_lock TRG 1
     set.site 1 "TRG=1; TRG:DX=${TRG_DX:-d0}; TRG:SENSE=${TRG_SENSE}"
     pv_read_lock TRG 0
+    set.site 0 SIG:CLK_MB:FIN $2
+    $set_mb $1
 }
 
 
