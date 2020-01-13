@@ -57,7 +57,7 @@ make_epics_knobs() {
 		make_caget $PV ${NU#*:} S
 	done
 	
-	for PV in $(egrep SIG $RL | grep -v .[a-z]$ | grep -v rawc64)
+	for PV in $(egrep :.:SIG $RL | grep -v .[a-z]$ | grep -v rawc64)
 	do
 		NU=${PV#*:}
 		SITE=${NU%%:*}
