@@ -22,6 +22,8 @@ P3=
 FIN_DEF=1000000
 FIN_CLKSTAR=20000000
 
+set.site 1 CLK=1
+
 let px=1
 for k in $*; do
     key=${k%=*}; val=${k#*=}
