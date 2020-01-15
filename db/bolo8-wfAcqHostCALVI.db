@@ -15,5 +15,3 @@ record(aSub, "${UUT}:${SITE}:AI:TW:${cid}:V") {
 	field(FTVQ, "FLOAT")
 	field(NOVQ, "${SPL_TW_LEN}")	# Current A
 }
-
-alias("${UUT}:${SITE}:AI:TW:${cid}:V", "${UUT}:${SITE}:AI:TW:${CH}:${P1}")
