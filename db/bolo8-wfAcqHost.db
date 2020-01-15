@@ -34,7 +34,7 @@ record(aSub, "${UUT}:${SITE}:AI:TW:${cid}:V") {
 	field(INPQ,  "2.6042e-6")        # SWG (15) raw->Iamps
 	field(FTVP, "FLOAT")
 	field(NOVP, "${SPL_TW_LEN}")    # Volts
-	field(FTVQ, "USHORT")
+	field(FTVQ, "FLOAT")
 	field(NOVQ, "${SPL_TW_LEN}")	# Current A
 }
 
