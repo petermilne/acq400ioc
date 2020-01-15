@@ -103,6 +103,11 @@ static int verbose;
  * VALH : float* CV
  * VALI : short* top_half   when splitting a u32
  * VALJ : short* low_half
+ *
+ * INPP : float* iscale     for converting VALI
+ * INPQ : float* jscale     for converting VALJ
+ * VALP : VALI * INPP
+ * VALQ : VALJ * INPQ
  */
 
 
@@ -186,6 +191,20 @@ long raw_to_volts(aSubRecord *prec) {
 		for (epicsUInt32 ii = 0; ii <len; ii++) {
 			p_top_half[ii] = uraw[ii] >> 16;
 			p_low_half[ii] = uraw[ii];
+		}
+
+		if (prec->novp == len && prec->novq == len){
+			float iscale = *(float*)prec->p;
+			float jscale = *(float*)prec->q;
+			float* valp = (float*)prec->valp;
+			float* valq = (float*)prec->valq;
+			if (::verbose > 1){
+				printf("%s : convert iscale:%f jscale:%f\n", prec->name, iscale, jscale);
+			}
+			for (epicsUInt32 ii = 0; ii <len; ii++) {
+				valp[ii] = iscale * p_top_half[ii];
+				valq[ii] = jscale * p_low_half[ii];
+			}
 		}
 	}
 
