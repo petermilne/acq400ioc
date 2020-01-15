@@ -4,12 +4,6 @@ record(aSub, "${UUT}:${SITE}:AI:WF:${cid}:V") {
 	field(INPC,  "${pmax}")
 	field(INPS,  "${ESLO}")
 	field(DESC,  "${desc}")	
-	
-	field(FTVI, "SHORT")
-	field(NOVI, "${SPL_WF_LEN}")
-	field(FTVJ, "USHORT")
-	field(NOVJ, "${SPL_WF_LEN}")
-	
 }	
 
 alias("${UUT}:${SITE}:AI:WF:${cid}:V", "${UUT}:${SITE}:AI:WF:${CH}:${P1}")
@@ -21,21 +15,6 @@ record(aSub, "${UUT}:${SITE}:AI:TW:${cid}:V") {
 	field(INPC,  "${pmax}")
 	field(INPS,  "${ESLO}")
 	field(DESC,  "${desc}")	
-	
-	
-	field(FTVI, "SHORT")
-	field(NOVI, "${SPL_TW_LEN}")
-	field(FTVJ, "USHORT")
-	field(NOVJ, "${SPL_TW_LEN}")	
-	
-	field(FTP, "FLOAT")
-	field(INPP,  "3.051758e-5")      # SWG (14) raw->Volts
-	field(FTQ, "FLOAT")
-	field(INPQ,  "2.6042e-6")        # SWG (15) raw->Iamps
-	field(FTVP, "FLOAT")
-	field(NOVP, "${SPL_TW_LEN}")    # Volts
-	field(FTVQ, "FLOAT")
-	field(NOVQ, "${SPL_TW_LEN}")	# Current A
 }
 
 alias("${UUT}:${SITE}:AI:TW:${cid}:V", "${UUT}:${SITE}:AI:TW:${CH}:${P1}")
