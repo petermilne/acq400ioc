@@ -39,7 +39,7 @@ record(bo, "${UUT}:2:CPSC_DAC_SRC:${DAC}:s") {
 
 
 record (bo, "${UUT}:2:CPSC_DAC_PKT:TXEN") {
-		field(DTYP, "boAcqHost")
+		field(DTYP, "stream")
 		field(OUT,  "@cpsc2.proto set_pkt_tx_en() ${SPORT}")		
 		field(ONAM, "ON")
 		field(ZNAM, "OFF")
