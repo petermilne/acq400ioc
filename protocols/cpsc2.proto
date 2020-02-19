@@ -48,3 +48,11 @@ get_packet_clear {
 awg_load_channels {
     out "awg_load_channels 2";
 }
+
+set_sfpN_tx_en {
+	out "sfp\$1_tx_en %d";
+}
+
+set_pkt_tx_en {
+	out "pkt_tx_en %d";
+}

@@ -7,6 +7,15 @@ record (bo, "${UUT}:SFP:${CH}:TX_DISABLE") {
 		field(VAL,  "0")	
 }
 
+record (bo, "${UUT}:SFP:${CH}:TXEN") {
+		field(DTYP, "boAcqHost")
+		field(OUT,  "@cpsc2.proto set_sfpN_tx_en(${CH}) ${SPORT}")		
+		field(ONAM, "ON")
+		field(ZNAM, "OFF")
+		field(PINI, "YES")
+		field(VAL,  "0")	
+}
+
 record (bo, "${UUT}:SFP:${CH}:LED:PRESENT") {
 		field(DTYP, "boAcqHost")
 		field(OUT, 	"@/dev/gpio/SFP/${CH}/LED")
