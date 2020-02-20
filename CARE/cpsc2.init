@@ -41,6 +41,10 @@ set.site 2 clk 1,0,1
 sleep 2
 set.site 2 CLKDIV 512
 set.site 0 CONTINUOUS 1
+
+echo ENABLE ALL PSU MODULES
+for P in 1 2 3 4 5 6 7 8; do caput $(hostname):PSU:DISABLE:$P 0; done
+
 echo cpsc2.init 99
 ) &
 
