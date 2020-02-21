@@ -10,7 +10,7 @@ option +r;
  
 int sfp_present;   assign sfp_present to "{uut}:SFP:{ch}:PRESENT"; monitor sfp_present;
  
-int aurora_lane_up; assign aurora_lane_up to "{uut}:{ch}:AURORA:UP"; monitor aurora_lane_up;
+int aurora_lane_up; assign aurora_lane_up to "{uut}:AURORA:{ch}:UP"; monitor aurora_lane_up;
  
 int aurora_pwr_down; assign aurora_pwr_down to "{uut}:SFP:{ch}:PWRDN";
  
