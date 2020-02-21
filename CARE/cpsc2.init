@@ -28,9 +28,10 @@ echo /mnt/local/rc.user 88 spawn post load settings
 /usr/local/epics/scripts/wait_ioc_ready
 set -x
 
-set.site 1 clk 1,0,1  # new 15.587M
+# default RFD=19 .. fastest
+set.site 1 clk 1,0,1  # new 15.583M
 set.site 1 clkdiv 1
-# 15.587/512=30.443kHz
+# 15.587/512=30.447kHz
 set.site 1 hi_res_mode 1
 
 set.site 1 trg 1,1,1
