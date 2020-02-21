@@ -35,10 +35,10 @@ record(bo, "${UUT}:SIG:LED:4:BLUE") {
         field(PINI, "YES")
 }
 
-alias("${UUT}:1:AURORA:UP", "${UUT}:SFP:1:TXUP")
-alias("${UUT}:1:AURORA:UP", "${UUT}:SFP:1:RXUP")
+alias("${UUT}:AURORA:1:UP", "${UUT}:SFP:1:TXUP")
+alias("${UUT}:AURORA:1:UP", "${UUT}:SFP:1:RXUP")
 
-alias("${UUT}:2:AURORA:UP", "${UUT}:SFP:2:TXUP")
-alias("${UUT}:2:AURORA:UP", "${UUT}:SFP:2:RXUP")
+alias("${UUT}:AURORA:2:UP", "${UUT}:SFP:2:TXUP")
+alias("${UUT}:AURORA:2:UP", "${UUT}:SFP:2:RXUP")
 
  
