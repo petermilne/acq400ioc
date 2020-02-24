@@ -439,6 +439,22 @@ long spectrum(aSubRecord *prec)
 	return 0;
 }
 
+/* y = aa-bb unless masked */
+long diff_mask(aSubRecord *prec)
+{
+	float* aa = reinterpret_cast<float*>(prec->a);
+	float* bb = reinterpret_cast<float*>(prec->b);
+	float* yy = reinterpret_cast<float*>(prec->vala);
+	long* mask = reinterpret_cast<long*>(prec->c);
+	long zval = *reinterpret_cast<long*>(prec->d);
+	int len = prec->noa;
+
+	for (int ii = 0; ii < len; ++ii){
+		yy[ii] = aa[ii] - mask[ii] != zval? bb[ii]: 0;
+	}
+	return 0;
+}
+
 static registryFunctionRef my_asub_Ref[] = {
        {"raw_to_uvolts", (REGISTRYFUNCTION) raw_to_uvolts},
        {"raw_to_volts_LONG",  (REGISTRYFUNCTION) raw_to_volts<long, 0, 8>},
@@ -454,6 +470,7 @@ static registryFunctionRef my_asub_Ref[] = {
        {"spectrum_LONG", (REGISTRYFUNCTION) spectrum<long, MAXL>},
        {"spectrum_LONG18", (REGISTRYFUNCTION) spectrum<long, (2<<17)>},
        {"spectrum_SHORT", (REGISTRYFUNCTION) spectrum<short, MAXS>},
+       {"diff_mask", (REGISTRYFUNCTION) diff_mask},
  };
 
  static void raw_to_uvolts_Registrar(void) {
