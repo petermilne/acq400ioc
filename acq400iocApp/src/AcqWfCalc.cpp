@@ -447,10 +447,15 @@ long diff_mask(aSubRecord *prec)
 	float* yy = reinterpret_cast<float*>(prec->vala);
 	long* mask = reinterpret_cast<long*>(prec->c);
 	long zval = *reinterpret_cast<long*>(prec->d);
+	long gdelay = *reinterpret_cast<long*>(prec->e);
 	int len = prec->noa;
+	int ii;
 
-	for (int ii = 0; ii < len; ++ii){
-		yy[ii] = aa[ii] - (mask[ii] != zval? bb[ii]: 0);
+	for (int ii = 0; ii < gdelay; ++ii){
+		yy[ii] = 0;
+	}
+	for ( ; ii < len; ++ii){
+		yy[ii] = aa[ii] - (mask[ii-gdelay] != zval? bb[ii-gdelay]: 0);
 	}
 	return 0;
 }
