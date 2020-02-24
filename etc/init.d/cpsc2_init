@@ -35,6 +35,8 @@ for site in 1 2; do
 	dblr \"db/cpsc2sites.db\", \"UUT=${HOST},SITE=$site\"
 done
 
+# switch packet id to ch08, natural align CH01-CH04. 
+# FAILS for CH8 mode, there we'd miss CH08. Ignore that..
 let idx=1
 site=2
 for cid in 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16; do
@@ -53,13 +55,12 @@ done
 
 let idx=1
 site=3
-for cid in 01 02 03 04 05 06 07 08; do	
-	wp="fname=AI.${site},size=${SIZE}"
-	dblr \"db/wfAcqHost.db\", \"UUT=${HOST},SITE=${site},cid=${cid},${wp}\"
-	dblr \"db/cpsc2diff.db\", \"UUT=${HOST},cid=${cid},pkt=${idx}\"
+for cid in 01 02 03 04 05 06 07 08; do
+	pkt=$(printf "%02d" ${idx})	
+	dblr \"db/cpsc2diff.db\", \"UUT=${HOST},cid=${cid},pkt=${pkt},size=${SIZE}\"
 	idx=$(($idx+1))
-	if [ $idx gt 4 ]; then
-		idx = $(($idx-4))
+	if [ $idx -gt 4 ]; then
+		idx=$(($idx-4))
 	fi
 done
 

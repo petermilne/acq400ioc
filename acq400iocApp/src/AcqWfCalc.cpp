@@ -450,7 +450,7 @@ long diff_mask(aSubRecord *prec)
 	int len = prec->noa;
 
 	for (int ii = 0; ii < len; ++ii){
-		yy[ii] = aa[ii] - mask[ii] != zval? bb[ii]: 0;
+		yy[ii] = aa[ii] - (mask[ii] != zval? bb[ii]: 0);
 	}
 	return 0;
 }
