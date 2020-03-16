@@ -1,0 +1,30 @@
+record(bo, "${UUT}:2:SUM:${AB}:${FUN}_CLR") {
+		field(DTYP, "Soft Channel")
+        field(ZNAM, "RUN")
+        field(ONAM, "HOLD")			
+		field(DESC, "Clear WF input to DAC SUM")
+		field(FLNK, "${UUT}:2:SUM:${AB}:${FUN}:w")
+}
+
+record(bo, "${UUT}:2:SUM:${AB}:${FUN}:w") {
+		field(DTYP, "stream")
+		field(OUT,  "@cpsc2.proto set_${fun}_clear(${AB}) ${SPORT}")		
+		field(DISV, "1")
+		field(SDIS, "${UUT}:2:SUM:${AB}:${FUN}:s.PACT")
+		field(OMSL, "closed_loop")
+		field(DOL, "${UUT}:2:SUM:${AB}:${FUN} PP")
+}
+
+record(bi, "${UUT}:2:SUM:${AB}:${FUN}:r") {
+		field(DTYP, "stream")
+		field(INP,  "@cpsc2.proto get_${fun}_clear(${AB}) ${SPORT}")
+		field(SCAN, "1 second")
+		field(FLNK, "${UUT}:2:SUM:${AB}:${FUN}:s")
+} 
+
+record(bo, "${UUT}:2:SUM:${AB}:${FUN}:s") {
+		field(DTYP, "Soft Channel")
+		field(DOL,  "${UUT}:2:SUM:${AB}:${FUN}:r NPP")
+		field(OMSL, "closed_loop")
+		field(OUT,  "${UUT}:2:SUM:${AB}:${FUN} PP")
+}

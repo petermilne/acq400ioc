@@ -29,19 +29,19 @@ get_sfp_mode {
 }
 
 set_wf_clear {
-	out "wf_clr %d";
+	out "wf\$1_clr %d";
 }
 
 get_wf_clear {
-	out "wf_clr";
+	out "wf\$1_clr";
 	in "%d";
 }
 set_packet_clear {
-	out "pkt_clr %d";
+	out "pkt\$1_clr %d";
 }
 
 get_packet_clear {
-	out "pkt_clr";
+	out "pkt\$1_clr";
 	in "%d";
 }
 
