@@ -80,8 +80,8 @@ for sfp in 1 2; do
 done
 dblr \"db/cpsc2site0.db\",\"UUT=${HOST},SPORT=S0\"
 dblr \"db/cpsc2site2.db\",\"UUT=${HOST},SPORT=S2\"
-dblr \"db/cpsc2site2clr.db\",\"UUT=${HOST},AB=A,FUN=WF,fun=wf,SPORT=S2\"
-dblr \"db/cpsc2site2clr.db\",\"UUT=${HOST},AB=B,FUN=WF,fun=wf,SPORT=S2\"
+dblr \"db/cpsc2site2clr.db\",\"UUT=${HOST},AB=A,FUN=AWG,fun=awg,SPORT=S2\"
+dblr \"db/cpsc2site2clr.db\",\"UUT=${HOST},AB=B,FUN=AWG,fun=awg,SPORT=S2\"
 dblr \"db/cpsc2site2clr.db\",\"UUT=${HOST},AB=A,FUN=PKT,fun=pkt,SPORT=S2\"
 dblr \"db/cpsc2site2clr.db\",\"UUT=${HOST},AB=B,FUN=PKT,fun=pkt,SPORT=S2\"
 
