@@ -60,7 +60,7 @@ for cid in 01 02 03 04 05 06 07 08; do
 	dblr \"db/cpsc2diff.db\", \"UUT=${HOST},cid=${cid},pkt=${pkt},size=${SIZE}\"
 	idx=$(($idx+1))
 	if [ $idx -gt 4 ]; then
-		idx=$(($idx-4))
+		idx=$(8+($idx-4))
 	fi
 done
 

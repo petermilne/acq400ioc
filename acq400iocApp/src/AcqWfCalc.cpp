@@ -451,7 +451,7 @@ long diff_mask(aSubRecord *prec)
 	int len = prec->noa;
 	int ii;
 
-	for (int ii = 0; ii <= gdelay; ++ii){
+	for (ii = 0; ii <= gdelay; ++ii){
 		yy[ii] = 0;
 	}
 	for ( ; ii < len; ++ii){
