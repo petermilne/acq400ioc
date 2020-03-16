@@ -439,7 +439,7 @@ long spectrum(aSubRecord *prec)
 	return 0;
 }
 
-/* y = aa-bb unless masked */
+/* y = aa-bb unless masked (missed sample by HW indicated by zval) */
 long diff_mask(aSubRecord *prec)
 {
 	float* aa = reinterpret_cast<float*>(prec->a);
@@ -451,7 +451,7 @@ long diff_mask(aSubRecord *prec)
 	int len = prec->noa;
 	int ii;
 
-	for (int ii = 0; ii < gdelay; ++ii){
+	for (int ii = 0; ii <= gdelay; ++ii){
 		yy[ii] = 0;
 	}
 	for ( ; ii < len; ++ii){
