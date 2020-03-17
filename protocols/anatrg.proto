@@ -19,8 +19,7 @@ setAnaTrgAnd {
 
 getAnaTrgSrc {
 	out "status_latch";
-	in "0x%x";
-#	out "status_latch 0x(\$1)%04x%04x";
+	in "%(\$1)x,%x";
 }
 
 setDelTrg {
