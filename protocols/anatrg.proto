@@ -23,9 +23,10 @@ getAnaTrgSrc {
 }
 
 setAnaTrgGroupMask {
-	out "group_trigger_mask "%(\$1)04x,%04x";
+	out "group_trigger_mask %(\$1)04x,%04x";
 	in;
 }
+
 getAnaTrgGroupStatus {
 	out "group_status_latch";
 	in "%(\$1)04x,%04x";
