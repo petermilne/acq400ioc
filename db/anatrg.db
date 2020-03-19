@@ -79,3 +79,22 @@ record(mbbiDirect, "${UUT}:${SITE}:ANATRG:SRC") {
 
 record(mbbiDirect, "${UUT}:${SITE}:ANATRG:SRC2") {
 }
+
+record(mbbiDirect, "${UUT}:${SITE}:ANATRG:GROUP_SRC") {
+	field(DTYP, "stream")
+	field(INP,  "@anatrg.proto getAnaTrgGroupStatus(${UUT}:${SITE}:ANATRG:GROUP_SRC2) ${SPORT}")
+	field(SCAN, ".2 second")
+}
+
+record(mbbiDirect, "${UUT}:${SITE}:ANATRG:GROUP_SRC2") {
+}
+
+record(mbboDirect, "${UUT}:${SITE}:ANATRG:GROUP_MASK") {
+	field(DTYP, "stream")
+	field(OUT, "@anatrg.proto setAnaTrgGroupMask(${UUT}:${SITE}:ANATRG:GROUP_MASK2) ${SPORT}")	
+}
+
+record(mbboDirect, "${UUT}:${SITE}:ANATRG:GROUP_MASK2") {
+	field(FLNK, "${UUT}:${SITE}:ANATRG:GROUP_MASK")
+}
+
