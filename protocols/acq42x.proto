@@ -36,6 +36,11 @@ getSerial {
 	in "%s";
 }
 
+getRole {
+	out "module_role";
+	in "%s";
+}
+
 getNchan {
 	out "NCHAN";
 	in "%d";
