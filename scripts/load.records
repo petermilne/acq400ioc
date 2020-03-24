@@ -847,7 +847,13 @@ load_mb_sync() {
 			dblr '"db/fpctl2.db","'${CPRAMS},${lprams},${fprams}'"';;
 		esac
 	done
-	dblr '"db/zclk.db","'${CPRAMS}'"'
+	case $MB_MODEL in
+            acq2106*)
+            	zclk_onst="WR31M25";;
+            *)
+            	zclk_onst="";;
+	esac
+	dblr '"db/zclk.db","'${CPRAMS},ZCLK_ONST=${zclk_onst}'"'
 	for FUN in SYNC TRG GPIO CLK
 	do
 		lprams="FUN=${FUN},fun=$(toLower ${FUN})"

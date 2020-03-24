@@ -41,7 +41,7 @@ record (mbbi, "${UUT}:0:SIG:ZCLK_SRC:r") {
 	field(NOBT, "4")
 	field(ZRST, "INT33M")
 	field(ZRVL, "0")
-	field(ONST, "WR31M25")
+	field(ONST, "${ZCLK_ONST}")
 	field(ONVL, "1")
 	field(TWST, "CLK.d0")
 	field(TWVL, "8")
