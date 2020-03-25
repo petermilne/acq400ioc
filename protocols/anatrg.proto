@@ -32,6 +32,16 @@ getAnaTrgGroupStatus {
 	in "%(\$1)04x,%04x";
 }
 
+set_group_status_mode {
+	out "group_status_mode %d";
+	in;
+}
+
+get_group_status_mode {
+	out "group_status_mode";
+	in "%d";
+}
+
 setDelTrg {
 	out "deltrg_\$1 %d";
 	in;
