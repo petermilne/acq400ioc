@@ -35,3 +35,19 @@ getMux {
 	out "\$1";
 	in "%x";
 }
+
+getOneShot {
+    out "playloop_oneshot";
+    in "%d";
+}
+
+setOneShot {
+    out "playloop_oneshot %d";
+    in;
+}
+setAbort {
+    out "playloop_oneshot %d";
+    in;
+    out "awg_abort 1";
+    in;
+}
