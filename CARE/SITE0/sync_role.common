@@ -104,9 +104,9 @@ set_slave_acq1001() {
     set.site 0 SIG:SRC:CLK:${1:-1} HDMI
     set.site 0 SIG:SRC:TRG:0 HDMI
     set.site 0 SIG:SRC:SYNC:0 HDMI
-    set.site 1 "CLK=1; CLK:DX=d1; CLK:SENSE=${CLK_SENSE}"
-    set.site 1 "TRG=1; TRG:DX=d0; TRG:SENSE=${TRG_SENSE}"
-    set.site 1 "SYNC=1; SYNC:DX=d0; SYNC:SENSE=rising"
+    set.site 1 "clk=1,d1,${CLK_SENSE}"
+    set.site 1 "trg=1,d0,${TRG_SENSE}"
+    set.site 1 "sync=1,d0,rising"
     set.site 1 CLKDIV=${CLKDIV:-1}
 }
 
@@ -197,19 +197,19 @@ set_local_clock() {
     $select_lo
     $set_mb $1
     pv_read_lock CLK 1
-    set.site 1 "CLK=1; CLK:DX=${CLK_DX:-d1}; CLK:SENSE=${CLK_SENSE}"
+    set.site 1 "clk=1,${CLK_DX:-d1},${CLK_SENSE}"
     pv_read_lock CLK 0
     pv_read_lock TRG 1
-    set.site 1 "TRG=1; TRG:DX=${TRG_DX:-d1}; TRG:SENSE=${TRG_SENSE}"
+    set.site 1 "trg=1,${TRG_DX:-d1},${TRG_SENSE}"
     pv_read_lock TRG 0
 }
 
 set_master() {
     pv_read_lock CLK 1
-    set.site 1 "CLK=1; CLK:DX=${CLK_DX:-d1}; CLK:SENSE=${CLK_SENSE}"
+    set.site 1 "clk=1,${CLK_DX:-d1},${CLK_SENSE}"
     pv_read_lock CLK 0
     pv_read_lock TRG 1
-    set.site 1 "TRG=1; TRG:DX=${TRG_DX:-d0}; TRG:SENSE=${TRG_SENSE}"
+    set.site 1 "trg=1,${TRG_DX:-d0},${TRG_SENSE}"
     pv_read_lock TRG 0
     set.site 0 SIG:CLK_MB:FIN $2
     $set_mb $1
