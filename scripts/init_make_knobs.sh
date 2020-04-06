@@ -75,8 +75,17 @@ make_epics_knobs() {
 		SITE=${NU%%:*}
 		make_caget_w $PV ${NU#*:} ${SITE}	
 	done	
-	
-	for PV in $(egrep -e DECIM -e OSR -e AWG $RL)
+
+	for PV in $(egrep -e AWG $RL)
+	do
+		NU=${PV#*:}
+		if [ "${PV#*ABO}" != "${PV}" ]; then
+			make_caput $PV ${NU#*:} ${NU%%:*}
+		else
+			make_caget $PV ${NU#*:} ${NU%%:*}
+		fi
+	done
+	for PV in $(egrep -e DECIM -e OSR $RL)
 	do
 		NU=${PV#*:}
 		make_caget $PV ${NU#*:} ${NU%%:*}
