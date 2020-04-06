@@ -101,7 +101,8 @@ record(mbboDirect, "${UUT}:${SITE}:ANATRG:GROUP_MASK2") {
 record(bo, "${UUT}:${SITE}:ANATRG:GROUP_MODE") {
 	field(DTYP, "stream")
 	field(OUT, "@anatrg.proto set_group_status_mode ${SPORT}")
-	field(DESC, "CURRENT: all members must be active NOW to trigger.")
+	#            1234567890123456789012345678901234567890
+	field(DESC, "CURRENT: trig if all members active NOW")
 	field(ZNAM, "CURRENT")
 	field(ONAM, "HISTORY")	
 }
