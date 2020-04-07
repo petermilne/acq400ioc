@@ -107,7 +107,7 @@ record(bo, "${UUT}:${SITE}:ANATRG:GROUP_MODE") {
 	field(ONAM, "HISTORY")	
 }
 
-record(bo "${UUT}:${SITE}:ANATRG:RESET") {
+record(bo, "${UUT}:${SITE}:ANATRG:RESET") {
 	field(DTYP, "stream")
 	field(OUT,  "@anatrg.proto setATD_Reset ${SPORT}")
 }
