@@ -51,3 +51,8 @@ setDelZN {
 	out "dtd_ZN 0x%x";
 	in;
 }
+
+setATD_Reset {
+	out "ATD_CSR.ATD_RESET %d";
+	in;
+}
