@@ -356,9 +356,9 @@ load_400() {
 		a480p="SPTRAIN=S${site}_480t,JCP=${jcp},T50R=${t50r},DECIM=${decim}"
 		
 		dblr '"db/acq480fmc.db","'${mprams},${a480p}'"'
-		dblr '"db/acq480fmc_mr.db","'${mprams}'"'
+		dblr '"db/acq480_mr.db","'${mprams}'"'
 		[ $site -gt 1 ] && \
-			dblr '"db/acq480fmc_mr_flnk.db","'${mprams},'SITEM1='$(($SITE-1))'"'
+			dblr '"db/acq480_mr_flnk.db","'${mprams},'SITEM1='$(($site-1))'"'
 		
 
 		for ic in $(seq 1 8); do
