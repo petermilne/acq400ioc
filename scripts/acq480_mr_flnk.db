@@ -1,0 +1,12 @@
+record(bo, "${UUT}:${SITEM1}:ACQ480:MR:EN") {
+	field(FLNK, "${UUT}:${SITE}:ACQ480:MR:EN")
+}
+record(mbbo, "${UUT}:${SITEM1}:ACQ480:MR:EVSEL:1") {
+	field(FLNK, "${UUT}:${SITE}:ACQ480:MR:EVSEL:1")
+}
+record(mbbo, "${UUT}:${SITEM1}:ACQ480:MR:EVSEL:0") {
+	field(FLNK, "${UUT}:${SITE}:ACQ480:MR:EVSEL:0")
+}
+record(mbbo, "${UUT}:${SITEM1}:ACQ480:MR:10DEC") {
+	field(FLNK, "${UUT}:${SITE}:ACQ480:MR:10DEC")
+}
