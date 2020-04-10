@@ -69,3 +69,20 @@ setStack {
     out "stack_480 %s";
     in;   
 }
+
+set_MR_EN {
+	out "mr_en %d";
+	in;
+}
+set_MR_10DEC {
+	out "mr_10dec %x";
+	in;
+}
+set_MR_sel1 {
+	out "mr_sel1 %x";
+	in;
+}
+set_MR_sel0 {
+	out "mr_sel0 %x";
+	in
+}
