@@ -10,3 +10,20 @@ record(mbbo, "${UUT}:${SITEM1}:ACQ480:MR:EVSEL:0") {
 record(mbbo, "${UUT}:${SITEM1}:ACQ480:MR:10DEC") {
 	field(FLNK, "${UUT}:${SITE}:ACQ480:MR:10DEC")
 }
+
+record(bo, "${UUT}:${SITE}:ACQ480:MR:EN") {
+	field(OMSL, "closed_loop")
+	field(DOL, "${UUT}:${SITEM1}:ACQ480:MR:EN")
+}
+record(mbbo, "${UUT}:${SITE}:ACQ480:MR:EVSEL:1") {
+	field(OMSL, "closed_loop")
+	field(DOL, "${UUT}:${SITEM1}:ACQ480:MR:EVSEL:1")
+}
+record(mbbo, "${UUT}:${SITE}:ACQ480:MR:EVSEL:0") {
+	field(OMSL, "closed_loop")
+	field(DOL, "${UUT}:${SITEM1}:ACQ480:MR:EVSEL:0")
+}
+record(mbbo, "${UUT}:${SITE}:ACQ480:MR:10DEC") {
+	field(OMSL, "closed_loop")
+	field(DOL, "${UUT}:${SITEM1}:ACQ480:MR:10DEC")
+}
