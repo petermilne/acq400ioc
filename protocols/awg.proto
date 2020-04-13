@@ -43,4 +43,5 @@ getOneShot {
 
 setOneShot {
     out "playloop_oneshot %d";
+    in;
 }
