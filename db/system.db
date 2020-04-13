@@ -2,6 +2,11 @@ record (longin, "${UUT}:SYS:UPTIME") {
 	field(DTYP, "longinAcqHost")
 	field(INP, "@/proc/uptime")
 	field(SCAN, "1 second")
+	field(FLNK, "${UUT}:SYS:IOCUPTIME")
+}
+
+record (calc, "${UUT}:SYS:IOCUPTIME") {
+	field(CALC, "VAL+1")
 }
 
 record (stringin, "${UUT}:SYS:VERSION:SW") {
