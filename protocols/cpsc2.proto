@@ -32,7 +32,7 @@ set_awg_clr {
 	out "awg\$1_clr %d";
 }
 
-get_awg_clear {
+get_awg_clr {
 	out "awg\$1_clr";
 	in "%d";
 }
@@ -40,7 +40,7 @@ set_pkt_clr {
 	out "pkt\$1_clr %d";
 }
 
-get_pkr_clr {
+get_pkt_clr {
 	out "pkt\$1_clr";
 	in "%d";
 }
