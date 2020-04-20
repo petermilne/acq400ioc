@@ -778,19 +778,20 @@ load_mb_sync() {
 		CLK)    
 			case $MB_MODEL in
             acq2106*)
-             	#                   0     1    2    3      4      5
-				lsb_x ${lp0},NOBT=3 SyncE HDMI GPG0 COMM_A INT01M WR01M;;
+             	#                   0     	1    	2    	3      	4 
+				lsb_x ${lp0},NOBT=3 EXT		HDMI 	GPG0 	COMM_A 	INT01M;;
 			*)
 				lsb_x ${lp0},NOBT=3 EXT HDMI GPG0 	"" INT01M;;
 			esac;;
 		TRG)
 			if [ $(has_dsp_trg $MB_MODEL) -ne 0 ]; then
-				lsb_x ${lp0},NOBT=3 EXT HDMI HOSTB GPG0 DSP0 WRTT
+			    #                   0     	1    	2    	3      	4      	5		6	7
+				lsb_x ${lp0},NOBT=3 EXT 	HDMI 	HOSTB 	GPG0 	DSP0 	WRTT0	nc 	NONE
 			else
 				lsb_x ${lp0},NOBT=2 EXT HDMI_GPIO GPG0
 			fi;;
 		SYNC)
-			lsb_x ${lp0},NOBT=3 EXT HDMI INT01M WRPPS MBCLK;;
+			lsb_x ${lp0},NOBT=3 EXT HDMI INT01M WRPPS MCLK;;
 		esac
 		
 		# d1
@@ -805,7 +806,8 @@ load_mb_sync() {
 			esac;;
 		TRG)	
 			if [ $(has_dsp_trg $MB_MODEL) -ne 0 ]; then
-				lsb_x ${lp1},NOBT=3 STRIG HOSTA HDMI_GPIO GPG1 DSP1 FP_SYNC FP_GPIO
+				#                   0     1    	2    	  3    4    5		6		7
+				lsb_x ${lp1},NOBT=3 STRIG HOSTA HDMI_GPIO GPG1 DSP1 FP_SYNC WRTT1 	NONE
 			else				
 				case $MB_MODEL in
 				acq2106*)
