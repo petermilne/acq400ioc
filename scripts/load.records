@@ -760,8 +760,9 @@ lsb_x() {
 	frst=${6:-}
 	fvst=${7:-}
 	sxst=${8:-}
+	svst=${9:-}
 
-	dblr '"db/sig_bus_x_cntrl.db","'$lp,ZRST=${zrst},ONST=${onst},TWST=${twst},THST=${thst},FRST=${frst},FVST=${fvst},SXST=${sxst}'"'
+	dblr '"db/sig_bus_x_cntrl.db","'$lp,ZRST=${zrst},ONST=${onst},TWST=${twst},THST=${thst},FRST=${frst},FVST=${fvst},SXST=${sxst},SVST=${svst}}'"'
 }
 
 load_mb_sync() {

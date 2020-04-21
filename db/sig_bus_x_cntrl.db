@@ -8,6 +8,7 @@ record (mbbo, "${UUT}:0:SIG:SRC:${FUN}:${BIT}") {
 	field(FRST, "${FRST}")
 	field(FVST, "${FVST}")
 	field(SXST, "${SXST}")
+	field(SVST, "${SVST}")
 	field(FLNK, "${UUT}:0:SIG:SRC:${FUN}:${BIT}:w PP")	
 	field(PINI, "YES")
 }
