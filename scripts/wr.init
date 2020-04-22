@@ -1,0 +1,11 @@
+# MUST be sourced from load.records
+CPRAMS="UUT=${HOST},SITE=0,SIG=WR,SPORT=S0"
+sprams="${CPRAMS},CTRMAX=$CTR28,DT=1,DTC=1"
+dblr '"db/wr.db","'${sprams}'"'
+dblr '"db/_counter.db","'${sprams},lname=TAI_CUR'"'
+dblr '"db/_counter.db","'${sprams},lname=PPS'"'
+dblr '"db/_counter.db","'${sprams},lname=WRTT0'"'
+dblr '"db/_counter.db","'${sprams},lname=WRTT1'"'
+
+
+	

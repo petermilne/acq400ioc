@@ -1,0 +1,12 @@
+Terminator = LF;
+ExtraInput = Ignore;
+
+getCount {
+	out "\$1";
+	in "%d";
+}
+
+getTaiDate {
+	out "tai_date";
+	in "%s";
+}

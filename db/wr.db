@@ -1,0 +1,139 @@
+record(bo, "${UUT}:${SITE}:WR:TRG") {
+	field(DTYP, "Soft Channel")	
+	field(ZNAM, "OFF")
+	field(ONAM, "ON")
+	field(FLNK, "${UUT}:${SITE}:WR:TRG:w PP")	
+}
+
+record(stringin, "${UUT}:${SITE}:WR:TAI_DATE") {
+	field(DTYP, "stream")
+	field(SCAN, "1 second")
+	field(INP,  "@wr.proto )
+}
+#http://www.aps.anl.gov/epics/tech-talk/2010/msg00131.php
+# ${FN}   : setpoint
+# ${FN}:r : readback
+# ${FN}:s : sync
+# ${FN}:w : write
+# added twist, all 3 writes get muxed together in :_${FN}
+# while we could disable DX, SENSE when set==0, better effect doing this on 
+# the gui. The driver driver will reject attempts to set 0,X,X where X!=0
+
+record(bi, "${UUT}:${SITE}:WR:TRG:r") {
+	field(DTYP, "stream")
+	field(INP,  "@signal.proto getSig(wr_trg_src) ${SPORT}")
+	field(SCAN, "1 second")
+	field(PINI, "YES")
+	field(FLNK, "${UUT}:${SITE}:WR:TRG:s")
+}
+record(bo, "${UUT}:${SITE}:WR:TRG:s") {
+	field(DTYP, "Soft Channel")
+	field(DOL,  "${UUT}:${SITE}:WR:TRG:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:${SITE}:WR:TRG PP")
+}
+
+record(bo, "${UUT}:${SITE}:WR:TRG:w") {
+	field(DTYP, "Soft Channel")	
+	field(FLNK, "${UUT}:${SITE}:WR:TRG:ww PP")
+}
+
+
+record(mbbo, "${UUT}:${SITE}:WR:TRG:DX") {
+	field(DTYP, "Soft Channel")
+	field(NOBT, "3")
+	field(ZRST, "FPTRG")
+	field(ONST, "HDMI")   
+	field(FLNK, "${UUT}:${SITE}:WR:TRG:DX:w PP")
+}     
+
+record(mbbi, "${UUT}:${SITE}:WR:TRG:DX:r") {
+	field(DTYP, "stream")
+	field(NOBT, "3")
+	field(INP,  "@signal.proto getSigDx(wr_trg_src) ${SPORT}")
+	field(SCAN, "I/O Intr")		
+	field(FLNK, "${UUT}:${SITE}:WR:TRG:DX:s")
+}
+record(mbbo, "${UUT}:${SITE}:${FNAM}:DX:s") {
+	field(DTYP, "Soft Channel")
+	field(NOBT, "3")
+	field(DOL,  "${UUT}:${SITE}:WR:TRG:DX:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:${SITE}:WR:TRG:DX PP")
+} 	
+
+record(bo, "${UUT}:${SITE}:WR:TRG:DX:w") {
+	field(DTYP, "Soft Channel")	
+	field(FLNK, "${UUT}:${SITE}:WR:TRG:ww PP")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:WR:TRG:DX:s.PACT")
+}
+record(bo, "${UUT}:${SITE}:WR:TRG:SENSE") {
+	field(DTYP, "Soft Channel")
+	field(ZNAM, "falling")
+	field(ONAM, "rising")
+	field(FLNK, "${UUT}:${SITE}:WR:TRG:SENSE:w PP")
+}
+
+record(bi, "${UUT}:${SITE}:WR:TRG:SENSE:r") {
+	field(DTYP, "stream")
+	field(INP,  "@signal.proto getSigSense(wr_trg_src) ${SPORT}")
+	field(SCAN, "I/O Intr")	
+	field(FLNK, "${UUT}:${SITE}:WR:TRG:SENSE:s")
+}
+record(bo, "${UUT}:${SITE}:WR:TRG:SENSE:s") {
+	field(DTYP, "Soft Channel")
+	field(DOL,  "${UUT}:${SITE}:WR:TRG:SENSE:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:${SITE}:WR:TRG:SENSE PP")
+}
+record(bo, "${UUT}:${SITE}:WR:TRG:SENSE:w") {
+	field(DTYP, "Soft Channel")	
+	field(FLNK, "${UUT}:${SITE}:WR:TRG:ww PP")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:WR:TRG:SENSE:s.PACT")
+}
+
+record(calcout, "${UUT}:${SITE}:WR:TRG:ww") {
+	field(INPA, "${UUT}:${SITE}:WR:TRG")
+	field(INPB, "${UUT}:${SITE}:WR:TRG:DX")
+	field(INPC, "${UUT}:${SITE}:WR:TRG:SENSE")
+	field(CALC, "0")
+	field(DTYP, "stream")
+	field(OUT,  "@signal.proto setSig(wr_trg_src) ${SPORT}")
+}
+
+
+
+record(longin, "${UUT}:${SITE}:WR:TAI_CUR:rc") {
+	field(SCAN, "1 second")
+	field(DTYP, "stream")	
+	field(INP,  "@wr.proto getCount(wr_tai_cur) ${SPORT}")	
+	field(DESC, "TAI Current")	
+	field(PRIO, "LOW")
+}
+
+record(longin, "${UUT}:${SITE}:WR:PPS:rc") {
+	field(SCAN, "1 second")
+	field(DTYP, "stream")	
+	field(INP,  "@wr.proto getCount(wr_pps_client_count) ${SPORT}")	
+	field(DESC, "PPS Count")	
+	field(PRIO, "LOW")
+}
+record(longin, "${UUT}:${SITE}:WR:WRTT0:rc") {
+	field(SCAN, "1 second")
+	field(DTYP, "stream")	
+	field(INP,  "@wr.proto getCount(wr_wrtt_client0_count) ${SPORT}")	
+	field(DESC, "WRTT0 Count")	
+	field(PRIO, "LOW")
+}
+
+record(longin, "${UUT}:${SITE}:WR:WRTT1:rc") {
+	field(SCAN, "1 second")
+	field(DTYP, "stream")	
+	field(INP,  "@wr.proto getCount(wr_wrtt_client1_count) ${SPORT}")	
+	field(DESC, "WRTT1 Count")	
+	field(PRIO, "LOW")
+}
+
+
