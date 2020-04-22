@@ -8,5 +8,5 @@ getCount {
 
 getTaiDate {
 	out "tai_date";
-	in "%s";
+	in "%#s";
 }
