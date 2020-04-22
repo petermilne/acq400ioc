@@ -105,10 +105,10 @@ record(calcout, "${UUT}:${SITE}:WR:TRG:ww") {
 
 
 
-record(longin, "${UUT}:${SITE}:WR:TAI_CUR:rc") {
+record(longin, "${UUT}:${SITE}:WR:TS:rc") {
 	field(SCAN, "1 second")
 	field(DTYP, "stream")	
-	field(INP,  "@wr.proto getCount(wr_tai_cur) ${SPORT}")	
+	field(INP,  "@wr.proto getCount(wr_ts_client_count) ${SPORT}")	
 	field(DESC, "TAI Current")	
 	field(PRIO, "LOW")
 }
