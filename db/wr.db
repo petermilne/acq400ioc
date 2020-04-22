@@ -8,14 +8,14 @@ record(bo, "${UUT}:${SITE}:WR:TRG") {
 record(stringin, "${UUT}:${SITE}:WR:TAI_DATE") {
 	field(DTYP, "stream")
 	field(SCAN, "1 second")
-	field(INP,  "@wr.proto )
+	field(INP,  "@wr.proto getTaiDate ${SPORT}" )
 }
 #http://www.aps.anl.gov/epics/tech-talk/2010/msg00131.php
-# ${FN}   : setpoint
-# ${FN}:r : readback
-# ${FN}:s : sync
-# ${FN}:w : write
-# added twist, all 3 writes get muxed together in :_${FN}
+# {FN}   : setpoint
+# {FN}:r : readback
+# {FN}:s : sync
+# {FN}:w : write
+# added twist, all 3 writes get muxed together in :_{FN}
 # while we could disable DX, SENSE when set==0, better effect doing this on 
 # the gui. The driver driver will reject attempts to set 0,X,X where X!=0
 
@@ -54,7 +54,7 @@ record(mbbi, "${UUT}:${SITE}:WR:TRG:DX:r") {
 	field(SCAN, "I/O Intr")		
 	field(FLNK, "${UUT}:${SITE}:WR:TRG:DX:s")
 }
-record(mbbo, "${UUT}:${SITE}:${FNAM}:DX:s") {
+record(mbbo, "${UUT}:${SITE}:WR:TRG:DX:s") {
 	field(DTYP, "Soft Channel")
 	field(NOBT, "3")
 	field(DOL,  "${UUT}:${SITE}:WR:TRG:DX:r NPP")
