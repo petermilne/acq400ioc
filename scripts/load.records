@@ -1019,6 +1019,11 @@ do
 	fi
 done
 
+case $MB_MODEL in
+acq2106*)
+	[ -e /etc/acq400/0/wrtd_tx ] && source /usr/local/epics/scripts/wr.init;;
+esac
+
 dblr '"db/mirror.db","UUT='${HOST}'"'
 
 for file in /usr/local/epics/init.d/*init*
@@ -1077,7 +1082,7 @@ esac
 
 case $MB_MODEL in
 acq2106*)
-	[ -e /etc/acq400/0/wrtd_tx ] && source /usr/local/epics/scripts/wr.init;;
+	;;
 acq10*)
 	echo "dbpf $HOST:SYS:CLK:FPMUX $clk"
 	if [ "x$HAS_ACQ43X" != "x" ] && [ $HAS_ACQ43X -eq 1 ] && [ $ACQ43X_SET_SAMPLE_RATE -gt 1 ]; then
