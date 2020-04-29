@@ -12,7 +12,7 @@ record (mbbo, "${UUT}:${SITE}:RANGE:ALL") {
 	field(FVST, "-2V5/7V5")
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:FIXED_RANGE") 
-	field(PINI,  "3")
+#	field(PINI,  "3")
 #	field(FLNK, "${UUT}:${SITE}:RANGE:COMMIT_ALL")
 }
 
