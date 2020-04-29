@@ -44,7 +44,7 @@ nameFromMT() {
 	$MT_ACQ430)		echo "acq430";;
 	$MT_ACQ423)     echo "acq423";;
 	$MT_ACQ424)		echo "acq424";;
-	$MT_ACQ425|$ACQ425F)		
+	$MT_ACQ425|$MT_ACQ425F)		
 					echo "acq425";;	
 	$MT_ACQ427|$MT_ACQ427F)	
 					echo "acq427";;
