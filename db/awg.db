@@ -16,11 +16,11 @@ record (calcout, "${UUT}:${SITE}:AWG:BURSTMODE") {
 	field(CALC, "A != 0")
 	field(FLNK, "${UUT}:${SITE}:AWG:BURSTMODE:w PP")
 }
-record(bo, "{UUT}:${SITE}:AWG:BURSTMODE:w") {
+record(bo, "${UUT}:${SITE}:AWG:BURSTMODE:w") {
 	field(DTYP, "stream")
 	field(OUT, "@cpdac.proto setBurstMode ${SPORT}")
 	field(OMSL, "closed_loop")
-	field(DOL,  "${UUT}:${SITE}:AWG:BURSTMODE"))
+	field(DOL,  "${UUT}:${SITE}:AWG:BURSTMODE")
 }
 
 record (longin, "${UUT}:${SITE}:AWG:MAXLEN") {
