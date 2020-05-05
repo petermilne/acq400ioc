@@ -1,16 +1,33 @@
 record (longin, "${UUT}:${SITE}:AWG:LENGTH") {
-    field(DTYP, "stream")
-    field(INP,  "@awg.proto getML(${UUT}:${SITE}:AWG:MODE) ${SPORT}")
-    field(SCAN, ".2 second")
-    field(DESC, "AWG waveform length in samples")    
-    field(FLNK, "${UUT}:${SITE}:AWG:LENGTH:PCT")   
+    	field(DTYP, "stream")
+    	field(INP,  "@awg.proto getML(${UUT}:${SITE}:AWG:MODE) ${SPORT}")
+    	field(SCAN, ".2 second")
+    	field(DESC, "AWG waveform length in samples")    
+    	field(FLNK, "${UUT}:${SITE}:AWG:LENGTH:PCT")   
+}
+
+record (longout, "${UUT}:${SITE}:AWG:BURSTLEN") {
+	field(DTYP, "stream")
+	field(OUT, "@cpdac.proto setBurstLen ${SPORT}")
+	field(FLNK, "${UUT}:${SITE}:AWG:BURSTMODE")
+}
+record (calcout, "${UUT}:${SITE}:AWG:BURSTMODE") {
+	field(INPA, "${UUT}:${SITE}:AWG:BURSTLEN")
+	field(CALC, "A != 0")
+	field(FLNK, "${UUT}:${SITE}:AWG:BURSTMODE:w PP")
+}
+record(bo, "{UUT}:${SITE}:AWG:BURSTMODE:w") {
+	field(DTYP, "stream")
+	field(OUT, "@cpdac.proto setBurstMode ${SPORT}")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:${SITE}:AWG:BURSTMODE"))
 }
 
 record (longin, "${UUT}:${SITE}:AWG:MAXLEN") {
-    field(DTYP, "stream")
-    field(INP,  "@awg.proto getMaxlen ${SPORT}")
-    field(DESC, "AWG expected waveform length")
-    field(SCAN, ".2 second")    
+    	field(DTYP, "stream")
+    	field(INP,  "@awg.proto getMaxlen ${SPORT}")
+    	field(DESC, "AWG expected waveform length")
+    	field(SCAN, ".2 second")    
 }
 record (longin, "${UUT}:${SITE}:AWG:CURSOR") {
 	field(DTYP, "stream")
@@ -21,21 +38,21 @@ record (longin, "${UUT}:${SITE}:AWG:CURSOR") {
 }
 
 record(calc, "${UUT}:${SITE}:AWG:CURSOR:PCT") {
-    field(INPA, "${UUT}:${SITE}:AWG:CURSOR")
-    field(INPB, "${UUT}:${SITE}:AWG:LENGTH")
-    field(INPC, "${UUT}:${SITE}:AWG:MAXLEN")
-    field(CALC, "(C? A/C: A/B)*100")
-    field(LOPR, "0")
-    field(HOPR, "100")
+	field(INPA, "${UUT}:${SITE}:AWG:CURSOR")
+	field(INPB, "${UUT}:${SITE}:AWG:LENGTH")
+	field(INPC, "${UUT}:${SITE}:AWG:MAXLEN")
+	field(CALC, "(C? A/C: A/B)*100")
+	field(LOPR, "0")
+	field(HOPR, "100")
 }
 
 record(calc, "${UUT}:${SITE}:AWG:LENGTH:PCT") {
-    field(INPA, "${UUT}:${SITE}:AWG:CURSOR")
-    field(INPB, "${UUT}:${SITE}:AWG:LENGTH")
-    field(INPC, "${UUT}:${SITE}:AWG:MAXLEN")
-    field(CALC, "(C? B/C: 1)*100")
-    field(LOPR, "0")
-    field(HOPR, "100")
+	field(INPA, "${UUT}:${SITE}:AWG:CURSOR")
+	field(INPB, "${UUT}:${SITE}:AWG:LENGTH")
+	field(INPC, "${UUT}:${SITE}:AWG:MAXLEN")
+	field(CALC, "(C? B/C: 1)*100")
+	field(LOPR, "0")
+	field(HOPR, "100")
 }
 record (longin, "${UUT}:${SITE}:AWG:REPS") {
 	field(DTYP, "stream")
@@ -65,18 +82,18 @@ record (bo, "${UUT}:${SITE}:AWG:MODE:ABO") {
 }
 
 record (longin, "${UUT}:${SITE}:AWG:COMPLETED_SHOT") {
-    field(DTYP, "stream")
-    field(INP, "@awg.proto getCompletedShot ${SPORT}")
-    field(SCAN, ".2 second")
-    field(DESC, "Shot number last complete shot")
-    field(PINI, "YES")
-    field(FLNK, "${UUT}:${SITE}:AWG:SHOT_COMPLETE")
+	field(DTYP, "stream")
+	field(INP, "@awg.proto getCompletedShot ${SPORT}")
+	field(SCAN, ".2 second")
+	field(DESC, "Shot number last complete shot")
+	field(PINI, "YES")
+	field(FLNK, "${UUT}:${SITE}:AWG:SHOT_COMPLETE")
 }
 
 record (calc, "${UUT}:${SITE}:AWG:SHOT_COMPLETE") {
-    field(INPA, "${UUT}:${SITE}:SHOT")  
-    field(INPB, "${UUT}:${SITE}:AWG:COMPLETED_SHOT")
-    field(CALC, "A && A==B")       
+	field(INPA, "${UUT}:${SITE}:SHOT")  
+	field(INPB, "${UUT}:${SITE}:AWG:COMPLETED_SHOT")
+	field(CALC, "A && A==B")       
 }
 
 

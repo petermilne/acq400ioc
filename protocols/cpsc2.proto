@@ -46,7 +46,7 @@ get_pkt_clr {
 }
 
 awg_load_channels {
-    out "awg_load_channels 2";
+    out "awg_load_channels --mode=%d";
 }
 
 set_sfpN_tx_en {

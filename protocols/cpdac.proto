@@ -22,3 +22,13 @@ clrProcSTA {
 	out "proc_\${1}_sta %x";
 	in;
 }
+
+setBurstLen {
+	out "burstlen %u";
+	in;
+}
+
+setBurstMode {
+	out "burstmode %u";
+	in;
+}
