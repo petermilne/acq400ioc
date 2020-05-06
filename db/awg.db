@@ -77,6 +77,7 @@ record (calc, "${UUT}:${SITE}:AWG:DUTY") {
 	field(INPB, "${UUT}:${SITE}:SIG:sample_count:FREQ")
 	field(INPC, "${UUT}:${SITE}:AWG:ACTIVE")
 	field(CALC,  "C!=0 && A!=0? B/A*100.0: 0")
+	field(EGU,   "%")
 }
 record (mbbi, "${UUT}:${SITE}:AWG:MODE") {
 	field(DTYP, "Soft Channel")
