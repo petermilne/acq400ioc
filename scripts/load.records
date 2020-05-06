@@ -422,7 +422,7 @@ load_400() {
 		dblr '"db/awg.db","'${aprams}'"'
 		sprams="${aprams},CTRMAX=$CTR28,DT=1,DTC=1"
 		dblr '"db/_counter.db","'${sprams},SIG=AWG,lname=REPS'"'
-		echo "dbpf ${HOST}:${site}:SIG:clk_counter_src d$((${site}+2))" >> /tmp/st_post.cmd		
+		echo "dbpf ${HOST}:${site}:SIG:clk_counter_src d$((${site}+1))" >> /tmp/st_post.cmd		
 	fi
 	
 	if [ "${name}" = "acq480" ]; then

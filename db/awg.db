@@ -75,7 +75,7 @@ record (longin, "${UUT}:${SITE}:AWG:ACTIVE") {
 record (calc, "${UUT}:${SITE}:AWG:DUTY") {
 	field(INPA, "${UUT}:${SITE}:SIG:clk_count:FREQ")
 	field(INPB, "${UUT}:${SITE}:SIG:sample_count:FREQ")
-	field(INPC, "${UUT}:${SITE}:AWG:DUTY")
+	field(INPC, "${UUT}:${SITE}:AWG:ACTIVE")
 	field(CALC,  "C!=0 && A!=0? B/A*100.0: 0")
 }
 record (mbbi, "${UUT}:${SITE}:AWG:MODE") {
