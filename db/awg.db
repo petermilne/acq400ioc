@@ -56,17 +56,27 @@ record(calc, "${UUT}:${SITE}:AWG:LENGTH:PCT") {
 	field(LOPR, "0")
 	field(HOPR, "100")
 }
-record (longin, "${UUT}:${SITE}:AWG:REPS") {
+
+record(longin, "${UUT}:${SITE}:AWG:REPS:rc") {
 	field(DTYP, "stream")
 	field(INP, "@awg.proto getReps ${SPORT}")
 	field(DESC, "AWG number of cycles")
-	field(SCAN, "1 second")	
+	field(SCAN, "1 second")
 }
+
 record (longin, "${UUT}:${SITE}:AWG:ACTIVE") {
 	field(DTYP, "stream")
 	field(INP, "@awg.proto getActive ${SPORT}")
 	field(DESC, "AWG is active")
-	field(SCAN, "1 second")	
+	field(SCAN, "1 second")
+	field(FLNK, "${UUT}:${SITE}:AWG:DUTY PP")
+}
+
+record (calc, "${UUT}:${SITE}:AWG:DUTY") {
+	field(INPA, "${UUT}:${SITE}:SIG:clk_count:FREQ")
+	field(INPB, "${UUT}:${SITE}:SIG:sample_count:FREQ")
+	field(INPC, "${UUT}:${SITE}:AWG:DUTY")
+	field(CALC,  "C!=0 && A!=0? B/A*100.0: 0")
 }
 record (mbbi, "${UUT}:${SITE}:AWG:MODE") {
 	field(DTYP, "Soft Channel")
