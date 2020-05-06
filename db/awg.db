@@ -10,6 +10,8 @@ record (longout, "${UUT}:${SITE}:AWG:BURSTLEN") {
 	field(DTYP, "stream")
 	field(OUT, "@cpdac.proto setBurstLen ${SPORT}")
 	field(FLNK, "${UUT}:${SITE}:AWG:BURSTMODE")
+	field(DRVL, "0")
+	field(DRVH, "1048576")
 }
 record (calcout, "${UUT}:${SITE}:AWG:BURSTMODE") {
 	field(INPA, "${UUT}:${SITE}:AWG:BURSTLEN")
