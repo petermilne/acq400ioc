@@ -248,6 +248,9 @@ ACQ480_S1=0
 
 OUTX="ABCDEFGH"
 
+# we allow ONE AWG only
+AWG_DONE=n  
+
 load_400() {
 	site=$1
 	
@@ -369,7 +372,7 @@ load_400() {
 		done
 		[ $t50r -ne 0 ] && dblr '"db/acq480fmc50R.db","'${mprams},CH=,RAW='"';;
 	$MT_AO420|$MT_AO424|$MT_AO428|$MT_AO4220)
-	    create_asyn_channel S${site}A 127.0.0.1:$((4220+${site}))		
+	    	create_asyn_channel S${site}A 127.0.0.1:$((4220+${site}))		
 		load_AO $site $model $cprams		
 		let LO=66000000;;
 #	@@todo : different flavour of calmon for SAR ADC needed	
@@ -401,10 +404,11 @@ load_400() {
 			echo >>/tmp/st_post.cmd "seq ${calmon} \"uut=${HOST},site=${site}\""
 		fi
 	fi
-	if [ "$has_output" = "yes" ]; then
+    if [ "$has_output" = "yes" ] && [ "$AWG_DONE" = "n" ]; then
 		aprams="UUT=${HOST},SITE=${site},SPORT=S${site}"
 		dblr '"db/xo.db","'${aprams}'"'
 		dblr '"db/awg.db","'${aprams}'"'
+		AWG_DONE=y
 	fi
 	
 	if [ "${name}" = "acq480" ]; then

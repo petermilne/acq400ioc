@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DC=$(date +%y%m%d%H%M)
+DC="xl_$(date +%y%m%d%H%M)"
 SEQ=40
 
 if [ "x$EPICS_BASE" = "x" ]; then
@@ -49,8 +49,8 @@ cp db/* opkg/usr/local/epics/db
 cp protocols/* opkg/usr/local/epics/protocols
 cp scripts/* opkg/usr/local/epics/scripts
 cp -a CARE/SITE0 opkg/usr/local/epics/scripts
-tar cf - --exclude=lib*.a --exclude=libtest* --exclude=libdevTestGpib.so -C ${EPICS_BASE}/lib/linux-arm/ . | tar xf - -C opkg/usr/local/lib
-cp -a ${EPICS_BASE}/bin/linux-arm/ca* opkg/usr/local/bin
+#tar cf - --exclude=lib*.a --exclude=libtest* --exclude=libdevTestGpib.so -C ${EPICS_BASE}/lib/linux-arm/ . | tar xf - -C opkg/usr/local/lib
+#cp -a ${EPICS_BASE}/bin/linux-arm/ca* opkg/usr/local/bin
 strip_all opkg/usr/local/bin
 #cp -a ../seq/lib/linux-arm/libpv.so ../seq/lib/linux-arm/libseq.so opkg/usr/local/lib
 

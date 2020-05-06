@@ -29,8 +29,8 @@ acq400ioc_DBD += acqAi.dbd
 acq400ioc_DBD += asyn.dbd
 acq400ioc_DBD += drvAsynIPPort.dbd
 acq400ioc_DBD += stream.dbd
-#acq400ioc_DBD += seqSoftIoc.dbd
-acq400ioc_DBD += sncExample.dbd
+acq400ioc_DBD += seqSoftIoc.dbd
+#acq400ioc_DBD += sncExample.dbd
 acq400ioc_DBD += autoRepeat.dbd
 acq400ioc_DBD += aoRangeSet.dbd
 acq400ioc_DBD += acq43x_setSampleRate.dbd
@@ -51,7 +51,7 @@ acq400ioc_LIBS += seq pv
 # acq400ioc_registerRecordDeviceDriver.cpp derives from acq400ioc.dbd
 acq400ioc_SRCS += acq400ioc_registerRecordDeviceDriver.cpp
 
-acq400ioc_SRCS += sncExample.st
+#acq400ioc_SRCS += sncExample.st
 acq400ioc_SRCS += autoRepeat.st
 acq400ioc_SRCS += aoRangeSet.st
 acq400ioc_SRCS += aoRangeSet424.st
@@ -82,7 +82,9 @@ acq400ioc_SRCS_DEFAULT += acq400iocMain.cpp \
     devBoAcqCommand.cpp AcqBoCommandDescr.cpp \
     acq400_caldata.cpp \
     tinyxml2.cpp \
-    FileMonitor.cpp VFile.cpp 
+    FileMonitor.cpp VFile.cpp  \
+    subThreadSleep.c
+    
 
 acq400ioc_SRCS_linux-arm += bollocks.cpp
 
