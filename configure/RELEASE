@@ -39,4 +39,4 @@ ASYN=$(EPICS_BASE)/../../support/asyn/
 
 $(info pgm:SNCSEQ $(SNCSEQ))
 
-
+# pgmwashere
