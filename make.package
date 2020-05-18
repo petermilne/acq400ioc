@@ -3,6 +3,7 @@
 DC="xl_$(date +%y%m%d%H%M)"
 SEQ=40
 
+echo "xl package create"
 if [ "x$EPICS_BASE" = "x" ]; then
 	echo ERROR: please run epics setup.env
 	exit 1
