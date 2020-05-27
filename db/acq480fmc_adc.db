@@ -62,6 +62,30 @@ record(bo, "${UUT}:${SITE}:ACQ480:LFNS:${CH}") {
 	field(VAL,  "0")
 }
 
+record(bo, "${UUT}:${SITE}:ACQ480:LFNS:ALL") {
+	field(DTYP, "Soft Channel")	
+	field(ZNAM, "OFF")
+	field(ONAM, "ON")
+	field(PINI, "YES")
+	field(VAL,  "0")
+	field(FLNK, "${UUT}:${SITE}:ACQ480:LFNS:ALL:df")
+}
+
+record(dfanout, "${UUT}:${SITE}:ACQ480:LFNS:ALL:df") {
+	field(OMSL,    "closed_loop")
+	field(DOL,     "${UUT}:${SITE}:ACQ480:LFNS:ALL")
+	field(SELM,    "All")
+	
+	field(OUTA, "${UUT}:${SITE}:ACQ480:LFNS:01 PP")
+	field(OUTB, "${UUT}:${SITE}:ACQ480:LFNS:02 PP")
+	field(OUTC, "${UUT}:${SITE}:ACQ480:LFNS:03 PP")
+	field(OUTD, "${UUT}:${SITE}:ACQ480:LFNS:04 PP")
+	field(OUTE, "${UUT}:${SITE}:ACQ480:LFNS:05 PP")
+	field(OUTF, "${UUT}:${SITE}:ACQ480:LFNS:06 PP")
+	field(OUTG, "${UUT}:${SITE}:ACQ480:LFNS:07 PP")
+	field(OUTH, "${UUT}:${SITE}:ACQ480:LFNS:08 PP")	
+}
+
 record(mbbo, "${UUT}:${SITE}:ACQ480:FIR:${CH}") {
 	field(DTYP, "stream")
 	field(OUT,  "@acq480.proto setFIR(${CH}) ${SPORT}")
