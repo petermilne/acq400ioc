@@ -9,3 +9,29 @@ record(dfanout, "${UUT}:${A480M}:ACQ480:FIR:m") {
 	
 	field(${OUTX}, "${UUT}:${SITE}:ACQ480:FIR:01 PP")
 }
+
+record(dfanout, "${UUT}:${A480M}:ACQ480:LFNS:ALL:df") {
+	field(FLNK, "${UUT}:${A480M}:ACQ480:LFNS:ALL:m")
+}
+
+
+record(dfanout, "${UUT}:${A480M}:ACQ480:LFNS:ALL:m") {
+	field(OMSL,    "closed_loop")
+	field(DOL,     "${UUT}:${A480M}:ACQ480:LFNS:ALL")
+	field(SELM,    "All")
+	
+	field(${OUTX}, "${UUT}:${SITE}:ACQ480:LFNS:ALL PP")
+}
+
+record(dfanout, "${UUT}:${A480M}:ACQ480:GAIN:ALL:df") {
+	field(FLNK, "${UUT}:${A480M}:ACQ480:GAIN:ALL:m")
+}
+
+
+record(dfanout, "${UUT}:${A480M}:ACQ480:GAIN:ALL:m") {
+	field(OMSL,    "closed_loop")
+	field(DOL,     "${UUT}:${A480M}:ACQ480:GAIN:ALL")
+	field(SELM,    "All")
+	
+	field(${OUTX}, "${UUT}:${SITE}:ACQ480:GAIN:ALL PP")
+}

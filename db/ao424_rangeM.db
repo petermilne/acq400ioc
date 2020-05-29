@@ -10,6 +10,9 @@ record (mbbo, "${UUT}:${SITE}:RANGE:ALL") {
 	field(THST, "10V")
 	field(FRST, "2V5")
 	field(FVST, "-2V5/7V5")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:FIXED_RANGE") 
+#	field(PINI,  "3")
 #	field(FLNK, "${UUT}:${SITE}:RANGE:COMMIT_ALL")
 }
 
@@ -40,7 +43,7 @@ record(bi, "${UUT}:${SITE}:ODDS") {
 }
 
 record(calc, "${UUT}:${SITE}:FIXED_RANGE") {
-	field(INPA, "${UUT}:${SITE}:PLAY")
+	field(INPA, "${UUT}:${SITE}:AWG:ACTIVE")
 	field(INPB, "${UUT}:${SITE}:ODDS")
 	field(CALC, "A||B")
 }

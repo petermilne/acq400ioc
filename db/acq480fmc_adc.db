@@ -36,6 +36,40 @@ record (calc, "${UUT}:${SITE}:GAIN_CHANGES") {
 	field(CALC, "A+1")
 }
 
+record(mbbo, "${UUT}:${SITE}:ACQ480:GAIN:ALL") {
+	field(DTYP, "Soft Channel")	
+	field(NOBT, "4")
+	field(ZRST, "0 dB")
+	field(ONST, "1 dB")
+	field(TWST, "2 dB")
+	field(THST, "3 dB")
+	field(FRST, "4 dB")
+	field(FVST, "5 dB")
+	field(SXST, "6 dB")
+	field(SVST, "7 dB")
+	field(EIST, "8 dB")
+	field(NIST, "9 dB")
+	field(TEST, "10 dB")
+	field(ELST, "11 dB")
+	field(TVST, "12 dB")
+	field(FLNK, "${UUT}:${SITE}:ACQ480:GAIN:ALL:df")
+}
+
+record(dfanout, "${UUT}:${SITE}:ACQ480:GAIN:ALL:df") {
+	field(OMSL,    "closed_loop")
+	field(DOL,     "${UUT}:${SITE}:ACQ480:GAIN:ALL")
+	field(SELM,    "All")
+	
+	field(OUTA, "${UUT}:${SITE}:ACQ480:GAIN:01 PP")
+	field(OUTB, "${UUT}:${SITE}:ACQ480:GAIN:02 PP")
+	field(OUTC, "${UUT}:${SITE}:ACQ480:GAIN:03 PP")
+	field(OUTD, "${UUT}:${SITE}:ACQ480:GAIN:04 PP")
+	field(OUTE, "${UUT}:${SITE}:ACQ480:GAIN:05 PP")
+	field(OUTF, "${UUT}:${SITE}:ACQ480:GAIN:06 PP")
+	field(OUTG, "${UUT}:${SITE}:ACQ480:GAIN:07 PP")
+	field(OUTH, "${UUT}:${SITE}:ACQ480:GAIN:08 PP")	
+}
+
 record(mbbo, "${UUT}:${SITE}:ACQ480:HPF:${CH}") {
 	field(DTYP, "stream")
 	field(OUT,  "@acq480.proto setHPF(${CH}) ${SPORT}")	
@@ -60,6 +94,30 @@ record(bo, "${UUT}:${SITE}:ACQ480:LFNS:${CH}") {
 	field(ONAM, "ON")
 	field(PINI, "YES")
 	field(VAL,  "0")
+}
+
+record(bo, "${UUT}:${SITE}:ACQ480:LFNS:ALL") {
+	field(DTYP, "Soft Channel")	
+	field(ZNAM, "OFF")
+	field(ONAM, "ON")
+	field(PINI, "YES")
+	field(VAL,  "0")
+	field(FLNK, "${UUT}:${SITE}:ACQ480:LFNS:ALL:df")
+}
+
+record(dfanout, "${UUT}:${SITE}:ACQ480:LFNS:ALL:df") {
+	field(OMSL,    "closed_loop")
+	field(DOL,     "${UUT}:${SITE}:ACQ480:LFNS:ALL")
+	field(SELM,    "All")
+	
+	field(OUTA, "${UUT}:${SITE}:ACQ480:LFNS:01 PP")
+	field(OUTB, "${UUT}:${SITE}:ACQ480:LFNS:02 PP")
+	field(OUTC, "${UUT}:${SITE}:ACQ480:LFNS:03 PP")
+	field(OUTD, "${UUT}:${SITE}:ACQ480:LFNS:04 PP")
+	field(OUTE, "${UUT}:${SITE}:ACQ480:LFNS:05 PP")
+	field(OUTF, "${UUT}:${SITE}:ACQ480:LFNS:06 PP")
+	field(OUTG, "${UUT}:${SITE}:ACQ480:LFNS:07 PP")
+	field(OUTH, "${UUT}:${SITE}:ACQ480:LFNS:08 PP")	
 }
 
 record(mbbo, "${UUT}:${SITE}:ACQ480:FIR:${CH}") {
