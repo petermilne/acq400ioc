@@ -1,9 +1,22 @@
 #!/bin/bash
+# xl- excluding libraries. Libs are assumed to be preloaded, eg with .ovl
 
-DC="xl_$(date +%y%m%d%H%M)"
+DC="$(date +%y%m%d%H%M)"
+ISXL=0
+if [ "x$1" = "xxl" ]; then
+	ISXL=1
+fi
+git branch | grep xl$
+if [ $? -eq 0 ]; then
+	echo on xl branch, build xl
+	ISXL=1
+else
+	echo WARNING NOT on xl branch
+fi
+
+[ $ISXL -eq 1 ] && DC="xl_$(date +%y%m%d%H%M)"
 SEQ=40
 
-echo "xl package create"
 if [ "x$EPICS_BASE" = "x" ]; then
 	echo ERROR: please run epics setup.env
 	exit 1
@@ -50,9 +63,11 @@ cp db/* opkg/usr/local/epics/db
 cp protocols/* opkg/usr/local/epics/protocols
 cp scripts/* opkg/usr/local/epics/scripts
 cp -a CARE/SITE0 opkg/usr/local/epics/scripts
-#tar cf - --exclude=lib*.a --exclude=libtest* --exclude=libdevTestGpib.so -C ${EPICS_BASE}/lib/linux-arm/ . | tar xf - -C opkg/usr/local/lib
-#cp -a ${EPICS_BASE}/bin/linux-arm/ca* opkg/usr/local/bin
+if [ $ISXL -eq 0 ]; then
+tar cf - --exclude=lib*.a --exclude=libtest* --exclude=libdevTestGpib.so -C ${EPICS_BASE}/lib/linux-arm/ . | tar xf - -C opkg/usr/local/lib
+cp -a ${EPICS_BASE}/bin/linux-arm/ca* opkg/usr/local/bin
 strip_all opkg/usr/local/bin
+fi
 #cp -a ../seq/lib/linux-arm/libpv.so ../seq/lib/linux-arm/libseq.so opkg/usr/local/lib
 
 tar cvzf release/${SEQ}-acq400ioc-${DC}.tgz -C opkg .
