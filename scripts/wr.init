@@ -1,7 +1,7 @@
 # MUST be sourced from load.records
 create_asyn_channel S0WR 127.0.0.1:4220
 CPRAMS="UUT=${HOST},SITE=0,SIG=WR,SPORT=S0WR"
-sprams="${CPRAMS},CTRMAX=$CTR28,DT=1,DTC=1"
+sprams="${CPRAMS},CTRMAX=0,DT=1,DTC=1"
 dblr '"db/wr.db","'${sprams}'"'
 dblr '"db/_counter.db","'${sprams},lname=TS'"'
 dblr '"db/_counter.db","'${sprams},lname=PPS'"'

@@ -300,7 +300,7 @@ class Spectrum {
 
 	float* R;		/* local array computes R (magnitude) */
 	float f0;		/* previous frequency .. do we have to recalc the bins? */
-	float db0;
+
 	const bool is_cplx;
 	const float MINSPEC;
 	double* smoo;
@@ -419,6 +419,7 @@ public:
 		powerSpectrum(mag);
 		if (bins != 0) binFreqs(bins, fs);
 	}
+	float db0;
 };
 
 template <class T, unsigned SCALE>
@@ -441,6 +442,7 @@ long spectrum(aSubRecord *prec)
 	if (!spectrum){
 		spectrum = new Spectrum<T, SCALE>(len, window, *isCplx, atten_db, smoo);
 	}
+	spectrum->db0 = atten_db;
 	spectrum->exec(raw_i, raw_q, mag, freqs, *fs);
 	return 0;
 }
