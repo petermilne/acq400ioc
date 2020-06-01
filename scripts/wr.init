@@ -7,6 +7,10 @@ dblr '"db/_counter.db","'${sprams},lname=TS'"'
 dblr '"db/_counter.db","'${sprams},lname=PPS'"'
 dblr '"db/_counter.db","'${sprams},lname=WRTT0'"'
 dblr '"db/_counter.db","'${sprams},lname=WRTT1'"'
+create_asyn_channel S11 127.0.0.1:4231
+CPRAMS="UUT=${HOST},SITE=11,SIG=WR,SPORT=S11"
+dblr '"db/wr11.db","'${CPRAMS}'"'
+
 
 
 	
