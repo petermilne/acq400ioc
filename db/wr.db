@@ -136,4 +136,3 @@ record(longin, "${UUT}:${SITE}:WR:WRTT1:rc") {
 	field(PRIO, "LOW")
 }
 
-

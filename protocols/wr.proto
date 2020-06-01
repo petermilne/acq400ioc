@@ -10,3 +10,13 @@ getTaiDate {
 	out "tai_date";
 	in "%#s";
 }
+
+getSi5326TP_STATE {
+	out "si5326_tune_phase.state";
+	in "%#s";
+}
+
+setSi5326TP {
+	out "si5326_tune_phase bg";
+	in "";
+}
