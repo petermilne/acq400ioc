@@ -1,0 +1,16 @@
+# wr11.db : WR site 11 functions
+
+
+record(stringin, "${UUT}:${SITE}:Si5326:TUNEPHASE:STATE")
+{
+	field(DTYP, "stream")
+	field(INP,   "@wr.proto getSi5326TP_STATE ${SPORT}")
+	field(SCAN,  "1 second")
+}
+
+record(bo, "${UUT}:${SITE}:Si5326:TUNEPHASE")
+{
+	field(DTYP, "stream")
+	field(OUT,  "@wr.proto setSi5326TP ${SPORT}")
+}
+
