@@ -4,29 +4,33 @@
 record(stringin, "${UUT}:${SITE}:Si5326:TUNEPHASE:STATUS")
 {
 	field(DTYP, "stream")
-	field(INP,   "@wr.proto getSi5326TP_STATE ${SPORT}")
-	field(SCAN,  "1 second")
+	field(INP,  "@wr.proto getSi5326TP_STATE ${SPORT}")
+	field(SCAN, "1 second")
 }
 
 record(stringin, "${UUT}:${SITE}:Si5326:TUNEPHASE:STATE")
 {
 	field(DTYP, "stream")
-	field(INP,   "@wr.proto getSi5326TP_STATE_VALUE ${SPORT}")
-	field(SCAN,  "I/O Intr")
+	field(INP,  "@wr.proto getSi5326TP_STATE_VALUE ${SPORT}")
+	field(SCAN, "I/O Intr")
 }
 
 record(bi, "${UUT}:${SITE}:Si5326:TUNEPHASE:OK")
 {
 	field(DTYP, "stream")
-	field(INP, "@wr.proto getSi5326TP_OK ${SPORT}")
-	field(SCAN,  "I/O Intr")
+	field(INP,  "@wr.proto getSi5326TP_OK ${SPORT}")
+	field(SCAN, "I/O Intr")
+	field(ZNAM, "0")
+	field(ONAM, "1")
 }
 
 record(bi, "${UUT}:${SITE}:Si5326:TUNEPHASE:BUSY")
 {
 	field(DTYP, "stream")
-	field(INP, "@wr.proto getSi5326TP_BUSY ${SPORT}")
-	field(SCAN,  "I/O Intr")
+	field(INP,  "@wr.proto getSi5326TP_BUSY ${SPORT}")
+	field(SCAN, "I/O Intr")
+	field(ZNAM, "0")
+	field(ONAM, "1")
 }
 
 
