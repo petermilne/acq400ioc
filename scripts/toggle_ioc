@@ -1,0 +1,2 @@
+printf '\024\030\n' | acq4xx-epics-console
+
