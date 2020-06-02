@@ -157,7 +157,7 @@ make_epics_knobs() {
 			fi
 		fi
 	done
-	for PV in $(egrep -e COS:EN:L16 $RL)
+	for PV in $(egrep -e COS:EN:L16 -e Si5326:TUNEPHASE:BUSY -e Si5326:TUNEPHASE:OK $RL)
 	do
 		pv1=${PV#*:}
 		site=${pv1%%:*}
