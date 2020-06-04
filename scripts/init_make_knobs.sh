@@ -112,7 +112,7 @@ make_epics_knobs() {
 		make_caput $PV ${pv1#*:} $site
 	done
 
-	for PV in $(egrep -e :[1-6]:.*_DELAY -e :[1-6]:READ_LAT -e :[1-6]:LATENCY $RL \
+	for PV in $(egrep -e :[1-6]:.*_DELAY -e :[1-6]:READ_LAT -e :[1-6]:LATENCY -e WR:TRG $RL \
 			| grep -v ':[0-9a-z_]*$' )
 	do		
 		pv1=${PV#*:}
@@ -157,7 +157,7 @@ make_epics_knobs() {
 			fi
 		fi
 	done
-	for PV in $(egrep -e Si5326:TUNEPHASE:BUSY -e Si5326:TUNEPHASE:OK -e WR:TRG $RL | grep -v [a-z]$)
+	for PV in $(egrep -e Si5326:TUNEPHASE:BUSY -e Si5326:TUNEPHASE:OK $RL | grep -v [a-z]$)
 	do
 		NU=${PV#*:}
 		SITE=${NU%%:*}
