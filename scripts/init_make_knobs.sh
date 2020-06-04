@@ -157,7 +157,7 @@ make_epics_knobs() {
 			fi
 		fi
 	done
-	for PV in $(egrep -e Si5326:TUNEPHASE:BUSY -e Si5326:TUNEPHASE:OK $RL)
+	for PV in $(egrep -e Si5326:TUNEPHASE:BUSY -e Si5326:TUNEPHASE:OK -e WR:TRG $RL | grep -v [a-z]$)
 	do
 		NU=${PV#*:}
 		SITE=${NU%%:*}
