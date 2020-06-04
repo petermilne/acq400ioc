@@ -106,7 +106,7 @@ set_slave_acq1001() {
     set.site 0 SIG:SRC:SYNC:0 HDMI
     set.site 1 "clk=1,d1,${CLK_SENSE}"
     set.site 1 "trg=1,d0,${TRG_SENSE}"
-    set.site 1 "sync=1,d0,rising"
+    [ "x$ROLE" = "x${ROLE#*master}" ] && set.site 1 "sync=1,d0,rising"
     set.site 1 CLKDIV=${CLKDIV:-1}
 }
 
@@ -119,6 +119,7 @@ set_common_master_acq1001() {
     set.site 0 SIG:SRC:CLK:1 MCLK
     sync_trg_to_clk 1
     set.site 1 CLKDIV=${CLKDIV:-1}
+    set.site 1 "sync=0,0,0"
 }
 
 set_common_master_acq2106() {
