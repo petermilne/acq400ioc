@@ -1,93 +1,93 @@
 	# gpg_mode
 	# gpg_enable		
 
-record (bo, "${UUT}:0:GPG:ENABLE")	{
+record (bo, "${UUT}:${SITE}:GPG:ENABLE")	{
 	field(DTYP, "Soft Channel")
 	field(ZNAM, "disabled")
 	field(ONAM, "enabled")
-	field(FLNK, "${UUT}:0:GPG:ENABLE:w PP")
+	field(FLNK, "${UUT}:${SITE}:GPG:ENABLE:w PP")
 }
 
-record (mbbo, "${UUT}:0:GPG:ENABLE:w")	{
+record (mbbo, "${UUT}:${SITE}:GPG:ENABLE:w")	{
 	field(DTYP, "stream")
 	field(OUT,  "@mb.proto set_gpg_enable() ${SPORT}")	
 	field(NOBT, "2")
 	field(DISV, "1")
-	field(SDIS, "${UUT}:0:GPG:ENABLE:s.PACT")
+	field(SDIS, "${UUT}:${SITE}:GPG:ENABLE:s.PACT")
 	field(OMSL, "closed_loop")
-	field(DOL, "${UUT}:0:GPG:ENABLE PP")		
+	field(DOL, "${UUT}:${SITE}:GPG:ENABLE PP")		
 }
 
-record (mbbi, "${UUT}:0:GPG:ENABLE:r") {
+record (mbbi, "${UUT}:${SITE}:GPG:ENABLE:r") {
 	field(DTYP, "stream")
 	field(INP,  "@mb.proto get_gpg_enable() ${SPORT}")	
 	field(NOBT, "2")	
 	field(SCAN, "1 second")
 	field(PINI, "YES")	
-	field(FLNK, "${UUT}:0:GPG:ENABLE:s")
+	field(FLNK, "${UUT}:${SITE}:GPG:ENABLE:s")
 }
 
-record (mbbo, "${UUT}:0:GPG:ENABLE:s") {
+record (mbbo, "${UUT}:${SITE}:GPG:ENABLE:s") {
 	field(DTYP, "Soft Channel")
 	field(NOBT, "2")
 	field(OMSL, "closed_loop")	
-	field(DOL, "${UUT}:0:GPG:ENABLE:r NPP")	
-	field(OUT, "${UUT}:0:GPG:ENABLE PP")	
+	field(DOL, "${UUT}:${SITE}:GPG:ENABLE:r NPP")	
+	field(OUT, "${UUT}:${SITE}:GPG:ENABLE PP")	
 }
 
-record (mbbo, "${UUT}:0:GPG:MODE")	{
+record (mbbo, "${UUT}:${SITE}:GPG:MODE")	{
 	field(DTYP, "Soft Channel")
 	field(NOBT, "2")	
 	field(ZRST, "ONCE")
 	field(ONST, "n/a")
 	field(TWST, "LOOP")
 	field(THST, "LOOPWAIT")        
-	field(FLNK, "${UUT}:0:GPG:MODE:w PP")
+	field(FLNK, "${UUT}:${SITE}:GPG:MODE:w PP")
 }
 
-record (mbbo, "${UUT}:0:GPG:MODE:w")	{
+record (mbbo, "${UUT}:${SITE}:GPG:MODE:w")	{
 	field(DTYP, "stream")
 	field(OUT,  "@mb.proto set_gpg_mode() ${SPORT}")	
 	field(NOBT, "2")
 	field(DISV, "1")
-	field(SDIS, "${UUT}:0:GPG:MODE:s.PACT")
+	field(SDIS, "${UUT}:${SITE}:GPG:MODE:s.PACT")
 	field(OMSL, "closed_loop")
-	field(DOL, "${UUT}:0:GPG:MODE PP")		
+	field(DOL, "${UUT}:${SITE}:GPG:MODE PP")		
 }
 
-record (mbbi, "${UUT}:0:GPG:MODE:r") {
+record (mbbi, "${UUT}:${SITE}:GPG:MODE:r") {
 	field(DTYP, "stream")
 	field(INP,  "@mb.proto get_gpg_mode() ${SPORT}")	
 	field(NOBT, "2")	
 	field(SCAN, "1 second")
 	field(PINI, "YES")	
-	field(FLNK, "${UUT}:0:GPG:MODE:s")
+	field(FLNK, "${UUT}:${SITE}:GPG:MODE:s")
 }
 
-record (mbbo, "${UUT}:0:GPG:MODE:s") {
+record (mbbo, "${UUT}:${SITE}:GPG:MODE:s") {
 	field(DTYP, "Soft Channel")
 	field(NOBT, "2")
 	field(OMSL, "closed_loop")	
-	field(DOL, "${UUT}:0:GPG:MODE:r NPP")	
-	field(OUT, "${UUT}:0:GPG:MODE PP")	
+	field(DOL, "${UUT}:${SITE}:GPG:MODE:r NPP")	
+	field(OUT, "${UUT}:${SITE}:GPG:MODE PP")	
 }
 
-record(longin, "${UUT}:0:GPG:DBG:GPGTOP") {
+record(longin, "${UUT}:${SITE}:GPG:DBG:GPGTOP") {
 	field(DTYP, "stream")
 	field(INP,  "@mb.proto get_gpg_top ${SPORT}")
 	field(SCAN, "1 second")
 }
 
-record(longin, "${UUT}:0:GPG:DBG:RSTATE"){
+record(longin, "${UUT}:${SITE}:GPG:DBG:RSTATE"){
 	field(DTYP, "stream")
-	field(INP,  "@mb.proto get_gpg_state(${UUT}:0:GPG:DBG) ${SPORT}")
+	field(INP,  "@mb.proto get_gpg_state(${UUT}:${SITE}:GPG:DBG) ${SPORT}")
 	field(SCAN, ".1 second")
-	field(FLNK, "${UUT}:0:GPG:DBG:STATE")	
+	field(FLNK, "${UUT}:${SITE}:GPG:DBG:STATE")	
 	field(DISV, "1")
 #set DISA=0 to enable	
 	field(DISA, "${MONDIS}")
 }
-record(mbbi, "${UUT}:0:GPG:DBG:STATE"){
+record(mbbi, "${UUT}:${SITE}:GPG:DBG:STATE"){
 	field(DTYP, "Soft Channel")	
 	field(NOBT, "3")
 	field(ZRST, "IDLE")
@@ -100,25 +100,25 @@ record(mbbi, "${UUT}:0:GPG:DBG:STATE"){
 	field(SVST, "RESTART")	
 }
 
-record(longin, "${UUT}:0:GPG:DBG:PTR"){
+record(longin, "${UUT}:${SITE}:GPG:DBG:PTR"){
 	field(DTYP, "Soft Channel")
 }
 
-record(longin, "${UUT}:0:GPG:DBG:CTR"){
+record(longin, "${UUT}:${SITE}:GPG:DBG:CTR"){
 	field(DTYP, "Soft Channel")	
 }
 
-record(longin, "${UUT}:0:GPG:DBG:CTR"){
+record(longin, "${UUT}:${SITE}:GPG:DBG:CTR"){
 	field(DTYP, "Soft Channel")	
 }
-record(longin, "${UUT}:0:GPG:DBG:OSTATE"){
+record(longin, "${UUT}:${SITE}:GPG:DBG:OSTATE"){
 	field(DTYP, "Soft Channel")	
 }
-record(longin, "${UUT}:0:GPG:DBG:UNTIL"){
+record(longin, "${UUT}:${SITE}:GPG:DBG:UNTIL"){
 	field(DTYP, "Soft Channel")
 }
 # CNT PULSE1 PULSE2 SMS
-record(stringin, "${UUT}:0:GPG:DBG:DEF"){
+record(stringin, "${UUT}:${SITE}:GPG:DBG:DEF"){
 	field(DTYP, "stream")
 	field(INP,  "@mb.proto get_pulse_def ${SPORT}")
 	field(SCAN, "5 second")
