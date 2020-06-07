@@ -378,7 +378,7 @@ load_400() {
 #	@@todo : different flavour of calmon for SAR ADC needed	
 	$MT_DIO432|$MT_DIO432P|$MT_DIO482)
 	# probably should be common to all @@todo
-	    if [ -e dev/acq400.$site.knobs/gpg_en ]; then
+	    if [ -e /dev/acq400.$site.knobs/gpg_en ]; then
 	    	load_gpg $site
 	    else
 			name=$(cat /dev/acq400.$site.knobs/module_name)
@@ -398,7 +398,7 @@ load_400() {
 		calmon=none;;
 	esac
 	
-	echo 1>&2 "is_adc $is_adc"
+	echo 1>&2 "site:$site model:$model is_adc $is_adc"
 	
 	if [ "$is_adc" != "no" ]; then
 		make_AI $site
