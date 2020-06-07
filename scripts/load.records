@@ -609,7 +609,9 @@ load_gpg() {
 	dblr '"db/signal.db","'${PRAMS},FNAM=GPG_CLK,FN=gpg_clk,DISV=1'"'	
 	dblr '"db/signal.db","'${PRAMS},FNAM=GPG_TRG,FN=gpg_trg,DISV=1'"'
 	dblr '"db/signal.db","'${PRAMS},FNAM=GPG_SYNC,FN=gpg_sync,DISV=1'"'
-	dblr '"db/signal.db","'${PG0}',FNAM=SPAD1_US,FN=spad1_us,ZNAM=disable,ONAM=enable,DISV=1"'
+	if [ $site -eq 0 ]; then
+		dblr '"db/signal.db","'${PG0}',FNAM=SPAD1_US,FN=spad1_us,ZNAM=disable,ONAM=enable,DISV=1"'
+	fi
 	create_asyn_channel SG${site} 127.0.0.1:$((4220+${site}))	
 }
 
