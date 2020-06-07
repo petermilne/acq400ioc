@@ -1,7 +1,8 @@
 #!/bin/sh
 source /etc/profile.d/epics.sh
+SITE=${1:-0}
 HN=${IOC_HOST}
-PV=${HN}:0:GPG:DBG:RSTATE
+PV=${HN}:${SITE}:GPG:DBG:RSTATE
 
 case $1 in
 1)	RATE=".1 second";;

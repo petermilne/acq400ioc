@@ -123,11 +123,12 @@ make_epics_knobs() {
 	for PV in $(grep GPG /tmp/records.dbl | grep -v :[a-z]$)
 	do
 		pv1=${PV#*:}
+		site=${pv1%%:*}
 		case $PV in
 		*DBG*)
-			make_caget $PV ${pv1#*:} 0;;
+			make_caget $PV ${pv1#*:} $site;;
 		*)
-			make_caput $PV ${pv1#*:} 0;;
+			make_caput $PV ${pv1#*:} $site;;
 		esac
 	done
 
