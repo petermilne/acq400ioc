@@ -480,6 +480,9 @@ load_400() {
 	if [ "${is_adc}" != "no" ]; then		
 		HPRAMS="${cprams},size=$HSIZE,type=LONG,fname=HG.${site}"
 		dblr '"db/hgAcqHost.db","'${HPRAMS}'"'
+		dblr '"db/signal.db","'${cprams}',FNAM=SYNC,FN=sync,ZNAM=internal,ONAM=external,DISV=1"'
+		dblr '"db/signal.db","'${cprams}',FNAM=EVENT1,FN=event1,ZNAM=disable,ONAM=enable,DISV=-1"'
+		dblr '"db/signal.db","'${cprams}',FNAM=EVENT0,FN=event0,ZNAM=disable,ONAM=enable,DISV=-1"'		
 	fi
 	
 	CTPR="${cprams},CTRMAX=$CTR28,DT=1,DTC=1"
@@ -525,9 +528,7 @@ load_400() {
 	if [ $site -eq 1 ]; then
 		dblr '"db/clkstatus.db","'${cprams}',FNAM=CLK,FN=clk,DISV=1"'
 	fi
-	dblr '"db/signal.db","'${cprams}',FNAM=SYNC,FN=sync,ZNAM=internal,ONAM=external,DISV=1"'
-	dblr '"db/signal.db","'${cprams}',FNAM=EVENT1,FN=event1,ZNAM=disable,ONAM=enable,DISV=-1"'
-	dblr '"db/signal.db","'${cprams}',FNAM=EVENT0,FN=event0,ZNAM=disable,ONAM=enable,DISV=-1"'
+
 
 	if [ "x$model" = "x$MT_ACQ480" ]; then
 		let sp1=$site+1		
@@ -595,7 +596,7 @@ load_intmon() {
 }
 
 load_gpg() {
-	site=${1:-0}}
+	site=${1:-0}
 	PG="UUT=${HOST},SPORT=SG${site}"
 	PG0="${PG},SITE=${site}"
 	PRAMS="${PG0},ZNAM=internal,ONAM=external"
