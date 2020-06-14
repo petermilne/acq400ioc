@@ -378,9 +378,13 @@ load_400() {
 #	@@todo : different flavour of calmon for SAR ADC needed	
 	$MT_DIO432|$MT_DIO432P|$MT_DIO482)
 	# probably should be common to all @@todo
-		name=$(cat /dev/acq400.$site.knobs/module_name)
-		[ "$model" = "$MT_DIO482" ] && [ "$SUPPORT_COS" != "" ] && ./scripts/load.dio482 $HOST $site
-		[ -e ./scripts/load.$name ] && ./scripts/load.$name $HOST $site;;		
+	    if [ -e /dev/acq400.$site.knobs/gpg_enable ]; then
+	    	load_gpg $site
+	    else
+			name=$(cat /dev/acq400.$site.knobs/module_name)
+			[ "$model" = "$MT_DIO482" ] && [ "$SUPPORT_COS" != "" ] && ./scripts/load.dio482 $HOST $site
+			[ -e ./scripts/load.$name ] && ./scripts/load.$name $HOST $site
+		fi;;		
 	$MT_DIOB)		
 		name=$(cat /dev/acq400.$site.knobs/module_name)
 		[ -e ./scripts/load.$name ] && ./scripts/load.$name $HOST $site
@@ -394,7 +398,7 @@ load_400() {
 		calmon=none;;
 	esac
 	
-	echo 1>&2 "is_adc $is_adc"
+	echo 1>&2 "site:$site model:$model is_adc $is_adc"
 	
 	if [ "$is_adc" != "no" ]; then
 		make_AI $site
@@ -476,6 +480,9 @@ load_400() {
 	if [ "${is_adc}" != "no" ]; then		
 		HPRAMS="${cprams},size=$HSIZE,type=LONG,fname=HG.${site}"
 		dblr '"db/hgAcqHost.db","'${HPRAMS}'"'
+		dblr '"db/signal.db","'${cprams}',FNAM=SYNC,FN=sync,ZNAM=internal,ONAM=external,DISV=1"'
+		dblr '"db/signal.db","'${cprams}',FNAM=EVENT1,FN=event1,ZNAM=disable,ONAM=enable,DISV=-1"'
+		dblr '"db/signal.db","'${cprams}',FNAM=EVENT0,FN=event0,ZNAM=disable,ONAM=enable,DISV=-1"'		
 	fi
 	
 	CTPR="${cprams},CTRMAX=$CTR28,DT=1,DTC=1"
@@ -521,9 +528,7 @@ load_400() {
 	if [ $site -eq 1 ]; then
 		dblr '"db/clkstatus.db","'${cprams}',FNAM=CLK,FN=clk,DISV=1"'
 	fi
-	dblr '"db/signal.db","'${cprams}',FNAM=SYNC,FN=sync,ZNAM=internal,ONAM=external,DISV=1"'
-	dblr '"db/signal.db","'${cprams}',FNAM=EVENT1,FN=event1,ZNAM=disable,ONAM=enable,DISV=-1"'
-	dblr '"db/signal.db","'${cprams}',FNAM=EVENT0,FN=event0,ZNAM=disable,ONAM=enable,DISV=-1"'
+
 
 	if [ "x$model" = "x$MT_ACQ480" ]; then
 		let sp1=$site+1		
@@ -591,20 +596,23 @@ load_intmon() {
 }
 
 load_gpg() {
-	PG="UUT=${HOST},SPORT=SG"
-	PG0="${PG},SITE=0"
+	site=${1:-0}
+	PG="UUT=${HOST},SPORT=SG${site}"
+	PG0="${PG},SITE=${site}"
 	PRAMS="${PG0},ZNAM=internal,ONAM=external"
 	if [ "x$GPG_MON" = "xy" ]; then
 		mondis=0
 	else
 		mondis=1
 	fi
-	dblr '"db/gpg.db","'${PG}',MONDIS='${mondis}'"'	
+	dblr '"db/gpg.db","'${PG0}',MONDIS='${mondis}'"'	
 	dblr '"db/signal.db","'${PRAMS},FNAM=GPG_CLK,FN=gpg_clk,DISV=1'"'	
 	dblr '"db/signal.db","'${PRAMS},FNAM=GPG_TRG,FN=gpg_trg,DISV=1'"'
 	dblr '"db/signal.db","'${PRAMS},FNAM=GPG_SYNC,FN=gpg_sync,DISV=1'"'
-	dblr '"db/signal.db","'${PG0}',FNAM=SPAD1_US,FN=spad1_us,ZNAM=disable,ONAM=enable,DISV=1"'
-	create_asyn_channel SG 127.0.0.1:4220	
+	if [ $site -eq 0 ]; then
+		dblr '"db/signal.db","'${PG0}',FNAM=SPAD1_US,FN=spad1_us,ZNAM=disable,ONAM=enable,DISV=1"'
+	fi
+	create_asyn_channel SG${site} 127.0.0.1:$((4220+${site}))	
 }
 
 load_mb_acq2106() {

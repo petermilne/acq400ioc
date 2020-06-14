@@ -123,11 +123,12 @@ make_epics_knobs() {
 	for PV in $(grep GPG /tmp/records.dbl | grep -v :[a-z]$)
 	do
 		pv1=${PV#*:}
+		site=${pv1%%:*}
 		case $PV in
 		*DBG*)
-			make_caget $PV ${pv1#*:} 0;;
+			make_caget $PV ${pv1#*:} $site;;
 		*)
-			make_caput $PV ${pv1#*:} 0;;
+			make_caput $PV ${pv1#*:} $site;;
 		esac
 	done
 
@@ -156,6 +157,11 @@ make_epics_knobs() {
 				make_caget $PV $kn1 0
 			fi
 		fi
+	done
+	for PV in $(egrep -e 0:WR $RL | grep -v [a-z]$)
+	do
+		NU=${PV#*:}
+		make_caget $PV ${NU#*:} 11
 	done
 	for PV in $(egrep -e Si5326:TUNEPHASE:BUSY -e Si5326:TUNEPHASE:OK $RL | grep -v [a-z]$)
 	do
