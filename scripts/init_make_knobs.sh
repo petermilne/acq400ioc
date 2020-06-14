@@ -158,6 +158,11 @@ make_epics_knobs() {
 			fi
 		fi
 	done
+	for PV in $(egrep -e 0:WR $RL | grep -v [a-z]$)
+	do
+		NU=${PV#*:}
+		make_caget $PV ${NU#*:} 11
+	done
 	for PV in $(egrep -e Si5326:TUNEPHASE:BUSY -e Si5326:TUNEPHASE:OK $RL | grep -v [a-z]$)
 	do
 		NU=${PV#*:}
