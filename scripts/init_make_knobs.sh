@@ -150,8 +150,7 @@ make_epics_knobs() {
 		kn1=${pv1#*:}
 		if [ ! -e /etc/acq400/0/$kn1 ]; then
 			# avoid repeating MODE:TRANSIENT from above
-			echo $pv1 | grep -q SET_
-			if [ $? -eq 0 ]; then
+			if echo $pv1 | grep -q SET_; then
 				make_caput $PV $kn1 0
 			else
 				make_caget $PV $kn1 0
@@ -160,8 +159,13 @@ make_epics_knobs() {
 	done
 	for PV in $(egrep -e 0:WR $RL | grep -v [a-z]$)
 	do
-		NU=${PV#*:}
-		make_caget $PV ${NU#*:} 11
+		pv1=${PV#*:}
+		kn1=${pv1#*:}
+		if echo $pv1 | grep -q RESET; then
+			make_caput $PV $kn1 11
+		else
+			make_caget $PV $kn1 11
+		fi
 	done
 	for PV in $(egrep -e Si5326:TUNEPHASE:BUSY -e Si5326:TUNEPHASE:OK $RL | grep -v [a-z]$)
 	do
