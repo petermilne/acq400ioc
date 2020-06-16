@@ -42,6 +42,12 @@ get_group_status_mode {
 	in "%d";
 }
 
+set_group_first_n {
+	out "group_first_n %d";
+	in;
+}
+
+
 setDelTrg {
 	out "deltrg_\$1 %d";
 	in;

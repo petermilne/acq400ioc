@@ -107,6 +107,14 @@ record(bo, "${UUT}:${SITE}:ANATRG:GROUP_MODE") {
 	field(ONAM, "HISTORY")	
 }
 
+record(longout, "${UUT}:${SITE}:ANATRG:GROUP:N") {
+	field(DTYP, "stream")
+	field(OUT, "@anatrg.proto set_group_first_n ${SPORT}")
+	field(DESC, "group trigger if N members active (0=ALL)")
+	field(DRVL, "0")
+	field(DRVH, "32")
+}
+
 record(bo, "${UUT}:${SITE}:ANATRG:RESET") {
 	field(DTYP, "stream")
 	field(OUT,  "@anatrg.proto setATD_Reset ${SPORT}")
