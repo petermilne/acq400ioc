@@ -27,7 +27,10 @@ do
 	(monitor | fs2xml --kvp >/dev/shm/volts.xml) &
 	MONPID=$!
 	sleep 5
-	[ -e /proc/$MONPID ] &&  kill -9 $MONPID
+	if [ -e /proc/$MONPID ]; then
+	       kill -9 $MONPID
+	       wait $MONPID
+	fi
 done
 
 
