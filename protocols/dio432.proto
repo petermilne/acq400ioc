@@ -20,3 +20,13 @@ getInstDI {
 	out "di_snoop";
 	in "%(\$1:\$3.RVAL)!4x%(\$1:\$2.RVAL)!4x";
 }
+
+get_DI32 {
+	out "DI32";
+	in "%x"
+}
+
+set_DO32 {
+	out "DO32 0x%08x";
+	in;
+}

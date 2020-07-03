@@ -13,3 +13,16 @@ record(mbbi, "${UUT}:${SITE}:AWG:STATE") {
 }
 
 
+record(longin, "${UUT}:${SITE}:IMM:DI32") {
+	field(SCAN, "1 second")
+	field(DTYP, "stream")	
+	field(INP,  "@dio432.proto get_DI32 ${SPORT}")	
+	field(DESC, "DI32 immediate value")	
+	field(PRIO, "LOW")
+}
+record(longout, "${UUT}:${SITE}:IMM:DO32") {	
+	field(DTYP, "stream")	
+	field(OUT,  "@dio432.proto set_DO32 ${SPORT}")	
+	field(DESC, "DO32 immediate value")	
+	field(PRIO, "LOW")
+}
