@@ -1,0 +1,26 @@
+
+
+record(bo, "${UUT}:${SITE}:TRGOUT") {
+	field(DTYP, "stream")
+	field(OUT,  "@dio432.proto set_trgout_PG4 ${SPORT}")	
+	field(ONAM, "PG4")
+	field(ZNAM, "TRGIN")
+	field(VAL,  "0")
+	field(PINI, "YES")	
+}
+
+record(longin, "${UUT}:${SITE}:WR:TS:rc") {
+	field(SCAN, "1 second")
+	field(DTYP, "stream")	
+	field(INP,  "@wr.proto getCount(wr_tai_trg_s${SITE}) ${S0}")	
+	field(DESC, "TAI Current")	
+	field(PRIO, "LOW")
+}
+
+record(longin, "${UUT}:${SITE}:WR:WRTT:rc") {
+	field(SCAN, "1 second")
+	field(DTYP, "stream")	
+	field(INP,  "@wr.proto getCount(wr_tai_trg_s${SITE}) ${S0}")	
+	field(DESC, "WRTT0 Count")	
+	field(PRIO, "LOW")
+}
