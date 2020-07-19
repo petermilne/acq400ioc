@@ -1,0 +1,80 @@
+/*
+ * frequency status flasher: 
+ * < 10 Hz  : 1 flash, 
+ * < 100 Hz : 2 flash
+ * < 1 kHz  : 3 flash
+ * < 10 kHz : 4 flash
+ * < 100 kHz: 5 flash
+ * < 1MHz   : 6 flash
+ * < 10MHz  : 7 flash 
+ * < 100MHz : 8 flash
+ * divide 2s into 20 periods, 0.09s each
+
+seq clk_freq_flasher "signal=SIGNALPV,led=LEDPV"
+ */
+ 
+
+program clk_freq_flasher
+
+option +r;
+ 
+int led; 		assign led to "{led}";
+int freq;		assign freq to "{signal}:FREQ";
+int count;              assign count to "{signal}:COUNT"; 
+
+monitor freq;
+monitor count;
+
+int patterns[10][20] = {
+/*  0  1  2  3  4  5  6  7  8  9   */
+{	0, 0, 0, 0, 0, 0, 0, 0, 0, 0  },				/* 0 */
+{	1, 0, 0, 0, 0, 0, 0, 0, 0, 0  },				/* 1 */
+{	1, 0, 1, 0, 0, 0, 0, 0, 0, 0  },				/* 2 */
+{	1, 0, 1, 0, 1, 0, 0, 0, 0, 0  },				/* 3 */
+{	1, 0, 1, 0, 1, 0, 1, 0, 0, 0  },				/* 4 */
+{	1, 0, 1, 0, 1, 0, 1, 0, 1, 0  },				/* 5 */
+{	1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0 },	/* 6 */
+{	1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0 },	/* 7 */
+{	1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1 },	/* 8 */
+{	1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1}	/* 9 */
+};
+
+int ipat = 0;
+int iflash = 0;
+int th = 1;
+int old_count;
+
+ss lane_monitor
+{
+	state init {
+	    when() {
+
+	    } state s0
+	}
+	state  s0 {
+		when(delay(0.09) && freq > 0) {
+			for (ipat = 0, th = 1 + ipat*10; freq >= th && ipat < 10; ipat++, th *= 10){
+				;
+			} 
+			
+			led = patterns[ipat][iflash]; pvPut(led);
+			if (++iflash > 19) iflash = 0;
+		} state s0
+		when (freq == 0 && count) {
+			led = 1;
+			pvPut(led);
+			old_count = count;
+		} state s1
+	}
+
+	state s1 {
+		when (freq > 0) {
+
+		} state s0
+		when (count != old_count){
+			led = !led;
+			pvPut(led);
+			count = old_count;
+		} state s1
+	}
+}
