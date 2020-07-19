@@ -622,12 +622,12 @@ load_dio482pg() {
  	
 	load_gpg $site
 	dblr '"db/signal.db","'${cprams}',FNAM=SYNC,FN=sync,ZNAM=internal,ONAM=external,DISV=1"'
-	dblr '"db/dio482pg.db","'${cprams}'"'	
+	dblr '"db/dio482pg.db","'${cprams},S0=S0WR'"'	
 	dblr '"db/dio482pg_leds.db","'${cprams}'"' 
 	for dx in 1 2 3 4; do
 		dblr '"db/dio482pg_do4.db","'${cprams},UX=$dx,IX=$(($dx-1))'"'
 	done
-	sprams="${cprams},S0=S0WR,CTRMAX=0,DT=1,DTC=1"
+	sprams="${cprams},SIG=WR,S0=S0WR,CTRMAX=0,DT=1,DTC=1"
 	dblr '"db/_counter.db","'${sprams},lname=TS'"'
 	dblr '"db/_counter.db","'${sprams},lname=WRTT'"'
 }
