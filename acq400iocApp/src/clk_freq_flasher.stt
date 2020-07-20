@@ -43,14 +43,18 @@ int ipat = 0;
 int iflash = 0;
 int th = 1;
 int old_count;
+int old_freq;
 
-ss lane_monitor
+
+ss flasher
 {
 	state init {
 	    when() {
 
 	    } state s0
 	}
+	// freq > 0 regime: decade coded flashes
+
 	state  s0 {
 		when(delay(0.09) && freq > 0) {
 			for (ipat = 0, th = 1 + ipat*10; freq >= th && ipat < 10; ipat++, th *= 10){
@@ -67,8 +71,9 @@ ss lane_monitor
 		} state s1
 	}
 
+	// freq < 1: regime: count toggle flashes
 	state s1 {
-		when (freq > 0) {
+		when (freq > 1 || (freq == 1 && old_freq > 0)) {
 
 		} state s0
 		when (count != old_count){
@@ -76,5 +81,8 @@ ss lane_monitor
 			pvPut(led);
 			count = old_count;
 		} state s1
+		exit {
+			old_freq = freq;
+		}
 	}
 }
