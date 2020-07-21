@@ -379,7 +379,7 @@ load_400() {
 	$MT_DIO432|$MT_DIO432P|$MT_DIO482|$MT_DIO482TD_PG)
 	# probably should be common to all @@todo
 	    if [ -e /dev/acq400.$site.knobs/gpg_enable ]; then
-	    	load_dio482pg $site "${cprams}"
+	        will_load_dio482pg=1	    	
 	    else
 			name=$(cat /dev/acq400.$site.knobs/module_name)
 			[ "$model" = "$MT_DIO482" ] && [ "$SUPPORT_COS" != "" ] && ./scripts/load.dio482 $HOST $site
@@ -408,12 +408,7 @@ load_400() {
 			echo >>/tmp/st_post.cmd "seq ${calmon} \"uut=${HOST},site=${site}\""
 		fi
 	fi
-    if [ "$has_output" = "yes" ] && [ "$AWG_DONE" = "n" ]; then
-		aprams="UUT=${HOST},SITE=${site},SPORT=S${site}"
-		dblr '"db/xo.db","'${aprams}'"'
-		dblr '"db/awg.db","'${aprams}'"'
-		AWG_DONE=y
-	fi
+
 	
 	if [ "${name}" = "acq480" ]; then
 		source /dev/sites/${site}/details
@@ -485,6 +480,8 @@ load_400() {
 		dblr '"db/signal.db","'${cprams}',FNAM=EVENT0,FN=event0,ZNAM=disable,ONAM=enable,DISV=-1"'		
 	fi
 	
+
+
 	CTPR="${cprams},CTRMAX=$CTR28,DT=1,DTC=1"
 	dblr '"db/counter.db","'${CTPR},lname=clk_count,pname=clk_count'"'
 	case $model in
@@ -499,9 +496,6 @@ load_400() {
 	dblr '"db/counter.db","'${CTPR},lname=SAMPLE_COUNT,pname=${psc}'"'
 	dblr '"db/elapsed.db","'${CTPR},lname=SAMPLE_COUNT,DECIM=${decim}'"'
 
-
-
-	 
 	gain_file=db/${gain_file_pfx}.db
 	(
 	has_gain=0
@@ -529,7 +523,15 @@ load_400() {
 		dblr '"db/clkstatus.db","'${cprams}',FNAM=CLK,FN=clk,DISV=1"'
 	fi
 
-
+	if [ "$will_load_dio482pg" = "1" ]; then
+		load_dio482pg $site "${cprams}"
+    elif [ "$has_output" = "yes" ] && [ "$AWG_DONE" = "n" ]; then
+		aprams="UUT=${HOST},SITE=${site},SPORT=S${site}"
+		dblr '"db/xo.db","'${aprams}'"'
+		dblr '"db/awg.db","'${aprams}'"'
+		AWG_DONE=y
+	fi
+	
 	if [ "x$model" = "x$MT_ACQ480" ]; then
 		let sp1=$site+1		
 		dblr '"db/acq480fmc99.db","'${cprams},SITEP1=${sp1},div=$(acq480_div)'"' \
@@ -606,9 +608,6 @@ load_gpg() {
 		mondis=1
 	fi
 	dblr '"db/gpg.db","'${PG0}',MONDIS='${mondis}'"'	
-	dblr '"db/signal.db","'${PRAMS},FNAM=GPG_CLK,FN=gpg_clk,DISV=1'"'	
-	dblr '"db/signal.db","'${PRAMS},FNAM=GPG_TRG,FN=gpg_trg,DISV=1'"'
-	dblr '"db/signal.db","'${PRAMS},FNAM=GPG_SYNC,FN=gpg_sync,DISV=1'"'
 	if [ $site -eq 0 ]; then
 		dblr '"db/signal.db","'${PG0}',FNAM=SPAD1_US,FN=spad1_us,ZNAM=disable,ONAM=enable,DISV=1"'
 	fi
@@ -622,7 +621,19 @@ load_dio482pg() {
  	
 	load_gpg $site
 	dblr '"db/signal.db","'${cprams}',FNAM=SYNC,FN=sync,ZNAM=internal,ONAM=external,DISV=1"'
-	dblr '"db/dio482pg.db","'${cprams},S0=S0WR'"'	
+
+	self=""
+    case $site in
+    2)
+		self=",SELF=THST";;
+    3)
+		self=",SELF=FRST";;
+    4)
+		self=",SELF=FVST";;
+    5)
+ 		self=",SELF=SXST";;
+    esac
+	dblr '"db/dio482pg.db","'${cprams}$self,S0=S0WR'"'
 	dblr '"db/dio482pg_leds.db","'${cprams}'"' 
 	for dx in 1 2 3 4; do
 		dblr '"db/dio482pg_do4.db","'${cprams},UX=$dx,IX=$(($dx-1))'"'

@@ -24,3 +24,8 @@ record(longin, "${UUT}:${SITE}:WR:WRTT:rc") {
 	field(DESC, "WRTT0 Count")	
 	field(PRIO, "LOW")
 }
+
+record(mbbo, "${UUT}:${SITE}:TRG:DX") {
+	field(${SELF}, "TRGIN")
+	field(SVST,    "WRTT")
+}
