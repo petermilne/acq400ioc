@@ -27,9 +27,10 @@ option +r;
   * ${uut}:${site}:GPG:MODE
   * GPG:DBG:STATE
   */
-int led; 			assign led to "{led}";
-int dox;        	assign dox to "{dox}";
+int led; 			assign led to "{uut}:{site}:LED:DO{dox}";
+int dox;        	assign dox to "{uut}:{site}:DO:{dox}";
 int ix;
+int site;
 
 int pg_state; 		assign pg_state 		to "{uut}:{site}:GPG:DBG:STATE"; 
 int gpg_in_set;		assign gpg_in_set 		to "{uut}:{site}:GPG:DBG:UBX"; 
@@ -42,8 +43,10 @@ int iflash = 0;
 
 
 entry {
-	ix = *macValueGet("ix") - '0';
+	ix = *macValueGet("dox") - '1';
+	site = *macValueGet("site") - '0';
 	pattern = zpattern;
+	printf("pg4_flasher site:%d ix:%d\n", site, ix);
 }
 
 ss pg_monitor
@@ -51,12 +54,14 @@ ss pg_monitor
 	state PG {
 		when(delay(1.0)){
 			pvGet(dox); pvGet(pg_state), pvGet(gpg_in_set), pvGet(gpg_final_set);
+			/* printf("getPattern site=%d ix:%d dox=%d pg_state=%d\n", site, ix, dox, pg_state); */
 			pattern = getPattern(pattern, dox, pg_state, gpg_in_set, gpg_final_set, ix);
 		} state PG
 	} 
 }
 
-ss flasher {
+ss flasher 
+{
 	state flash10 {
 		when(delay(0.09)){
 			led = pattern[iflash]; pvPut(led);
@@ -86,14 +91,16 @@ ss flasher {
 		PAT_PGS_ON			= 5
 	};
 	
+	/* gpg states from gpg.db */
 	enum {
-		PGS_WAIT_TRG = 1,
-		PGS_RUN 	 = 2,
-		PGS_LOOP_CHK = 3
+		PGS_IDLE 		= 0,		/* field(ZRST, "IDLE")     */
+		PGS_WAIT_TRG	= 2,		/* field(TWST, "WAIT_TRG") */
+		PGS_RUN 		= 4,		/* field(FRST, "RUN_GPG")  */
+		PGS_LOOP_CHK	= 6			/* field(SXST, "LOOP_CHK") */
 	};	
 
 
-	unsigned char* getPattern(unsigned char* _pattern, int _dox, int _pg_state, int _gpg_in_set, int _gpg_final_set, int _ix){		
+	unsigned char* getPattern(unsigned char* _pattern, int _dox, int _pg_state, int _gpg_in_set, int _gpg_final_set, int _ix){	
 		switch(_dox){
 		case 1:
 			return patterns[PAT_PGS_ON];
@@ -103,6 +110,8 @@ ss flasher {
 			break;
 		}
 		switch(_pg_state){
+		case PGS_IDLE:
+			return patterns[PAT_PGS_OFF];
 		case PGS_WAIT_TRG:
 			return patterns[PAT_PGS_WAIT_TRIG];
 		case PGS_RUN:
