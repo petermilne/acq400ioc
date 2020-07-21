@@ -626,6 +626,7 @@ load_dio482pg() {
 	dblr '"db/dio482pg_leds.db","'${cprams}'"' 
 	for dx in 1 2 3 4; do
 		dblr '"db/dio482pg_do4.db","'${cprams},UX=$dx,IX=$(($dx-1))'"'
+		echo "seq pg4_flasher \"uut=${HOST},site=${site},dox=${dx}\""
 	done
 	sprams="${cprams},SIG=WR,S0=S0WR,CTRMAX=0,DT=1,DTC=1"
 	dblr '"db/_counter.db","'${sprams},lname=TS'"'
