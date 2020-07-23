@@ -29,3 +29,7 @@ record(mbbo, "${UUT}:${SITE}:TRG:DX") {
 	field(${SELF}, "TRGIN")
 	field(SVST,    "WRTT")
 }
+
+record(mbbo, "${UUT}:${SITE}:CLK:DX") {
+	field(${SELF},  "nc")
+}
