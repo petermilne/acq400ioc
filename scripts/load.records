@@ -525,6 +525,7 @@ load_400() {
 
 	if [ "$will_load_dio482pg" = "1" ]; then
 		load_dio482pg $site "${cprams}"
+		will_load_dio482pg=0
     elif [ "$has_output" = "yes" ] && [ "$AWG_DONE" = "n" ]; then
 		aprams="UUT=${HOST},SITE=${site},SPORT=S${site}"
 		dblr '"db/xo.db","'${aprams}'"'
@@ -809,6 +810,15 @@ lsb_x() {
 	dblr '"db/sig_bus_x_cntrl.db","'$lp,ZRST=${zrst},ONST=${onst},TWST=${twst},THST=${thst},FRST=${frst},FVST=${fvst},SXST=${sxst},SVST=${svst}'"'
 }
 
+load_mb_trg_gpio()
+{
+	CPRAMS="UUT=${HOST},SITE=0"
+	for fun in TRG EVT; do
+		for dx in $(seq 0 7); do
+			dblr '"db/sync_bus_state.db","'${CPRAMS},fun=${fun},dx=${dx}'"'
+		done
+	done
+}
 load_mb_sync() {
 	KB=$1 
 	
@@ -1010,6 +1020,8 @@ load_mb() {
 		fi
 		make_AI_subrate
 	fi
+	[ -e /dev/gpio/TRG/d0 ] && load_mb_trg_gpio
+
 	if [[ -e /dev/acq400.12.knobs || -e /dev/acq400.13.knobs ]]; then
 		source /usr/local/epics/scripts/load.mgt400
 		echo "seq mgtStopOnLinkDown \"uut=${HOST}\"" >>/tmp/st_post.cmd
