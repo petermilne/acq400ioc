@@ -941,6 +941,13 @@ load_mb_sync() {
 	done
 	dblr '"db/sync_bus_data.db","'${CPRAMS}'"'
 	
+	
+	echo >>/tmp/st_post.cmd "seq autoRepeat \"uut=${HOST}\""
+	[ "$ONSETTRANSIENT" = "1" ] && \
+		echo >>/tmp/st_post.cmd "seq onSetTransient \"uut=${HOST}\""
+			
+	is_tiga && return
+	
 	echo 1>&2 "HAS_ACQ43X $HAS_ACQ43X"
 	ACQ43X_SET_SAMPLE_RATE=${ACQ43X_SET_SAMPLE_RATE:-0}
 	
@@ -962,11 +969,9 @@ load_mb_sync() {
 				fi
 				echo >>/tmp/st_post.cmd "seq $ssr \"uut=${HOST},fin=0:SIG:CLK_EXT:FREQ\"";;
 			esac
-	fi	
+	fi
+	
 	echo >>/tmp/st_post.cmd "seq setMB_ClockMonitor \"uut=${HOST},retry=${CLOCKMONITOR}\""
-	[ "$ONSETTRANSIENT" = "1" ] && \
-		echo >>/tmp/st_post.cmd "seq onSetTransient \"uut=${HOST}\""
-	echo >>/tmp/st_post.cmd "seq autoRepeat \"uut=${HOST}\""
 }
 
 load_mb_stats()
