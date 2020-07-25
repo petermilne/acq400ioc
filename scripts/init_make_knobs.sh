@@ -120,7 +120,7 @@ make_epics_knobs() {
 		make_caput $PV ${pv1#*:} $site -n
 	done	
 	
-	for PV in $(grep GPG /tmp/records.dbl | grep -v :[a-z]$)
+	for PV in $(egrep -e GPG -e DO:[1-8] /tmp/records.dbl | grep -v :[a-z]$)
 	do
 		pv1=${PV#*:}
 		site=${pv1%%:*}

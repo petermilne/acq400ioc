@@ -1,0 +1,55 @@
+
+
+record(bo, "${UUT}:${SITE}:LED:CLK") {
+	field(DTYP, "stream")
+	field(OUT,  "@dio432.proto setPGDO_BIT(15) ${SPORT}")	
+	field(ZNAM, "0")
+	field(ONAM, "1")
+	field(VAL,  "0")
+	field(PINI, "YES")	
+}
+record(bo, "${UUT}:${SITE}:LED:TRG") {
+	field(DTYP, "stream")
+	field(OUT,  "@dio432.proto setPGDO_BIT(14) ${SPORT}")	
+	field(ONAM, "PG4")
+	field(ZNAM, "TRGIN")
+	field(VAL,  "0")
+	field(PINI, "YES")	
+}
+
+record(bo, "${UUT}:${SITE}:LED:DO4") {
+	field(DTYP, "stream")
+	field(OUT,  "@dio432.proto setPGDO_BIT(11) ${SPORT}")	
+	field(ONAM, "PG4")
+	field(ZNAM, "TRGIN")
+	field(VAL,  "0")
+	field(PINI, "YES")	
+}
+
+record(bo, "${UUT}:${SITE}:LED:DO3") {
+	field(DTYP, "stream")
+	field(OUT,  "@dio432.proto setPGDO_BIT(10) ${SPORT}")	
+	field(ONAM, "PG4")
+	field(ZNAM, "TRGIN")
+	field(VAL,  "0")
+	field(PINI, "YES")	
+}
+
+record(bo, "${UUT}:${SITE}:LED:DO2") {
+	field(DTYP, "stream")
+	field(OUT,  "@dio432.proto setPGDO_BIT(9) ${SPORT}")	
+	field(ONAM, "PG4")
+	field(ZNAM, "TRGIN")
+	field(VAL,  "0")
+	field(PINI, "YES")	
+}
+
+record(bo, "${UUT}:${SITE}:LED:DO1") {
+	field(DTYP, "stream")
+	field(OUT,  "@dio432.proto setPGDO_BIT(8) ${SPORT}")	
+	field(ONAM, "PG4")
+	field(ZNAM, "TRGIN")
+	field(VAL,  "0")
+	field(PINI, "YES")	
+}
+

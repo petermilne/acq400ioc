@@ -20,3 +20,28 @@ getInstDI {
 	out "di_snoop";
 	in "%(\$1:\$3.RVAL)!4x%(\$1:\$2.RVAL)!4x";
 }
+
+get_DI32 {
+	out "DI32";
+	in "%x"
+}
+
+set_DO32 {
+	out "DO32 0x%08x";
+	in;
+}
+
+set_trgout_PG4 {
+	out "trgout_PG4 %d";
+	in;
+}
+
+setPGDO_BIT {
+	out "DO32 %{-|+}d\$1";
+	in;
+}
+
+setPGDO_DIR_BIT {
+	out "DO32_immediate_mask %{-|+}d\$1";
+	in;
+}

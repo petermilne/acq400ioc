@@ -1,0 +1,131 @@
+/*
+ * pg4 status flasher: 
+ * OFF: ON
+ * 000 100   : direct DO HI
+ * 100 000   : direct DO LO
+ * 050 050   : PG, waiting for trigger _ -
+ * 050 050   : PG, running .....
+ * 080 020   : triggered, final state LO
+ * 020 080   : triggered, final state HI
+
+seq pg4_flasher "uut=UUT,site=SITE,led=LEDPV,ix=IX"
+ */
+ 
+
+program pg4_flasher
+
+option +r;
+
+
+%{
+	unsigned char* getPattern(unsigned char* _pattern, int _dox, int _pg_state, int _gpg_in_set, int _gpg_final_set, int _ix);
+}%
+
+
+
+ /*
+  * ${uut}:${site}:GPG:MODE
+  * GPG:DBG:STATE
+  */
+int led; 			assign led to "{uut}:{site}:LED:DO{dox}";
+int dox;        	assign dox to "{uut}:{site}:DO:{dox}";
+int ix;
+int site;
+
+int pg_state; 		assign pg_state 		to "{uut}:{site}:GPG:DBG:STATE"; 
+int gpg_in_set;		assign gpg_in_set 		to "{uut}:{site}:GPG:DBG:UBX"; 
+int gpg_final_set;	assign gpg_final_set	to "{uut}:{site}:GPG:DBG:FIN"; 
+
+unsigned char zpattern[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+unsigned char *pattern;
+int ipat = 0;
+int iflash = 0;
+
+
+entry {
+	ix = *macValueGet("dox") - '1';
+	site = *macValueGet("site") - '0';
+	pattern = zpattern;
+	printf("pg4_flasher site:%d ix:%d\n", site, ix);
+}
+
+ss pg_monitor
+{
+	state PG {
+		when(delay(1.0)){
+			pvGet(dox); pvGet(pg_state), pvGet(gpg_in_set), pvGet(gpg_final_set);
+			/* printf("getPattern site=%d ix:%d dox=%d pg_state=%d\n", site, ix, dox, pg_state); */
+			pattern = getPattern(pattern, dox, pg_state, gpg_in_set, gpg_final_set, ix);
+		} state PG
+	} 
+}
+
+ss flasher 
+{
+	state flash10 {
+		when(delay(0.09)){
+			led = pattern[iflash]; pvPut(led);
+			if (++iflash > 9) iflash = 0;			
+		} state flash10
+	} 
+}
+
+
+%{
+	/*  0  1  2  3  4  5  6  7  8  9   */
+	static unsigned char patterns[6][10] = {	
+		{	0, 0, 0, 0, 0, 0, 0, 0, 0, 0  },				/* PAT_PGS_OFF			0 */
+		{	1, 1, 1, 1, 1, 0, 0, 0, 0, 0  },				/* PAT_PGS_WAIT_TRIG	1 */
+		{	1, 0, 1, 0, 1, 0, 1, 0, 1, 0  },				/* PAT_PGS_RUN			2 */
+		{	1, 1, 1, 1, 1, 1, 1, 1, 1, 0  },				/* PAT_PGS_FINAL_SET	3 */
+		{	0, 0, 0, 0, 0, 0, 0, 0, 0, 1  },				/* PAT_PGS_FINAL_CLR    4 */
+		{	1, 1, 1, 1, 1, 1, 1, 1, 1, 1  }					/* PAT_PGS_ON			0 */
+	};
+	
+	enum {
+		PAT_PGS_OFF 		= 0,
+		PAT_PGS_WAIT_TRIG 	= 1,
+		PAT_PGS_RUN		 	= 2,
+		PAT_PGS_FINAL_SET	= 3,
+		PAT_PGS_FINAL_CLR   = 4,
+		PAT_PGS_ON			= 5
+	};
+	
+	/* gpg states from gpg.db */
+	enum {
+		PGS_IDLE 		= 0,		/* field(ZRST, "IDLE")     */
+		PGS_WAIT_TRG	= 2,		/* field(TWST, "WAIT_TRG") */
+		PGS_RUN 		= 4,		/* field(FRST, "RUN_GPG")  */
+		PGS_LOOP_CHK	= 6			/* field(SXST, "LOOP_CHK") */
+	};	
+
+
+	unsigned char* getPattern(unsigned char* _pattern, int _dox, int _pg_state, int _gpg_in_set, int _gpg_final_set, int _ix){	
+		switch(_dox){
+		case 1:
+			return patterns[PAT_PGS_ON];
+		case 0:
+			return patterns[PAT_PGS_OFF];
+		default:
+			break;
+		}
+		switch(_pg_state){
+		case PGS_IDLE:
+			return patterns[PAT_PGS_OFF];
+		case PGS_WAIT_TRG:
+			return patterns[PAT_PGS_WAIT_TRIG];
+		case PGS_RUN:
+			return patterns[PAT_PGS_RUN];
+		case PGS_LOOP_CHK:
+			if ((1<<_ix)&_gpg_in_set){
+				if ((1<<_ix)&_gpg_final_set){
+					return patterns[PAT_PGS_FINAL_SET];
+				}else{
+					return patterns[PAT_PGS_FINAL_CLR];
+				}
+			}
+		}
+
+		return _pattern;
+	}
+}%

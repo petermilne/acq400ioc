@@ -17,7 +17,7 @@ fi
 if [ -f /mnt/local/sysconfig/epics.sh ]; then
 	if [ -z $EPICS_LOCAL_SYSCONFIG ]; then 
 		source /mnt/local/sysconfig/epics.sh
-		(cat /mnt/local/sysconfig/epics.sh
+		(grep ^export /mnt/local/sysconfig/epics.sh
 		[ -z $IOC_HOST ] && echo export IOC_HOST=$(hostname)
 		echo export EPICS_LOCAL_SYSCONFIG=1) >> /etc/profile.d/epics.sh
 	fi

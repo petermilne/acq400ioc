@@ -376,10 +376,10 @@ load_400() {
 		load_AO $site $model $cprams		
 		let LO=66000000;;
 #	@@todo : different flavour of calmon for SAR ADC needed	
-	$MT_DIO432|$MT_DIO432P|$MT_DIO482)
+	$MT_DIO432|$MT_DIO432P|$MT_DIO482|$MT_DIO482TD_PG)
 	# probably should be common to all @@todo
 	    if [ -e /dev/acq400.$site.knobs/gpg_enable ]; then
-	    	load_gpg $site
+	        will_load_dio482pg=1	    	
 	    else
 			name=$(cat /dev/acq400.$site.knobs/module_name)
 			[ "$model" = "$MT_DIO482" ] && [ "$SUPPORT_COS" != "" ] && ./scripts/load.dio482 $HOST $site
@@ -408,12 +408,7 @@ load_400() {
 			echo >>/tmp/st_post.cmd "seq ${calmon} \"uut=${HOST},site=${site}\""
 		fi
 	fi
-    if [ "$has_output" = "yes" ] && [ "$AWG_DONE" = "n" ]; then
-		aprams="UUT=${HOST},SITE=${site},SPORT=S${site}"
-		dblr '"db/xo.db","'${aprams}'"'
-		dblr '"db/awg.db","'${aprams}'"'
-		AWG_DONE=y
-	fi
+
 	
 	if [ "${name}" = "acq480" ]; then
 		source /dev/sites/${site}/details
@@ -485,6 +480,8 @@ load_400() {
 		dblr '"db/signal.db","'${cprams}',FNAM=EVENT0,FN=event0,ZNAM=disable,ONAM=enable,DISV=-1"'		
 	fi
 	
+
+
 	CTPR="${cprams},CTRMAX=$CTR28,DT=1,DTC=1"
 	dblr '"db/counter.db","'${CTPR},lname=clk_count,pname=clk_count'"'
 	case $model in
@@ -499,9 +496,6 @@ load_400() {
 	dblr '"db/counter.db","'${CTPR},lname=SAMPLE_COUNT,pname=${psc}'"'
 	dblr '"db/elapsed.db","'${CTPR},lname=SAMPLE_COUNT,DECIM=${decim}'"'
 
-
-
-	 
 	gain_file=db/${gain_file_pfx}.db
 	(
 	has_gain=0
@@ -529,7 +523,16 @@ load_400() {
 		dblr '"db/clkstatus.db","'${cprams}',FNAM=CLK,FN=clk,DISV=1"'
 	fi
 
-
+	if [ "$will_load_dio482pg" = "1" ]; then
+		load_dio482pg $site "${cprams}"
+		will_load_dio482pg=0
+    elif [ "$has_output" = "yes" ] && [ "$AWG_DONE" = "n" ]; then
+		aprams="UUT=${HOST},SITE=${site},SPORT=S${site}"
+		dblr '"db/xo.db","'${aprams}'"'
+		dblr '"db/awg.db","'${aprams}'"'
+		AWG_DONE=y
+	fi
+	
 	if [ "x$model" = "x$MT_ACQ480" ]; then
 		let sp1=$site+1		
 		dblr '"db/acq480fmc99.db","'${cprams},SITEP1=${sp1},div=$(acq480_div)'"' \
@@ -606,13 +609,45 @@ load_gpg() {
 		mondis=1
 	fi
 	dblr '"db/gpg.db","'${PG0}',MONDIS='${mondis}'"'	
-	dblr '"db/signal.db","'${PRAMS},FNAM=GPG_CLK,FN=gpg_clk,DISV=1'"'	
-	dblr '"db/signal.db","'${PRAMS},FNAM=GPG_TRG,FN=gpg_trg,DISV=1'"'
-	dblr '"db/signal.db","'${PRAMS},FNAM=GPG_SYNC,FN=gpg_sync,DISV=1'"'
 	if [ $site -eq 0 ]; then
 		dblr '"db/signal.db","'${PG0}',FNAM=SPAD1_US,FN=spad1_us,ZNAM=disable,ONAM=enable,DISV=1"'
 	fi
 	create_asyn_channel SG${site} 127.0.0.1:$((4220+${site}))	
+}
+
+load_dio482pg() {
+ 	site=$1
+ 	shift
+ 	cprams="$*"
+ 	
+	load_gpg $site
+	dblr '"db/signal.db","'${cprams}',FNAM=SYNC,FN=sync,ZNAM=internal,ONAM=external,DISV=1"'
+
+	self=""
+    case $site in
+    2)
+		self=",SELF=THST";;
+    3)
+		self=",SELF=FRST";;
+    4)
+		self=",SELF=FVST";;
+    5)
+ 		self=",SELF=SXST";;
+    esac
+	dblr '"db/dio482pg.db","'${cprams}$self,S0=S0WR'"'
+	dblr '"db/dio482pg_leds.db","'${cprams}'"' 
+	for dx in 1 2 3 4; do
+		dblr '"db/dio482pg_do4.db","'${cprams},UX=$dx,IX=$(($dx-1))'"'
+		echo "seq pg4_flasher \"uut=${HOST},site=${site},dox=${dx}\""
+	done
+	sprams="${cprams},SIG=WR,S0=S0WR,CTRMAX=0,DT=1,DTC=1"
+	dblr '"db/_counter.db","'${sprams},lname=TS'"'
+	dblr '"db/_counter.db","'${sprams},lname=WRTT'"'
+	(
+	echo "seq clk_freq_flasher \"signal=${HOST}:0:SIG:CLK_S${site},led=${HOST}:${site}:LED:CLK\""
+#	echo "seq clk_freq_flasher \"signal=${HOST}:0:SIG:TRG_S${site},led=${HOST}:${site}:LED:TRG\""
+	echo "seq clk_freq_flasher \"signal=${HOST}:${site}:SIG:sample_count,led=${HOST}:${site}:LED:TRG\""
+	) >> /tmp/st_final.cmd
 }
 
 load_mb_acq2106() {
@@ -777,6 +812,15 @@ lsb_x() {
 	dblr '"db/sig_bus_x_cntrl.db","'$lp,ZRST=${zrst},ONST=${onst},TWST=${twst},THST=${thst},FRST=${frst},FVST=${fvst},SXST=${sxst},SVST=${svst}'"'
 }
 
+load_mb_trg_gpio()
+{
+	CPRAMS="UUT=${HOST},SITE=0"
+	for fun in TRG EVT; do
+		for dx in $(seq 0 7); do
+			dblr '"db/sync_bus_state.db","'${CPRAMS},fun=${fun},dx=${dx}'"'
+		done
+	done
+}
 load_mb_sync() {
 	KB=$1 
 	
@@ -897,6 +941,13 @@ load_mb_sync() {
 	done
 	dblr '"db/sync_bus_data.db","'${CPRAMS}'"'
 	
+	
+	echo >>/tmp/st_post.cmd "seq autoRepeat \"uut=${HOST}\""
+	[ "$ONSETTRANSIENT" = "1" ] && \
+		echo >>/tmp/st_post.cmd "seq onSetTransient \"uut=${HOST}\""
+			
+	is_tiga && return
+	
 	echo 1>&2 "HAS_ACQ43X $HAS_ACQ43X"
 	ACQ43X_SET_SAMPLE_RATE=${ACQ43X_SET_SAMPLE_RATE:-0}
 	
@@ -918,11 +969,9 @@ load_mb_sync() {
 				fi
 				echo >>/tmp/st_post.cmd "seq $ssr \"uut=${HOST},fin=0:SIG:CLK_EXT:FREQ\"";;
 			esac
-	fi	
+	fi
+	
 	echo >>/tmp/st_post.cmd "seq setMB_ClockMonitor \"uut=${HOST},retry=${CLOCKMONITOR}\""
-	[ "$ONSETTRANSIENT" = "1" ] && \
-		echo >>/tmp/st_post.cmd "seq onSetTransient \"uut=${HOST}\""
-	echo >>/tmp/st_post.cmd "seq autoRepeat \"uut=${HOST}\""
 }
 
 load_mb_stats()
@@ -978,6 +1027,8 @@ load_mb() {
 		fi
 		make_AI_subrate
 	fi
+	[ -e /dev/gpio/TRG/d0 ] && load_mb_trg_gpio
+
 	if [[ -e /dev/acq400.12.knobs || -e /dev/acq400.13.knobs ]]; then
 		source /usr/local/epics/scripts/load.mgt400
 		echo "seq mgtStopOnLinkDown \"uut=${HOST}\"" >>/tmp/st_post.cmd

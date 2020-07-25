@@ -2,6 +2,7 @@
 source /etc/profile.d/epics.sh
 
 en=${1:-1}
+SITE=${SITE:-0}
 
 if [ $en -ne 0 ];then
 	dis=0
@@ -9,7 +10,7 @@ else
 	dis=1
 fi
 
-echo caput ${IOC_HOST}:0:GPG:DBG:RSTATE.DISA $dis
-caput ${IOC_HOST}:0:GPG:DBG:RSTATE.DISA $dis
+echo caput ${IOC_HOST}:${SITE}:GPG:DBG:RSTATE.DISA $dis
+caput ${IOC_HOST}:${SITE}:GPG:DBG:RSTATE.DISA $dis
 
 

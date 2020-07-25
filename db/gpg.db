@@ -74,7 +74,7 @@ record (mbbo, "${UUT}:${SITE}:GPG:MODE:s") {
 
 record(longin, "${UUT}:${SITE}:GPG:DBG:GPGTOP") {
 	field(DTYP, "stream")
-	field(INP,  "@mb.proto get_gpg_top ${SPORT}")
+	field(INP,  "@mb.proto get_gpg_top(${UUT}:${SITE}:GPG:DBG) ${SPORT}")
 	field(SCAN, "1 second")
 }
 
@@ -117,6 +117,14 @@ record(longin, "${UUT}:${SITE}:GPG:DBG:OSTATE"){
 record(longin, "${UUT}:${SITE}:GPG:DBG:UNTIL"){
 	field(DTYP, "Soft Channel")
 }
+
+record(longin, "${UUT}:${SITE}:GPG:DBG:UBX"){
+	field(DTYP, "Soft Channel")	
+}
+record(longin, "${UUT}:${SITE}:GPG:DBG:FIN"){
+	field(DTYP, "Soft Channel")	
+}
+
 # CNT PULSE1 PULSE2 SMS
 record(stringin, "${UUT}:${SITE}:GPG:DBG:DEF"){
 	field(DTYP, "stream")
