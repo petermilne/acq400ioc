@@ -19,7 +19,7 @@ record(bo, "${UUT}:${SITE}:LED:TRG") {
 
 record(bo, "${UUT}:${SITE}:LED:DO4") {
 	field(DTYP, "stream")
-	field(OUT,  "@dio432.proto setPGDO_BIT(11) ${SPORT}")	
+	field(OUT,  "@dio432.proto setPGDO_BIT(8) ${SPORT}")	
 	field(ONAM, "PG4")
 	field(ZNAM, "TRGIN")
 	field(VAL,  "0")
@@ -28,7 +28,7 @@ record(bo, "${UUT}:${SITE}:LED:DO4") {
 
 record(bo, "${UUT}:${SITE}:LED:DO3") {
 	field(DTYP, "stream")
-	field(OUT,  "@dio432.proto setPGDO_BIT(10) ${SPORT}")	
+	field(OUT,  "@dio432.proto setPGDO_BIT(9) ${SPORT}")	
 	field(ONAM, "PG4")
 	field(ZNAM, "TRGIN")
 	field(VAL,  "0")
@@ -37,7 +37,7 @@ record(bo, "${UUT}:${SITE}:LED:DO3") {
 
 record(bo, "${UUT}:${SITE}:LED:DO2") {
 	field(DTYP, "stream")
-	field(OUT,  "@dio432.proto setPGDO_BIT(9) ${SPORT}")	
+	field(OUT,  "@dio432.proto setPGDO_BIT(10) ${SPORT}")	
 	field(ONAM, "PG4")
 	field(ZNAM, "TRGIN")
 	field(VAL,  "0")
@@ -46,7 +46,7 @@ record(bo, "${UUT}:${SITE}:LED:DO2") {
 
 record(bo, "${UUT}:${SITE}:LED:DO1") {
 	field(DTYP, "stream")
-	field(OUT,  "@dio432.proto setPGDO_BIT(8) ${SPORT}")	
+	field(OUT,  "@dio432.proto setPGDO_BIT(11) ${SPORT}")	
 	field(ONAM, "PG4")
 	field(ZNAM, "TRGIN")
 	field(VAL,  "0")
