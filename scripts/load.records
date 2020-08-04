@@ -644,6 +644,7 @@ load_dio482pg() {
 	dblr '"db/_counter.db","'${sprams},lname=TS'"'
 	dblr '"db/_counter.db","'${sprams},lname=WRTT'"'
 	(
+	echo "dbpf ${HOST}:${site}:GPG:DBG:RSTATE.DISA 0"
 	echo "seq clk_freq_flasher \"signal=${HOST}:0:SIG:CLK_S${site},led=${HOST}:${site}:LED:CLK\""
 #	echo "seq clk_freq_flasher \"signal=${HOST}:0:SIG:TRG_S${site},led=${HOST}:${site}:LED:TRG\""
 	echo "seq clk_freq_flasher \"signal=${HOST}:${site}:SIG:sample_count,led=${HOST}:${site}:LED:TRG\""
