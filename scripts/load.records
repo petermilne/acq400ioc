@@ -281,7 +281,7 @@ load_400() {
 	[ -e /dev/sites/$site/gains.sh ] && source /dev/sites/$site/gains.sh	
 	#gains=${GAINS:-G0=10,G1=5,G2=2.5,G3=1.25}
 	gains=${GAINS:-G0=10,G1=5,G2=2,G3=1}
-	if echo $gains | grep -q X; then
+	if echo $gains | egrep -q -e X -e dB; then
 		gain_file_pfx="gain"
 	else
 		gain_file_pfx="range"
