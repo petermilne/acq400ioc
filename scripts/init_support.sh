@@ -4,7 +4,6 @@
 # b/ portable, UUT-relative namespace - site service omits ${UUT}:${SITE}
 
 make_caget() {
-	[ -L /etc/acq400/$3 ] && return
 	PFX=${1%*:$2}
 	VERB=/usr/local/bin/caget_$PFX
 	if [ ! -e $VERB ]; then
@@ -25,7 +24,6 @@ EOF
 }
 
 make_caget_w() {
-	[ -L /etc/acq400/$3 ] && return
 	PFX=${1%*:$2}
 	VERB=/usr/local/bin/caget_w_$PFX
 	if [ ! -e $VERB ]; then
@@ -46,7 +44,6 @@ EOF
 }
 
 make_caput() {
-	[ -L /etc/acq400/$3 ] && return
 	PFX=${1%*:$2}
 	
 	VERB=/usr/local/bin/caput_$PFX
