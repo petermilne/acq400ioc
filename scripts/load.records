@@ -943,7 +943,7 @@ load_mb_sync() {
 	dblr '"db/sync_bus_data.db","'${CPRAMS}'"'
 	
 	
-	echo >>/tmp/st_post.cmd "seq autoRepeat \"uut=${HOST},debug=${AUTO_REPEAT_DEBUG:-}\""
+	echo >>/tmp/st_post.cmd "seq autoRepeat \"uut=${HOST},debug=${AUTO_REPEAT_DEBUG:-/dev/null}\""
 	[ "$ONSETTRANSIENT" = "1" ] && \
 		echo >>/tmp/st_post.cmd "seq onSetTransient \"uut=${HOST}\""
 			
