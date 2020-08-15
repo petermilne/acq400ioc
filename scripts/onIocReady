@@ -1,0 +1,14 @@
+#!/bin/sh
+
+/usr/local/epics/scripts/wait_ioc_ready
+
+logger -t onIocReady 01
+
+for file in /etc/epics.d/*; do
+	if [ -x $file ]; then
+		logger -t onIocReady run $file
+		$file
+	fi
+done
+
+logger -t onIocReady 99

@@ -1167,8 +1167,10 @@ IOC_READY_DELAY=${IOC_READY_DELAY:-3}
 
 echo 'dbl > /tmp/records.dbl'
 echo 'seqShow > /tmp/records.dbl.done'
-echo "dbpf ${HOST}:LIVE:PREPCT 50"
-#echo "dbpf ${HOST}:IOC_READY 1"  >> /tmp/st_final.cmd
-echo >> /tmp/st_final.cmd \
-"seq on_delay \"pv=${HOST}:IOC_READY,val=1,delay=$IOC_READY_DELAY,priority=0\"" 
+
+cat - >>/tmp/st_final.cmd <<EOF
+dbpf ${HOST}:LIVE:PREPCT 50 
+seq on_delay "pv=${HOST}:IOC_READY,val=1,delay=$IOC_READY_DELAY,priority=0" 
+system(/usr/local/epics/scripts/onIocReady)
+EOF
 echo 1>&2 "load.records 99"
