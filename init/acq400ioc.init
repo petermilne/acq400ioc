@@ -72,6 +72,9 @@ start_ioc() {
 	/usr/local/bin/procServ \
 		-c ${ETOP} -p $PIDF -L $LOG 2222 \
 		/bin/nice -n $NICE /usr/local/bin/acq400ioc ${STCMD}
+	while [ ! -r $PIDF ]; do
+		usleep 10000
+	done
 	$LG start_ioc PID $(cat $PIDF) ioc $(pidof acq400ioc)
 }
 
