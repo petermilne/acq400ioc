@@ -44,7 +44,8 @@ record(longin, "${UUT}:${SITE}:Si5326:TUNEPHASE:BUSY:STEP")
 record(calc, "${UUT}:${SITE}:Si5326:TUNEPHASE:BUSY:ACT")
 {
 	field(INPA, "${UUT}:${SITE}:Si5326:TUNEPHASE:BUSY:STEP")
-	field(CALC, "A&1")
+	field(INPB, "${UUT}:${SITE}:Si5326:TUNEPHASE:BUSY")
+	field(CALC, "B && (A&1)")
 }
 
 
