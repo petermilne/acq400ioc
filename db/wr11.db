@@ -36,8 +36,15 @@ record(bi, "${UUT}:${SITE}:Si5326:TUNEPHASE:BUSY")
 record(longin, "${UUT}:${SITE}:Si5326:TUNEPHASE:BUSY:STEP")
 {
 	field(DTYP, "stream")
-	field(INP,  "@wr.proto getSi5326TP_BUSY ${SPORT}")
+	field(INP,  "@wr.proto getSi5326TP_BUSY_STEP ${SPORT}")
 	field(SCAN, "I/O Intr")
+	field(FLNK, "${UUT}:${SITE}:Si5326:TUNEPHASE:BUSY:ACT")
+}
+
+record(calc, "${UUT}:${SITE}:Si5326:TUNEPHASE:BUSY:ACT")
+{
+	field(INPA, "${UUT}:${SITE}:Si5326:TUNEPHASE:BUSY:STEP")
+	field(CALC, "A&1")
 }
 
 
