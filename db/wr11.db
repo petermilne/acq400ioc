@@ -33,6 +33,13 @@ record(bi, "${UUT}:${SITE}:Si5326:TUNEPHASE:BUSY")
 	field(ONAM, "1")
 }
 
+record(longin, "${UUT}:${SITE}:Si5326:TUNEPHASE:BUSY:STEP")
+{
+	field(DTYP, "stream")
+	field(INP,  "@wr.proto getSi5326TP_BUSY ${SPORT}")
+	field(SCAN, "I/O Intr")
+}
+
 
 record(bo, "${UUT}:${SITE}:Si5326:TUNEPHASE")
 {
