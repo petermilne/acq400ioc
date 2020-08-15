@@ -36,8 +36,40 @@ monitor continuous;
 
 
 
+%{
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+int fd = 1;
+
+
+void openDebug(char* debug){
+	if (debug == 0 || debug[0] == '\0'){
+		fd = 1;
+	}else{
+		fd = open(debug, (O_CREAT | O_WRONLY), 0664);
+		if (fd < 0){
+			printf("ERROR failed to open debug:%s\n", debug);
+			exit(-1);
+		}
+	}
+}
+
+void closeDebug() {
+	if (fd != 1) close(fd);
+}
+}%
 ss autorepeat
 {
+	state init {
+		when() {
+				openDebug(macValueGet("debug"));
+		} state stop
+	}
+	
 	state stop
 	{
 		when(tstate != 0){
@@ -50,41 +82,41 @@ ss autorepeat
 		when(set_abort > 0){
 			set_abort = 0;
 			pvPut(set_abort);
-			printf("run=>stop_transition ABORT\n");
+			dprintf(fd, "run=>stop_transition ABORT\n");
 		} state stop_transition
 		
 		when(tstate == 0){
-			printf("run=>run_transition\n");	
+			dprintf(fd, "run=>run_transition\n");	
 		} state run_transition
 	}
 	
 	state stop_transition 
 	{
 		when(tstate == 0){
-			printf("stop_transition=>stop\n");
+			dprintf(fd, "stop_transition=>stop\n");
 		} state stop
 	}
 	
 	state run_transition
 	{
 		when(repeat < 0){
-			printf("run_transition=>rearm autorepeat forever\n");
+			dprintf(fd, "run_transition=>rearm autorepeat forever\n");
 		} state rearm
 				
 		when(repeat > 1){
 			repeat -= 1;	
 			pvPut(repeat);
-			printf("run_transition=>rearm autorepeat %d\n", repeat);
+			dprintf(fd, "run_transition=>rearm autorepeat %d\n", repeat);
 		} state rearm
 		
 		when (repeat == 1){
 			repeat = 0;
 			pvPut(repeat);
-			printf("run_transition=>stop autorepeat finished\n");
+			dprintf(fd, "run_transition=>stop autorepeat finished\n");
 		} state stop
 		
 		when (repeat == 0){
-			printf("run_transition=>stop autorepeat 0\n");
+			dprintf(fd, "run_transition=>stop autorepeat 0\n");
 		} state stop
 	}
 	
@@ -99,11 +131,11 @@ ss autorepeat
 		when(set_abort > 0){			
 			pvPut(set_abort);
 			set_abort = 0;
-			printf("run=>stop_transition ABORT\n");
+			dprintf(fd, "run=>stop_transition ABORT\n");
 		} state stop_transition
 		    		
 		when (delay(repeat_delay)) {
-			printf("rearm=>waitrun\n");
+			dprintf(fd, "rearm=>waitrun\n");
 			set_arm = 1;
 			pvPut(set_arm);
 		} state waitrun
@@ -112,11 +144,11 @@ ss autorepeat
 	state waitrun 
 	{
 		when(shot_complete != shot_complete0 && tstate == 0){
-			printf("wait_run->run_transition\n");
+			dprintf(fd, "wait_run->run_transition\n");
 		} state run_transition
 		
 		when(tstate != 0){
-			printf("wait_run=>run\n");
+			dprintf(fd, "wait_run=>run\n");
 		} state run
 	}
 }
@@ -132,7 +164,7 @@ ss monitor_continuous
 		when(continuous > 0){
 			pvGet(repeat);
 			if (repeat){
-				printf("continuous start detected, set repeat to zero to false restart\n");
+				dprintf(fd, "continuous start detected, set repeat to zero to false restart\n");
 				repeat = 0;
 				pvPut(repeat);
 			}
@@ -145,4 +177,9 @@ ss monitor_continuous
 			;
 		} state mc1
 	}
+}
+
+exit
+{
+	closeDebug();
 }
