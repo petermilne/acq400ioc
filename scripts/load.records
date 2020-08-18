@@ -251,6 +251,25 @@ OUTX="ABCDEFGH"
 # we allow ONE AWG only
 AWG_DONE=n  
 
+load_400_statics() { (
+    site=$1    
+    cprams="UUT=${HOST},SITE=${site}"
+	ek=/etc/acq400/$site
+	model=$(cat ${ek}/MODEL)
+	
+	if [ $site -gt 0 ]; then
+		pn=$(cat ${ek}/PART_NUM | awk '{ print $1 }')
+	else
+		pn=$model
+	fi
+	nc=$(cat ${ek}/NCHAN)
+	serial=$(cat ${ek}/SERIAL)
+	role=$(cat ${ek}/module_role)
+	dba="MODEL=$model,PN=$pn,NCHAN=$nc,SERIAL=$serial,ROLE=$role"
+
+	dblr '"db/acq400.db","'${cprams},${dba}'"'		
+) }
+
 load_400() {
 	site=$1
 	
@@ -272,10 +291,11 @@ load_400() {
 	if [ -e /etc/acq400/$site/MAX_KHZ ]; then
 		let maxhz="$(cat /etc/acq400/$site/MAX_KHZ) * 1000"
 	fi
-	cprams="UUT=${HOST},SITE=${site},SPORT=S${site}"
-	dblr '"db/acq400.db","'${cprams}'"'
+	
+	load_400_statics $site
 	create_asyn_channel S${site} 127.0.0.1:$((4220+${site}))
-
+	cprams="UUT=${HOST},SITE=${site},SPORT=S${site}"
+	
 	# temporary hack. define in epics.sh eg 
 	# export GAINS=G0=10,G1=5,G2=2,G3=1
 	[ -e /dev/sites/$site/gains.sh ] && source /dev/sites/$site/gains.sh	
@@ -663,7 +683,7 @@ load_mb_base() {
 	mt=$2
 	zynq_hwmon Z
 	
-	dblr '"db/acq400.db","'UUT=${HOST}',SITE=0,SPORT=S0"'
+	load_400_statics 0
 	
 	for SITE in $(seq 0 $ns)
 	do
@@ -989,12 +1009,22 @@ load_mb_stats()
 }
 
 
+load_system() {
+	ip0=$(/usr/local/epics/scripts/ifconfig_eth0)
+	ipb=$(echo $ip0 | tr . :) 
+	ip1=$(/usr/local/epics/scripts/ifconfig_eth0 eth1)
+	sw=$(head -n1 /etc/acq400/0/software_version)
+	gw=$(sed -e 's/TOP_//' /etc/acq400/0/fpga_version | awk '{ print $1 }')
+	dba="ipaddrbis=$ipb,IP0=$ip0,IP1=$ip1,SW=$sw,GW=$gw"
 cat - <<EOF
 epicsEnvSet("STREAM_PROTOCOL_PATH","./protocols")
 dbLoadDatabase("dbd/acq400ioc.dbd",0,0)
 acq400ioc_registerRecordDeviceDriver(pdbbase)
-dbLoadRecords("db/system.db","UUT=${HOST},ipaddrbis=$(./scripts/ifconfig_eth0 :),SPORT=S0")
+dbLoadRecords("db/system.db","UUT=${HOST},$dba,SPORT=S0")
 EOF
+}
+
+load_system
 
 KB=/dev/acq400.0.knobs
 

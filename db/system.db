@@ -9,30 +9,6 @@ record (calc, "${UUT}:SYS:IOCUPTIME") {
        field(CALC, "VAL+1")
 }
 
-
-record (stringin, "${UUT}:SYS:VERSION:SW") {
-	field(DTYP, "stream")
-	field(INP,  "@mb.proto getSwVersion ${SPORT}")	
-	field(PINI, "YES")
-}
-
-record (stringin, "${UUT}:SYS:VERSION:FPGA" ) {
-	field(DTYP, "stream")
-	field(INP,  "@mb.proto getFpgaVersion ${SPORT}")	
-	field(PINI, "YES")
-}
-
-
-record (stringin, "${UUT}:SYS:IFCONFIG:ETH0" ) {
-	field(DTYP, "stream")
-	field(INP,  "@mb.proto getIfconfig(eth0) ${SPORT}")
-	field(PINI, "YES")
-}
-
-record (bo, "${UUT}:NOALIASES") {
-	field(DTYP, "Soft Channel")
-}
-
 record (bo, "${UUT}:IOC_READY") {
 	field(DTYP, "Soft Channel")
 	field(VAL,  "0")
@@ -41,6 +17,30 @@ record (bo, "${UUT}:IOC_READY") {
 	field(ONAM, "1")
 }
 
+
+record (stringin, "${UUT}:SYS:VERSION:SW") {
+	field(DTYP, "Soft Channel")
+	field(VAL,  "${SW}")	
+	field(PINI, "YES")
+}
+
+record (stringin, "${UUT}:SYS:VERSION:FPGA" ) {
+	field(DTYP, "Soft Channel")
+	field(VAL,  "${GW}")	
+	field(PINI, "YES")
+}
+
+
+record (stringin, "${UUT}:SYS:IFCONFIG:ETH0" ) {
+	field(DTYP, "Soft Channel")
+	field(VAL,  "${IP0}")
+	field(PINI, "YES")
+}
+record (stringin, "${UUT}:SYS:IFCONFIG:ETH1" ) {
+	field(DTYP, "Soft Channel")
+	field(VAL,  "${IP1}")
+	field(PINI, "YES")
+}
 record (stringin, "IP:${ipaddrbis}") {
 	field(DTYP, "Soft Channel")
 	field(VAL,  "${UUT}")
@@ -48,6 +48,9 @@ record (stringin, "IP:${ipaddrbis}") {
 	field(DESC,  "Reverse DNS feature")
 }
 
+record (bo, "${UUT}:NOALIASES") {
+	field(DTYP, "Soft Channel")
+}
 
 record(stringout, "${UUT}:USER") {
 	field(DTYP, "Soft Channel")

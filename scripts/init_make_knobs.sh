@@ -19,8 +19,7 @@ make_site_custom_knobs() {
 make_site0_knobs() {
 	(
 		cd /etc/acq400/0/
-		rm -f fpmux
-		ln -s /usr/local/epics/scripts/ifconfig_eth0
+		rm -f fpmux		
 	)
 	make_site_custom_knobs 0 common
 	make_site_custom_knobs 0 $(cat /proc/device-tree/chosen/compatible_model)
