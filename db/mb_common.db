@@ -1,5 +1,5 @@
 record(stringin, "${UUT}:SITELIST") {
-	field(DTYP, "stream")
+	field(DTYP, "Soft Channel")
 	field(VAL,  "${SL}")
 	field(PINI, "YES")
 }
