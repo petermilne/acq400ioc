@@ -183,6 +183,8 @@ make_epics_knobs() {
 	make_site0_knobs	
 
 	killall voltsmon
+	touch /dev/shm/volts.txt
+	ln -s /dev/shm/volts.txt /etc/acq400/0/SYS_VOLTS
 	daemon /usr/local/bin/voltsmon.epics
 	echo make_epics_knobs_done >/tmp/epics_knobs_done
 	if [ -e /usr/local/init/acq400_knobs.init ]; then

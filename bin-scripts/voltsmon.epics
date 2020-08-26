@@ -24,7 +24,10 @@ monitor() {
 
 while [ 1 ]
 do
-	(monitor | fs2xml --kvp >/dev/shm/volts.xml) &
+	(
+		monitor | tee /dev/shm/volts.dat | fs2xml --kvp >/dev/shm/volts.xml
+		grep -v VERSION /dev/shm/volts.dat | tr '\n ' ',=' | sed -e 's/,$/\n/' >/dev/shm/volts.txt
+	) &
 	MONPID=$!
 	sleep 5
 	[ -e /proc/$MONPID ] &&  kill -9 $MONPID
