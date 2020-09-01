@@ -118,7 +118,7 @@ set_slave_acq2106() {
 set_common_master_acq1001() {		
     set.site 0 SIG:SRC:CLK:1 MCLK
     sync_trg_to_clk 1
-    set.site 1 CLKDIV=${CLKDIV:-1}
+    [ -e /etc/acq400/1/ACQ43X_SAMPLE_RATE ] || set.site 1 CLKDIV=${CLKDIV:-1}
     set.site 1 "sync=0,0,0"
 }
 
