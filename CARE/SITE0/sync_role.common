@@ -246,7 +246,8 @@ config_distributor_sites() {
 		trg="TRG=1; TRG:DX=${TRG_DX:-d1}; TRG:SENSE=${TRG_SENSE:-rising}"
 	else
 		trg="TRG=1; TRG:DX=${TRG_DX:-d0}; TRG:SENSE=${TRG_SENSE:-rising}"
-
+	fi
+	
 	if [ $distributor_sites = "none" ]; then return; fi
 	for site in $distributor_sites; do
 		if [ $(get.site $(basename $site) module_role) = "MASTER" ]; then
