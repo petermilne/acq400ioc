@@ -244,9 +244,9 @@ config_distributor_sites() {
 	if [ $distributor_sites = "none" ]; then return; fi
 	for site in $distributor_sites; do
 		if [ $(get.site $(basename $site) module_role) = "MASTER" ]; then
-			set.site $site clk '1,2,1'
+			set.site $site clk '1,1,1'
 			set.site $site clkdiv 1
-			set.site $site trg '1,2,1'
+			set.site $site trg '1,1,1'
 		fi
 	done
 
