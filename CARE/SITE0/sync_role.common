@@ -72,7 +72,8 @@ set_mbclk() {
         # assert CLKDIV, possibly user
         set.site 1 CLKDIV $CLKDIV
     fi
-    set.site 0 SIG:CLK_MB:SET $fs
+
+    python ./mb_clk_freq_check.py $fs
 }
 
 
