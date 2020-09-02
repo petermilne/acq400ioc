@@ -161,7 +161,6 @@ FS_DEF=200000; is_48x && FS_DEF=20000000
 set_common() {
     echo "WARNING:$CMDLINE incomplete" > /dev/shm/role
     set.site 0 SIG:*:RESET=1  &
-	config_distributor_sites
 }
 
 # even a slave can master another link in the chain..
@@ -241,6 +240,13 @@ config_distributor_sites() {
 	# To get get distributor sites: split by spaces (using awk) to get 'sites="x,y,z"',
 	# then split by '=' to get sites, then use sed to replace commas with spaces.
 	distributor_sites=$(get.site 0 distributor | awk '{ print $2 }' | awk -F= '{ print $2 }' | sed "s/,/ /g")
+
+	# If system is a master then use soft trigger else use ext trigger.
+	if [ $ROLE = "master" ]; then
+		trg="TRG=1; TRG:DX=${TRG_DX:-d1}; TRG:SENSE=${TRG_SENSE:-rising}"
+	else
+		trg="TRG=1; TRG:DX=${TRG_DX:-d0}; TRG:SENSE=${TRG_SENSE:-rising}"
+
 	if [ $distributor_sites = "none" ]; then return; fi
 	for site in $distributor_sites; do
 		if [ $(get.site $(basename $site) module_role) = "MASTER" ]; then
@@ -330,6 +336,11 @@ else
 		role_set=-1;;
 	esac
 fi
+
+
+# Configure distributor (XO) after AI.
+config_distributor_sites $ROLE
+
 
 if [ $role_set -eq 0 ]; then
 	echo $CMDLINE > /dev/shm/role
