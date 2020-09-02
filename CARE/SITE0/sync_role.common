@@ -241,28 +241,16 @@ set_48x_override() {
 
 
 config_distributor_sites() {
-	# Configure the clock and trigger settings for an acq2106 with XO cards.
-
-	# To get get distributor sites: split by spaces (using awk) to get 'sites="x,y,z"',
-	# then split by '=' to get sites, then use sed to replace commas with spaces.
 	distributor_sites=$(get.site 0 distributor | awk '{ print $2 }' | awk -F= '{ print $2 }' | sed "s/,/ /g")
-
-	# If system is a master then use soft trigger else use ext trigger.
-	if [ $ROLE = "master" ]; then
-		trg="TRG=1; TRG:DX=${TRG_DX:-d1}; TRG:SENSE=${TRG_SENSE:-rising}"
-	else
-		trg="TRG=1; TRG:DX=${TRG_DX:-d0}; TRG:SENSE=${TRG_SENSE:-rising}"
-	fi
+	[ $distributor_sites = "none" ] && return
 	
-	if [ $distributor_sites = "none" ]; then return; fi
 	for site in $distributor_sites; do
-		if [ $(get.site $(basename $site) module_role) = "MASTER" ]; then
+		if [ $(get.site $site module_role) = "MASTER" ]; then
 			set.site $site clk '1,1,1'
 			set.site $site clkdiv 1
-			set.site $site $trg
+			set.site $site 1,$1,${TRG_SENSE:-rising}
 		fi
 	done
-
 }
 
 
@@ -273,12 +261,15 @@ eval $(egu2int FS=${P2:-$FS_DEF} FIN=${P3:-$FIN_DEF})
 
 role_set=0
 
+D_TRG='d0'
+
 if [ "${MOD:0:7}" = "acq1014" ]; then
 	TRG=${TRG:-ext}
 	acq1014_clk_src=$(get.site 2 acq1014_clk)
 	case $ROLE in
 	master|solo)
 		TRG=${TRG:-int}
+		D_TRG='d1'
 		set_common
 		/usr/local/bin/acq1014_select_clk_src int $FS $FIN_CLKSTAR;;
 	fpmaster)		
@@ -328,6 +319,7 @@ else
 	master)
 	    set_common
 	    set_out
+	    D_TRG='d1'
 	    $set_common_master
 	    set_local_clock $FS
 	    is_48x && set_48x_override $FS master;;	   
@@ -346,7 +338,7 @@ fi
 
 
 # Configure distributor (XO) after AI.
-config_distributor_sites $ROLE
+config_distributor_sites $D_TRG
 
 
 if [ $role_set -eq 0 ]; then
