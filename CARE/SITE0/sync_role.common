@@ -165,6 +165,7 @@ FS_DEF=200000; is_48x && FS_DEF=20000000
 set_common() {
     echo "WARNING:$CMDLINE incomplete" > /dev/shm/role
     set.site 0 SIG:*:RESET=1  &
+	config_distributor_sites
 }
 
 # even a slave can master another link in the chain..
@@ -238,6 +239,25 @@ set_48x_override() {
     # Configure HDMI Clock out
     set.site 0 SIG:SYNC_OUT:CLK:DX  d0
 }
+
+
+config_distributor_sites() {
+	# Configure the clock and trigger settings for an acq2106 with XO cards.
+
+	# To get get distributor sites: split by spaces (using awk) to get 'sites="x,y,z"',
+	# then split by '=' to get sites, then use sed to replace commas with spaces.
+	distributor_sites=$(get.site 0 distributor | awk '{ print $2 }' | awk -F= '{ print $2 }' | sed "s/,/ /g")
+	if [ $distributor_sites = "none" ]; then return; fi
+	for site in $distributor_sites; do
+		if [ $(get.site $(basename $site) module_role) = "MASTER" ]; then
+			set.site $site clk '1,1,1'
+			set.site $site clkdiv 1
+			set.site $site trg '1,1,1'
+		fi
+	done
+
+}
+
 
 # execution here...
 
