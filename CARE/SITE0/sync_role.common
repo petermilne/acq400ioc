@@ -2,10 +2,6 @@
 # sync_role.common
 # set.site 0 sync_role fpmaster|rpmaster|master|solo|slave FS FIN [opts] 
 
-sync_trg_to_clk() {
-	[ -e /etc/acq400/1/sync_trg_to_clk ] && \
-		set.site 1 sync_trg_to_clk $1
-}
 
 TRG=
 TRG_SENSE=rising
@@ -98,6 +94,12 @@ if [ -e /etc/acq400/1/ACQ43X_SAMPLE_RATE ]; then
     select_lo=select_lo_xclk
     set_mb=set_acq43x_sample_rate
 fi
+
+sync_trg_to_clk() {
+	[ -e /etc/acq400/1/sync_trg_to_clk ] && \
+		set.site 1 sync_trg_to_clk $1
+}
+
 
 set_slave_acq1001() {
     set.site 0 SYS:CLK:FPMUX OFF
@@ -248,7 +250,7 @@ config_distributor_sites() {
 		if [ $(get.site $site module_role) = "MASTER" ]; then
 			set.site $site clk '1,1,1'
 			set.site $site clkdiv 1
-			set.site $site 1,$1,${TRG_SENSE:-rising}
+			set.site $site 1,${TRG_DX:-$1},${TRG_SENSE:-rising}
 		fi
 	done
 }
