@@ -1,5 +1,5 @@
 #!/bin/sh
-# sync_role.common
+# sync_role.wr
 # set.site 0 sync_role fpmaster|rpmaster|master|solo|slave FS FIN [opts] 
 
 
@@ -235,7 +235,7 @@ config_distributor_sites() {
 	for site in $distributor_sites; do
 		if [ $(get.site $site module_role) = "MASTER" ]; then
 			set.site $site clk '1,1,1'
-			set.site $site clkdiv 1
+			set.site $site CLKDIV=${CLKDIV:-1}
 			set.site $site "trg=1,${TRG_DX:-$1},${TRG_SENSE:-rising}"
 		fi
 	done
@@ -259,7 +259,7 @@ fpmaster|rpmaster|master|solo|slave)
     set_common
     set_out
     D_TRG='d1'
-    acq2106+WR.init $FINM
+    /usr/local/CARE/acq2106+WR.init $FINM
     /usr/local/CARE/route-WR-FP    
     $set_common_master
     set_local_clock $FS;;       
