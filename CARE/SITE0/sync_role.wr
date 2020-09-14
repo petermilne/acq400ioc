@@ -60,12 +60,9 @@ set_mbclk() {
     let fs=$1
     if [ $fs -lt $FIN ]; then
     # ensure a valid fs, ignore any user CLKDIV
-        let CLKDIV="$FIN/$fs" 
-        set.site 1 CLKDIV $clkdiv
-    else
-        # assert CLKDIV, possibly user
-        set.site 1 CLKDIV $CLKDIV
+        CLKDIV=$(($FIN/$fs)) 
     fi
+    set.site 1 CLKDIV $CLKDIV
 }
 
 
@@ -201,28 +198,6 @@ set_master() {
     pv_read_lock TRG 0
 #    set.site 0 SIG:CLK_MB:FIN $2
     $set_mb $1
-}
-
-
-set_48x_override() {
-    # Configure clock
-    if [ "$2" = "master" ]; then
-        # Configure clock - This is NOT valid for FPCLK
-        set.site 0 SIG:SRC:CLK:0 INT01M
-        fin=1000000
-    else
-        set.site 0 SIG:SRC:CLK:0 HDMI
-        fin=$FIN
-    fi
-    set.site 0 SYS:CLK:FPMUX ZCLK
-    set.site 0 SIG:ZCLK_SRC CLK.d0
-    set.site 0 SIG:CLK_MB:FIN $fin
-    $set_mb $1
-    set.site 0 SIG:SRC:CLK:1 MCLK
-    set.site 0 SYS:CLK:OE_CLK1_ZYNQ 1
-    set.site 1 CLKDIV=${CLKDIV:-1}
-    # Configure HDMI Clock out
-    set.site 0 SIG:SYNC_OUT:CLK:DX  d0
 }
 
 
