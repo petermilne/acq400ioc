@@ -1,0 +1,366 @@
+#!/bin/sh
+# sync_role.common
+# set.site 0 sync_role fpmaster|rpmaster|master|solo|slave FS FIN [opts] 
+
+
+TRG=
+TRG_SENSE=rising
+CLK_SENSE=rising
+
+CMDLINE="$*"
+FMIN=4000000
+CLKDIV=1
+
+P1=
+P2=
+P3=
+
+FIN_DEF=1000000
+FIN_CLKSTAR=20000000
+
+set.site 1 CLK=1 2>&1 > /dev/null
+
+let px=1
+for k in $*; do
+    key=${k%=*}; val=${k#*=}
+    case $key in
+    TRG:SENSE)
+        TRG_SENSE=$val;;
+    CLK:SENSE)
+        CLK_SENSE=$val;;
+	TRG)
+    	TRG=$val			# int or ext, pick dX defaults for most boxes
+    	[ "$TRG" = "int" ] && TRG_DX=d1
+    	[ "$TRG" = "ext" ] && TRG_DX=d0
+    	;;
+    TRG:DX)
+        TRG_DX=$val;;		# not previously defined. actual dX line..
+    CLK:DX)
+        CLK_DX=$val;;
+    CLKDIV)
+        CLKDIV=$val;;
+    *)
+        if [ $key = $val ]; then
+        	case $px in
+        	1)	P1=$k;;
+        	2)  P2=$k;;
+        	3)	P3=$k;;
+        	*)  echo "error discard parameter $px $k";;
+        	esac
+        	px=$(($px+1))
+	    else
+        	echo "error $key not defined"
+    	fi;;
+    esac
+done
+
+
+
+set_mbclk() {
+    let fs=$1
+    if [ $fs -lt $FMIN ]; then
+    # ensure a valid fs, ignore any user CLKDIV
+        let clkdiv="5*$FMIN/$fs"
+        clkdiv=$(printf "%d" $clkdiv)
+        let fs=$clkdiv*$fs
+        set.site 1 CLKDIV $clkdiv
+    else
+        # assert CLKDIV, possibly user
+        set.site 1 CLKDIV $CLKDIV
+    fi
+
+    python ./mb_clk_freq_check.py $fs
+}
+
+
+set_mb=set_mbclk
+
+select_lo_zclk() {
+    set.site 0 SYS:CLK:FPMUX ZCLK
+    set.site 0 SIG:ZCLK_SRC INT33M
+    set.site 0 SIG:CLK_MB:FIN 33333000
+}
+select_lo_xclk() {
+    set.site 0 SYS:CLK:FPMUX XCLK
+    set.site 0 SIG:CLK_MB:FIN 32768000
+}
+select_lo=select_lo_zclk
+
+set_acq43x_sample_rate() {
+    set.site 1 ACQ43X_SAMPLE_RATE $1
+}
+
+if [ -e /etc/acq400/1/ACQ43X_SAMPLE_RATE ]; then
+    select_lo=select_lo_xclk
+    set_mb=set_acq43x_sample_rate
+fi
+
+sync_trg_to_clk() {
+	[ -e /etc/acq400/1/sync_trg_to_clk ] && \
+		set.site 1 sync_trg_to_clk $1
+}
+
+
+set_slave_acq1001() {
+    set.site 0 SYS:CLK:FPMUX OFF
+    sync_trg_to_clk 0
+    set.site 0 SIG:SRC:CLK:${1:-1} HDMI
+    set.site 0 SIG:SRC:TRG:0 HDMI
+    set.site 0 SIG:SRC:SYNC:0 HDMI
+    set.site 1 "clk=1,d1,${CLK_SENSE}"
+    set.site 1 "trg=1,d0,${TRG_SENSE}"
+    [ "x$ROLE" = "x${ROLE#*master}" ] && set.site 1 "sync=1,d0,rising"
+    set.site 1 CLKDIV=${CLKDIV:-1}
+}
+
+set_slave_acq2106() {
+    set.site 0 SYS:CLK:OE_CLK1_ZYNQ 0
+    set_slave_acq1001 $1
+}
+
+set_common_master_acq1001() {		
+    set.site 0 SIG:SRC:CLK:1 MCLK
+    sync_trg_to_clk 1
+    [ -e /etc/acq400/1/ACQ43X_SAMPLE_RATE ] || set.site 1 CLKDIV=${CLKDIV:-1}
+    set.site 1 "sync=0,0,0"
+}
+
+set_common_master_acq2106() {
+    set.site 0 SYS:CLK:OE_CLK1_ZYNQ 1
+    set.site 0 SYS:CLK:BYPASS 0
+    set_common_master_acq1001
+}
+
+MOD=$(get.site 0 MODEL)
+MEZ=$(get.site 1 MODEL)
+
+is_48x() {
+    echo $MEZ | grep -q ACQ48
+}
+
+is_42x() {	
+    echo $MEZ | egrep -q ACQ42\|AO42
+}
+
+
+
+CLKDX_OUT=d1
+
+if [ "${MOD:0:7}" = "acq2106" ]; then
+    set_slave=set_slave_acq2106
+    set_common_master=set_common_master_acq2106
+# Si5326 minimum output rate
+    FMIN=20000
+else
+    set_slave=set_slave_acq1001
+    set_common_master=set_common_master_acq1001
+# ics527 minimum output rate
+    FMIN=4000000
+# avoid local clkdiv on slow SLAVE SAR devices		
+    is_42x && CLKDX_OUT=d2
+fi
+
+FS_DEF=200000; is_48x && FS_DEF=20000000
+
+# common to all
+# report init status - this will be overwritten on successful completion
+set_common() {
+    echo "WARNING:$CMDLINE incomplete" > /dev/shm/role
+    set.site 0 SIG:*:RESET=1  &
+}
+
+# even a slave can master another link in the chain..
+# we share the MB clock and the SITE trigger 
+# The MASTER syncs the SITE trigger, SLAVES MUST leave it untouched.
+set_out() {	
+    set.site 0 SIG:SYNC_OUT:CLK 	CLK
+    set.site 0 SIG:SYNC_OUT:CLK:DX 	${CLKDX_OUT}
+    set.site 0 SIG:SYNC_OUT:TRG 	TRG
+    set.site 0 SIG:SYNC_OUT:TRG:DX 	d2
+    set.site 0 SIG:SYNC_OUT:SYNC 	SYNC
+    set.site 0 SIG:SYNC_OUT:SYNC:DX d2
+}
+
+set_out_slave() {
+    set.site 0 SIG:SYNC_OUT:CLK 	CLK
+    set.site 0 SIG:SYNC_OUT:CLK:DX 	d1
+    set.site 0 SIG:SYNC_OUT:TRG 	TRG
+    set.site 0 SIG:SYNC_OUT:TRG:DX 	d0
+    set.site 0 SIG:SYNC_OUT:SYNC 	SYNC
+    set.site 0 SIG:SYNC_OUT:SYNC:DX d0
+}
+
+# PV readback on triplet en,dx,edge can cause errors, so lock it
+source /etc/profile.d/epics.sh
+PV_BASE=${IOC_HOST}
+pv_read_lock() {
+    caput -t $PV_BASE:1:$1:r.DISA $2 >/dev/null
+}
+
+set_local_clock() {	 
+    $select_lo
+    $set_mb $1
+    pv_read_lock CLK 1
+    set.site 1 "clk=1,${CLK_DX:-d1},${CLK_SENSE}"
+    pv_read_lock CLK 0
+    pv_read_lock TRG 1
+    set.site 1 "trg=1,${TRG_DX:-d1},${TRG_SENSE}"
+    pv_read_lock TRG 0
+}
+
+set_master() {
+    pv_read_lock CLK 1
+    set.site 1 "clk=1,${CLK_DX:-d1},${CLK_SENSE}"
+    pv_read_lock CLK 0
+    pv_read_lock TRG 1
+    set.site 1 "trg=1,${TRG_DX:-d0},${TRG_SENSE}"
+    pv_read_lock TRG 0
+    set.site 0 SIG:CLK_MB:FIN $2
+    $set_mb $1
+}
+
+
+set_48x_override() {
+    # Configure clock
+    if [ "$2" = "master" ]; then
+        # Configure clock - This is NOT valid for FPCLK
+        set.site 0 SIG:SRC:CLK:0 INT01M
+        fin=1000000
+    else
+        set.site 0 SIG:SRC:CLK:0 HDMI
+        fin=$FIN
+    fi
+    set.site 0 SYS:CLK:FPMUX ZCLK
+    set.site 0 SIG:ZCLK_SRC CLK.d0
+    set.site 0 SIG:CLK_MB:FIN $fin
+    $set_mb $1
+    set.site 0 SIG:SRC:CLK:1 MCLK
+    set.site 0 SYS:CLK:OE_CLK1_ZYNQ 1
+    set.site 1 CLKDIV=${CLKDIV:-1}
+    # Configure HDMI Clock out
+    set.site 0 SIG:SYNC_OUT:CLK:DX  d0
+}
+
+
+config_distributor_sites() {
+	distributor_sites=$(get.site 0 distributor | awk '{ print $2 }' | awk -F= '{ print $2 }' | sed "s/,/ /g")
+	[ $distributor_sites = "none" ] && return
+	
+	for site in $distributor_sites; do
+		if [ $(get.site $site module_role) = "MASTER" ]; then
+			set.site $site clk '1,1,1'
+			set.site $site clkdiv 1
+			set.site $site 1,${TRG_DX:-$1},${TRG_SENSE:-rising}
+		fi
+	done
+}
+
+
+# execution here...
+
+ROLE=$P1
+eval $(egu2int FS=${P2:-$FS_DEF} FIN=${P3:-$FIN_DEF})
+
+role_set=0
+
+D_TRG='d0'
+
+if [ "${MOD:0:7}" = "acq1014" ]; then
+	TRG=${TRG:-ext}
+	acq1014_clk_src=$(get.site 2 acq1014_clk)
+	case $ROLE in
+	master|solo)
+		TRG=${TRG:-int}
+		D_TRG='d1'
+		set_common
+		/usr/local/bin/acq1014_select_clk_src int $FS $FIN_CLKSTAR;;
+	fpmaster)		
+		set_common
+		if [ $acq1014_clk_src -eq 2 ]; then
+			echo "ERROR: RPCLK has priority"; exit 1
+		else
+			/usr/local/bin/acq1014_select_clk_src ext $FS $FIN
+		fi;;
+	rpmaster)			
+		set_common
+		if [ $acq1014_clk_src -ne 2 ]; then
+			echo "ERROR: RP CABLE NOT CONNECTED"; exit 1
+		else
+			/usr/local/bin/acq1014_select_clk_src ext $FS $FIN
+		fi;;		
+	slave)
+		set_common
+        # Be careful with FIN. For slaves this is 20MHz for
+        # rear panel masters this will be 1MHz.
+    	fin=$FIN_CLKSTAR; [ "x$P3" != "x" ] && fin=$FIN
+    	/usr/local/bin/acq1014_select_clk_src ext $FS $fin;;	
+	*)
+		role_set=-1;;	
+	esac
+	if [ $role_set -ne -1 ]; then
+    	# Set the trigger dependent on role or TRG= override on command line
+    	# Assume post mode. TRG_DX is ignored for ACQ1014
+    	/usr/local/bin/acq1014_select_trg_src $TRG post $TRG_SENSE
+	fi    
+else		
+	case $ROLE in
+	fpmaster)
+	    set_common
+	    set_out
+	    $set_common_master
+	    set.site 0 SYS:CLK:FPMUX FPCLK
+	    set_master $FS $FIN;;	    
+	rpmaster)
+		set_common
+	    set_out
+	    $set_slave 0
+	    $set_common_master
+	    set.site 0 SYS:CLK:FPMUX ZCLK
+	    set.site 0 SIG:ZCLK_SRC CLK.d0
+	    set_master $FS $FIN;;  
+	master)
+	    set_common
+	    set_out
+	    D_TRG='d1'
+	    $set_common_master
+	    set_local_clock $FS
+	    is_48x && set_48x_override $FS master;;	   
+	solo)
+	    set_common
+	    set_local_clock $FS;;	    
+	slave)	
+	    set_common
+	    set_out_slave
+	    $set_slave
+	    is_48x && set_48x_override $FS slave;;	    
+	*)
+		role_set=-1;;
+	esac
+fi
+
+
+# Configure distributor (XO) after AI.
+config_distributor_sites $D_TRG
+
+
+if [ $role_set -eq 0 ]; then
+	echo $CMDLINE > /dev/shm/role
+	exit 0
+else
+	case $ROLE in
+	"")
+	    if [ -e /dev/shm/role ]; then
+	        cat /dev/shm/role
+	    else
+	        echo "role not set"
+	    fi;;		
+	help)
+	    echo "USAGE sync_role {fpmaster|rpmaster|master|slave|solo} [CLKHZ] [FIN]"
+	    echo "modifiers [CLK|TRG:SENSE=falling|rising] [CLK|TRG:DX=d0|d1]"
+	    echo "modifiers [TRG=int|ext]"
+	    echo "modifiers [CLKDIV=div]";;
+	*)
+	    echo "ERROR: role $1 not valid"; exit 1;;
+	esac		
+fi
+exit 0

@@ -11,7 +11,7 @@ make_site_custom_knobs() {
 			fn=$(basename $file)
 			generic=${fn%.${special}}
 			knob=${generic/./_}
-			ln -s $file /etc/acq400/${site}/$knob
+			[ ! -L /etc/acq400/0/sync_role ] && ln -s $file /etc/acq400/${site}/$knob
 		fi
 	done
 }
@@ -21,6 +21,7 @@ make_site0_knobs() {
 		cd /etc/acq400/0/
 		rm -f fpmux		
 	)
+	[ -e /etc/acq400/0/wrtd_tx ] && make_site_custom_knobs 0 wr
 	make_site_custom_knobs 0 common
 	make_site_custom_knobs 0 $(cat /proc/device-tree/chosen/compatible_model)
 	ln -s /dev/shm/state /etc/acq400/0/cstate
