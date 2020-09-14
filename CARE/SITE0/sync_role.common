@@ -250,7 +250,7 @@ config_distributor_sites() {
 		if [ $(get.site $site module_role) = "MASTER" ]; then
 			set.site $site clk '1,1,1'
 			set.site $site clkdiv 1
-			set.site $site 1,${TRG_DX:-$1},${TRG_SENSE:-rising}
+			set.site $site "trg=1,${TRG_DX:-$1},${TRG_SENSE:-rising}"
 		fi
 	done
 }
