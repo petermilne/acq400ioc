@@ -241,7 +241,6 @@ config_distributor_sites() {
 	done
 }
 
-
 # execution here... FIN must match a valid load file eg 20M
 
 ROLE=$P1
@@ -260,7 +259,7 @@ fpmaster|rpmaster|master|solo|slave)
     set_common
     set_out
     D_TRG='d1'
-    acq2106+acq480.init WR $FINM
+    acq2106+WR.init $FINM
     /usr/local/CARE/route-WR-FP    
     $set_common_master
     set_local_clock $FS;;       
