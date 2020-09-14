@@ -60,14 +60,12 @@ set_mbclk() {
     let fs=$1
     if [ $fs -lt $FIN ]; then
     # ensure a valid fs, ignore any user CLKDIV
-        let clkdiv="$FIN/$fs" 
+        let CLKDIV="$FIN/$fs" 
         set.site 1 CLKDIV $clkdiv
     else
         # assert CLKDIV, possibly user
         set.site 1 CLKDIV $CLKDIV
     fi
-
-    python ./mb_clk_freq_check.py $fs
 }
 
 
@@ -201,7 +199,7 @@ set_master() {
     pv_read_lock TRG 1
     set.site 1 "trg=1,${TRG_DX:-d0},${TRG_SENSE}"
     pv_read_lock TRG 0
-    set.site 0 SIG:CLK_MB:FIN $2
+#    set.site 0 SIG:CLK_MB:FIN $2
     $set_mb $1
 }
 
@@ -259,9 +257,9 @@ fpmaster|rpmaster|master|solo|slave)
     set_common
     set_out
     D_TRG='d1'
+    $set_common_master
     /usr/local/CARE/acq2106+WR.init $FINM
     /usr/local/CARE/route-WR-FP    
-    $set_common_master
     set_local_clock $FS;;       
 *)
  

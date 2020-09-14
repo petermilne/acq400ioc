@@ -68,8 +68,6 @@ set_mbclk() {
         # assert CLKDIV, possibly user
         set.site 1 CLKDIV $CLKDIV
     fi
-
-    python ./mb_clk_freq_check.py $fs
 }
 
 
