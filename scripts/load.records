@@ -556,6 +556,9 @@ load_400() {
 		aprams="UUT=${HOST},SITE=${site},SPORT=S${site}"
 		dblr '"db/xo.db","'${aprams}'"'
 		dblr '"db/awg.db","'${aprams}'"'
+		sprams="${aprams},CTRMAX=$CTR28,DT=1,DTC=1"
+		dblr '"db/_counter.db","'${sprams},SIG=AWG,lname=REPS'"'
+		echo "dbpf ${HOST}:${site}:SIG:clk_counter_src d$((${site}+1))" >> /tmp/st_post.cmd				
 		AWG_DONE=y
 	fi
 	

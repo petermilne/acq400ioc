@@ -6,6 +6,27 @@ record (longin, "${UUT}:${SITE}:AWG:LENGTH") {
     field(FLNK, "${UUT}:${SITE}:AWG:LENGTH:PCT")   
 }
 
+record (longout, "${UUT}:${SITE}:AWG:BURSTLEN") {
+	field(DTYP, "Soft Channel")
+#	field(DTYP, "stream")
+#	field(OUT, "@cpdac.proto setBurstLen ${SPORT}")
+	field(FLNK, "${UUT}:${SITE}:AWG:BURSTMODE")
+	field(DRVL, "0")
+	field(DRVH, "1048576")
+}
+record (calcout, "${UUT}:${SITE}:AWG:BURSTMODE") {
+	field(INPA, "${UUT}:${SITE}:AWG:BURSTLEN")
+	field(CALC, "A != 0")
+	field(FLNK, "${UUT}:${SITE}:AWG:BURSTMODE:w PP")
+}
+record(bo, "${UUT}:${SITE}:AWG:BURSTMODE:w") {
+	field(DTYP, "Soft Channel")
+#	field(DTYP, "stream")
+#	field(OUT, "@cpdac.proto setBurstMode ${SPORT}")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:${SITE}:AWG:BURSTMODE")
+}
+
 record (longin, "${UUT}:${SITE}:AWG:MAXLEN") {
     field(DTYP, "stream")
     field(INP,  "@awg.proto getMaxlen ${SPORT}")
@@ -37,7 +58,7 @@ record(calc, "${UUT}:${SITE}:AWG:LENGTH:PCT") {
     field(LOPR, "0")
     field(HOPR, "100")
 }
-record (longin, "${UUT}:${SITE}:AWG:REPS") {
+record (longin, "${UUT}:${SITE}:AWG:REPS:rc") {
 	field(DTYP, "stream")
 	field(INP, "@awg.proto getReps ${SPORT}")
 	field(DESC, "AWG number of cycles")
@@ -47,7 +68,16 @@ record (longin, "${UUT}:${SITE}:AWG:ACTIVE") {
 	field(DTYP, "stream")
 	field(INP, "@awg.proto getActive ${SPORT}")
 	field(DESC, "AWG is active")
-	field(SCAN, "1 second")	
+	field(SCAN, "1 second")
+	field(FLNK, "${UUT}:${SITE}:AWG:DUTY PP")
+}
+
+record (calc, "${UUT}:${SITE}:AWG:DUTY") {
+	field(INPA, "${UUT}:${SITE}:SIG:clk_count:FREQ")
+	field(INPB, "${UUT}:${SITE}:SIG:sample_count:FREQ")
+	field(INPC, "${UUT}:${SITE}:AWG:ACTIVE")
+	field(CALC,  "C!=0 && A!=0? B/A*100.0: 0")
+	field(EGU,   "%")
 }
 record (mbbi, "${UUT}:${SITE}:AWG:MODE") {
 	field(DTYP, "Soft Channel")
