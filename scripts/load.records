@@ -252,7 +252,8 @@ OUTX="ABCDEFGH"
 AWG_DONE=n  
 
 load_400_statics() { (
-    site=$1    
+    site=$1 
+    mt=$2   
     cprams="UUT=${HOST},SITE=${site}"
 	ek=/etc/acq400/$site
 	model=$(cat ${ek}/MODEL)
@@ -264,8 +265,8 @@ load_400_statics() { (
 	fi
 	nc=$(cat ${ek}/NCHAN)
 	serial=$(cat ${ek}/SERIAL)
-	role=$(cat ${ek}/module_role)
-	dba="MODEL=$model,PN=$pn,NCHAN=$nc,SERIAL=$serial,ROLE=$role"
+	role=$(cat ${ek}/module_role)	
+	dba="MODEL=$model,PN=$pn,NCHAN=$nc,SERIAL=$serial,ROLE=$role,MTYPE=$mt"
 
 	dblr '"db/acq400.db","'${cprams},${dba}'"'		
 ) }
@@ -293,7 +294,7 @@ load_400() {
 		let maxhz="$(cat /etc/acq400/$site/MAX_KHZ) * 1000"
 	fi
 	
-	load_400_statics $site
+	load_400_statics $site $model
 	create_asyn_channel S${site} 127.0.0.1:$((4220+${site}))
 	cprams="UUT=${HOST},SITE=${site},SPORT=S${site}"
 	
@@ -701,7 +702,7 @@ load_mb_base() {
 	mt=$2
 	zynq_hwmon Z
 	
-	load_400_statics 0
+	load_400_statics 0 $mt
 	
 	for SITE in $(seq 0 $ns)
 	do

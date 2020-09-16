@@ -4,6 +4,12 @@ record (stringin, "${UUT}:${SITE}:MODEL") {
 	field(PINI, "YES")	
 }
 
+record (stringin, "${UUT}:${SITE}:MTYPE") {
+	field(DTYP, "Soft Channel")
+	field(VAL, "${MTYPE}")
+	field(PINI, "YES")	
+}
+
 record (stringin, "${UUT}:${SITE}:PART_NUM") {
 	field(DTYP, "Soft Channel")
 	field(VAL, "${PN}")
