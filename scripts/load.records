@@ -394,7 +394,8 @@ load_400() {
 		done
 		[ $t50r -ne 0 ] && dblr '"db/acq480fmc50R.db","'${mprams},CH=,RAW='"';;
 	$MT_AO420|$MT_AO424|$MT_AO428|$MT_AO4220)
-	    	create_asyn_channel S${site}A 127.0.0.1:$((4220+${site}))		
+	    create_asyn_channel S${site}A 127.0.0.1:$((4220+${site}))
+	    has_rgm=1		
 		load_AO $site $model $cprams		
 		let LO=66000000;;
 #	@@todo : different flavour of calmon for SAR ADC needed	
@@ -487,14 +488,18 @@ load_400() {
 		mprams="UUT=${HOST},SITE=${site},SPORT=S${site}M"
 
 		if [ $HAS_ACQ43X -eq 1 ]; then
-			dblr '"db/acq4xx_rgm.db","'${mprams},SRTM=SRTM'"'
+			dblr '"db/acq4xx_rgm.db","'${mprams},onst=SRTM,twst=RGM'"'
 			echo 1>&2 "HAS_ACQ43X Detected: $HAS_ACQ43X"
 			#ACQ435 .. nb HIRES makes it /2
 			# MUST  be AFTER acq420fmc.d to hook the right DT0
 			dblr '"db/acq430fmc.db","'${mprams},LO=$LO'"'
 			has_rgm=1
 		elif [ $has_rgm -eq 1 ]; then
-			dblr '"db/acq4xx_rgm.db","'${mprams},SRTM="nc"'"'
+		    if [ "$is_adc" = "no" ]; then
+				dblr '"db/acq4xx_rgm.db","'${mprams},onst=RTMC,twst=nc'"'
+			else
+				dblr '"db/acq4xx_rgm.db","'${mprams},onst=nc,twst=RGM'"'
+			fi
 		fi
 		dblr '"db/has_rgm.db","'${mprams},HAS_RGM=$has_rgm'"'
 		create_asyn_channel S${site}M 127.0.0.1:$((4220+${site}))	
