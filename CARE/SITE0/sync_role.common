@@ -68,6 +68,7 @@ set_mbclk() {
         # assert CLKDIV, possibly user
         set.site 1 CLKDIV $CLKDIV
     fi
+    set.site 0 SIG:CLK_MB:SET $fs
 }
 
 
@@ -147,8 +148,8 @@ CLKDX_OUT=d1
 if [ "${MOD:0:7}" = "acq2106" ]; then
     set_slave=set_slave_acq2106
     set_common_master=set_common_master_acq2106
-# Si5326 minimum output rate
-    FMIN=20000
+# Si5326 minimum output rate. 2M works for slave XO hardware
+    FMIN=200000
 else
     set_slave=set_slave_acq1001
     set_common_master=set_common_master_acq1001
