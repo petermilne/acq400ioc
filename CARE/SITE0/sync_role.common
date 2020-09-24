@@ -61,9 +61,9 @@ set_mbclk() {
     if [ $fs -lt $FMIN ]; then
     # ensure a valid fs, ignore any user CLKDIV
         let clkdiv="5*$FMIN/$fs"
-        clkdiv=$(printf "%d" $clkdiv)
-        let fs=$clkdiv*$fs
-        set.site 1 CLKDIV $clkdiv
+        CLKDIV=$(printf "%d" $clkdiv)
+        let fs=$CLKDIV*$fs
+        set.site 1 CLKDIV $CLKDIV
     else
         # assert CLKDIV, possibly user
         set.site 1 CLKDIV $CLKDIV
