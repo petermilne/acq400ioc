@@ -16,6 +16,7 @@ P2=
 P3=
 
 FIN_DEF=20M
+is_tiga && FIN_DEF=10M
 FIN_CLKSTAR=20000000
 
 set.site 1 CLK=1 2>&1 > /dev/null
