@@ -29,8 +29,9 @@ double Fmod;
 double Fmbclk;	
 
 int adc_mode;	assign adc_mode to "{uut}:1:ADC_MODE";
-int clkdiv;	assign clkdiv 	to "{uut}:1:CLKDIV";
-int fp_mux;	assign fp_mux 	to "{uut}:SYS:CLK:FPMUX";
+int clkdiv;		assign clkdiv 	to "{uut}:1:CLKDIV";
+int fp_mux;		assign fp_mux 	to "{uut}:SYS:CLK:FPMUX";
+int zclk_src; 	assign zclk_src to "{uut}:0:SIG:ZCLK_SRC";
 int src_clk;	assign src_clk 	to "{uut}:0:SIG:SRC:CLK:0";
 int mclk_out;	assign mclk_out to "{uut}:0:SIG:SRC:CLK:1";
 
@@ -49,7 +50,7 @@ double clk_mb_fin;  assign clk_mb_fin to "{uut}:0:SIG:CLK_MB:FIN";
 
 int HS_MAX=50000;
 
-double S01_min = 18000000;
+double S01_min =  4000000;
 double S01_max = 37000000;
  
 int adc_mode0;
@@ -59,6 +60,7 @@ double Fs0;
 monitor Fs; 
 monitor fin;
 monitor fp_mux;
+monitor zclk_src;
 
 int retry;
 int max_retry = 5;
@@ -191,8 +193,8 @@ ss rate_set
 			printf("going with FPCLK=%.1f\n", clk_mb_fin);
 		} state action
 		
-		when (fp_mux == 3){ 	/* ZCLK */
-			if (fin > 33000000 && fin < 34000000){
+		when (fp_mux == 3){ 	/* ZCLK, int osc */
+			if (zclk_src == 0 && fin > 33000000 && fin < 34000000){
 				clk_mb_fin = 33333000;
 			}else{
 				clk_mb_fin = fin;
