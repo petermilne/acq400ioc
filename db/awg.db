@@ -7,9 +7,8 @@ record (longin, "${UUT}:${SITE}:AWG:LENGTH") {
 }
 
 record (longout, "${UUT}:${SITE}:AWG:BURSTLEN") {
-	field(DTYP, "Soft Channel")
-#	field(DTYP, "stream")
-#	field(OUT, "@cpdac.proto setBurstLen ${SPORT}")
+	field(DTYP, "stream")
+	field(OUT, "@awg.proto setBurstLen ${SPORT}")
 	field(FLNK, "${UUT}:${SITE}:AWG:BURSTMODE")
 	field(DRVL, "0")
 	field(DRVH, "1048576")

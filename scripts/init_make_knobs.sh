@@ -79,11 +79,12 @@ make_epics_knobs() {
 	for PV in $(egrep -e AWG $RL)
 	do
 		NU=${PV#*:}
-		if [ "${PV#*ABO}" != "${PV}" ]; then
-			make_caput $PV ${NU#*:} ${NU%%:*}
-		else
-			make_caget $PV ${NU#*:} ${NU%%:*}
-		fi
+		case ${PV} in
+		*ABO|*BURSTLEN)
+			make_caput $PV ${NU#*:} ${NU%%:*};;
+		*)
+			make_caget $PV ${NU#*:} ${NU%%:*};;
+		esac
 	done
 	for PV in $(egrep -e DECIM -e OSR $RL)
 	do

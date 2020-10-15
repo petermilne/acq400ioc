@@ -51,3 +51,9 @@ setAbort {
     out "awg_abort 1";
     in;
 }
+
+setBurstLen {
+    out "rtm %d";   
+    in;
+    out "rtm_translen %d";
+}
