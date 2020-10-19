@@ -31,6 +31,7 @@ MT_PIG_CELF=68
 MT_RAD_CELF=69
 MT_AO428=6A
 MT_DIO482=6B
+MT_WER_CELF=70
 MT_DIO482TD_PG=7B
 
 
@@ -64,6 +65,7 @@ nameFromMT() {
 	$MT_AO424)		echo "ao424";;
 	$MT_PIG_CELF)	echo "pig-celf";;
 	$MT_RAD_CELF)	echo "rad-celf";;
+	$MT_WER_CELF)   echo "wer-celf";;
 	$MT_AO428)		echo "ao428elf";;
 	$MT_DIO482TD_PG) echo "dio482td_pg";;
 	# no default	

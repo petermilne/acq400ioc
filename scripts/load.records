@@ -417,7 +417,7 @@ load_400() {
 		name=$(cat /dev/acq400.$site.knobs/module_name)
 		[ -e ./scripts/load.$name ] && ./scripts/load.$name $HOST $site
 		return;;
-	$MT_RAD_CELF)
+	$MT_RAD_CELF|$MT_WER_CELF)
 		./scripts/load.rad_celf $HOST $site
 		return;;
 	$MT_PIG_CELF)
