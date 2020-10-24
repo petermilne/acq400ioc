@@ -11,17 +11,22 @@ record (mbbo, "${UUT}:${SITE}:GAIN:${CH}")	{
 	field(ONVL, "1")
 	field(TWVL, "2")
 	field(THVL, "3")	       
-	field(FLNK, "${UUT}:${SITE}:GAIN:${CH}:w PP")
+	field(FLNK, "${UUT}:${SITE}:GAIN:${CH}:c PP")
 }
 
+record(calcout, "${UUT}:${SITE}:GAIN:${CH}:c") {
+	field(INPA, "${UUT}:${SITE}:GAIN:${CH}")
+	field(CALC, "A")
+	field(OOPT, "On Change")
+	field(DOPT, "Use CALC")
+	field(OUT,  "${UUT}:${SITE}:GAIN:${CH}:w PP")
+}
 record (mbbo, "${UUT}:${SITE}:GAIN:${CH}:w")	{
 	field(DTYP, "stream")
 	field(OUT,  "@acq42x.proto setGain(${IX}) ${SPORT}")	
 	field(NOBT, "2")
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:GAIN:${CH}:s.PACT")
-	field(OMSL, "closed_loop")
-	field(DOL, "${UUT}:${SITE}:GAIN:${CH} PP")
 	field(FLNK, "${UUT}:${SITE}:GAIN:${CH}:wf")
 }
 
