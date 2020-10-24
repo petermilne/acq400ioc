@@ -897,9 +897,9 @@ load_mb_sync() {
 		SYNC)
 			case $MB_MODEL in
             acq2106*)		
-				lsb_x ${lp0},NOBT=3 EXT HDMI INT01M WRPPS MCLK;;
+				lsb_x ${lp0},NOBT=3 EXT HDMI INT01M WRPPS MCLK GPG0;;
 			*)
-				lsb_x ${lp0},NOBT=3 EXT HDMI INT01M PPS MCLK;;
+				lsb_x ${lp0},NOBT=3 EXT HDMI INT01M PPS MCLK GPG0;;
 			esac
 		esac
 		
@@ -926,7 +926,7 @@ load_mb_sync() {
 				esac
 			fi;;				
 		SYNC)
-			lsb_x ${lp1},NOBT=3 EXT HDMI INT01M WRPPS MBCLK;;
+			lsb_x ${lp1},NOBT=3 EXT HDMI INT01M WRPPS MBCLK GPG1;;
 		*) 		
 			echo ERROR undefined FUN;;
 		esac
