@@ -244,11 +244,10 @@ esac
 
 
 
-# Configure distributor (XO) after AI.
-config_distributor_sites $D_TRG
-
 
 if [ $role_set -eq 0 ]; then
+# Configure distributor (XO) after AI.
+	config_distributor_sites $D_TRG
 	echo $CMDLINE > /dev/shm/role
 	exit 0
 else
