@@ -33,28 +33,51 @@ int G2[33]; 	assign G2 to {};	// index from 1
 int commit;		assign commit to "{uut}:{site}:SC32:GAIN:COMMIT";
 monitor commit;
 
+int commit0;
+
 char* uut;
 char* site = "1";		// default site 1, should override 
 
 char pvname[80];
 char pvfield[100];
 
-int CMAP[8][4] = {
-		{ 13,  9,  5,  1 },
-		{ 14, 10,  6,  2 },
-		{ 15, 11,  7,  3 },
-		{ 16, 12,  8,  4 },
+int CMAP[8][5] = {
+		{ -1, 13,  9,  5,  1 },
+		{ -1, 14, 10,  6,  2 },
+		{ -1, 15, 11,  7,  3 },
+		{ -1, 16, 12,  8,  4 },
 		
-		{ 29, 25, 21, 17 },
-		{ 30, 26, 22, 18 },
-		{ 31, 27, 23, 19 },
-		{ 32, 28, 24, 20 }		
+		{ -1, 29, 25, 21, 17 },
+		{ -1, 30, 26, 22, 18 },
+		{ -1, 31, 27, 23, 19 },
+		{ -1, 32, 28, 24, 20 }		
 };
 
-int mux[8][4];  assign mux to {};
+// mux[:][0] : full PV, mux[;][1:4] INPB..INPE
+//int mux[8][5];  assign mux to {};
+
+int mux0[5];  assign mux0 to {};
+int mux1[5];  assign mux1 to {};
+int mux2[5];  assign mux2 to {};
+int mux3[5];  assign mux3 to {};
+int mux4[5];  assign mux4 to {};
+int mux5[5];  assign mux5 to {};
+int mux6[5];  assign mux6 to {};
+int mux7[5];  assign mux7 to {};
+
+int* muxes[8];				// static init, pvassign NOT allowed by SNL	
+
+int G12[33]; 	assign G12 to {};	// index from 1
 
 int ch;
 int nchan = 32;
+int strobe;
+int inp;
+
+int gains[2][4] = {
+		{ 1, 10, 100, 1000 },		// G1 physical gains
+		{ 1,  2,   5,   10 }        // G2 physical gains
+};
 
 ss sc32_gain_mux {
 	state init {
@@ -65,8 +88,45 @@ ss sc32_gain_mux {
 			}			
 			printf("sc_gain_mux R1000 site:%s\n", site);
 			
+			muxes[0] = mux0;
+			muxes[1] = mux1;
+			muxes[2] = mux2;
+			muxes[3] = mux3;
+			muxes[4] = mux4;
+			muxes[5] = mux5;
+			muxes[6] = mux6;
+			muxes[7] = mux7;
+			
 			for (ch = 1; ch <= nchan; ++ch){
 				snprintf(pvname, sizeof(pvname), "{uut}:{site}:SC32:G1:%02d", ch);
+				pvAssign(G1[ch], pvname);
+				snprintf(pvname, sizeof(pvname), "{uut}:{site}:SC32:G2:%02d", ch);
+				pvAssign(G2[ch], pvname);
+				snprintf(pvname, sizeof(pvname), "{uut}:{site}:SC32:G12:%02d", ch);
+				pvAssign(G12[ch], pvname);
+			}
+			for (strobe = 0; strobe < 8; ++strobe){
+				snprintf(pvname, sizeof(pvname), "{uut}:{site}:SC32:mux:shl%d", strobe);
+				if (strobe == 0) pvAssign(mux0[0], pvname);
+				if (strobe == 1) pvAssign(mux1[0], pvname);
+				if (strobe == 2) pvAssign(mux2[0], pvname);
+				if (strobe == 3) pvAssign(mux3[0], pvname);				
+				if (strobe == 4) pvAssign(mux4[0], pvname);
+				if (strobe == 5) pvAssign(mux5[0], pvname);
+				if (strobe == 6) pvAssign(mux6[0], pvname);
+				if (strobe == 7) pvAssign(mux7[0], pvname);
+				
+				for (inp = 'B'; inp <= 'E'; ++inp){
+					snprintf(pvfield, sizeof(pvfield), "%s.INP%c", pvname, inp);
+					if (strobe == 0) pvAssign(mux0[inp-'A'], pvname);
+					if (strobe == 1) pvAssign(mux1[inp-'A'], pvname);					
+					if (strobe == 2) pvAssign(mux2[inp-'A'], pvname);
+					if (strobe == 3) pvAssign(mux3[inp-'A'], pvname);					
+					if (strobe == 4) pvAssign(mux4[inp-'A'], pvname);
+					if (strobe == 5) pvAssign(mux5[inp-'A'], pvname);					
+					if (strobe == 6) pvAssign(mux6[inp-'A'], pvname);
+					if (strobe == 7) pvAssign(mux7[inp-'A'], pvname);										
+				}
 			}
 		} state commit
 		// pvassign the arrays.		
@@ -74,7 +134,35 @@ ss sc32_gain_mux {
 	
 	state commit {
 		when() {
-			
+			for (ch = 1; ch <= nchan; ++ch){
+				pvGet(G1[ch]);
+				pvGet(G2[ch]);
+				for (strobe = 0; strobe < 8; ++strobe){
+					for (inp = 'B'; inp <= 'E'; ++inp){
+						if (CMAP[strobe][inp-'A'] == ch){
+							muxes[strobe][inp-'A'] = G2[ch] << 2 | G1[ch];
+							
+							if (strobe == 0) pvPut(mux0[inp-'A']);
+							if (strobe == 1) pvPut(mux1[inp-'A']);					
+							if (strobe == 2) pvPut(mux2[inp-'A']);
+							if (strobe == 3) pvPut(mux3[inp-'A']);					
+							if (strobe == 4) pvPut(mux4[inp-'A']);
+							if (strobe == 5) pvPut(mux5[inp-'A']);					
+							if (strobe == 6) pvPut(mux6[inp-'A']);
+							if (strobe == 7) pvPut(mux7[inp-'A']);							
+							
+							inp = 'E'; strobe = 8;					// goto next_channel
+						}
+					}
+				}
+			}
+			for (strobe = 0; strobe < 8; ++strobe){
+				//pvPut(mux[strobe][0]);
+			}
+			for (ch = 1; ch <= nchan; ++ch){
+				G12[ch] = gains[0][G1[ch]] * gains[1][G2[ch]];
+				pvPut(G12[ch]);			
+			}
 		} state wait_change
 	}
 	
