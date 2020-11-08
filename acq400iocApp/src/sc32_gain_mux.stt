@@ -1,0 +1,86 @@
+/* sc32_gain_mux.st */
+
+program sc32_gain_mux
+option +r;
+option +s;
+
+
+/* outputs:
+ * acq2106_269:1:SC32:mux:shl0
+ * INPA: const, mux value 
+ * INPB: G21ww
+ * INPC: G21xx
+ * INPD: G21yy
+ * INPE: G21zz
+ * 
+ * inputs
+acq2106_269:1:SC32:G1:26
+acq2106_269:1:SC32:G2:26
+
+sc_set_gain	0x01	G2113	G2109	G2105	G2101
+sc_set_gain	0x02	G2114	G2110	G2106	G2102
+sc_set_gain	0x04	G2115	G2111	G2107	G2103
+sc_set_gain	0x08	G2116	G2112	G2108	G2104
+sc_set_gain	0x10	G2129	G2125	G2121	G2117
+sc_set_gain	0x20	G2130	G2126	G2122	G2118
+sc_set_gain	0x40	G2131	G2127	G2123	G2119
+sc_set_gain	0x80	G2132	G2128	G2124	G2120
+ */
+
+int G1[33]; 	assign G1 to {};	// index from 1
+int G2[33]; 	assign G2 to {};	// index from 1
+
+int commit;		assign commit to "{uut}:{site}:SC32:GAIN:COMMIT";
+monitor commit;
+
+char* uut;
+char* site = "1";		// default site 1, should override 
+
+char pvname[80];
+char pvfield[100];
+
+int CMAP[8][4] = {
+		{ 13,  9,  5,  1 },
+		{ 14, 10,  6,  2 },
+		{ 15, 11,  7,  3 },
+		{ 16, 12,  8,  4 },
+		
+		{ 29, 25, 21, 17 },
+		{ 30, 26, 22, 18 },
+		{ 31, 27, 23, 19 },
+		{ 32, 28, 24, 20 }		
+};
+
+int mux[8][4];  assign mux to {};
+
+int ch;
+int nchan = 32;
+
+ss sc32_gain_mux {
+	state init {
+		when() {
+			uut = macValueGet("uut"); 
+			if (macValueGet("site") != 0){
+				site = macValueGet("site");
+			}			
+			printf("sc_gain_mux R1000 site:%s\n", site);
+			
+			for (ch = 1; ch <= nchan; ++ch){
+				snprintf(pvname, sizeof(pvname), "{uut}:{site}:SC32:G1:%02d", ch);
+			}
+		} state commit
+		// pvassign the arrays.		
+	}
+	
+	state commit {
+		when() {
+			
+		} state wait_change
+	}
+	
+	state wait_change {
+		when() {
+			
+		} state wait_change
+	}
+}
