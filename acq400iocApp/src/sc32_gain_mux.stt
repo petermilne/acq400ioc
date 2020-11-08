@@ -73,6 +73,7 @@ int ch;
 int nchan = 32;
 int strobe;
 int inp;
+int verbose;
 
 int gains[2][4] = {
 		{ 1, 10, 100, 1000 },		// G1 physical gains
@@ -85,8 +86,11 @@ ss sc32_gain_mux {
 			uut = macValueGet("uut"); 
 			if (macValueGet("site") != 0){
 				site = macValueGet("site");
-			}			
-			printf("sc_gain_mux R1000 site:%s\n", site);
+			}	
+			if (macValueGet("verbose")){
+				verbose = macValueGet("verbose")[0] - '0';
+			}
+			printf("sc_gain_mux R1007 site:%s\n", site);
 			
 			muxes[0] = mux0;  	// %%G8%% workaround
 			muxes[1] = mux1;
@@ -98,15 +102,22 @@ ss sc32_gain_mux {
 			muxes[7] = mux7;
 			
 			for (ch = 1; ch <= nchan; ++ch){
-				snprintf(pvname, sizeof(pvname), "{uut}:{site}:SC32:G1:%02d", ch);
+				snprintf(pvname, sizeof(pvname), "%s:%s:SC32:G1:%02d", uut, site, ch);
 				pvAssign(G1[ch], pvname);
-				snprintf(pvname, sizeof(pvname), "{uut}:{site}:SC32:G2:%02d", ch);
+				if (ch==1) printf("assign %s\n",pvname);
+				
+				snprintf(pvname, sizeof(pvname), "%s:%s:SC32:G2:%02d", uut, site, ch);
 				pvAssign(G2[ch], pvname);
-				snprintf(pvname, sizeof(pvname), "{uut}:{site}:SC32:G12:%02d", ch);
+				if (ch==1) printf("assign %s\n",pvname);
+				
+				snprintf(pvname, sizeof(pvname), "%s:%s:SC32:G12:%02d", uut, site, ch);
 				pvAssign(G12[ch], pvname);
+				if (ch==1) printf("assign %s\n",pvname);
+				
 			}
 			for (strobe = 0; strobe < 8; ++strobe){
-				snprintf(pvname, sizeof(pvname), "{uut}:{site}:SC32:mux:shl%d", strobe);
+				snprintf(pvname, sizeof(pvname), "%s:%s:SC32:mux:shl%d", uut, site, strobe);
+				if (verbose > 1) printf("strobe:%d pvn:%s\n", strobe, pvname);
 				
 				if (strobe == 0) pvAssign(mux0[0], pvname);	// %%G8%% workaround
 				if (strobe == 1) pvAssign(mux1[0], pvname);
@@ -120,29 +131,46 @@ ss sc32_gain_mux {
 				for (inp = 'B'; inp <= 'E'; ++inp){
 					snprintf(pvfield, sizeof(pvfield), "%s.INP%c", pvname, inp);
 					
-					if (strobe == 0) pvAssign(mux0[inp-'A'], pvname);	// %%G8%% workaround
-					if (strobe == 1) pvAssign(mux1[inp-'A'], pvname);					
-					if (strobe == 2) pvAssign(mux2[inp-'A'], pvname);
-					if (strobe == 3) pvAssign(mux3[inp-'A'], pvname);					
-					if (strobe == 4) pvAssign(mux4[inp-'A'], pvname);
-					if (strobe == 5) pvAssign(mux5[inp-'A'], pvname);					
-					if (strobe == 6) pvAssign(mux6[inp-'A'], pvname);
-					if (strobe == 7) pvAssign(mux7[inp-'A'], pvname);										
+					if (verbose > 1) printf("strobe:%d pvf:%s\n", strobe, pvfield);
+					if (strobe == 0) pvAssign(mux0[inp-'A'], pvfield);	// %%G8%% workaround
+					if (strobe == 1) pvAssign(mux1[inp-'A'], pvfield);					
+					if (strobe == 2) pvAssign(mux2[inp-'A'], pvfield);
+					if (strobe == 3) pvAssign(mux3[inp-'A'], pvfield);					
+					if (strobe == 4) pvAssign(mux4[inp-'A'], pvfield);
+					if (strobe == 5) pvAssign(mux5[inp-'A'], pvfield);					
+					if (strobe == 6) pvAssign(mux6[inp-'A'], pvfield);
+					if (strobe == 7) pvAssign(mux7[inp-'A'], pvfield);										
 				}
 			}
-		} state commit
+		} state startup_delay
 		// pvassign the arrays.		
+	}
+	
+	state startup_delay {
+		when(delay(2)){
+			
+		} state commit
 	}
 	
 	state commit {
 		when() {
+			printf("sc_gain_mux commit:%s\n", site);
 			for (ch = 1; ch <= nchan; ++ch){
 				pvGet(G1[ch]);
 				pvGet(G2[ch]);
+				if (verbose>1) printf("ch %d G1 %d G2 %d\n", ch, G1[ch], G2[ch]);
+				
 				for (strobe = 0; strobe < 8; ++strobe){
 					for (inp = 'B'; inp <= 'E'; ++inp){
+						if (verbose>2) printf("CMAP[%d][%d] == %d\n", strobe, inp-'A', ch);
 						if (CMAP[strobe][inp-'A'] == ch){
 							muxes[strobe][inp-'A'] = G2[ch] << 2 | G1[ch];
+							
+							if (verbose > 1 || (verbose&& (strobe==0)))
+								printf("CMAP[%d][%d] == %d  YES value G2:%d G1:%d %x %x\n", 
+									strobe, inp-'A', ch, G2[ch], G1[ch], 
+									muxes[strobe][inp-'A'], strobe==0? mux0[inp-'A']: 99);
+							
 							
 							if (strobe == 0) pvPut(mux0[inp-'A']);	// %%G8%% workaround
 							if (strobe == 1) pvPut(mux1[inp-'A']);					
@@ -152,13 +180,14 @@ ss sc32_gain_mux {
 							if (strobe == 5) pvPut(mux5[inp-'A']);					
 							if (strobe == 6) pvPut(mux6[inp-'A']);
 							if (strobe == 7) pvPut(mux7[inp-'A']);							
-							
+		
 							inp = 'E'; strobe = 8;					// SNL workaround goto next_channel
 						}
 					}
 				}
 			}
 			for (strobe = 0; strobe < 8; ++strobe){
+				printf("strobe:%d\n", strobe);
 				if (strobe == 0) pvPut(mux0[0]);	// %%G8%% workaround
 				if (strobe == 1) pvPut(mux1[0]);					
 				if (strobe == 2) pvPut(mux2[0]);
@@ -173,12 +202,16 @@ ss sc32_gain_mux {
 				pvPut(G12[ch]);			
 			}
 			commit = 0; pvPut(commit);
+			printf("sc_gain_mux commit:%s => wait_change\n", site);
 		} state wait_change
 	}
 	
 	state wait_change {
+		entry {
+			printf("wait_change entry\n");
+		}
 		when(commit) {
-			
-		} state wait_change
+			printf("wait_change .. =>\n");
+		} state commit
 	}
 }
