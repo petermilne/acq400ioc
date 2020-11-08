@@ -54,7 +54,7 @@ int CMAP[8][5] = {
 };
 
 // mux[:][0] : full PV, mux[;][1:4] INPB..INPE
-//int mux[8][5];  assign mux to {};
+//int mux[8][5];  assign mux to {};  // %%G8%% workaround
 
 int mux0[5];  assign mux0 to {};
 int mux1[5];  assign mux1 to {};
@@ -88,7 +88,7 @@ ss sc32_gain_mux {
 			}			
 			printf("sc_gain_mux R1000 site:%s\n", site);
 			
-			muxes[0] = mux0;
+			muxes[0] = mux0;  	// %%G8%% workaround
 			muxes[1] = mux1;
 			muxes[2] = mux2;
 			muxes[3] = mux3;
@@ -107,7 +107,8 @@ ss sc32_gain_mux {
 			}
 			for (strobe = 0; strobe < 8; ++strobe){
 				snprintf(pvname, sizeof(pvname), "{uut}:{site}:SC32:mux:shl%d", strobe);
-				if (strobe == 0) pvAssign(mux0[0], pvname);
+				
+				if (strobe == 0) pvAssign(mux0[0], pvname);	// %%G8%% workaround
 				if (strobe == 1) pvAssign(mux1[0], pvname);
 				if (strobe == 2) pvAssign(mux2[0], pvname);
 				if (strobe == 3) pvAssign(mux3[0], pvname);				
@@ -118,7 +119,8 @@ ss sc32_gain_mux {
 				
 				for (inp = 'B'; inp <= 'E'; ++inp){
 					snprintf(pvfield, sizeof(pvfield), "%s.INP%c", pvname, inp);
-					if (strobe == 0) pvAssign(mux0[inp-'A'], pvname);
+					
+					if (strobe == 0) pvAssign(mux0[inp-'A'], pvname);	// %%G8%% workaround
 					if (strobe == 1) pvAssign(mux1[inp-'A'], pvname);					
 					if (strobe == 2) pvAssign(mux2[inp-'A'], pvname);
 					if (strobe == 3) pvAssign(mux3[inp-'A'], pvname);					
@@ -142,7 +144,7 @@ ss sc32_gain_mux {
 						if (CMAP[strobe][inp-'A'] == ch){
 							muxes[strobe][inp-'A'] = G2[ch] << 2 | G1[ch];
 							
-							if (strobe == 0) pvPut(mux0[inp-'A']);
+							if (strobe == 0) pvPut(mux0[inp-'A']);	// %%G8%% workaround
 							if (strobe == 1) pvPut(mux1[inp-'A']);					
 							if (strobe == 2) pvPut(mux2[inp-'A']);
 							if (strobe == 3) pvPut(mux3[inp-'A']);					
@@ -151,23 +153,31 @@ ss sc32_gain_mux {
 							if (strobe == 6) pvPut(mux6[inp-'A']);
 							if (strobe == 7) pvPut(mux7[inp-'A']);							
 							
-							inp = 'E'; strobe = 8;					// goto next_channel
+							inp = 'E'; strobe = 8;					// SNL workaround goto next_channel
 						}
 					}
 				}
 			}
 			for (strobe = 0; strobe < 8; ++strobe){
-				//pvPut(mux[strobe][0]);
+				if (strobe == 0) pvPut(mux0[0]);	// %%G8%% workaround
+				if (strobe == 1) pvPut(mux1[0]);					
+				if (strobe == 2) pvPut(mux2[0]);
+				if (strobe == 3) pvPut(mux3[0]);					
+				if (strobe == 4) pvPut(mux4[0]);
+				if (strobe == 5) pvPut(mux5[0]);					
+				if (strobe == 6) pvPut(mux6[0]);
+				if (strobe == 7) pvPut(mux7[0]);			
 			}
 			for (ch = 1; ch <= nchan; ++ch){
 				G12[ch] = gains[0][G1[ch]] * gains[1][G2[ch]];
 				pvPut(G12[ch]);			
 			}
+			commit = 0; pvPut(commit);
 		} state wait_change
 	}
 	
 	state wait_change {
-		when() {
+		when(commit) {
 			
 		} state wait_change
 	}
