@@ -131,7 +131,7 @@ ss sc32_gain_mux {
 						if (verbose>2) printf("CMAP[%d][%d] == %d\n", strobe, pair, ch);
 						
 						if (CMAP[strobe][pair] == ch){
-							muxvals[strobe][pair] = G2[ch] << 4 | G1[ch];
+							muxvals[strobe][pair] = G2[ch]<<2 | G1[ch];
 							
 							if (verbose > 1 || (verbose && (strobe==0)))
 								printf("CMAP[%d][%d] == %d  YES value G2:%d G1:%d %04x\n", 
