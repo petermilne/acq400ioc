@@ -41,38 +41,31 @@ char* site = "1";		// default site 1, should override
 char pvname[80];
 char pvfield[100];
 
-int CMAP[8][5] = {
-		{ -1, 13,  9,  5,  1 },
-		{ -1, 14, 10,  6,  2 },
-		{ -1, 15, 11,  7,  3 },
-		{ -1, 16, 12,  8,  4 },
+int CMAP[8][4] = {
+		{ 13,  9,  5,  1 },
+		{ 14, 10,  6,  2 },
+		{ 15, 11,  7,  3 },
+		{ 16, 12,  8,  4 },
 		
-		{ -1, 29, 25, 21, 17 },
-		{ -1, 30, 26, 22, 18 },
-		{ -1, 31, 27, 23, 19 },
-		{ -1, 32, 28, 24, 20 }		
+		{ 29, 25, 21, 17 },
+		{ 30, 26, 22, 18 },
+		{ 31, 27, 23, 19 },
+		{ 32, 28, 24, 20 }		
 };
 
 // mux[:][0] : full PV, mux[;][1:4] INPB..INPE
 //int mux[8][5];  assign mux to {};  // %%G8%% workaround
 
-int mux0[5];  assign mux0 to {};
-int mux1[5];  assign mux1 to {};
-int mux2[5];  assign mux2 to {};
-int mux3[5];  assign mux3 to {};
-int mux4[5];  assign mux4 to {};
-int mux5[5];  assign mux5 to {};
-int mux6[5];  assign mux6 to {};
-int mux7[5];  assign mux7 to {};
+int muxvals[8][4];
 
-int* muxes[8];				// static init, pvassign NOT allowed by SNL	
+int muxes[8]; assign muxes to {};
 
 int G12[33]; 	assign G12 to {};	// index from 1
 
 int ch;
 int nchan = 32;
 int strobe;
-int inp;
+int pair;
 int verbose;
 
 int gains[2][4] = {
@@ -90,16 +83,7 @@ ss sc32_gain_mux {
 			if (macValueGet("verbose")){
 				verbose = macValueGet("verbose")[0] - '0';
 			}
-			printf("sc_gain_mux R1007 site:%s\n", site);
-			
-			muxes[0] = mux0;  	// %%G8%% workaround
-			muxes[1] = mux1;
-			muxes[2] = mux2;
-			muxes[3] = mux3;
-			muxes[4] = mux4;
-			muxes[5] = mux5;
-			muxes[6] = mux6;
-			muxes[7] = mux7;
+			printf("sc_gain_mux R1012 site:%s\n", site);
 			
 			for (ch = 1; ch <= nchan; ++ch){
 				snprintf(pvname, sizeof(pvname), "%s:%s:SC32:G1:%02d", uut, site, ch);
@@ -117,30 +101,11 @@ ss sc32_gain_mux {
 			}
 			for (strobe = 0; strobe < 8; ++strobe){
 				snprintf(pvname, sizeof(pvname), "%s:%s:SC32:mux:shl%d", uut, site, strobe);
+		
 				if (verbose > 1) printf("strobe:%d pvn:%s\n", strobe, pvname);
 				
-				if (strobe == 0) pvAssign(mux0[0], pvname);	// %%G8%% workaround
-				if (strobe == 1) pvAssign(mux1[0], pvname);
-				if (strobe == 2) pvAssign(mux2[0], pvname);
-				if (strobe == 3) pvAssign(mux3[0], pvname);				
-				if (strobe == 4) pvAssign(mux4[0], pvname);
-				if (strobe == 5) pvAssign(mux5[0], pvname);
-				if (strobe == 6) pvAssign(mux6[0], pvname);
-				if (strobe == 7) pvAssign(mux7[0], pvname);
-				
-				for (inp = 'B'; inp <= 'E'; ++inp){
-					snprintf(pvfield, sizeof(pvfield), "%s.INP%c", pvname, inp);
-					
-					if (verbose > 1) printf("strobe:%d pvf:%s\n", strobe, pvfield);
-					if (strobe == 0) pvAssign(mux0[inp-'A'], pvfield);	// %%G8%% workaround
-					if (strobe == 1) pvAssign(mux1[inp-'A'], pvfield);					
-					if (strobe == 2) pvAssign(mux2[inp-'A'], pvfield);
-					if (strobe == 3) pvAssign(mux3[inp-'A'], pvfield);					
-					if (strobe == 4) pvAssign(mux4[inp-'A'], pvfield);
-					if (strobe == 5) pvAssign(mux5[inp-'A'], pvfield);					
-					if (strobe == 6) pvAssign(mux6[inp-'A'], pvfield);
-					if (strobe == 7) pvAssign(mux7[inp-'A'], pvfield);										
-				}
+				pvAssign(muxes[strobe], pvname);
+
 			}
 		} state startup_delay
 		// pvassign the arrays.		
@@ -161,41 +126,27 @@ ss sc32_gain_mux {
 				if (verbose>1) printf("ch %d G1 %d G2 %d\n", ch, G1[ch], G2[ch]);
 				
 				for (strobe = 0; strobe < 8; ++strobe){
-					for (inp = 'B'; inp <= 'E'; ++inp){
-						if (verbose>2) printf("CMAP[%d][%d] == %d\n", strobe, inp-'A', ch);
-						if (CMAP[strobe][inp-'A'] == ch){
-							muxes[strobe][inp-'A'] = G2[ch] << 2 | G1[ch];
+					for (pair = 0; pair < 4; ++pair){
+						
+						if (verbose>2) printf("CMAP[%d][%d] == %d\n", strobe, pair, ch);
+						
+						if (CMAP[strobe][pair] == ch){
+							muxvals[strobe][pair] = G2[ch] << 4 | G1[ch];
 							
-							if (verbose > 1 || (verbose&& (strobe==0)))
-								printf("CMAP[%d][%d] == %d  YES value G2:%d G1:%d %x %x\n", 
-									strobe, inp-'A', ch, G2[ch], G1[ch], 
-									muxes[strobe][inp-'A'], strobe==0? mux0[inp-'A']: 99);
-							
-							
-							if (strobe == 0) pvPut(mux0[inp-'A']);	// %%G8%% workaround
-							if (strobe == 1) pvPut(mux1[inp-'A']);					
-							if (strobe == 2) pvPut(mux2[inp-'A']);
-							if (strobe == 3) pvPut(mux3[inp-'A']);					
-							if (strobe == 4) pvPut(mux4[inp-'A']);
-							if (strobe == 5) pvPut(mux5[inp-'A']);					
-							if (strobe == 6) pvPut(mux6[inp-'A']);
-							if (strobe == 7) pvPut(mux7[inp-'A']);							
-		
-							inp = 'E'; strobe = 8;					// SNL workaround goto next_channel
+							if (verbose > 1 || (verbose && (strobe==0)))
+								printf("CMAP[%d][%d] == %d  YES value G2:%d G1:%d %04x\n", 
+									strobe, pair, ch, G2[ch], G1[ch], muxvals[strobe][pair]);
+														
+							pair = 4; strobe = 8;					// SNL workaround goto next_channel
 						}
 					}
 				}
 			}
 			for (strobe = 0; strobe < 8; ++strobe){
-				printf("strobe:%d\n", strobe);
-				if (strobe == 0) pvPut(mux0[0]);	// %%G8%% workaround
-				if (strobe == 1) pvPut(mux1[0]);					
-				if (strobe == 2) pvPut(mux2[0]);
-				if (strobe == 3) pvPut(mux3[0]);					
-				if (strobe == 4) pvPut(mux4[0]);
-				if (strobe == 5) pvPut(mux5[0]);					
-				if (strobe == 6) pvPut(mux6[0]);
-				if (strobe == 7) pvPut(mux7[0]);			
+				muxes[strobe] = muxvals[strobe][0]<<12 | muxvals[strobe][1]<<8 | 
+						        muxvals[strobe][2]<<4  | muxvals[strobe][3]<<0;
+				printf("strobe:%d muxes %04x\n", strobe, muxes[strobe]);
+				pvPut(muxes[strobe]);		
 			}
 			for (ch = 1; ch <= nchan; ++ch){
 				G12[ch] = gains[0][G1[ch]] * gains[1][G2[ch]];
