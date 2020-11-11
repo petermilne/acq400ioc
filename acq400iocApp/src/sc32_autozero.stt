@@ -1,0 +1,44 @@
+/* autozero.st */
+
+program sc32_autozero
+option +r;
+option +s;
+
+float vin; 	assign vin to 	"{uut}:{site}:AI:WF:{ch}:V.VALE"; monitor vin;
+float voff; assign voff to	"{uut}:{site}:SC32:OFFSET:{ch}";
+
+float K = -0.5;
+float TARGET = 0.001;
+
+float vin0;
+float delta;
+%{
+#include <math.h>
+#include <stdlib.h>
+}%
+
+ss sc32_autozero {
+	state init {
+		when() {
+			pvGet(vin); vin0 = vin;
+			pvGet(voff);
+		} state run
+	}
+	state run {
+		when(vin != vin0){
+			pvGet(vin);			
+			voff += vin*K;
+			printf("%s %s vin0 %.3f -> fin %.3f : voff %.3f\n", "{ch}", "RUN", vin0, vin, voff);
+			pvPut(voff);
+			vin0 = vin;
+		} state check
+	}
+	state check {
+		when(vin != vin0){
+			if (fabs(vin) < TARGET){
+				printf("%s %s vin0 %.3f -> fin %.3f : voff %.3f\n", "{ch}", "EXIT", vin0, vin, voff);
+				exit(0);
+			}
+		} state run
+	}
+}

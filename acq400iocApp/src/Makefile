@@ -43,6 +43,7 @@ acq400ioc_DBD += on_delay.dbd
 acq400ioc_DBD += clk_freq_flasher.dbd
 acq400ioc_DBD += pg4_flasher.dbd
 acq400ioc_DBD += sc32_gain_mux.dbd
+acq400ioc_DBD += sc32_autozero.dbd
 
 # Add all the support libraries needed by this IOC
 acq400ioc_LIBS += acq2ioc
@@ -72,6 +73,7 @@ acq400ioc_SRCS += on_delay.st
 acq400ioc_SRCS += clk_freq_flasher.st
 acq400ioc_SRCS += pg4_flasher.st
 acq400ioc_SRCS += sc32_gain_mux.st
+acq400ioc_SRCS += sc32_autozero.st
 
 # Build the main IOC entry point on workstation OSs.
 acq400ioc_SRCS_DEFAULT += acq400iocMain.cpp \
