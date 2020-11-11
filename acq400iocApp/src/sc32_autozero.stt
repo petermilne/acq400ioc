@@ -4,6 +4,8 @@ program sc32_autozero
 option +r;
 option +s;
 
+int start;		assign start to "{uut}:{site}:SC32:AUTOZERO"; monitor start;
+
 float vin; 	assign vin to 	"{uut}:{site}:AI:WF:{ch}:V.VALE"; monitor vin;
 float voff; assign voff to	"{uut}:{site}:SC32:OFFSET:{ch}";
 
@@ -22,6 +24,11 @@ ss sc32_autozero {
 		when() {
 			pvGet(vin); vin0 = vin;
 			pvGet(voff);
+		} state wait_start
+	}
+	state wait_start {
+		when(start){
+			
 		} state run
 	}
 	state run {
@@ -34,11 +41,12 @@ ss sc32_autozero {
 		} state check
 	}
 	state check {
-		when(vin != vin0){
-			if (fabs(vin) < TARGET){
+		when(fabs(vin) < TARGET){
 				printf("%s %s vin0 %.3f -> fin %.3f : voff %.3f\n", "{ch}", "EXIT", vin0, vin, voff);
-				exit(0);
-			}
+		} state wait_start
+		
+		when() {
+			
 		} state run
 	}
 }

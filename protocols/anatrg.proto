@@ -47,7 +47,15 @@ set_group_first_n {
 	in;
 }
 
+setAnaTrgScale {
+	out "ATD_CSR.SHL %(RVAL)d";
+	in;
+}
 
+setAnaTrgSpad {
+	out "ATD_CSR.SPAD_ON %d";
+	in;
+}
 setDelTrg {
 	out "deltrg_\$1 %d";
 	in;

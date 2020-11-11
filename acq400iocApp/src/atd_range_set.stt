@@ -1,0 +1,81 @@
+/*************************************************************************\
+atd_range_set_from_scale.st : rescale ATD threshold scaling depending on SCALE
+\*************************************************************************/
+program atd_range_set
+option +r;
+
+int range;	assign range to "{UUT}:{SITE}:ANATRG:SCALE";
+
+double DRVL[2][32];	assign DRVL to {};
+double DRVH[2][32];	assign DRVH to {};
+double ESLO[2][32];	assign ESLO to {};
+double HOPR[2][32];	assign HOPR to {};
+double LOPR[2][32];	assign LOPR to {};
+
+
+int scale; assign scale to "{UUT}:{SITE}:ANATRG:SCALE"; monitor scale;
+
+string model;	assign model to "{UUT}:{SITE}:MODEL";
+
+
+monitor range;
+
+/* force initial update */
+int scale0 = -1;
+
+%{
+	static void getGain(int range, double* drvl, double* drvh, double* eslo)
+	{
+		*drvl = -10.0 / (1<<range);
+		*drvh =  10.0 / (1<<range);
+		*eslo = (*drvh - *drvl) / 256;
+	}
+}%
+
+char* pvfmt = "{UUT}:{SITE}:ANATRG:%02d:L%d:.%s";
+
+
+
+ss atd_range_set
+{
+	state init
+	{
+		when() {			
+			for (int ch = 0; ch < 32; ++ch){
+				for (int lx = 0; lx <= 1; ++lx){
+					char pvname[80];
+					snprintf(pvname, sizeof(pvname), pvfmt, ch+1, lx+1, "DRVL");
+					pvAssign(DRVL[lx][ch], pvname);
+					snprintf(pvname, sizeof(pvname), pvfmt, ch+1, lx+1, "DRVH");
+					pvAssign(DRVH[lx][ch], pvname);					
+					snprintf(pvname, sizeof(pvname), pvfmt, ch+1, lx+1, "ESLO");
+					pvAssign(ESLO[lx][ch], pvname);
+					snprintf(pvname, sizeof(pvname), pvfmt, ch+1, lx+1, "HOPR");
+					pvAssign(HOPR[lx][ch], pvname);
+					snprintf(pvname, sizeof(pvname), pvfmt, ch+1, lx+1, "LOPR");
+					pvAssign(LOPR[lx][ch], pvname);															
+			}
+		} state update
+	}
+	state update 
+	{
+		when(scale != scale0){
+			double drvl, drvh, hopr, lopr, eslo;
+			getGain(scale, &drvl, &drvh, &eslo);
+			hopr = drvh;
+			lopr = drvl;
+			
+						
+			for (int ch = 0; ch < 32; ++ch){
+				for (int lx = 0; lx < 2; ++lx){					
+					DRVL[lx][ch] = drvl; pvPut(DRVL[lx][ch]);
+					DRVH[lx][ch] = drvh; pvPut(DRVH[lx][ch]);
+					ESLO[lx][ch] = eslo; pvPut(ESLO[lx][ch]);
+					HOPR[lx][ch] = hopr; pvPut(HOPR[lx][ch]);
+					LOPR[lx][ch] = lopr; pvPut(LOPR[lx][ch]);
+				}
+			}
+			scale0 = scale;
+		} state update
+	}
+}

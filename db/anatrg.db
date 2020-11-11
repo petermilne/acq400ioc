@@ -71,6 +71,28 @@ record(mbbo, "${UUT}:${SITE}:ANATRG:${CH}:H") {
 	field(VAL,  "1")
 }
 
+record(mbbo, "${UUT}:${SITE}:ANATRG:SCALE") {
+	field(DTYP, "stream")
+	field(OUT,  "@anatrg.proto setAnaTrgScale ${SPORT}")
+	field(NOBT, "2")
+	field(ZRST, "1")
+	field(ONST, "2")
+	field(TWST, "4")
+	field(THST, "8")
+	field(ZRVL, "0")
+	field(ONVL, "1")
+	field(TWVL, "2")
+	field(THVL, "3")
+	field(DESC, "threshold scaling factor")
+	field(PINI, "YES")
+	field(VAL,  "1")	
+}
+
+record(bo, "${UUT}:${SITE}:ANATRG:SPAD") {
+	field(DTYP, "stream")
+	field(OUT,  "anatrg.proto setAnaTrgSpad ${SPORT}")
+}
+
 record(mbbiDirect, "${UUT}:${SITE}:ANATRG:SRC") {
 	field(DTYP, "stream")
 	field(INP,  "@anatrg.proto getAnaTrgSrc(${UUT}:${SITE}:ANATRG:SRC2) ${SPORT}")
