@@ -6,6 +6,7 @@ option +r;
 
 int range;	assign range to "{uut}:{uut}:ANATRG:SCALE";
 
+/* arrays of PV's are 1D L1[32], L2[32] */
 double DRVL[64];	assign DRVL to {};
 double DRVH[64];	assign DRVH to {};
 double ESLO[64];	assign ESLO to {};
@@ -24,15 +25,21 @@ monitor range;
 int scale0 = -1;
 
 %{
-	static void getGain(int range, double* drvl, double* drvh, double* eslo)
-	{
-		*drvl = -10.0 / (1<<range);
-		*drvh =  10.0 / (1<<range);
-		*eslo = (*drvh - *drvl) / 256;
-	}
+#include <stdlib.h>
+	
+static void getGain(int range, double* drvl, double* drvh, double* eslo)
+{
+	*drvl = -10.0 / (1<<range);
+	*drvh =  10.0 / (1<<range);
+	*eslo = (*drvh - *drvl) / 256;
+}
 }%
 
-char* pvfmt = "{uut}:{site}:ANATRG:%02d:L%d:.%s";
+char* uut;
+char* site = "1";		// default site 1, should override
+int verbose = 0;
+
+char* pvfmt = "%s:%s:ANATRG:%02d:L%d:.%s";
 
 int ch;
 int lx;
@@ -42,19 +49,24 @@ ss atd_range_set
 {
 	state init
 	{
-		when() {			
+		when() {
+			uut = macValueGet("uut"); 
+			if (macValueGet("site") != 0) site = macValueGet("site");
+			if (macValueGet("verbose") != 0) verbose = atoi(macValueGet("verbose"));
+			
 			for (ch = 0; ch < 32; ++ch){
 				for (lx = 0; lx <= 1; ++lx){
 					char pvname[80];
-					snprintf(pvname, sizeof(pvname), pvfmt, ch+1, lx+1, "DRVL");
+					snprintf(pvname, sizeof(pvname), pvfmt, uut, site, ch+1, lx+1, "DRVL");
 					pvAssign(DRVL[lx*32+ch], pvname);
-					snprintf(pvname, sizeof(pvname), pvfmt, ch+1, lx+1, "DRVH");
+					if (verbose && ch==0) printf("%s\n", pvname);
+					snprintf(pvname, sizeof(pvname), pvfmt, uut, site, ch+1, lx+1, "DRVH");
 					pvAssign(DRVH[lx*32+ch], pvname);					
-					snprintf(pvname, sizeof(pvname), pvfmt, ch+1, lx+1, "ESLO");
+					snprintf(pvname, sizeof(pvname), pvfmt, uut, site, ch+1, lx+1, "ESLO");
 					pvAssign(ESLO[lx*32+ch], pvname);
-					snprintf(pvname, sizeof(pvname), pvfmt, ch+1, lx+1, "HOPR");
+					snprintf(pvname, sizeof(pvname), pvfmt, uut, site, ch+1, lx+1, "HOPR");
 					pvAssign(HOPR[lx*32+ch], pvname);
-					snprintf(pvname, sizeof(pvname), pvfmt, ch+1, lx+1, "LOPR");
+					snprintf(pvname, sizeof(pvname), pvfmt, uut, site, ch+1, lx+1, "LOPR");
 					pvAssign(LOPR[lx*32+ch], pvname);		
 				}
 			}
@@ -73,6 +85,9 @@ ss atd_range_set
 				for (lx = 0; lx < 2; ++lx){					
 					DRVL[lx*32+ch] = drvl; pvPut(DRVL[lx*32+ch]);
 					DRVH[lx*32+ch] = drvh; pvPut(DRVH[lx*32+ch]);
+					if (verbose && ESLO[lx*32+ch] != eslo){
+						printf("SLOPE CHANGE: %d %e => %e\n", ch+1, ESLO[lx*32+ch], eslo);
+					}
 					ESLO[lx*32+ch] = eslo; pvPut(ESLO[lx*32+ch]);
 					HOPR[lx*32+ch] = hopr; pvPut(HOPR[lx*32+ch]);
 					LOPR[lx*32+ch] = lopr; pvPut(LOPR[lx*32+ch]);

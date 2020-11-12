@@ -11,7 +11,7 @@ make_anatrg() {
 		let ch=$ch+1
 		cid=$(printf "%02d" $ch)
 
-		PRAMS="UUT=${HOST},SITE=${site},CH=${cid},SPORT=SA${site},S14=$14"
+		PRAMS="UUT=${HOST},SITE=${site},CH=${cid},SPORT=SA${site},S14=S14"
 
 		dblr \"db/anatrg.db\",\"${PRAMS}\"
 	done

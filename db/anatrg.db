@@ -128,7 +128,7 @@ record(bo, "${UUT}:${SITE}:ANATRG:SPAD") {
 
 record(mbbo, "${UUT}:${SITE}:ANATRG:SCALE") {
 	field(DTYP, "stream")
-	field(OUT,  "@anatrg.proto setAnaTrgScale ${14}")
+	field(OUT,  "@anatrg.proto setAnaTrgScale ${S14}")
 	field(NOBT, "2")
 	field(ZRST, "1")
 	field(ONST, "2")
