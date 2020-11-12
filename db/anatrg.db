@@ -123,7 +123,7 @@ record(bo, "${UUT}:${SITE}:ANATRG:RESET") {
 
 record(bo, "${UUT}:${SITE}:ANATRG:SPAD") {
 	field(DTYP, "stream")
-	field(OUT,  "anatrg.proto setAnaTrgSpad ${S14}")
+	field(OUT,  "@anatrg.proto setAnaTrgSpad ${S14}")
 }
 
 record(mbbo, "${UUT}:${SITE}:ANATRG:SCALE") {
