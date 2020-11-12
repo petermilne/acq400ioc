@@ -6,46 +6,101 @@ option +s;
 
 int start;		assign start to "{uut}:{site}:SC32:AUTOZERO"; monitor start;
 
-float vin; 	assign vin to 	"{uut}:{site}:AI:WF:{ch}:V.VALE"; monitor vin;
-float voff; assign voff to	"{uut}:{site}:SC32:OFFSET:{ch}";
+float vin[32]; 	assign vin {};
+float voff[32]; assign voff {};
+int G2[32]; 	assign G2 to {};
 
-float K = -0.5;
-float TARGET = 0.001;
+float K = 0.33;
 
-float vin0;
-float delta;
+float SET = 0.0;
+
+float deadband = 2.5/32768;
+
+
+char* vin_fmt = "%s:%s:AI:WF:%02d:V.VALE";
+char* voff_fmt = "%s:%s:SC32:OFFSET:%02d"; 
+int ch = 0;
+
+int iter = 0;
+int changes_were_made = 0;
+
+int MAXITER = 20;
+
+char* uut;
+char* site = "1";		// default site 1, should override
 %{
-#include <math.h>
 #include <stdlib.h>
+#include <math.h>
 }%
+
+int gains[2][4] = {
+		{ 1, 10, 100, 1000 },		// G1 physical gains
+		{ 1,  2,   5,   10 }        // G2 physical gains
+};
+
+int verbose=0;
 
 ss sc32_autozero {
 	state init {
 		when() {
-			pvGet(vin); vin0 = vin;
-			pvGet(voff);
+			uut = macValueGet("uut"); 
+			if (macValueGet("site") != 0) site = macValueGet("site");
+			if (macValueGet("verbose") != 0) verbose = atoi(macValueGet("verbose"));
+
+			for (ch = 0; ch < 32; ++ch){
+				char pvname[80];
+				snprintf(pvname, sizeof(pvname), vin_fmt, uut, site, ch+1);
+				pvAssign(vin[ch], pvname);					
+				snprintf(pvname, sizeof(pvname), voff_fmt, uut, site, ch+1);
+				pvAssign(voff[ch], pvname);	
+				snprintf(pvname, sizeof(pvname), "%s:%s:SC32:G2:%02d", uut, site, ch+1);
+				pvAssign(G2[ch], pvname);				
+			}			
 		} state wait_start
 	}
 	state wait_start {
-		when(start){
-			
+		when(start == 1){
+			for (ch = 0; ch < 32; ++ch){
+				pvGet(voff[ch]);
+			}
+			if (verbose) printf("start==1\n");
 		} state run
 	}
 	state run {
-		when(vin != vin0){
-			pvGet(vin);			
-			voff += vin*K;
-			printf("%s %s vin0 %.3f -> fin %.3f : voff %.3f\n", "{ch}", "RUN", vin0, vin, voff);
-			pvPut(voff);
-			vin0 = vin;
+		when(delay(0.5)){
+			changes_were_made = 0;
+			
+			for (ch = 0; ch < 32; ++ch){
+				float vin0;
+				float delta;
+				pvGet(vin[ch]); 
+				pvGet(G2[ch]);
+				vin0 = vin[ch];
+				
+				delta = (vin[ch]-SET) * K/gains[1][G2[ch]];
+				if (fabs(delta) > deadband){
+					voff[ch] += delta; 
+					pvPut(voff[ch]);
+					changes_were_made = 1;
+				}
+				
+				if ((verbose && ch == 0) || verbose > 1){
+					printf("%d %s vin0 %.3f -> fin %.3f : voff %.3f\n", ch+1, "RUN", vin0, vin[ch], voff[ch]);
+				}				
+			}
+			
+			++iter;
 		} state check
 	}
 	state check {
-		when(fabs(vin) < TARGET){
-				printf("%s %s vin0 %.3f -> fin %.3f : voff %.3f\n", "{ch}", "EXIT", vin0, vin, voff);
+		when(changes_were_made == 0 || iter > MAXITER){
+			printf("COMPLETE: %s\n", changes_were_made == 0? "SUCCESS": "MAXITER EXCEEDED");
+			iter = 0;
+			start = 0; pvPut(start);
+			if (verbose) printf("state_check -> wait_start\n");
 		} state wait_start
 		
-		when() {
+		when(iter <= MAXITER){
 			
 		} state run
 	}
