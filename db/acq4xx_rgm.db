@@ -145,7 +145,7 @@ record(longout, "${UUT}:${SITE}:RTM_TRANSLEN:w") {
 	field(DTYP, "stream")
 	field(OUT,  "@acq43x.proto setRtmTranslen ${SPORT}")	
 	field(DISV, "1")
-	field(SDIS, "{UUT}:${SITE}:RTM_TRANSLEN:s.PACT")
+	field(SDIS, "${UUT}:${SITE}:RTM_TRANSLEN:s.PACT")
 	field(DOL,  "${UUT}:${SITE}:RTM_TRANSLEN PP")
 	field(OMSL, "closed_loop")
 
