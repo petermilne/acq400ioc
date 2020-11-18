@@ -140,7 +140,7 @@ record(mbbo, "${UUT}:${SITE}:ANATRG:SCALE") {
 	field(THVL, "3")
 	field(DESC, "threshold scaling factor")
 	field(PINI, "YES")
-	field(VAL,  "1")	
+	field(VAL,  "0")	
 }
 
 
