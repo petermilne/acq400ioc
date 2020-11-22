@@ -2,13 +2,13 @@ Terminator = LF;
 ExtraInput = Ignore;
 
 getCount {
-	out "\$1";
-	in "%d";
+	out "\$1*";
+	in "\$1 %d";
 }
 
 getTaiDate {
-	out "tai_date";
-	in "%#s";
+	out "tai_date*";
+	in "tai_date %#s";
 }
 
 getSi5326TP_STATE {
