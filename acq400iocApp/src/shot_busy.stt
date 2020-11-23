@@ -1,0 +1,46 @@
+/* shot_busy.stt .. use LED:ACT to indicate busy (AMBER), then leave it at Green */
+
+
+program shotBusy
+option +r;
+
+int grn; assign grn to "{uut}:SYS:LED:ACT_G";
+int red; assign red to "{uut}:SYS:LED:ACT_R";
+
+int bsy; assign bsy to "{uut}:1:SHOT_IN_PROGRESS"; monitor bsy;
+
+int tune; assign tune to "{uut}:11::Si5326:TUNEPHASE:BUSY"; monitor tune;
+
+ss shotBusy {
+	state idle {
+		when(bsy){
+			grn = 1; pvPut(grn);   // red+grn = amber
+			red = 1; pvPut(red);
+		} state busy
+	}
+	
+	state busy {
+		when(!bsy){
+			red = 0; pvPut(red);  // grn : have data
+		} state idle
+	}
+}
+
+ss tuneBusy {
+	state idle {
+		when(tune){
+			grn = 1; pvPut(grn);   // red+grn = amber
+			red = 1; pvPut(red);			
+		} state tuning
+	}
+	state tuning {
+		when(!tune){
+			grn = 0; pvPut(grn);   // red+grn = amber
+			red = 0; pvPut(red);
+		} state idle
+		
+		when(delay(1)){
+			red = !red; pvPut(red);
+		} state tuning
+	}
+}
