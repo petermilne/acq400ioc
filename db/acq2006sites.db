@@ -10,3 +10,7 @@ record (bi, "${UUT}:MOD:${site}:FAIL") {
 	field(PINI, "YES")
 }
 
+record (bo, "${UUT}:MOD:${site}:WARN") {
+	field(DTYP, "boAcqHost")
+	field(INP, "@/dev/gpio/LED/FMC${site}_R")
+}

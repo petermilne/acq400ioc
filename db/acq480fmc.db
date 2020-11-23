@@ -102,6 +102,16 @@ record(mbbi, "${UUT}:${SITE}:ACQ480:TRAIN") {
 	field(SVST, "ACQ480_FAIL")
 	field(SVSV, "MAJOR")
 	field(SCAN, "I/O Intr")
+	field(FLNK, "${UUT}:${SITE}:ACQ480:TRAIN:led")
+}
+
+record(calcout, "${UUT}:${SITE}:ACQ480:TRAIN:led")
+{
+	field(INPA, "${UUT}:${SITE}:ACQ480:TRAIN")
+	field(CALC, "A != 6")
+	field(DOPT, "Use CALC")
+	field(OOPT, "On Change")
+	field(OUT,  "${UUT}:MOD:${SITE}:WARN PP")
 }
 
 record(longout, "${UUT}:1:XDT") {
