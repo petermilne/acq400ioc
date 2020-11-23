@@ -1,4 +1,17 @@
 # MUST be sourced from load.records
+
+# copy from load.mgt400
+load_mgt400_sfp() 
+{
+	sprams="UUT=${HOST}"
+	for ch in 1 2 3 4
+	do
+			dblr '"db/mgt480sfp.db","'${sprams},CH=${ch}'"'		
+	done	
+}
+
+load_mgt400_sfp
+
 create_asyn_channel S0WR 127.0.0.1:4220
 CPRAMS="UUT=${HOST},SITE=0,SIG=WR,SPORT=S0WR"
 sprams="${CPRAMS},CTRMAX=0,DT=1,DTC=1"
@@ -10,6 +23,8 @@ dblr '"db/_counter.db","'${sprams},lname=WRTT1'"'
 create_asyn_channel S11 127.0.0.1:4231
 CPRAMS="UUT=${HOST},SITE=11,SIG=WR,SPORT=S11"
 dblr '"db/wr11.db","'${CPRAMS}'"'
+
+
 
 
 
