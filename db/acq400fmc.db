@@ -37,3 +37,4 @@ record(calcout, "${UUT}:${SITE}:SHOT_IN_PROGRESS") {
     field(CALC, "A != B")
 }
 
+
