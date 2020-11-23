@@ -12,5 +12,5 @@ record (bi, "${UUT}:MOD:${site}:FAIL") {
 
 record (bo, "${UUT}:MOD:${site}:WARN") {
 	field(DTYP, "boAcqHost")
-	field(INP, "@/dev/gpio/LED/FMC${site}_R")
+	field(OUT, "@/dev/gpio/LED/FMC${site}_R")
 }
