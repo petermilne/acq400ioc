@@ -1099,7 +1099,11 @@ load_mb() {
 	if [[ -e /dev/acq400.12.knobs || -e /dev/acq400.13.knobs ]]; then
 		source /usr/local/epics/scripts/load.mgt400
 		echo "seq mgtStopOnLinkDown \"uut=${HOST}\"" >>/tmp/st_post.cmd
-	fi	
+	fi
+	if [ -e /dev/gpio/LED/ACT_G ]; then
+		echo "seq shotBusy \"uut=${HOST}\"" >>/tmp/st_post.cmd
+	fi
+	echo 	
 }
 
 load_mod_present()
