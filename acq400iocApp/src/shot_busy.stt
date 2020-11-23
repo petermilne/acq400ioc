@@ -25,28 +25,32 @@ ss shotBusy {
 	}
 	
 	state idle {
+		entry {
+			if (verbose) printf("idle grn:%d red:%d\n", grn, red);
+		}
 		when(bsy){
-			if (verbose) printf("shotBusy\n");
+			if (verbose) printf("idle -> shotBusy\n");
 			grn = 1; pvPut(grn);   // red+grn = amber
 			red = 1; pvPut(red);
 		} state busy
 		
 		when(tune){
-			if (verbose) printf("tuneBusy\n");
+			if (verbose) printf("idle -> tuneBusy\n");
 			grn = 1; pvPut(grn);   // red+grn = amber
 			red = 1; pvPut(red);			
 		} state tuning			
 	}
 	
 	state busy {
-		when(!bsy){
-			if (verbose) printf("shotBusy IDLE\n");
-			pvGet(post); grn = post != 0; pvPut(grn);
+		when(!bsy){			 						
 			red = 0; pvPut(red);  // grn : have data
+			pvGet(post);
+			grn = post != 0; pvPut(grn);
+			if (verbose) printf("shotBusy 99 grn:%d\n", grn);
 		} state idle
 		
 		when(delay(1)){
-			if (verbose > 1) printf("tuneBusy toggle\n");
+			if (verbose > 1) printf("shotBusy toggle\n");
 			grn = 1; pvPut(grn);   // red+grn = amber
 			red = !red; pvPut(red);
 		} state busy		
