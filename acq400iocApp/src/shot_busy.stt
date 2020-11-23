@@ -9,37 +9,59 @@ int red; assign red to "{uut}:SYS:LED:ACT_R";
 
 int bsy; assign bsy to "{uut}:1:SHOT_IN_PROGRESS"; monitor bsy;
 
-int tune; assign tune to "{uut}:11::Si5326:TUNEPHASE:BUSY"; monitor tune;
+int post; assign post to "{uut}:MODE:TRANS_ACT:POST";
+
+int tune; assign tune to "{uut}:11:Si5326:TUNEPHASE:BUSY"; monitor tune;
+
+int verbose;
 
 ss shotBusy {
+	state init {
+		when() {
+			if (macValueGet("verbose")){
+				verbose = macValueGet("verbose")[0] - '0';
+			}
+		} state idle
+	}
+	
 	state idle {
 		when(bsy){
+			if (verbose) printf("shotBusy\n");
 			grn = 1; pvPut(grn);   // red+grn = amber
 			red = 1; pvPut(red);
 		} state busy
+		
+		when(tune){
+			if (verbose) printf("tuneBusy\n");
+			grn = 1; pvPut(grn);   // red+grn = amber
+			red = 1; pvPut(red);			
+		} state tuning			
 	}
 	
 	state busy {
 		when(!bsy){
+			if (verbose) printf("shotBusy IDLE\n");
+			pvGet(post); grn = post != 0; pvPut(grn);
 			red = 0; pvPut(red);  // grn : have data
 		} state idle
-	}
-}
-
-ss tuneBusy {
-	state idle {
-		when(tune){
+		
+		when(delay(1)){
+			if (verbose > 1) printf("tuneBusy toggle\n");
 			grn = 1; pvPut(grn);   // red+grn = amber
-			red = 1; pvPut(red);			
-		} state tuning
+			red = !red; pvPut(red);
+		} state busy		
 	}
+	
 	state tuning {
 		when(!tune){
+			if (verbose) printf("tuneBusy 99\n");
 			grn = 0; pvPut(grn);   // red+grn = amber
 			red = 0; pvPut(red);
 		} state idle
 		
 		when(delay(1)){
+			if (verbose > 1) printf("tuneBusy toggle\n");
+			grn = !grn; pvPut(grn);   // red+grn = amber
 			red = !red; pvPut(red);
 		} state tuning
 	}

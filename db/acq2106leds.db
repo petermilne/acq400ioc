@@ -52,10 +52,14 @@ record (bo, "${UUT}:SYS:LED:CLK:FAULT:w") {
 record (bo, "${UUT}:SYS:LED:ACT_G") {
 	field(DTYP, "boAcqHost")
 	field(OUT, "@/dev/gpio/LED/ACT_G")
+	field(ZNAM, "OFF")
+	field(ONAM, "ON")
 }
 
 record (bo, "${UUT}:SYS:LED:ACT_R") {
 	field(DTYP, "boAcqHost")
 	field(OUT, "@/dev/gpio/LED/ACT_R")
+	field(ZNAM, "OFF")
+	field(ONAM, "ON")	
 }
 
