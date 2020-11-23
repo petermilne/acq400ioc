@@ -31,6 +31,15 @@ record(bi, "${UUT}:${SITE}:Si5326:TUNEPHASE:BUSY")
 	field(SCAN, "I/O Intr")
 	field(ZNAM, "0")
 	field(ONAM, "1")
+	field(FLNK, "${UUT}:${SITE}:Si5326:TUNEPHASE:leds")
+}
+
+# amber while busy
+record(dfanout, "${UUT}:${SITE}:Si5326:TUNEPHASE:leds")
+{
+	field(DOL, "${UUT}:${SITE}:Si5326:TUNEPHASE:BUSY")
+	field(OUTA, "${UUT}:SYS:LED:ACT_G PP")
+	field(OUTB, "${UUT}:SYS:LED:ACT_R PP")
 }
 
 record(longin, "${UUT}:${SITE}:Si5326:TUNEPHASE:BUSY:STEP")
