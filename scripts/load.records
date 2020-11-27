@@ -1155,6 +1155,7 @@ done
 
 case $MB_MODEL in
 acq2106*)
+	[ $ACQ480_COUNT -gt 0 ] && echo "seq badledfixer \"uut=${HOST}\"" >>/tmp/st_post.cmd
 	[ -e /etc/acq400/0/wrtd_tx ] && source /usr/local/epics/scripts/wr.init;;
 esac
 

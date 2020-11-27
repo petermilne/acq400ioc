@@ -1,0 +1,50 @@
+/* badled fixer - wat 2s after change, check LED is set correctly */
+
+
+program badledfixer
+option +r;
+option +s;
+
+int setpoints[6]; 
+assign setpoints to { 
+	"{uut}:MOD:1:WARN", "{uut}:MOD:2:WARN", "{uut}:MOD:3:WARN",
+	"{uut}:MOD:4:WARN", "{uut}:MOD:5:WARN", "{uut}:MOD:6:WARN"
+}; 
+monitor setpoints;
+
+int actuals[6];
+assign actuals to { 
+	"{uut}:MOD:1:FAIL", "{uut}:MOD:2:FAIL", "{uut}:MOD:3:FAIL",
+	"{uut}:MOD:4:FAIL", "{uut}:MOD:5:FAIL", "{uut}:MOD:6:FAIL"
+}; 
+
+int ii;
+
+ss badledfixer {
+	state wait_change {
+		when(setpoints){
+			
+		} state take5
+	}
+	
+	state take5 {
+		when(delay(5)){
+			ii = 0;
+		} state wait_a_sec
+	}
+	state wait_a_sec {
+		when(delay(0.5) && ii < 6){
+				for (; ii < 6; ++ii){
+					pvGet(actuals[ii]);
+					if (setpoints[ii] != actuals[ii]){
+						pvPut(setpoints[ii]);
+						break;
+					}
+				}
+		} state wait_a_sec
+		when (ii >= 6){
+			
+		} state wait_change
+	}	
+}
+

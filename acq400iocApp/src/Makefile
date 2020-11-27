@@ -46,6 +46,7 @@ acq400ioc_DBD += sc32_gain_mux.dbd
 acq400ioc_DBD += sc32_autozero.dbd
 acq400ioc_DBD += atd_range_set.dbd
 acq400ioc_DBD += shot_busy.dbd
+acq400ioc_DBD += badledfixer.dbd
 
 # Add all the support libraries needed by this IOC
 acq400ioc_LIBS += acq2ioc
@@ -78,6 +79,7 @@ acq400ioc_SRCS += sc32_gain_mux.st
 acq400ioc_SRCS += sc32_autozero.st
 acq400ioc_SRCS += atd_range_set.st
 acq400ioc_SRCS += shot_busy.st
+acq400ioc_SRCS += badledfixer.st
 
 # Build the main IOC entry point on workstation OSs.
 acq400ioc_SRCS_DEFAULT += acq400iocMain.cpp \
