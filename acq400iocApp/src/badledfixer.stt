@@ -5,17 +5,20 @@ program badledfixer
 option +r;
 option +s;
 
-int setpoints[6]; 
+#define NPV	8
+int setpoints[NPV]; 
 assign setpoints to { 
 	"{uut}:MOD:1:WARN", "{uut}:MOD:2:WARN", "{uut}:MOD:3:WARN",
-	"{uut}:MOD:4:WARN", "{uut}:MOD:5:WARN", "{uut}:MOD:6:WARN"
+	"{uut}:MOD:4:WARN", "{uut}:MOD:5:WARN", "{uut}:MOD:6:WARN",
+	"{uut}:SYS:LED:ACT_G", "{uut}:SYS:LED:ACT_R"
 }; 
 monitor setpoints;
 
-int actuals[6];
+int actuals[8];
 assign actuals to { 
 	"{uut}:MOD:1:FAIL", "{uut}:MOD:2:FAIL", "{uut}:MOD:3:FAIL",
-	"{uut}:MOD:4:FAIL", "{uut}:MOD:5:FAIL", "{uut}:MOD:6:FAIL"
+	"{uut}:MOD:4:FAIL", "{uut}:MOD:5:FAIL", "{uut}:MOD:6:FAIL",
+	"{uut}:SYS:LED:ACT_G:r", "{uut}:SYS:LED:ACT_R:r"
 }; 
 
 int ii;
@@ -33,8 +36,8 @@ ss badledfixer {
 		} state wait_a_sec
 	}
 	state wait_a_sec {
-		when(delay(0.5) && ii < 6){
-				for (; ii < 6; ++ii){
+		when(delay(0.5) && ii < 8){
+				for (; ii < 8; ++ii){
 					pvGet(actuals[ii]);
 					if (setpoints[ii] != actuals[ii]){
 						pvPut(setpoints[ii]);
@@ -42,7 +45,7 @@ ss badledfixer {
 					}
 				}
 		} state wait_a_sec
-		when (ii >= 6){
+		when (ii >= 8){
 			
 		} state wait_change
 	}	
