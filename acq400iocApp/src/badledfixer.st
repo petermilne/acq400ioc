@@ -5,9 +5,29 @@ program badledfixer
 option +r;
 option +s;
 
+%{
+int _memcmp(void* a, void* b, int nb){
+	int ii;
+	for (ii = 0; ii < nb; ++ii){
+		if (((char*)a)[ii] != ((char*)b)[ii]){
+			return 1;
+		}
+	}
+	return 0;
+}
+void _memcpy(void* to, void* from, int nb)
+{
+	int ii;
+	for (ii = 0; ii < nb; ++ii){
+		((char*)to)[ii] = ((char*)from)[ii];
+	}	
+}
+}%
+
 #define NPV	8
 
-int setpoints[NPV]; 
+int setpoints[NPV];
+int oldset[NPV];
 assign setpoints to { 
 	"{uut}:MOD:1:WARN", "{uut}:MOD:2:WARN", "{uut}:MOD:3:WARN",
 	"{uut}:MOD:4:WARN", "{uut}:MOD:5:WARN", "{uut}:MOD:6:WARN",
@@ -26,8 +46,8 @@ int ii;
 
 ss badledfixer {
 	state wait_change {
-		when(setpoints){
-			
+		when(setpoints && _memcmp(setpoints, oldset, sizeof(setpoints))){
+			_memcpy(oldset, setpoints, sizeof(setpoints));
 		} state take5
 	}
 	
