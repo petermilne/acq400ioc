@@ -39,7 +39,7 @@ ss badledfixer {
 	state wait_a_sec {		
 		when(delay(0.5) && ii < NPV){
 				printf("badledfixer:wait_a_sec %d\n", ii);
-				for (; ii < NPV; ++ii){
+				for (; ii < NPV; ){
 /*					
 					pvGet(actuals[ii]);
 					if (setpoints[ii] != actuals[ii]){
@@ -47,7 +47,7 @@ ss badledfixer {
 						break;
 					}
 */
-					pvPut(setpoints[ii]);
+					pvPut(setpoints[ii++]);
 					break;
 				}
 		} state wait_a_sec
