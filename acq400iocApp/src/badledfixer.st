@@ -52,13 +52,13 @@ ss badledfixer {
 	}
 	
 	state take5 {
-		when(delay(5)){
+		when(delay(7)){
 			ii = 0;
 		} state wait_a_sec
 	}
 	state wait_a_sec {		
 		when(delay(0.5) && ii < NPV){
-				printf("badledfixer:wait_a_sec %d\n", ii);
+
 				for (; ii < NPV; ){
 /*					
 					pvGet(actuals[ii]);
@@ -67,6 +67,7 @@ ss badledfixer {
 						break;
 					}
 */
+					printf("badledfixer:wait_a_sec %d put %d\n", ii, setpoints[ii]);
 					pvPut(setpoints[ii++]);
 					break;
 				}
