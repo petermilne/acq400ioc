@@ -5,6 +5,7 @@ program badledfixer
 option +r;
 option +s;
 
+
 %{
 int _memcmp(void* a, void* b, int nb){
 	int ii;
@@ -44,7 +45,14 @@ assign actuals to {
 
 int ii;
 
+char* debug;
+
 ss badledfixer {
+	state init {
+		when() {
+			debug = macValueGet("debug");
+		} state wait_change
+	}
 	state wait_change {
 		when(setpoints && _memcmp(setpoints, oldset, sizeof(setpoints))){
 			_memcpy(oldset, setpoints, sizeof(setpoints));
@@ -67,13 +75,13 @@ ss badledfixer {
 						break;
 					}
 */
-					printf("badledfixer:wait_a_sec %d put %d\n", ii, setpoints[ii]);
+					if (debug) printf("badledfixer:wait_a_sec %d put %d\n", ii, setpoints[ii]);
 					pvPut(setpoints[ii++]);
 					break;
 				}
 		} state wait_a_sec
 		when (ii >= NPV){
-			printf("badledfixer:wait_change\n");
+			if (debug) printf("badledfixer:wait_change\n");
 		} state wait_change
 	}	
 }
