@@ -7,6 +7,8 @@ option +r;
 int grn; assign grn to "{uut}:SYS:LED:ACT_G";
 int red; assign red to "{uut}:SYS:LED:ACT_R";
 
+int tune_amber; assign tune_amber to "${UUT}:SYS:LED:CLK_R";
+
 int bsy; assign bsy to "{uut}:1:SHOT_IN_PROGRESS"; monitor bsy;
 
 int post; assign post to "{uut}:MODE:TRANS_ACT:POST";
@@ -59,14 +61,12 @@ ss shotBusy {
 	state tuning {
 		when(!tune){
 			if (verbose) printf("tuneBusy 99\n");
-			grn = 0; pvPut(grn);   // red+grn = amber
-			red = 0; pvPut(red);
+			tune_amber = 0; pvPut(tune_amber);
 		} state idle
 		
 		when(delay(1)){
 			if (verbose > 1) printf("tuneBusy toggle\n");
-			grn = !grn; pvPut(grn);   // red+grn = amber
-			red = !red; pvPut(red);
+			tune_amber = !tune_amber; pvPut(tune_amber);
 		} state tuning
 	}
 }

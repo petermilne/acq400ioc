@@ -14,6 +14,11 @@ record (bo, "${UUT}:SYS:LED:CLK") {
 	field(OUT, "@/dev/gpio/LED/CLK_G")
 }
 
+record (bo, "${UUT}:SYS:LED:CLK_R") {
+	field(DTYP, "boAcqHost")
+	field(OUT, "@/dev/gpio/LED/CLK_R")
+}
+
 record (bo, "${UUT}:SYS:LED:ACT_G") {
 	field(DTYP, "boAcqHost")
 	field(OUT, "@/dev/gpio/LED/ACT_G")

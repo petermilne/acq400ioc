@@ -120,6 +120,11 @@ record(longin, "${UUT}:${SITE}:WR:PPS:rc") {
 	field(DESC, "PPS Count")	
 	field(PRIO, "LOW")
 }
+
+record (bo, "${UUT}:SYS:LED:CLK") {
+	field(DOL, "${UUT}:${SITE}:WR:PPS:ACTIVE")
+}
+
 record(longin, "${UUT}:${SITE}:WR:WRTT0:rc") {
 	field(SCAN, "1 second")
 	field(DTYP, "stream")	

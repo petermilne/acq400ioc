@@ -7,11 +7,15 @@ record(bo, "${UUT}:${SITE}:${SIG}:${lname}:RESET") {
 	field(DTYP, "Soft Channel")
 }
 
+# first, comp integer rollover; then calc active now; now report active if now or previous
+# ie hold ACTIVE for at lease one cycle: stretch a single pulse, avoid PPS blinks
 record(calc, "${UUT}:${SITE}:${SIG}:${lname}:ACTIVE") {
 	field(INPA, "${UUT}:${SITE}:${SIG}:${lname}:rc")
 	field(INPB, "${UUT}:${SITE}:${SIG}:${lname}:ACTIVE.LA")
+	field(INPC, "${UUT}:${SITE}:${SIG}:${lname}:ACTIVE")
+	field(INPD, "${UUT}:${SITE}:${SIG}:${lname}:ACTIVE.LC")
 	field(INPL, "4294967296")
-	field(CALC, "A:=A<0?L+A:A; (A-B) ? 1: 0")
+	field(CALC, "A:=A<0?L+A:A; C:=(A-B)?1:0; C||D")
 	field(PREC, "1")
 	field(FLNK, "${UUT}:${SITE}:${SIG}:${lname}:nzcount")
 	field(DESC, "True is signal changed from last")
