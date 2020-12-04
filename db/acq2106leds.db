@@ -54,14 +54,33 @@ record (bo, "${UUT}:SYS:LED:ACT_G") {
 	field(OUT, "@/dev/gpio/LED/ACT_G")
 	field(ZNAM, "OFF")
 	field(ONAM, "ON")
+	field(FLNK, "${UUT}:SYS:LED:ACT_A")
 }
-
 record (bo, "${UUT}:SYS:LED:ACT_R") {
 	field(DTYP, "boAcqHost")
 	field(OUT, "@/dev/gpio/LED/ACT_R")
 	field(ZNAM, "OFF")
-	field(ONAM, "ON")	
+	field(ONAM, "ON")
+	field(FLNK, "${UUT}:SYS:LED:ACT_A")
 }
+	
+record(calc, "${UUT}:SYS:LED:ACT_A")
+{
+	field(INPA, "${UUT}:SYS:LED:ACT_G")
+	field(INPB, "${UUT}:SYS:LED:ACT_R")
+	field(CALC, "A&&B")
+	field(FLNK, "${UUT}:SYS:LED:ACT_GG")
+	field(DESC, "ACT G&&R makes Amber")
+}
+
+record(calc, "${UUT}:SYS:LED:ACT_GG")
+{
+	field(INPA, "${UUT}:SYS:LED:ACT_G")
+	field(INPB, "${UUT}:SYS:LED:ACT_R")
+	field(CALC, "A && (!B)")
+	field(DESC, "ACT G&& !R pure Green")
+}
+
 record (bo, "${UUT}:SYS:LED:ACT_G:r") {
 	field(DTYP, "biAcqHost")
 	field(OUT, "@/dev/gpio/LED/ACT_G")
