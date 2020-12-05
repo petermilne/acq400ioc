@@ -25,14 +25,15 @@ void _memcpy(void* to, void* from, int nb)
 }
 }%
 
-#define NPV	8
+#define NPV	9
 
 int setpoints[NPV];
 int oldset[NPV];
 assign setpoints to { 
 	"{uut}:MOD:1:WARN", "{uut}:MOD:2:WARN", "{uut}:MOD:3:WARN",
 	"{uut}:MOD:4:WARN", "{uut}:MOD:5:WARN", "{uut}:MOD:6:WARN",
-	"{uut}:SYS:LED:ACT_G", "{uut}:SYS:LED:ACT_R"
+	"{uut}:SYS:LED:ACT_G", "{uut}:SYS:LED:ACT_R",
+	"{uut}:SYS:LED:CLK_R"
 }; 
 monitor setpoints;
 

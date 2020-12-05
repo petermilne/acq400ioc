@@ -39,7 +39,7 @@ record (bo, "${UUT}:SYS:LED:CLK_R") {
 }
 
 record (calc, "${UUT}:SYS:LED:CLK_A") {
-	field(INPA, "${UUT}:SYS:LED:CLK_G")
+	field(INPA, "${UUT}:SYS:LED:CLK")
 	field(INPB, "${UUT}:SYS:LED:CLK_R")
 	field(CALC, "A&&B")
 	field(FLNK, "${UUT}:SYS:LED:CLK_GG")
@@ -48,7 +48,7 @@ record (calc, "${UUT}:SYS:LED:CLK_A") {
 
 record(calc, "${UUT}:SYS:LED:CLK_GG")
 {
-	field(INPA, "${UUT}:SYS:LED:CLK_G")
+	field(INPA, "${UUT}:SYS:LED:CLK")
 	field(INPB, "${UUT}:SYS:LED:CLK_R")
 	field(CALC, "A && (!B)")
 	field(DESC, "CLK G&& !R pure Green")
@@ -57,7 +57,7 @@ record(calc, "${UUT}:SYS:LED:CLK_GG")
 
 record(calc, "${UUT}:SYS:LED:CLK_RR")
 {
-	field(INPA, "${UUT}:SYS:LED:CLK_G")
+	field(INPA, "${UUT}:SYS:LED:CLK")
 	field(INPB, "${UUT}:SYS:LED:CLK_R")
 	field(CALC, "(!A) && B")
 	field(DESC, "CLK G&& !R pure Green")
