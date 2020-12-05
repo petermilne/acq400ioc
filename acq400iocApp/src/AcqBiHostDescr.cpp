@@ -72,7 +72,10 @@ public:
 	}
 	virtual bool getValue(int& xx) {
 		VFile vf(fname);
-		return vf.readValue(xx);
+		int tmp;
+		bool rc = vf.readValue(tmp);
+		xx = tmp >= 1;
+		return rc;
 	}
 };
 
