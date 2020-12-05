@@ -9,7 +9,7 @@ int red; assign red to "{uut}:SYS:LED:ACT_R";
 
 int bsy; assign bsy to "{uut}:1:SHOT_IN_PROGRESS"; monitor bsy;
 
-int post; assign post to "{uut}:MODE:TRANS_ACT:POST";
+int post; assign post to "{uut}:MODE:TRANS_ACT:POST"; monitor post;
 
 int verbose;
 
@@ -36,15 +36,21 @@ ss shotBusy {
 	state busy {
 		when(!bsy){			 						
 			red = 0; pvPut(red);  // grn : have data
-			pvGet(post);
-			grn = post != 0; pvPut(grn);
-			if (verbose) printf("shotBusy 99 grn:%d\n", grn);
-		} state idle
+			if (verbose) printf("shotBusy 99 =>check_post\n");
+		} state check_post
 		
 		when(delay(1)){
 			if (verbose > 1) printf("shotBusy toggle\n");
 			grn = 1; pvPut(grn);   // red+grn = amber
 			red = !red; pvPut(red);
 		} state busy		
+	}
+	
+	state check_post {
+		when(post || delay(1)){
+			pvGet(post);
+			grn = post != 0; pvPut(grn);
+			if (verbose) printf("shotBusy 99 check_post=>idle G:%d\n", grn);
+		} state idle
 	}
 }

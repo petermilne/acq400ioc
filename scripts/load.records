@@ -1101,7 +1101,7 @@ load_mb() {
 		echo "seq mgtStopOnLinkDown \"uut=${HOST}\"" >>/tmp/st_post.cmd
 	fi
 	if [ -e /dev/gpio/LED/ACT_G ]; then
-		echo "seq shotBusy \"uut=${HOST}\"" >>/tmp/st_post.cmd
+		echo "seq shotBusy \"uut=${HOST},verbose=${SHOT_BUSY_VERBOSE:-0}\"" >>/tmp/st_post.cmd
 	fi
 	echo 	
 }
