@@ -1,0 +1,75 @@
+/* shot_busy.stt .. use LED:ACT to indicate busy (AMBER), then leave it at Green */
+
+
+program wrClkMon
+option +r;
+
+int tune_amber; assign tune_amber to "${UUT}:SYS:LED:CLK_R";
+
+int pps_active; assign pps_active to "{uut}:0:WR:PPS:ACTIVE"; 		monitor pps_active;
+int tune; 	 	assign tune to 	"{uut}:11:Si5326:TUNEPHASE:BUSY"; 	monitor tune;
+int tune_ok; 	assign tune_ok to  "{uut}:11:Si5326:TUNEPHASE:OK"; 	monitor tune_ok;
+
+int verbose;
+int pps_dropouts = 0;
+
+
+
+ss wrClkMon {
+	state init {
+		when() {
+			if (macValueGet("verbose")){
+				verbose = macValueGet("verbose")[0] - '0';
+			}
+		} state wait_pps
+	}	
+	state wait_pps {
+		when(pps_active){
+			tune_amber = 1; pvPut(tune_amber);	// tuning required
+			pps_dropouts = 0;
+		} state wait_tuning
+	}
+	
+	state wait_tuning {
+		when(tune){
+			tune_amber = !tune_amber; pvPut(tune_amber);
+		} state tuning	
+	}
+	
+	state tuning {
+		when(!tune){
+			if (verbose) printf("tuneBusy 99\n");
+			tune_amber = 1; pvPut(tune_amber);
+		} state tuning99
+		
+		when(delay(1)){
+			if (verbose > 1) printf("tuneBusy toggle\n");
+			tune_amber = !tune_amber; pvPut(tune_amber);
+		} state tuning
+	}
+	state tuning99 {
+		when(tune){
+			
+		} state tuning
+		when(!pps_active){
+			
+		} state wait_pps
+		
+		when(tune_ok){
+			tune_amber = 0; pvPut(tune_amber);
+		} state tune_ok		
+	}
+
+	state tune_ok {
+		when(!pps_active && ++pps_dropouts > 2){
+			
+		} state wait_pps
+		when(tune){
+			tune_amber = 1; pvPut(tune_amber);
+		} state tuning
+		when (!tune_ok){
+			tune_amber = 1; pvPut(tune_amber);
+		} state wait_tuning
+	}
+}
+

@@ -7,18 +7,11 @@ option +r;
 int grn; assign grn to "{uut}:SYS:LED:ACT_G";
 int red; assign red to "{uut}:SYS:LED:ACT_R";
 
-int tune_amber; assign tune_amber to "${UUT}:SYS:LED:CLK_R";
-
 int bsy; assign bsy to "{uut}:1:SHOT_IN_PROGRESS"; monitor bsy;
 
 int post; assign post to "{uut}:MODE:TRANS_ACT:POST";
 
-int pps_active; assign pps_active to "{uut}:0:WR:PPS:ACTIVE"; 		monitor pps_active;
-int tune; 	 	assign tune to 	"{uut}:11:Si5326:TUNEPHASE:BUSY"; 	monitor tune;
-int tune_ok; 	assign tune_ok to  "{uut}:11:Si5326:TUNEPHASE:OK"; 	monitor tune_ok;
-
 int verbose;
-int pps_dropouts = 0;
 
 ss shotBusy {
 	state init {
@@ -26,7 +19,6 @@ ss shotBusy {
 			if (macValueGet("verbose")){
 				verbose = macValueGet("verbose")[0] - '0';
 			}
-			pvGet(tune_ok);
 		} state idle
 	}
 	
@@ -56,55 +48,3 @@ ss shotBusy {
 		} state busy		
 	}
 }
-
-ss wrClk {
-	state wait_pps {
-		when(pps_active){
-			tune_amber = 1; pvPut(tune_amber);	// tuning required
-			pps_dropouts = 0;
-		} state wait_tuning
-	}
-	
-	state wait_tuning {
-		when(tune){
-			tune_amber = !tune_amber; pvPut(tune_amber);
-		} state tuning	
-	}
-	
-	state tuning {
-		when(!tune){
-			if (verbose) printf("tuneBusy 99\n");
-			tune_amber = 1; pvPut(tune_amber);
-		} state tuning99
-		
-		when(delay(1)){
-			if (verbose > 1) printf("tuneBusy toggle\n");
-			tune_amber = !tune_amber; pvPut(tune_amber);
-		} state tuning
-	}
-	state tuning99 {
-		when(tune){
-			
-		} state tuning
-		when(!pps_active){
-			
-		} state wait_pps
-		
-		when(tune_ok){
-			tune_amber = 0; pvPut(tune_amber);
-		} state tune_ok		
-	}
-
-	state tune_ok {
-		when(!pps_active && ++pps_dropouts > 2){
-			
-		} state wait_pps
-		when(tune){
-			tune_amber = 1; pvPut(tune_amber);
-		} state tuning
-		when (!tune_ok){
-			tune_amber = 1; pvPut(tune_amber);
-		} state wait_tuning
-	}
-}
-
