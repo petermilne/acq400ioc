@@ -35,6 +35,32 @@ record (bo, "${UUT}:SYS:LED:CLK") {
 record (bo, "${UUT}:SYS:LED:CLK_R") {
 	field(DTYP, "boAcqHost")
 	field(OUT, "@/dev/gpio/LED/CLK_R")
+	field(FLNK, "${UUT}:SYS:LED:CLK_A")
+}
+
+record (calc, "${UUT}:SYS:LED:CLK_A") {
+	field(INPA, "${UUT}:SYS:LED:CLK_G")
+	field(INPB, "${UUT}:SYS:LED:CLK_R")
+	field(CALC, "A&&B")
+	field(FLNK, "${UUT}:SYS:LED:CLK_GG")
+	field(DESC, "CLK G&&R makes Amber")
+}
+
+record(calc, "${UUT}:SYS:LED:CLK_GG")
+{
+	field(INPA, "${UUT}:SYS:LED:CLK_G")
+	field(INPB, "${UUT}:SYS:LED:CLK_R")
+	field(CALC, "A && (!B)")
+	field(DESC, "CLK G&& !R pure Green")
+	field(FLNK, "${UUT}:SYS:LED:CLK_RR")
+}
+
+record(calc, "${UUT}:SYS:LED:CLK_RR")
+{
+	field(INPA, "${UUT}:SYS:LED:CLK_G")
+	field(INPB, "${UUT}:SYS:LED:CLK_R")
+	field(CALC, "(!A) && B")
+	field(DESC, "CLK G&& !R pure Green")
 }
 
 # acq2106d37 error .. TRG goes amber
