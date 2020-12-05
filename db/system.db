@@ -6,7 +6,13 @@ record (longin, "${UUT}:SYS:UPTIME") {
 }
 
 record (calc, "${UUT}:SYS:IOCUPTIME") {
-       field(CALC, "VAL+1")
+	field(CALC, "VAL+1")
+	field(FLNK, "${UUT}:SYS:HB")
+}
+
+record (calc, "${UUT}:SYS:HB") {
+	field(INPA,  "${UUT}:SYS:UPTIME")
+	field(CALC, "A&3")
 }
 
 record (bo, "${UUT}:IOC_READY") {
