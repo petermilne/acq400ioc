@@ -14,3 +14,12 @@ record (bo, "${UUT}:MOD:${site}:WARN") {
 	field(DTYP, "boAcqHost")
 	field(OUT, "@/dev/gpio/LED/FMC${site}_R")
 }
+
+record(calc, "${UUT}:MOD:${site}:LED_RR")
+{
+	field(INPA, "${UUT}:SYS:LED:ACT_G")
+	field(INPB, "${UUT}:SYS:LED:ACT_R")
+	field(CALC, "A&&B")
+	field(FLNK, "${UUT}:SYS:LED:ACT_GG")
+	field(DESC, "ACT G&&R makes Amber")
+}

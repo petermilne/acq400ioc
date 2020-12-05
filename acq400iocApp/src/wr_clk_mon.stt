@@ -36,7 +36,11 @@ ss wrClkMon {
 		when(tune){
 			if (verbose) printf("wait_tuning=>tuning\n");
 			tune_amber = !tune_amber; pvPut(tune_amber);
-		} state tuning	
+		} state tuning
+		
+		when(!pps_active && ++pps_dropouts > 2){			
+			if (verbose) printf("wait_tuning=>wait_pps\n");
+		} state wait_pps		
 	}
 	
 	state tuning {
@@ -55,7 +59,7 @@ ss wrClkMon {
 			if (verbose) printf("tuning99=>tuning\n");
 		} state tuning
 		
-		when(!pps_active){
+		when(!pps_active && ++pps_dropouts > 2){
 			if (verbose) printf("tuning99=>wait_pps\n");
 		} state wait_pps
 		
@@ -67,6 +71,8 @@ ss wrClkMon {
 
 	state tune_ok {
 		when(!pps_active && ++pps_dropouts > 2){
+			tune_amber = 1; pvPut(tune_amber);			// RED: FAIL
+			tune_ok = 0; pvPut(tune_ok);
 			if (verbose) printf("tune_ok=>wait_pps\n");
 		} state wait_pps
 		
