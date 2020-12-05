@@ -4,7 +4,7 @@
 program wrClkMon
 option +r;
 
-int tune_amber; assign tune_amber to "${UUT}:SYS:LED:CLK_R";
+int tune_amber; assign tune_amber to "{uut}:SYS:LED:CLK_R";
 
 int pps_active; assign pps_active to "{uut}:0:WR:PPS:ACTIVE"; 		monitor pps_active;
 int tune; 	 	assign tune to 	"{uut}:11:Si5326:TUNEPHASE:BUSY"; 	monitor tune;
