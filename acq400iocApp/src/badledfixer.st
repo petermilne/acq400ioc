@@ -52,14 +52,8 @@ ss badledfixer {
 	state init {
 		when() {
 			debug = macValueGet("debug");
-		} state wait_change
-	}
-	state wait_change {
-		when(setpoints && _memcmp(setpoints, oldset, sizeof(setpoints))){
-			_memcpy(oldset, setpoints, sizeof(setpoints));
 		} state take5
 	}
-	
 	state take5 {
 		when(delay(7)){
 			ii = 0;
@@ -86,6 +80,14 @@ ss badledfixer {
 		when (ii >= NPV){
 			if (debug) printf("badledfixer:wait_change\n");
 		} state wait_change
-	}	
+	}
+	
+	state wait_change {
+		when(setpoints && _memcmp(setpoints, oldset, sizeof(setpoints))){
+			_memcpy(oldset, setpoints, sizeof(setpoints));
+		} state take5
+	}
+	
+	
 }
 

@@ -11,7 +11,7 @@ record (calc, "${UUT}:SYS:IOCUPTIME") {
 }
 
 record (calc, "${UUT}:SYS:HB") {
-	field(INPA,  "${UUT}:SYS:UPTIME")
+	field(INPA, "${UUT}:SYS:UPTIME")
 	field(CALC, "A&3")
 }
 
