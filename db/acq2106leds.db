@@ -30,7 +30,13 @@ record (bo, "${UUT}:SYS:LED:CLK") {
 	field(OMSL, "closed_loop")	
 	field(DOL, "${UUT}:0:SIG:CLK_MB:ACTIVE")
 	field(OUT, "@/dev/gpio/LED/CLK_G")
-	field(FLNK, "${UUT}:SYS:LED:CLK:FAULT")
+	field(FLNK, "${UUT}:SYS:LED:CLK:f")
+}
+
+record (fanout, "${UUT}:SYS:LED:CLK:f")
+{
+	field(LNK1, "${UUT}:SYS:LED:CLK:FAULT")
+	field(LNK2, "${UUT}:SYS:LED:CLK_R")
 }
 record (bo, "${UUT}:SYS:LED:CLK_R") {
 	field(DTYP, "boAcqHost")
