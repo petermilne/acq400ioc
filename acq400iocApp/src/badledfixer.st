@@ -69,14 +69,15 @@ ss badledfixer {
 		when(delay(0.5) && ii < NPV){
 
 				for (; ii < NPV; ){
-/*					
-					pvGet(actuals[ii]);
+/*									
 					if (setpoints[ii] != actuals[ii]){
 						pvPut(setpoints[ii]);
 						break;
 					}
 */
-					if (debug) printf("badledfixer:wait_a_sec %d put %d\n", ii, setpoints[ii]);
+					pvGet(actuals[ii]);
+					if (debug) printf("badledfixer:wait_a_sec %d put %d %s\n", ii, setpoints[ii], 
+										actuals[ii] != setpoints[ii]? "FIX": "OK");
 					pvPut(setpoints[ii++]);
 					break;
 				}
