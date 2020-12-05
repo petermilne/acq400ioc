@@ -5,8 +5,9 @@ record (bi, "${UUT}:MOD:${site}:GOOD") {
 }
 
 record (bi, "${UUT}:MOD:${site}:FAIL") {
-	field(DTYP, "biAcqHost")
-	field(INP, "@/dev/gpio/LED/FMC${site}_R")
+	field(DTPE, "Soft Channel")
+#	field(DTYP, "biAcqHost")
+#	field(INP, "@/dev/gpio/LED/FMC${site}_R")
 	field(PINI, "YES")
 }
 

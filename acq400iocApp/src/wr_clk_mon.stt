@@ -44,9 +44,11 @@ ss wrClkMon {
 	}
 	
 	state tuning {
+		entry {
+			tune_amber = 1; pvPut(tune_amber);
+		}
 		when(!tune){
 			if (verbose) printf("tuning=>tuning99\n");
-			tune_amber = 1; pvPut(tune_amber);
 		} state tuning99
 		
 		when(delay(1)){
