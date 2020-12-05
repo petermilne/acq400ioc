@@ -79,6 +79,7 @@ ss badledfixer {
 					if (debug) printf("badledfixer:wait_a_sec %d put %d %s\n", ii, setpoints[ii], 
 										actuals[ii] != setpoints[ii]? "FIX": "OK");
 					pvPut(setpoints[ii++]);
+					if (ii < 6 ) pvPut(setpoints[ii++]);
 					break;
 				}
 		} state wait_a_sec
