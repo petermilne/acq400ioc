@@ -116,7 +116,7 @@ ss wrPpsLos {
 			if (verbose) printf("wait_pps_bad=>wait_pps_good\n");
 		} state wait_pps_good
 		
-		when(){
+		when(pps_active){
 			pps_active_missing_seconds = 0;
 			if (verbose) printf("wait_pps_bad=>wait_bad_delay\n");
 		} state wait_bad_delay
