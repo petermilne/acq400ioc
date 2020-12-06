@@ -30,6 +30,11 @@ fi
 source /usr/local/epics/scripts/init_support.sh
 source /usr/local/epics/scripts/init_make_knobs.sh
 
+if [ ! -e $LOG ]; then
+	grep -q emlog /proc/modules; [ $? -ne 0 ] && /sbin/insmod /usr/local/lib/modules/emlog.ko
+        [ -e $LOG ] || mkemlog $LOG
+fi
+
 wait_ioc_records_loaded() {
 	let pollcat=0;
 	while [ ! -e "$RL.done" ]; do
