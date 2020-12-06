@@ -124,7 +124,7 @@ record(longin, "${UUT}:${SITE}:WR:PPS:rc") {
 record(longin, "${UUT}:${SITE}:WR:PPS:LOS") {
 	field(DTYP, "Soft Channel")
 	field(PINI, "YES")
-	field(DESC  "PPS Loss of Signal: PPS went down")
+	field(DESC, "PPS Loss of Signal: PPS went down")
 }
 
 record (bo, "${UUT}:SYS:LED:CLK") {
