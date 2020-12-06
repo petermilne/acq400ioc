@@ -111,15 +111,26 @@ ss wrPpsLos {
 		} state wait_pps_bad
 	} 
 	state wait_pps_bad {
-		when(!pps_active && ++pps_active_missing_seconds > 2){
-			pps_los = 1; pvPut(pps_los);
-			if (verbose) printf("wait_pps_bad=>wait_pps_good\n");
-		} state wait_pps_good
+		when(!pps_active){
+			if (verbose) printf("wait_pps_bad=>check_if_los %d %d\n", pps_active, pps_active_missing_seconds);
+			pps_active_missing_seconds += 1;
+		} state check_if_los
 		
 		when(pps_active){
 			pps_active_missing_seconds = 0;
-			if (verbose) printf("wait_pps_bad=>wait_bad_delay\n");
+			if (verbose) printf("wait_pps_bad=>wait_bad_delay %d %d\n", pps_active, pps_active_missing_seconds);
 		} state wait_bad_delay
+	}
+	
+	state check_if_los {
+		when(!pps_active && pps_active_missing_seconds > 2) {
+			pps_los = 1; pvPut(pps_los);
+			if (verbose) printf("check_if_los=>wait_pps_good %d %d\n", pps_active, pps_active_missing_seconds);
+		} state wait_pps_good
+		
+		when(delay(1)){
+			
+		} state wait_pps_bad
 	}
 }
 
