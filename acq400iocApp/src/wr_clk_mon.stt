@@ -11,7 +11,10 @@ int tune; 	 	assign tune to 	"{uut}:11:Si5326:TUNEPHASE:BUSY"; 	monitor tune;
 int tune_ok; 	assign tune_ok to  "{uut}:11:Si5326:TUNEPHASE:OK"; 	monitor tune_ok;
 
 int pps_los;	assign pps_los to "{uut}:0:WR:PPS:LOS";
+int force_training; assign force_training to "{uut}:0:SIG:CLK:TRAIN_REQ";
 int verbose;
+
+int pps_active_missing_seconds;
 
 ss wrClkMon {
 	state init {
@@ -45,10 +48,10 @@ ss wrClkMon {
 	state tuning {
 		entry {
 			pps_los = 0; pvPut(pps_los);	// TUNEPHASE:OK:r down, safe to clear pps_los
+			force_training = 1; pvPut(force_training);
 		}
 
-		when(!pps_active){
-			pps_los = 1; pvPut(pps_los);
+		when(pps_los){			
 			if (verbose) printf("tune_ok=>wait_pps\n");
 		} state wait_pps
 
@@ -66,9 +69,8 @@ ss wrClkMon {
 			if (verbose) printf("tuning99=>tuning\n");
 		} state tuning
 		
-		when(!pps_active){
+		when(pps_los){
 			if (verbose) printf("tuning99=>wait_pps\n");
-			pps_los = 1; pvPut(pps_los);
 		} state wait_pps
 		
 		when(tune_ok){
@@ -78,12 +80,11 @@ ss wrClkMon {
 	}
 
 	state tune_ok_state {
-		when(!pps_active){
+		when(pps_los){
 			tune_amber = 1; pvPut(tune_amber);			// RED: FAIL
-			pps_los = 1; pvPut(pps_los);
 			if (verbose) printf("tune_ok=>wait_pps\n");
 		} state wait_pps
-		
+
 		when(tune){
 			if (verbose) printf("tune_ok=>tuning\n");
 			tune_amber = 1; pvPut(tune_amber);
@@ -93,6 +94,22 @@ ss wrClkMon {
 			if (verbose) printf("tune_ok=>wait_tuning\n");
 			tune_amber = 1; pvPut(tune_amber);
 		} state wait_tuning
+	}
+}
+
+ss wrPpsLos {
+	state wait_pps_good {
+		when(pps_active){
+			pps_active_missing_seconds = 0;
+			if (verbose) printf("wait_pps_good=>wait_pps_bad\n");
+		}  state wait_pps_bad
+	}
+
+	state wait_pps_bad {
+		when(delay(1) && !pps_active && ++pps_active_missing_seconds > 2){
+			pps_los = 1; pvPut(pps_los);
+			if (verbose) printf("wait_pps_bad=>wait_pps_good\n");
+		} state wait_pps_good
 	}
 }
 
