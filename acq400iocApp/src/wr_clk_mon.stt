@@ -106,7 +106,7 @@ ss wrPpsLos {
 	}
 
 	state wait_bad_delay {
-		when(delay(1)){
+		when(delay(2)){
 			
 		} state wait_pps_bad
 	} 
@@ -123,12 +123,12 @@ ss wrPpsLos {
 	}
 	
 	state check_if_los {
-		when(!pps_active && pps_active_missing_seconds > 2) {
+		when(!pps_active && pps_active_missing_seconds > 1) {
 			pps_los = 1; pvPut(pps_los);
-			if (verbose) printf("check_if_los=>wait_pps_good %d %d\n", pps_active, pps_active_missing_seconds);
+			if (verbose) printf("check_if_los=>wait_pps_good %d %d LOS\n", pps_active, pps_active_missing_seconds);
 		} state wait_pps_good
 		
-		when(delay(1)){
+		when(delay(2)){
 			
 		} state wait_pps_bad
 	}
