@@ -30,7 +30,7 @@ ss wrClkMon {
 			if (verbose) printf("wait_pps=>wait_tuning\n");
 
 			tune_amber = 1; pvPut(tune_amber);	// tuning required
-			// DO NOT lift pps_los here : TUNEPHASE:OK will simply pop back up ..
+			// DO NOT clear pps_los here : TUNEPHASE:OK will simply pop back up ..
 			pps_dropouts = 0;
 		} state wait_tuning
 	}
@@ -48,12 +48,11 @@ ss wrClkMon {
 	
 	state tuning {
 		entry {
-			pps_los = 1; pvPut(pps_los);
-			tune_amber = 1; pvPut(tune_amber);
+			pps_los = 0; pvPut(pps_los);	// TUNEPHASE:OK:r down, safe to clear pps_los
 		}
 
 		when(!pps_active && ++pps_dropouts > 2){
-			pps_los = 0; pvPut(pps_los);
+			pps_los = 1; pvPut(pps_los);
 			if (verbose) printf("tune_ok=>wait_pps\n");
 		} state wait_pps
 
@@ -73,6 +72,7 @@ ss wrClkMon {
 		
 		when(!pps_active && ++pps_dropouts > 2){
 			if (verbose) printf("tuning99=>wait_pps\n");
+			pps_los = 1; pvPut(pps_los);
 		} state wait_pps
 		
 		when(tune_ok){
@@ -84,7 +84,7 @@ ss wrClkMon {
 	state tune_ok_state {
 		when(!pps_active && ++pps_dropouts > 2){
 			tune_amber = 1; pvPut(tune_amber);			// RED: FAIL
-			pps_los = 0; pvPut(pps_los);
+			pps_los = 1; pvPut(pps_los);
 			if (verbose) printf("tune_ok=>wait_pps\n");
 		} state wait_pps
 		
