@@ -15,14 +15,27 @@ record(stringin, "${UUT}:${SITE}:Si5326:TUNEPHASE:STATE")
 	field(SCAN, "I/O Intr")
 }
 
-record(bi, "${UUT}:${SITE}:Si5326:TUNEPHASE:OK")
+record(bi, "${UUT}:${SITE}:Si5326:TUNEPHASE:OK:r")
 {
 	field(DTYP, "stream")
 	field(INP,  "@wr.proto getSi5326TP_OK ${SPORT}")
 	field(SCAN, "I/O Intr")
 	field(ZNAM, "0")
 	field(ONAM, "1")
+	field(FLNK, "${UUT}:${SITE}:Si5326:TUNEPHASE:OK")
 }
+
+record(longin, "${UUT}:0:WR:PPS:LOS") {
+	field(FLNK, "${UUT}:${SITE}:Si5326:TUNEPHASE:OK")
+}
+
+record(calc, "${UUT}:${SITE}:Si5326:TUNEPHASE:OK")
+{
+	field(INPA, "${UUT}:${SITE}:Si5326:TUNEPHASE:OK:r")
+	field(INPB, "${UUT}:0:WR:PPS:LOS")
+	field(CALC, "A && (!B)")
+}
+
 
 record(bi, "${UUT}:${SITE}:Si5326:TUNEPHASE:BUSY")
 {

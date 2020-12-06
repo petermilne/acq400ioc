@@ -10,6 +10,7 @@ int pps_active; assign pps_active to "{uut}:0:WR:PPS:ACTIVE"; 		monitor pps_acti
 int tune; 	 	assign tune to 	"{uut}:11:Si5326:TUNEPHASE:BUSY"; 	monitor tune;
 int tune_ok; 	assign tune_ok to  "{uut}:11:Si5326:TUNEPHASE:OK"; 	monitor tune_ok;
 
+int pps_los;	assign pps_los to "{uut}:0:WR:PPS:LOS";
 int verbose;
 int pps_dropouts = 0;
 
@@ -27,7 +28,9 @@ ss wrClkMon {
 	state wait_pps {
 		when(pps_active){
 			if (verbose) printf("wait_pps=>wait_tuning\n");
+
 			tune_amber = 1; pvPut(tune_amber);	// tuning required
+			// DO NOT lift pps_los here : TUNEPHASE:OK will simply pop back up ..
 			pps_dropouts = 0;
 		} state wait_tuning
 	}
@@ -45,8 +48,15 @@ ss wrClkMon {
 	
 	state tuning {
 		entry {
+			pps_los = 1; pvPut(pps_los);
 			tune_amber = 1; pvPut(tune_amber);
 		}
+
+		when(!pps_active && ++pps_dropouts > 2){
+			pps_los = 0; pvPut(pps_los);
+			if (verbose) printf("tune_ok=>wait_pps\n");
+		} state wait_pps
+
 		when(!tune){
 			if (verbose) printf("tuning=>tuning99\n");
 		} state tuning99
@@ -68,13 +78,13 @@ ss wrClkMon {
 		when(tune_ok){
 			if (verbose) printf("tuning99=>tune_ok\n");
 			tune_amber = 0; pvPut(tune_amber);
-		} state tune_ok		
+		} state tune_ok_state
 	}
 
-	state tune_ok {
+	state tune_ok_state {
 		when(!pps_active && ++pps_dropouts > 2){
 			tune_amber = 1; pvPut(tune_amber);			// RED: FAIL
-			tune_ok = 0; pvPut(tune_ok);
+			pps_los = 0; pvPut(pps_los);
 			if (verbose) printf("tune_ok=>wait_pps\n");
 		} state wait_pps
 		
