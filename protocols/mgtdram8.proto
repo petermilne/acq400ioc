@@ -2,7 +2,7 @@ Terminator = LF;
 ExtraInput = Ignore;
 
 set_mgt_run_shot {
-	out "mgt_run_shot %d;"
+	out "mgt_run_shot %d";
 	in;
 }
 

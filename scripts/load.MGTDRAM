@@ -5,7 +5,7 @@ HOST=$1
 SITE=$2
 
 source ./scripts/record_support.sh
-echo "#records added by load.BOLO8BLF $HOST $SITE"
+echo "#records added by load.MGTDRAM $HOST $SITE"
 
 CPRAMS="UUT=${HOST},lname=${SITE}"				
 PRAMS="$CPRAMS,pname=/dev/hwmon/7/temp,scale=0.001,offset=0"

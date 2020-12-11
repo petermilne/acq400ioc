@@ -28,7 +28,7 @@ record(longout, "${UUT}:MODE:BLT:BUFFERS") {
 	field(DRVH, "2000")
 }
 
-record(bo, "${UUT}:MODE:BLT:SET_ARM:w") {
+record(bo, "${UUT}:MODE:BLT:SET_ARM") {
 	field(DTYP, "stream")
 	field(OUT,  "@mgtdram8.proto set_mgt_arm ${SRUN}")
 	field(FLNK, "${UUT}:1:DT PP")

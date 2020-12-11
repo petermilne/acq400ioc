@@ -3,6 +3,10 @@
 MGTHSIZE=128
 
 
+
+echo "#records added by load.mgt400 $HOST"
+
+
 echo "load.mgt400: mgt400 hg hack" > /.control
 
 load_mgt400_fifo_stat()
@@ -32,7 +36,7 @@ load_mgtdram8() {
 	create_asyn_channel SMG 127.0.0.1:53992
 	
 	sprams="UUT=${HOST},SITE=14,SPORT=S14,SRUN=SMG"
-	dblr '"db/mgtdram8.db","'${sprams},S
+	dblr '"db/mgtdram8.db","'${sprams}\"
 }
 load_mgt400() {
 	site=$1
