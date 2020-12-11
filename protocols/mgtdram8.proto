@@ -7,7 +7,7 @@ set_mgt_run_shot {
 }
 
 set_mgt_abort {
-	out "mgt_abort %d;"
+	out "mgt_abort %d";
 	in;
 }
 set_mgt_arm {

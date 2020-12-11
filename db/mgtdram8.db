@@ -16,7 +16,7 @@ record(calcout, "${UUT}:MODE:BLT:BUFFERS:c") {
 	field(CALC, "A*B/C + 1")
 	field(DESC, "set transient buffers")
 	field(EGU,  "B4M")
-	field(OUT,  "${UUT}:MODE:BLT:BUFFERS")
+	field(OUT,  "${UUT}:MODE:BLT:BUFFERS PP")
 	field(OOPT, "Every Time")
 	field(DOPT, "Use CALC")	
 }
