@@ -6,7 +6,7 @@ record(longout, "${UUT}:MODE:BLT:POST") {
 	field(EGU,  "Samples")
 	field(LOPR, "0")
 	field(HOPR, "100000000")
-	field(FLNK, "${UUT}:MODE:BLT:BUFFERS")
+	field(FLNK, "${UUT}:MODE:BLT:BUFFERS:c")
 }
 
 record(calcout, "${UUT}:MODE:BLT:BUFFERS:c") {
@@ -34,7 +34,7 @@ record(bo, "${UUT}:MODE:BLT:SET_ARM") {
 	field(FLNK, "${UUT}:MODE:BLT:SET_ARM:fo")
 }
 
-record(fanout "${UUT}:MODE:BLT:SET_ARM:fo") {
+record(fanout, "${UUT}:MODE:BLT:SET_ARM:fo") {
 	field(LNK1, "${UUT}:1:DT PP")
 	field(LNK2, "${UUT}:A:SIG:MGT:PUSH:BUFS:RESET PP")
 	field(LNK3, "${UUT}:A:SIG:MGT:PUSH:BYTES:RESET PP")	
