@@ -127,14 +127,14 @@ record(calc, "${UUT}:SYS:LED:ACT_RR")
 
 record (bo, "${UUT}:SYS:LED:ACT_G:r") {
 	field(DTYP, "biAcqHost")
-	field(OUT, "@/dev/gpio/LED/ACT_G")
+	field(INP, "@/dev/gpio/LED/ACT_G")
 	field(ZNAM, "OFF")
 	field(ONAM, "ON")
 }
 
 record (bo, "${UUT}:SYS:LED:ACT_R:r") {
 	field(DTYP, "biAcqHost")
-	field(OUT, "@/dev/gpio/LED/ACT_R")
+	field(INP, "@/dev/gpio/LED/ACT_R")
 	field(ZNAM, "OFF")
 	field(ONAM, "ON")	
 }
