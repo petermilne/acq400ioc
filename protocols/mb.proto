@@ -155,3 +155,8 @@ setSoftTrigger {
 	out "soft_trigger";
 	in;
 }
+
+get_ssb {
+	out "ssb";
+	in "%d";
+}

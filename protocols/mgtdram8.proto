@@ -1,0 +1,39 @@
+Terminator = LF;
+ExtraInput = Ignore;
+
+set_mgt_run_shot {
+	out "mgt_run_shot %d;"
+	in;
+}
+
+set_mgt_abort {
+	out "mgt_abort %d;"
+	in;
+}
+set_mgt_arm {
+	out "\x18";
+	# no in, let it hang
+}
+
+#^X
+#@@@ Restarting child "/usr/local/bin/mgtsh"
+#@@@ The PID of new child "/usr/local/bin/mgtsh" is: 8989
+#@@@ @@@ @@@ @@@ @@@
+#
+#sitelist: 1,2,3,4,5,6
+#sites: 1 2 3 4 5 6
+#DRAM CONTROLLER RESET
+#BUSY pid 9127 SIG:SAMPLE_COUNT:COUNT 0
+#BUSY pid 9127 SIG:SAMPLE_COUNT:COUNT 0
+#BUSY pid 9127 SIG:SAMPLE_COUNT:COUNT 0
+#BUSY pid 9127 SIG:SAMPLE_COUNT:COUNT 261842456
+#BUSY pid 9127 SIG:SAMPLE_COUNT:COUNT 262842607
+#..
+#BUSY pid 9127 SIG:SAMPLE_COUNT:COUNT 280845372
+#IDLE SIG:SAMPLE_COUNT:COUNT 281845524
+#END
+
+mgt_get_mgt_state { 
+	in "%{sites|DRAM|BUSY|IDLE}";
+}
+

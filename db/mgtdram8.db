@@ -1,0 +1,76 @@
+# records for MGTDRAM : BLT : Big Long Transient
+
+record(longout, "${UUT}:MODE:BLT:POST") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "set transient post-samples")
+	field(EGU,  "Samples")
+	field(LOPR, "0")
+	field(HOPR, "100000000")
+	field(FLNK, "${UUT}:MODE:BLT:BUFFERS")
+}
+
+record(calcout, "${UUT}:MODE:BLT:BUFFERS:c") {
+	field(INPA, "${UUT}:MODE:BLT:POST")
+	field(INPB, "${UUT}:0:SSB")
+	field(INPC, "0x400000")
+	field(CALC, "A*B/C + 1")
+	field(DESC, "set transient buffers")
+	field(EGU,  "B4M")
+	field(OUT,  "${UUT}:MODE:BLT:BUFFERS")
+	field(OOPT, "Every Time")
+	field(DOPT, "Use CALC")	
+}
+
+record(longout, "${UUT}:MODE:BLT:BUFFERS") {
+	field(DTYP, "stream")	
+	field(OUT, "@mgtdram8.proto set_mgt_run_shot ${SPORT}")
+	field(DRVL, "100")
+	field(DRVH, "2000")
+}
+
+record(bo, "${UUT}:MODE:BLT:SET_ARM:w") {
+	field(DTYP, "stream")
+	field(OUT,  "@mgtdram8.proto set_mgt_arm ${SRUN}")
+	field(FLNK, "${UUT}:1:DT PP")
+}
+
+
+record(bo, "${UUT}:MODE:BLT:SET_ABORT") {
+	field(DTYP, "stream")
+	field(DESC, "abort BLT capture")
+	field(OUT,  "@mgtdram8.proto set_mgt_abort ${SPORT}")
+	field(VAL,  "0")
+	field(PINI, "YES")	
+	field(FLNK,  "${UUT}:MODE:TRANSIENT:SET_ABORT:set")
+	field(HIGH, "0.1")
+}
+
+record(mbbi, "${UUT}:MODE:BLT:ACT:MGTSTATE") {
+	field(DTYP, "stream")
+	field(SCAN, "I/O Intr")
+	field(INP,  "@mgtdram8.proto mgt_get_mgt_state ${SRUN}")
+	field(NOBT, "2")
+	field(ZRST, "NONE")
+	field(ONST, "PREARM")
+	field(TWST, "BUSY")
+	field(THST, "IDLE")
+	field(FLNK, "${UUT}:MODE:BLT:ACT:STATE:c")
+	
+}
+
+record(calcout, "${UUT}:MODE:BLT:ACT:STATE:c") {
+	field(INPA, "${UUT}:MODE:BLT:ACT:MGTSTATE")
+	field(INPB, "${UUT}:1:SIG:SAMPLE_COUNT:COUNT")
+	field(CALC, "A==2&&B>0? 2: A==2 || A==1? 1: 0")
+	field(OUT,  "${UUT}:MODE:BLT:ACT:STATE PP")
+	field(OOPT, "Every Time")
+	field(DOPT, "Use CALC")		
+}
+	
+record(mbbi, "${UUT}:MODE:BLT:ACT:STATE") {
+	field(DTYP, "Soft Channel")
+	field(NOBT, "2")
+	field(ZRST, "IDLE")
+	field(ONST, "ARM")
+	field(TWST, "RUN")
+}

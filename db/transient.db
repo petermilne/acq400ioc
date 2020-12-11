@@ -325,6 +325,13 @@ record(mbbi, "${UUT}:LIVE:MODE") {
     field(TWST, "pre-post")	
 }
 
+record(longin, "${UUT}:0:SSB") {
+	field(DTYP, "stream")
+	field(INP,  "@mb.proto get_ssb ${SPORT}")
+	field(PINI, "YES")
+	field(DESC, "aggregator sample size bytes")
+}
+
 # append existing record
 # on transition to !=0, wait 2s for the count to settle 
 # then trigger DT because we may want to recalculate.
