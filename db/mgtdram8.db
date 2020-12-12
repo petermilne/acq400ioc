@@ -29,15 +29,15 @@ record(longout, "${UUT}:MODE:BLT:BUFFERS") {
 }
 
 record(bo, "${UUT}:MODE:BLT:SET_ARM") {
-	field(DTYP, "stream")
+	field(DTYP, "Soft Channel")
 	field(OUT,  "@mgtdram8.proto set_mgt_arm ${SRUN}")
-	field(FLNK, "${UUT}:MODE:BLT:SET_ARM:fo")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:MODE:BLT:SET_ARM")
 }
 
-record(fanout, "${UUT}:MODE:BLT:SET_ARM:fo") {
-	field(LNK1, "${UUT}:1:DT PP")
-	field(LNK2, "${UUT}:A:SIG:MGT:PUSH:BUFS:RESET PP")
-	field(LNK3, "${UUT}:A:SIG:MGT:PUSH:BYTES:RESET PP")	
+record(bo, "${UUT}:MODE:BLT:SET_ARM:w") {
+	field(DTYP, "stream")
+	field(OUT,  "@mgtdram8.proto set_mgt_arm ${SRUN}")	
 }
 
 
@@ -47,7 +47,7 @@ record(bo, "${UUT}:MODE:BLT:SET_ABORT") {
 	field(OUT,  "@mgtdram8.proto set_mgt_abort ${SPORT}")
 	field(VAL,  "0")
 	field(PINI, "YES")	
-	field(FLNK,  "${UUT}:MODE:TRANSIENT:SET_ABORT:set")
+	field(FLNK,  "${UUT}:MODE:TRANSIENT:SET_ABORT:w PP")
 	field(HIGH, "0.1")
 }
 

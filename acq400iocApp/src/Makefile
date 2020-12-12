@@ -48,6 +48,7 @@ acq400ioc_DBD += atd_range_set.dbd
 acq400ioc_DBD += shot_busy.dbd
 acq400ioc_DBD += wr_clk_mon.dbd
 acq400ioc_DBD += badledfixer.dbd
+acq400ioc_DBD += mgt8_shot_cycle.dbd
 
 # Add all the support libraries needed by this IOC
 acq400ioc_LIBS += acq2ioc
@@ -82,6 +83,7 @@ acq400ioc_SRCS += atd_range_set.st
 acq400ioc_SRCS += shot_busy.st
 acq400ioc_SRCS += wr_clk_mon.st
 acq400ioc_SRCS += badledfixer.st
+acq400ioc_SRCS += mgt8_shot_cycle.st
 
 # Build the main IOC entry point on workstation OSs.
 acq400ioc_SRCS_DEFAULT += acq400iocMain.cpp \
