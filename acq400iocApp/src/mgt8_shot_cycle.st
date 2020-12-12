@@ -24,7 +24,7 @@ int ctr_resets[NCTR];
 assign ctr_resets to {
 	"{uut}:A:SIG:MGT:PUSH:BUFS:RESET",
 	"{uut}:A:SIG:MGT:PUSH:BYTES:RESET",
-	"{uut}:A:SIG:MGT:PULL:BYTES:RESET",
+	"{uut}:A:SIG:MGT:PULL:BUFS:RESET",
 	"{uut}:A:SIG:MGT:PULL:BYTES:RESET"
 };
 
@@ -49,8 +49,8 @@ ss mgt8_shot_cycle {
 	state pre_arm {
 		entry {		
 			for (ii = 0; ii < NCTR; ++ii){
-				ctr_resets[ii] = 1; pvPut(ctr_resets[ii]);
-			}
+				ctr_resets[ii] = 1; pvPut(ctr_resets[ii]); // self-clears
+			}		
 			pvGet(set_nbuf); pvPut(set_nbuf);
 		}
 		when(delay(0.25)){
@@ -59,9 +59,7 @@ ss mgt8_shot_cycle {
 	}
 	state arm_action {
 		entry {
-			for (ii = 0; ii < NCTR; ++ii){
-				ctr_resets[ii] = 0; pvPut(ctr_resets[ii]); 
-			}
+
 			set_arm_w = 1; pvPut(set_arm_w);
 		}
 		when(act_state != 0){

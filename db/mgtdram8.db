@@ -80,3 +80,10 @@ record(mbbi, "${UUT}:MODE:BLT:ACT:STATE") {
 	field(ONST, "ARM")
 	field(TWST, "RUN")
 }
+
+
+record(calc, "${UUT}:A:SIG:MGT:PUSH:BYTES:COUNT") {
+	# C is scale
+	field(INPC, "16")
+}
+

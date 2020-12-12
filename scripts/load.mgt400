@@ -39,12 +39,8 @@ load_mgtdram8() {
 	dblr '"db/mgtdram8.db","'${sprams}\"
 }
 
-MGTDTC=1
 
-if [ -e /etc/acq400/C/MTYPE ] &&  [ "$(cat /etc/acq400/C/MTYPE)" = "95" ]; then
-	load_mgtdram8
-	MGTDTC=4
-fi
+
 
 load_mgt400() {
 	site=$1
@@ -58,7 +54,7 @@ load_mgt400() {
 	prams="${ctprams},lname=MGT:HB,pname=heartbeat"
 	dblr '"db/counter.db","'${prams}'"'
 	
-	ctprams="${cprams},CTRMAX=${CTR31},DT=1,DTC=${MGTDTC}"
+	ctprams="${cprams},CTRMAX=${CTR31},DT=1,DTC=1"
 	prams="${ctprams},lname=MGT:PUSH:BUFS,pname=push_buffer_count"
 	dblr '"db/counter.db","'${prams}'"'
 
@@ -66,7 +62,7 @@ load_mgt400() {
 	prams="${ctprams},lname=MGT:PULL:BUFS,pname=pull_buffer_count"
 	dblr '"db/counter.db","'${prams}'"'		
 	
-	ctprams="${cprams},CTRMAX=${CTR31},DT=1,DTC=${MGTDTC}"
+	ctprams="${cprams},CTRMAX=${CTR31},DT=1,DTC=1"
 	prams="${ctprams},lname=MGT:PUSH:BYTES,pname=push_buffer_count_lw"
 	dblr '"db/counter.db","'${prams}'"'	
 	
@@ -112,6 +108,10 @@ for SITE in 11 12 13; do
 	esac
 	[ -e /dev/acq400.$SITE.knobs ] && load_mgt400 $SITE $id
 done
+
+if [ -e /etc/acq400/C/MTYPE ] &&  [ "$(cat /etc/acq400/C/MTYPE)" = "95" ]; then
+	load_mgtdram8
+fi
 
 
 
