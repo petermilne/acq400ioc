@@ -31,7 +31,8 @@ record(longout, "${UUT}:MODE:BLT:BUFFERS") {
 record(calcout, "${UUT}:MODE:BLT:BUFFERS:M") {
 	field(INPA, "${UUT}:MODE:BLT:BUFFERS")
 	field(INPB, "${UUT}:0:NCHAN")
-	field(CALC, "C := B%12==0? 12: 16; A%C==0? A: (A+C)%C")
+	field(CALC, "C := B%12==0? 12: 16; A%C==0? A: (1+floor(A/C))*C")
+#                    12345678901234567890123456789012345678901234567890123456789012345678901234567890
 	field(OUT,  "${UUT}:MODE:BLT:BUFFERS:w PP")
 	field(OOPT, "Every Time")
 	field(DOPT, "Use CALC")
