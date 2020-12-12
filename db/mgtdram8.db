@@ -22,6 +22,23 @@ record(calcout, "${UUT}:MODE:BLT:BUFFERS:c") {
 }
 
 record(longout, "${UUT}:MODE:BLT:BUFFERS") {
+	field(DTYP, "Soft Channel")
+	field(DRVL, "100")
+	field(DRVH, "2000")
+	field(FLNK, "${UUT}:MODE:BLT:BUFFERS:M")
+}
+
+record(calcout, "${UUT}:MODE:BLT:BUFFERS:M") {
+	field(INPA, "${UUT}:MODE:BLT:BUFFERS")
+	field(INPB, "${UUT}:0:NCHAN")
+	field(CALC, "C := B%12==0? 12: 16; A%C==0? A: (A+C)%C")
+	field(OUT,  "${UUT}:MODE:BLT:BUFFERS:w PP")
+	field(OOPT, "Every Time")
+	field(DOPT, "Use CALC")
+	field(DESC, "Round up capture buffers to offload modulus")
+}
+
+record(longout, "${UUT}:MODE:BLT:BUFFERS:w") {
 	field(DTYP, "stream")	
 	field(OUT, "@mgtdram8.proto set_mgt_run_shot ${SPORT}")
 	field(DRVL, "100")
