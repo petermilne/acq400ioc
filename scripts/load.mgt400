@@ -62,15 +62,15 @@ load_mgt400() {
 	prams="${ctprams},lname=MGT:PUSH:BUFS,pname=push_buffer_count"
 	dblr '"db/counter.db","'${prams}'"'
 
-	ctprams="${cprams},CTRMAX=${CTR31},DT=1,DTC=DTC=${MGTDTC}"
+	ctprams="${cprams},CTRMAX=${CTR31},DT=1,DTC=1"
 	prams="${ctprams},lname=MGT:PULL:BUFS,pname=pull_buffer_count"
 	dblr '"db/counter.db","'${prams}'"'		
 	
-	ctprams="${cprams},CTRMAX=${CTR31},DT=1,DTC=DTC=${MGTDTC}"
+	ctprams="${cprams},CTRMAX=${CTR31},DT=1,DTC=${MGTDTC}"
 	prams="${ctprams},lname=MGT:PUSH:BYTES,pname=push_buffer_count_lw"
 	dblr '"db/counter.db","'${prams}'"'	
 	
-	ctprams="${cprams},CTRMAX=${CTR31},DT=1,DTC=DTC=${MGTDTC}"
+	ctprams="${cprams},CTRMAX=${CTR31},DT=1,DTC=1"
 	prams="${ctprams},lname=MGT:PULL:BYTES,pname=pull_buffer_count_lw"
 	dblr '"db/counter.db","'${prams}'"'	
 		
