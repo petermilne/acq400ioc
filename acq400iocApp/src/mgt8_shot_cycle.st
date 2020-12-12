@@ -16,7 +16,8 @@ option +s;
 int set_arm;	assign set_arm 		to "{uut}:MODE:BLT:SET_ARM"; 	monitor set_arm;
 int set_arm_w;	assign set_arm_w 	to "{uut}:MODE:BLT:SET_ARM:w";
 int act_state; 	assign act_state 	to "{uut}:MODE:BLT:ACT:STATE"; monitor act_state;
-int set_abort; 	assign set_abort 	to "{uut}:MODE:BLT:SET_ABORT"; monitor set_abort;
+int set_abort1; assign set_abort1 	to "{uut}:MODE:BLT:SET_ABORT"; monitor set_abort1;
+int set_abort2; assign set_abort2 	to "{uut}:MODE:BLT:SET_ABORT:w"; 
 int set_nbuf; 	assign set_nbuf 	to "{uut}:MODE:BLT:BUFFERS";
 
 #define NCTR	4
@@ -65,16 +66,23 @@ ss mgt8_shot_cycle {
 		when(act_state != 0){
 			if (debug) printf("%s => %s\n", "arm_action", "wait_complete");
 		} state wait_complete
-		when(set_abort){
-			if (debug) printf("%s => %s\n", "arm_action", "wait_arm_demand");
-		} state wait_arm_demand
+		when(set_abort1){
+			if (debug) printf("%s => %s\n", "arm_action", "on_abort");
+		} state on_abort
 	}
 	state wait_complete {
 		when(act_state == 0){
 			if (debug) printf("%s => %s\n", "wait_complete", "wait_arm_demand");
 		} state wait_arm_demand
-		when(set_abort){
-			if (debug) printf("%s => %s\n", "wait_complete", "wait_arm_demand");
-		} state wait_arm_demand		
+		when(set_abort1){
+			if (debug) printf("%s => %s\n", "wait_complete", "on_abort");
+		} state on_abort
+	}
+	
+	state on_abort {
+		when(delay(1)){
+			set_abort2 = 1; pvPut(set_abort2);
+			if (debug) printf("%s => %s\n", "on_abort", "wait_arm_demand");
+		} state wait_arm_demand
 	}
 }

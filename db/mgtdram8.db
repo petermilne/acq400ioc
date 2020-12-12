@@ -42,12 +42,20 @@ record(bo, "${UUT}:MODE:BLT:SET_ARM:w") {
 
 
 record(bo, "${UUT}:MODE:BLT:SET_ABORT") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "abort BLT capture")
+	field(VAL,  "0")
+	field(PINI, "YES")	
+	field(FLNK,  "${UUT}:MODE:TRANSIENT:SET_ABORT:w PP")
+	field(HIGH, "0.1")
+}
+
+record(bo, "${UUT}:MODE:BLT:SET_ABORT:w") {
 	field(DTYP, "stream")
 	field(DESC, "abort BLT capture")
 	field(OUT,  "@mgtdram8.proto set_mgt_abort ${SPORT}")
 	field(VAL,  "0")
 	field(PINI, "YES")	
-	field(FLNK,  "${UUT}:MODE:TRANSIENT:SET_ABORT:w PP")
 	field(HIGH, "0.1")
 }
 
