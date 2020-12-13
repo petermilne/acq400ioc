@@ -60,7 +60,6 @@ ss mgt8_shot_cycle {
 	}
 	state arm_action {
 		entry {
-
 			set_arm_w = 1; pvPut(set_arm_w);
 		}
 		when(act_state != 0){

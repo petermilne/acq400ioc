@@ -31,7 +31,7 @@ record(longout, "${UUT}:MODE:BLT:BUFFERS") {
 record(calcout, "${UUT}:MODE:BLT:BUFFERS:M") {
 	field(INPA, "${UUT}:MODE:BLT:BUFFERS")
 	field(INPB, "${UUT}:0:NCHAN")
-	field(CALC, "C := B%12==0? 12: 16; A%C==0? A: (1+floor(A/C))*C")
+	field(CALC, "C := B%12==0? 12: 16; min(A%C==0? A: (1+floor(A/C))*C, 2000)")
 #                    12345678901234567890123456789012345678901234567890123456789012345678901234567890
 	field(OUT,  "${UUT}:MODE:BLT:BUFFERS:w PP")
 	field(OOPT, "Every Time")
@@ -65,7 +65,6 @@ record(bo, "${UUT}:MODE:BLT:SET_ABORT") {
 	field(VAL,  "0")
 	field(PINI, "YES")	
 	field(FLNK,  "${UUT}:MODE:TRANSIENT:SET_ABORT:w PP")
-	field(HIGH, "0.1")
 }
 
 record(bo, "${UUT}:MODE:BLT:SET_ABORT:w") {
@@ -74,7 +73,6 @@ record(bo, "${UUT}:MODE:BLT:SET_ABORT:w") {
 	field(OUT,  "@mgtdram8.proto set_mgt_abort ${SPORT}")
 	field(VAL,  "0")
 	field(PINI, "YES")	
-	field(HIGH, "0.1")
 }
 
 record(mbbi, "${UUT}:MODE:BLT:ACT:MGTSTATE") {
