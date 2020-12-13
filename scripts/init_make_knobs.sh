@@ -86,7 +86,7 @@ make_epics_knobs() {
 			make_caget $PV ${NU#*:} ${NU%%:*};;
 		esac
 	done
-	for PV in $(egrep -e MODE:BLT $RL)
+	for PV in $(egrep -e MODE:BLT $RL | grep -v .[a-z]$)
 	do
 		NU=${PV#*:}
 		case ${PV} in
