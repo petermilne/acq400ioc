@@ -30,14 +30,6 @@ load_mgt400_sfp()
 	done	
 }
 
-load_mgtdram8() {
-	echo '# load_mgtdram8'
-	create_asyn_channel S14 127.0.0.1:4234
-	create_asyn_channel SMG 127.0.0.1:53992
-	
-	sprams="UUT=${HOST},SITE=14,SPORT=S14,SRUN=SMG"
-	dblr '"db/mgtdram8.db","'${sprams}\"
-}
 
 
 
@@ -108,10 +100,6 @@ for SITE in 11 12 13; do
 	esac
 	[ -e /dev/acq400.$SITE.knobs ] && load_mgt400 $SITE $id
 done
-
-if [ -e /etc/acq400/C/MTYPE ] &&  [ "$(cat /etc/acq400/C/MTYPE)" = "95" ]; then
-	load_mgtdram8
-fi
 
 
 

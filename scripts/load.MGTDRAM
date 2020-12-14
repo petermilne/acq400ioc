@@ -7,6 +7,15 @@ SITE=$2
 source ./scripts/record_support.sh
 echo "#records added by load.MGTDRAM $HOST $SITE"
 
+echo '# load_mgtdram8'
+create_asyn_channel S14 127.0.0.1:4234
+create_asyn_channel SMG 127.0.0.1:53992
+create_asyn_channel SMM 127.0.0.1:53993
+	
+sprams="UUT=${HOST},SITE=14,SPORT=S14,SRUN=SMG,SMON=SMM"
+dblr '"db/mgtdram8.db","'${sprams}\"
+
+
 CPRAMS="UUT=${HOST},lname=${SITE}"				
 PRAMS="$CPRAMS,pname=/dev/hwmon/7/temp,scale=0.001,offset=0"
 

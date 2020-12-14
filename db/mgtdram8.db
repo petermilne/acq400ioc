@@ -78,7 +78,7 @@ record(bo, "${UUT}:MODE:BLT:SET_ABORT:w") {
 record(mbbi, "${UUT}:MODE:BLT:ACT:MGTSTATE") {
 	field(DTYP, "stream")
 	field(SCAN, "I/O Intr")
-	field(INP,  "@mgtdram8.proto mgt_get_mgt_state ${SRUN}")
+	field(INP,  "@mgtdram8.proto mgt_get_mgt_state ${SMON}")
 	field(NOBT, "2")
 	field(ZRST, "NONE")
 	field(ONST, "PREARM")
