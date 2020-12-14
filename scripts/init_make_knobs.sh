@@ -90,7 +90,7 @@ make_epics_knobs() {
 	do
 		NU=${PV#*:}
 		case ${PV} in
-		SET*)
+		*SET*|*BUFFERS|*POST)
 			make_caput $PV ${NU#*:} 0;;
 		*)
 			make_caget $PV ${NU#*:} 0;;
