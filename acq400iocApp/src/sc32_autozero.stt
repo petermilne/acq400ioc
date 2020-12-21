@@ -10,7 +10,7 @@ float vin[32]; 	assign vin {};
 float voff[32]; assign voff {};
 int G2[32]; 	assign G2 to {};
 
-float K = 0.33;
+float K = -0.33;
 
 float SET = 0.0;
 
