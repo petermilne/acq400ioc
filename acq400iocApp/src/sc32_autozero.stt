@@ -10,7 +10,7 @@ float vin[32]; 	assign vin {};
 float voff[32]; assign voff {};
 int G2[32]; 	assign G2 to {};
 
-float K = -0.33;
+float K = 0.33;
 
 float SET = 0.0;
 
@@ -77,7 +77,7 @@ ss sc32_autozero {
 				pvGet(G2[ch]);
 				vin0 = vin[ch];
 				
-				delta = (vin[ch]-SET) * K/gains[1][G2[ch]];
+				delta = (SET- vin[ch]) * K/gains[1][G2[ch]];
 				if (fabs(delta) > deadband){
 					voff[ch] += delta; 
 					pvPut(voff[ch]);
