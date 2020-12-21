@@ -26,7 +26,7 @@ record(ao, "${UUT}:AI:WF:PS:SMOO") {
 
 record(calc, "${UUT}:${SITE}:AI:WF:FS") {
 	field(INPA, "${UUT}:0:SIG:SYN_S${SITE}:FREQ")
-	field(INPB, "1")
+	field(INPB, "${DECIM}")
 # decimate filter could set B?	
 	field(CALC, "A")
 	field(DESC, "DDC Mixer (center) frequency")
@@ -58,7 +58,7 @@ record(aSub, "${UUT}:${SITE}:AI:WF:PS:${cid}") {
 # Attenuation                                 
         field(FTF,  "FLOAT")                  
         field(NOF,  "1")    
-        field(INPF, "15")  
+        field(INPF, "${ATTEN}")  
         
 # SMOOTHING : 0 : no smoothing, 1: infinite
 	field(FTS,   "DOUBLE")

@@ -1,3 +1,6 @@
+SPEC_ATTEN=${SPEC_ATTEN:-15}
+SPEC_DECIM=${SPEC_DECIM:-1}
+
 make_AI() {
 	site=$1
 	type=LONG
@@ -15,7 +18,7 @@ make_AI() {
 		
 		PRAMS="UUT=${HOST},SITE=${site},idx=${IDX},fname=AI.${site}"		
 		wprams="${PRAMS},size=${SIZE},size2=${s2},type=${type},cid=${cid}"
-		wprams="${wprams},maxcode=${maxcode},vmax=${vmax},eslo=${eslo}"
+		wprams="${wprams},maxcode=${maxcode},vmax=${vmax},eslo=${eslo},DECIM=${SPEC_DECIM},ATTEN=${SPEC_ATTEN}"
 		echo dbLoadRecords\(\"db/wfSpecReal32.db\",\"${wprams}\"\)
 	done	
 }
