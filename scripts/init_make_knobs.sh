@@ -149,7 +149,7 @@ make_epics_knobs() {
 		site=${pv1%%:*}
 		make_caput $PV ${pv1#*:} $site
 	done
-	for PV in $(egrep -e MODE:TRANSIENT -e MODE:CONTINUOUS -e SC32 $RL | grep -v [a-z]$)
+	for PV in $(egrep -e MODE:TRANSIENT -e MODE:CONTINUOUS $RL | grep -v [a-z]$)
 	do
 		pv1=${PV#*:}
 		make_caput $PV ${pv1#*:} 0
