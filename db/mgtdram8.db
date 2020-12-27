@@ -105,6 +105,15 @@ record(mbbi, "${UUT}:MODE:BLT:ACT:STATE") {
 	field(TWST, "RUN")
 }
 
+record(longin, "${UUT}:MODE:BLT:ACT:SAMPLES") {
+	field(DTYP, "stream")
+	field(SCAN, "I/O Intr")
+	field(INP,  "@mgtdram8.proto mgt_get_mgt_samples ${SMON}")
+	field(DRVL, "0")
+	field(DRVH, "1000000000")
+	field(VAL,  "0")
+}
+
 
 record(calc, "${UUT}:A:SIG:MGT:PUSH:BYTES:COUNT") {
 	# C is scale

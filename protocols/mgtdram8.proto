@@ -37,3 +37,6 @@ mgt_get_mgt_state {
 	in "%{sites|DRAM|BUSY|IDLE}";
 }
 
+mgt_get_mgt_samples {
+	in "%*s pid %*d %d";
+}
