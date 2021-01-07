@@ -35,6 +35,7 @@ EPICS_BASE=/usr/local/epics/base
 # Set RULES here if you want to take build rules from somewhere
 # other than EPICS_BASE:
 #RULES=/path/to/epics/support/module/rules/x-y
-ASYN=$(EPICS_BASE)/../../modules/asyn/
+ASYN=$(EPICS_BASE)/../modules/asyn/
+#SUPPORT=$(EPICS_BASE)/../../modules/
 
 

@@ -49,6 +49,7 @@ acq400ioc_DBD += shot_busy.dbd
 acq400ioc_DBD += wr_clk_mon.dbd
 acq400ioc_DBD += badledfixer.dbd
 acq400ioc_DBD += mgt8_shot_cycle.dbd
+acq400ioc_DBD += acq400_judgement.dbd
 
 # Add all the support libraries needed by this IOC
 acq400ioc_LIBS += acq2ioc
@@ -59,6 +60,7 @@ acq400ioc_LIBS += seq pv
 #PROD_LIBS += asyn
 # acq400ioc_registerRecordDeviceDriver.cpp derives from acq400ioc.dbd
 acq400ioc_SRCS += acq400ioc_registerRecordDeviceDriver.cpp
+acq400ioc_SRCS += acq400_judgement.cpp
 
 #acq400ioc_SRCS += sncExample.st
 acq400ioc_SRCS += autoRepeat.st
