@@ -1,0 +1,7 @@
+record(longin, "${UUT}:JDG:BN")
+{
+   field(PINI, "0")
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))BUFFER_NUM")
+   field(SCAN, "I/O Intr")
+}

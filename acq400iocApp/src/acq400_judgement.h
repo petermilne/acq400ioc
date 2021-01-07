@@ -17,6 +17,7 @@
 #define PS_MU	"MASK_UPPER"						/* asynInt16Array   r/w */
 #define PS_ML	"MASK_LOWER"						/* asynInt16Array   r/w */
 #define PS_RAW	"RAW"								/* asynInt16Array   r/o */
+#define PS_BN	"BUFFER_NUM"						/* asynTin32, 		r/o */
 
 #define P_JUDGEMENT_RESULT "JUDGEMENT_RESULT"		/* asynInt8Array[NCHAN] r/o */
 
@@ -25,6 +26,7 @@ public:
 	virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
 
 	static int factory(const char *portName, int maxPoints, int nchan);
+	virtual void task();
 
 protected:
 	acq400Judgement(const char* portName, int nchan, int nsam);
@@ -38,6 +40,7 @@ protected:
     int P_MU;
     int P_ML;
     int P_RAW;
+    int P_BN;
 
     /* our data */
     epicsInt16* RAW_MU;
