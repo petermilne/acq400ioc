@@ -30,6 +30,12 @@
 
 #define MAX_ENUM_STRING_SIZE 20
 
+#include "acq-util.h"
+#include <vector>
+
+using namespace std;
+#include "Buffer.h"
+
 
 static const char *driverName="acq164AsynPortDriver";
 
@@ -83,26 +89,18 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 }
 
 
-int getBufferId(int fc) {
-	char buf[80];
-	int rc = read(fc, buf, 80);
 
-	if (rc > 0){
-		buf[rc] = '\0';
-		unsigned ib = strtoul(buf, 0, 10);
-		assert(ib >= 0);
-//		assert(ib <= Buffer::nbuffers);
-		return ib;
-	}else{
-		return rc<0 ? rc: -1;
-	}
-}
 
 void acq400Judgement::task()
 {
 	int fc = open("/dev/acq400.0.bq", O_RDONLY);
 	assert(fc >= 0);
 	int ib;
+
+
+	for (unsigned ii = 0; ii < Buffer::nbuffers; ++ii){
+		Buffer::create(getRoot(0), Buffer::bufferlen);
+	}
 
 	while((ib = getBufferId(fc)) >= 0){
 

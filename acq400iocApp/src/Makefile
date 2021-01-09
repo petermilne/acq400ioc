@@ -54,6 +54,7 @@ acq400ioc_DBD += acq400_judgement.dbd
 # Add all the support libraries needed by this IOC
 acq400ioc_LIBS += acq2ioc
 acq400ioc_LIBS += seq pv
+acq400ioc_LIBS += acq
 #acq400ioc_LIBS +=fftw3
 
 #PROD_LIBS += stream
