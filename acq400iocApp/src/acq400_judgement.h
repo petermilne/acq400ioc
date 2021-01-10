@@ -19,7 +19,9 @@
 #define PS_RAW	"RAW"								/* asynInt16Array   r/o */
 #define PS_BN	"BUFFER_NUM"						/* asynTin32, 		r/o */
 
-#define PS_RESULT_FAIL "RESULT_FAIL"					/* asynInt8Array[NCHAN] r/o */
+#define PS_RESULT_FAIL "RESULT_FAIL"				/* asynInt32 		r/o */ /* per port P=2 */
+#define PS_RESULT_F1	"FAIL1"
+#define PS_RESULT_F2	"FAIL2"
 #define PS_OK	"OK"								/* asynInt32		r/o */
 
 class acq400Judgement: public asynPortDriver {
@@ -53,6 +55,8 @@ protected:
     int P_BN;
     int P_RESULT_FAIL;
     int P_OK;
+    int P_RESULT_F1;
+    int P_RESULT_F2;
 
     /* our data */
     epicsInt16* RAW_MU;
@@ -60,7 +64,7 @@ protected:
     epicsInt16* CHN_MU;
     epicsInt16* CHN_ML;
     epicsInt16* RAW;
-    epicsInt8* RESULT_FAIL;
+    epicsInt32* RESULT_FAIL;
 
     int ib;
     bool fill_requested;

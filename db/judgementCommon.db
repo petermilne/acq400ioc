@@ -15,16 +15,29 @@ record(longout, "${UUT}:JDG:MASK_FROM_DATA")
    field(LOPR,  "0")
 }
 
-record(waveform, "${UUT}:JDG:CHX:FAIL")
+record(longin, "${UUT}:JDG:CHX:FAIL:1")
 {
-    field(PINI, "1")
-    field(DTYP, "asynInt8ArrayIn")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))RESULT_FAIL")
-    field(FTVL, "UCHAR")
-    field(NELM, "$(NCHAN)")
-    field(LOPR, "0")
-    field(HOPR, "1")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))FAIL1")
+    field(SCAN, "I/O Intr")	
 }
+
+record(longin, "${UUT}:JDG:CHX:FAIL:2")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))FAIL2")
+    field(SCAN, "I/O Intr")
+}
+
+record(waveform, "${UUT}:JDG:CHX:FAIL:ALL")
+{
+    field(DTYP, "asynInt32ArrayIn")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))RESULT_FAIL")
+    field(FTVL, "LONG")
+    field(NELM, "2")
+    field(SCAN, "I/O Intr")
+}
+
 
 record(bi, "${UUT}:JDG:OK")
 {
