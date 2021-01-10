@@ -99,7 +99,8 @@ bool acq400Judgement::calculate(epicsInt16* raw, const epicsInt16* mu, const epi
 	memset(RESULT_FAIL, 0, sizeof(epicsInt8)*nchan);
 	bool fail = false;
 
-	for (int isam = 0; isam < nsam; ++isam){
+	/* skip isam==0 : ES */
+	for (int isam = 1; isam < nsam; ++isam){
 		for (int ic = 0; ic < nchan; ++ic){
 			int ib = isam*nchan+ic;
 			epicsInt16 xx = raw[ib];
@@ -119,7 +120,7 @@ void acq400Judgement::fill_masks(epicsInt16* raw,  int threshold)
 	epicsInt16 uplim = 0x7fff - threshold;
 	epicsInt16 lolim = 0x8000 + threshold;
 
-	for (int isam = 0; isam < nsam; ++isam){
+	for (int isam = 1; isam < nsam; ++isam){
 		for (int ic = 0; ic < nchan; ++ic){
 			int ib = isam*nchan+ic;
 
@@ -130,7 +131,7 @@ void acq400Judgement::fill_masks(epicsInt16* raw,  int threshold)
 }
 void acq400Judgement::fill_mask(epicsInt16* mask,  epicsInt16 value)
 {
-	for (int isam = 0; isam < nsam; ++isam){
+	for (int isam = 1; isam < nsam; ++isam){
 		for (int ic = 0; ic < nchan; ++ic){
 			mask[isam*nchan+ic] = value;
 		}
@@ -159,8 +160,8 @@ void acq400Judgement::task()
 
 		if (fill_requested){
 			for (int ic=0; ic< nchan; ic++){
-				doCallbacksInt16Array(&CHN_MU[ic*nsam], nsam, P_MU, ic);
-				doCallbacksInt16Array(&CHN_ML[ic*nsam], nsam, P_ML, ic);
+				doCallbacksInt16Array(&CHN_MU[ic*nsam+1], nsam-1, P_MU, ic);
+				doCallbacksInt16Array(&CHN_ML[ic*nsam+1], nsam-1, P_ML, ic);
 			}
 
 			fill_requested = false;
@@ -226,8 +227,6 @@ asynStatus acq400Judgement::readInt8Array(asynUser *pasynUser, epicsInt8 *value,
                                         size_t nElements, size_t *nIn)
 {
     int function = pasynUser->reason;
-    size_t ncopy;
-    epicsInt32 itemp;
     asynStatus status = asynSuccess;
     epicsTimeStamp timeStamp;
 
@@ -251,8 +250,6 @@ asynStatus acq400Judgement::readInt16Array(asynUser *pasynUser, epicsInt16 *valu
                                         size_t nElements, size_t *nIn)
 {
     int function = pasynUser->reason;
-    size_t ncopy;
-    epicsInt32 itemp;
     asynStatus status = asynSuccess;
     epicsTimeStamp timeStamp;
 

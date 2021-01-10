@@ -1,7 +1,7 @@
 
 
 
-echo acq400JudgementConfigure\("J1", 1024, 64\)
+echo acq400JudgementConfigure\("J1", 64, 1024\)
 PRAMS="UUT=${HOST},PORT=J1,ADDR=0,TIMEOUT=0,NCHAN=64"
 echo dbLoadRecords\(\"db/judgementCommon.db\",\"${PRAMS}\"\)
 
