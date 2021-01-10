@@ -23,6 +23,8 @@
 #define PS_RESULT_MASK32	"FAIL_MASK32"
 #define PS_OK	"OK"								/* asynInt32		r/o */
 
+#define FIRST_SAM	2
+
 class acq400Judgement: public asynPortDriver {
 public:
 	virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
@@ -67,7 +69,7 @@ protected:
 
     int ib;
     bool fill_requested;
-    void fill_masks(epicsInt16* raw,  int threshold);
+    void fill_masks(asynUser *pasynUser, epicsInt16* raw,  int threshold);
     void fill_mask(epicsInt16* mask,  epicsInt16 value);
 };
 

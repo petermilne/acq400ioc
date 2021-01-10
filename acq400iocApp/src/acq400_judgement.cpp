@@ -107,7 +107,7 @@ bool acq400Judgement::calculate(epicsInt16* raw, const epicsInt16* mu, const epi
 	bool fail = false;
 
 	/* skip isam==0 : ES */
-	for (int isam = 1; isam < nsam; ++isam){
+	for (int isam = FIRST_SAM; isam < nsam; ++isam){
 		for (int ic = 0; ic < nchan; ++ic){
 			int ib = isam*nchan+ic;
 			epicsInt16 xx = raw[ib];
@@ -121,29 +121,35 @@ bool acq400Judgement::calculate(epicsInt16* raw, const epicsInt16* mu, const epi
 	return fail;
 }
 
-void acq400Judgement::fill_masks(epicsInt16* raw,  int threshold)
+void acq400Judgement::fill_masks(asynUser *pasynUser, epicsInt16* raw,  int threshold)
 {
 	epicsInt16 uplim = 0x7fff - threshold;
 	epicsInt16 lolim = 0x8000 + threshold;
 
-	for (int isam = 1; isam < nsam; ++isam){
+	for (int isam = FIRST_SAM; isam < nsam; ++isam){
 		for (int ic = 0; ic < nchan; ++ic){
 			int ib = isam*nchan+ic;
+			epicsInt16 xx = raw[ib];
 
-			if (raw[ib] == 0x7fff || raw[ib] == 0x8000){
+			if (isam < 4 && (ic < 4 || (ic > 32 && ic < 36))) asynPrint(pasynUser, ASYN_TRACEIO_DRIVER,
+			              "%s:%s: raw[%d][%d] = %0x4 %s\n",
+			              driverName, __FUNCTION__, isam, ic, xx, xx > 32760 || xx < -32760? "RAILED": "");
+
+			if (xx > 32760 || xx < -32760){
 				// disable on railed signal (for testing with dummy module
 				RAW_MU[ib] = 0x7fff;
 				RAW_ML[ib] = 0x8000;
-				continue;
+			}else{
+				RAW_MU[ib] = xx>uplim? uplim: xx + threshold;
+				RAW_ML[ib] = xx<lolim? lolim: xx - threshold;
 			}
-			RAW_MU[ib] = raw[ib]>uplim? uplim: raw[ib] + threshold;
-			RAW_ML[ib] = raw[ib]<lolim? lolim: raw[ib] - threshold;
+
 		}
 	}
 }
 void acq400Judgement::fill_mask(epicsInt16* mask,  epicsInt16 value)
 {
-	for (int isam = 1; isam < nsam; ++isam){
+	for (int isam = FIRST_SAM; isam < nsam; ++isam){
 		for (int ic = 0; ic < nchan; ++ic){
 			mask[isam*nchan+ic] = value;
 		}
@@ -180,8 +186,8 @@ void acq400Judgement::task()
 
 		if (fill_requested){
 			for (int ic=0; ic< nchan; ic++){
-				doCallbacksInt16Array(&CHN_MU[ic*nsam+1], nsam-1, P_MU, ic);
-				doCallbacksInt16Array(&CHN_ML[ic*nsam+1], nsam-1, P_ML, ic);
+				doCallbacksInt16Array(&CHN_MU[ic*nsam+FIRST_SAM], nsam-FIRST_SAM, P_MU, ic);
+				doCallbacksInt16Array(&CHN_ML[ic*nsam+FIRST_SAM], nsam-FIRST_SAM, P_ML, ic);
 			}
 			fill_requested = false;
 		}
@@ -209,7 +215,7 @@ asynStatus acq400Judgement::writeInt32(asynUser *pasynUser, epicsInt32 value)
 
     if (function == P_MASK_FROM_DATA) {
     	if (value){
-    		fill_masks((epicsInt16*)Buffer::the_buffers[ib]->getBase(), value);
+    		fill_masks(pasynUser, (epicsInt16*)Buffer::the_buffers[ib]->getBase(), value);
     	}else{
     		/* never going to fail these limits */
     		fill_mask(RAW_MU, 0x7fff);
