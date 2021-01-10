@@ -51,8 +51,8 @@ void task_runner(void *drvPvt)
 acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 		asynPortDriver(portName,
 		                    _nchan, 														/* maxAddr */
-		                    asynInt32Mask | asynFloat64Mask | asynFloat64ArrayMask | asynEnumMask | asynInt32ArrayMask | asynInt16ArrayMask| asynDrvUserMask, /* Interface mask */
-		                    asynInt32Mask | asynFloat64Mask | asynFloat64ArrayMask | asynEnumMask | asynInt32ArrayMask | asynInt16ArrayMask,  				 /* Interrupt mask */
+		                    asynInt32Mask | asynFloat64Mask | asynFloat64ArrayMask | asynEnumMask | asynInt8ArrayMask | asynInt16ArrayMask| asynDrvUserMask, /* Interface mask */
+		                    asynInt32Mask | asynFloat64Mask | asynFloat64ArrayMask | asynEnumMask | asynInt8ArrayMask | asynInt16ArrayMask,  				 /* Interrupt mask */
 		                    0, /* asynFlags.  This driver does not block and it is not multi-device, so flag is 0 */
 		                    1, /* Autoconnect */
 		                    0, /* Default priority */
@@ -71,8 +71,8 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 	createParam(PS_RESULT_FAIL,			asynParamInt32Array,    &P_RESULT_FAIL);
 	createParam(PS_OK,					asynParamInt32,			&P_OK);
 
-	createParam(PS_RESULT_F1,			asynParamInt32,			&P_RESULT_F1);
-	createParam(PS_RESULT_F2,			asynParamInt32,			&P_RESULT_F2);
+	createParam(PS_RESULT_MASK32,		asynParamInt32,			&P_RESULT_MASK32);
+
 
 	setIntegerParam(P_NCHAN, 			nchan);
 	setIntegerParam(P_NSAM, 			nsam);
@@ -82,7 +82,8 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 	RAW_ML = new epicsInt16[nsam*nchan];
 	CHN_MU = new epicsInt16[nchan*nsam];
 	CHN_ML = new epicsInt16[nchan*nsam];
-	RESULT_FAIL = new epicsInt32[nchan/32];
+	RESULT_FAIL = new epicsInt8[nchan];
+	FAIL_MASK32 = new epicsInt32[nchan/32];
 	RAW = 0;   // get va from BUFFER
 
     /* Create the thread that computes the waveforms in the background */
@@ -101,7 +102,8 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 
 bool acq400Judgement::calculate(epicsInt16* raw, const epicsInt16* mu, const epicsInt16* ml)
 {
-	memset(RESULT_FAIL, 0, sizeof(epicsInt32)*nchan/32);
+	memset(RESULT_FAIL, 0, sizeof(epicsInt8)*nchan);
+	memset(FAIL_MASK32, 0, sizeof(epicsInt32)*nchan/32);
 	bool fail = false;
 
 	/* skip isam==0 : ES */
@@ -110,7 +112,8 @@ bool acq400Judgement::calculate(epicsInt16* raw, const epicsInt16* mu, const epi
 			int ib = isam*nchan+ic;
 			epicsInt16 xx = raw[ib];
 			if (xx > mu[ib] || xx < ml[ib]){
-				RESULT_FAIL[ic/32] |= 1 << (ic&0x1f);
+				FAIL_MASK32[ic/32] |= 1 << (ic&0x1f);
+				RESULT_FAIL[ic] = 1;
 				fail = true;
 			}
 		}
@@ -129,7 +132,8 @@ void acq400Judgement::fill_masks(epicsInt16* raw,  int threshold)
 
 			if (raw[ib] == 0x7fff || raw[ib] == 0x8000){
 				// disable on railed signal (for testing with dummy module
-				RAW_MU[ib] = RAW_ML[ib] = raw[ib];
+				RAW_MU[ib] = 0x7fff;
+				RAW_ML[ib] = 0x8000;
 				continue;
 			}
 			RAW_MU[ib] = raw[ib]>uplim? uplim: raw[ib] + threshold;
@@ -153,11 +157,12 @@ void acq400Judgement::handle_burst(int vbn, int offset)
 
 	setIntegerParam(P_OK, !fail);
 	setIntegerParam(P_BN, vbn);
-	setIntegerParam(P_RESULT_F1, RESULT_FAIL[0]);
-	setIntegerParam(P_RESULT_F2, RESULT_FAIL[1]);
+	for(int m32 = 0; m32 < nchan/32; ++m32){
+		setIntegerParam(m32, P_RESULT_MASK32, FAIL_MASK32[m32]);
+		callParamCallbacks(m32);
+	}
 
-	callParamCallbacks();
-	doCallbacksInt32Array(RESULT_FAIL,   2, P_RESULT_FAIL, 0);
+	doCallbacksInt8Array(RESULT_FAIL,   nchan, P_RESULT_FAIL, 0);
 }
 
 void acq400Judgement::task()
