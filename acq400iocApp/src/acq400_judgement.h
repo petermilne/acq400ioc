@@ -35,6 +35,7 @@ public:
 	virtual void task();
 
 protected:
+	void handle_burst(int vbn, int offset);
 	bool calculate(epicsInt16* raw, const epicsInt16* mu, const epicsInt16* ml);
 	/* return TRUE if any fail */
 

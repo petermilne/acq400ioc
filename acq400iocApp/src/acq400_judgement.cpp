@@ -111,7 +111,7 @@ bool acq400Judgement::calculate(epicsInt16* raw, const epicsInt16* mu, const epi
 			RESULT_FAIL[ic] = ic;
 		}
 	}
-	doCallbacksInt8Array(RESULT_FAIL, nchan, P_RESULT_FAIL, 0);
+
 	return fail;
 }
 
@@ -138,6 +138,16 @@ void acq400Judgement::fill_mask(epicsInt16* mask,  epicsInt16 value)
 	}
 }
 
+void acq400Judgement::handle_burst(int vbn, int offset)
+{
+	updateTimeStamp();
+	bool fail = calculate((epicsInt16*)Buffer::the_buffers[ib]->getBase()+offset, RAW_MU, RAW_ML);
+
+	setIntegerParam(P_OK, !fail);
+	setIntegerParam(P_BN, vbn);
+	callParamCallbacks();
+	doCallbacksInt8Array(RESULT_FAIL, nchan, P_RESULT_FAIL, 0);
+}
 
 void acq400Judgement::task()
 {
@@ -146,24 +156,17 @@ void acq400Judgement::task()
 	for (unsigned ii = 0; ii < Buffer::nbuffers; ++ii){
 		Buffer::create(getRoot(0), Buffer::bufferlen);
 	}
-	bool fail;
+
 
 	while((ib = getBufferId(fc)) >= 0){
-		fail = calculate((epicsInt16*)Buffer::the_buffers[ib]->getBase(), RAW_MU, RAW_ML);
-		setIntegerParam(P_OK, !fail);
-		setIntegerParam(P_BN, ib*2);
-		callParamCallbacks();
-		fail = calculate((epicsInt16*)(Buffer::the_buffers[ib]->getBase()+nsam+nchan), RAW_MU, RAW_ML);
-		setIntegerParam(P_OK, !fail);
-		setIntegerParam(P_BN, ib*2+1);
-		callParamCallbacks();
+		handle_burst(ib*2, 		0);
+		handle_burst(ib*2+1, 	nsam*nchan);
 
 		if (fill_requested){
 			for (int ic=0; ic< nchan; ic++){
 				doCallbacksInt16Array(&CHN_MU[ic*nsam+1], nsam-1, P_MU, ic);
 				doCallbacksInt16Array(&CHN_ML[ic*nsam+1], nsam-1, P_ML, ic);
 			}
-
 			fill_requested = false;
 		}
 	}
