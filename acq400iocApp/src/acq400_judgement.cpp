@@ -47,16 +47,17 @@ void task_runner(void *drvPvt)
     pPvt->task();
 }
 
+
 acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 		asynPortDriver(portName,
 		                    _nchan, 														/* maxAddr */
-		                    asynInt32Mask | asynFloat64Mask | asynFloat64ArrayMask | asynEnumMask | asynInt8ArrayMask | asynDrvUserMask, /* Interface mask */
-		                    asynInt32Mask | asynFloat64Mask | asynFloat64ArrayMask | asynEnumMask | asynInt8ArrayMask,  				 /* Interrupt mask */
+		                    asynInt32Mask | asynFloat64Mask | asynFloat64ArrayMask | asynEnumMask | asynInt8ArrayMask | asynInt16ArrayMask| asynDrvUserMask, /* Interface mask */
+		                    asynInt32Mask | asynFloat64Mask | asynFloat64ArrayMask | asynEnumMask | asynInt8ArrayMask | asynInt16ArrayMask,  				 /* Interrupt mask */
 		                    0, /* asynFlags.  This driver does not block and it is not multi-device, so flag is 0 */
 		                    1, /* Autoconnect */
 		                    0, /* Default priority */
 		                    0) /* Default stack size*/,
-		nchan(_nchan), nsam(_nsam)
+		nchan(_nchan), nsam(_nsam), fill_requested(false)
 {
 	asynStatus status = asynSuccess;
 
@@ -67,6 +68,8 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 	createParam(PS_ML,                  asynParamInt16Array,    &P_ML);
 	createParam(PS_RAW,                 asynParamInt16Array,    &P_RAW);
 	createParam(PS_BN, 					asynParamInt32, 		&P_BN);
+	createParam(PS_RESULT_FAIL,			asynParamInt8Array,     &P_RESULT_FAIL);
+	createParam(PS_OK,					asynParamInt32,			&P_OK);
 
 	setIntegerParam(P_NCHAN, 			nchan);
 	setIntegerParam(P_NSAM, 			nsam);
@@ -74,6 +77,9 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 
 	RAW_MU = new epicsInt16[nsam*nchan];
 	RAW_ML = new epicsInt16[nsam*nchan];
+	CHN_MU = new epicsInt16[nchan*nsam];
+	CHN_ML = new epicsInt16[nchan*nsam];
+	RESULT_FAIL = new epicsInt8[nchan];
 	RAW = 0;   // get va from BUFFER
 
     /* Create the thread that computes the waveforms in the background */
@@ -89,23 +95,76 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 }
 
 
+bool acq400Judgement::calculate(epicsInt16* raw, const epicsInt16* mu, const epicsInt16* ml){
+	memset(RESULT_FAIL, 0, sizeof(epicsInt8)*nchan);
+	bool fail = false;
+
+	for (int isam = 0; isam < nsam; ++isam){
+		for (int ic = 0; ic < nchan; ++ic){
+			int ib = isam*nchan+ic;
+			epicsInt16 xx = raw[ib];
+			if (xx > mu[ib] || xx < ml[ib]){
+				RESULT_FAIL[ic] = 1;
+				fail = true;
+			}
+			RESULT_FAIL[ic] = ic;
+		}
+	}
+	doCallbacksInt8Array(RESULT_FAIL, nchan, P_RESULT_FAIL, 0);
+	return fail;
+}
+
+void acq400Judgement::fill_masks(epicsInt16* raw,  int threshold)
+{
+	epicsInt16 uplim = 0x7fff - threshold;
+	epicsInt16 lolim = 0x8000 + threshold;
+
+	for (int isam = 0; isam < nsam; ++isam){
+		for (int ic = 0; ic < nchan; ++ic){
+			int ib = isam*nchan+ic;
+
+			RAW_MU[ib] = raw[ib]>uplim? uplim: raw[ib] + threshold;
+			RAW_ML[ib] = raw[ib]<lolim? lolim: raw[ib] - threshold;
+		}
+	}
+}
+void acq400Judgement::fill_mask(epicsInt16* mask,  epicsInt16 value)
+{
+	for (int isam = 0; isam < nsam; ++isam){
+		for (int ic = 0; ic < nchan; ++ic){
+			mask[isam*nchan+ic] = value;
+		}
+	}
+}
 
 
 void acq400Judgement::task()
 {
 	int fc = open("/dev/acq400.0.bq", O_RDONLY);
 	assert(fc >= 0);
-	int ib;
-
-
 	for (unsigned ii = 0; ii < Buffer::nbuffers; ++ii){
 		Buffer::create(getRoot(0), Buffer::bufferlen);
 	}
+	bool fail;
 
 	while((ib = getBufferId(fc)) >= 0){
-
-		setIntegerParam(P_BN, ib);
+		fail = calculate((epicsInt16*)Buffer::the_buffers[ib]->getBase(), RAW_MU, RAW_ML);
+		setIntegerParam(P_OK, !fail);
+		setIntegerParam(P_BN, ib*2);
 		callParamCallbacks();
+		fail = calculate((epicsInt16*)(Buffer::the_buffers[ib]->getBase()+nsam+nchan), RAW_MU, RAW_ML);
+		setIntegerParam(P_OK, !fail);
+		setIntegerParam(P_BN, ib*2+1);
+		callParamCallbacks();
+
+		if (fill_requested){
+			for (int ic=0; ic< nchan; ic++){
+				doCallbacksInt16Array(&CHN_MU[ic*nsam], nsam, P_MU, ic);
+				doCallbacksInt16Array(&CHN_ML[ic*nsam], nsam, P_ML, ic);
+			}
+
+			fill_requested = false;
+		}
 	}
 	printf("%s:%s: exit on getBufferId failure\n", driverName, __FUNCTION__);
 }
@@ -129,7 +188,20 @@ asynStatus acq400Judgement::writeInt32(asynUser *pasynUser, epicsInt32 value)
     getParamName(function, &paramName);
 
     if (function == P_MASK_FROM_DATA) {
-    	/* make mask from data */
+    	if (value){
+    		fill_masks((epicsInt16*)Buffer::the_buffers[ib]->getBase(), value);
+    	}else{
+    		/* never going to fail these limits */
+    		fill_mask(RAW_MU, 0x7fff);
+    		fill_mask(RAW_ML, 0x8000);
+    	}
+		for (int isam = 0; isam < nsam; ++isam){
+			for (int ic = 0; ic < nchan; ++ic){
+				CHN_MU[ic*nsam+isam] = RAW_MU[isam*nchan+ic];
+				CHN_ML[ic*nsam+isam] = RAW_ML[isam*nchan+ic];
+			}
+		}
+    	fill_requested = true;
     } else {
         /* All other parameters just get set in parameter list, no need to
          * act on them here */
@@ -148,6 +220,58 @@ asynStatus acq400Judgement::writeInt32(asynUser *pasynUser, epicsInt32 value)
               driverName, functionName, function, paramName, value);
     return status;
 }
+
+
+asynStatus acq400Judgement::readInt8Array(asynUser *pasynUser, epicsInt8 *value,
+                                        size_t nElements, size_t *nIn)
+{
+    int function = pasynUser->reason;
+    size_t ncopy;
+    epicsInt32 itemp;
+    asynStatus status = asynSuccess;
+    epicsTimeStamp timeStamp;
+
+    getTimeStamp(&timeStamp);
+    pasynUser->timestamp = timeStamp;
+
+    printf("%s function:%d\n", __FUNCTION__, function);
+
+    if (status)
+        epicsSnprintf(pasynUser->errorMessage, pasynUser->errorMessageSize,
+                  "%s:%s: status=%d, function=%d",
+                  driverName, __FUNCTION__, status, function);
+    else
+        asynPrint(pasynUser, ASYN_TRACEIO_DRIVER,
+              "%s:%s: function=%d\n",
+              driverName, __FUNCTION__, function);
+    return status;
+}
+
+asynStatus acq400Judgement::readInt16Array(asynUser *pasynUser, epicsInt16 *value,
+                                        size_t nElements, size_t *nIn)
+{
+    int function = pasynUser->reason;
+    size_t ncopy;
+    epicsInt32 itemp;
+    asynStatus status = asynSuccess;
+    epicsTimeStamp timeStamp;
+
+    getTimeStamp(&timeStamp);
+    pasynUser->timestamp = timeStamp;
+
+    printf("%s function:%d\n", __FUNCTION__, function);
+
+    if (status)
+        epicsSnprintf(pasynUser->errorMessage, pasynUser->errorMessageSize,
+                  "%s:%s: status=%d, function=%d",
+                  driverName, __FUNCTION__, status, function);
+    else
+        asynPrint(pasynUser, ASYN_TRACEIO_DRIVER,
+              "%s:%s: function=%d\n",
+              driverName, __FUNCTION__, function);
+    return status;
+}
+
 
 
 int acq400Judgement::factory(const char *portName, int maxPoints, int nchan)

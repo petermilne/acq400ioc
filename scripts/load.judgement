@@ -2,6 +2,12 @@
 
 
 echo acq400JudgementConfigure\("J1", 1024, 64\)
-PRAMS="UUT=${HOST},PORT=J1,ADDR=0,TIMEOUT=0"
+PRAMS="UUT=${HOST},PORT=J1,ADDR=0,TIMEOUT=0,NCHAN=64"
 echo dbLoadRecords\(\"db/judgementCommon.db\",\"${PRAMS}\"\)
+
+for ch in $(seq 1 64); do
+CH=$(printf "%02d" $ch)
+IX=$((ch-1))
+echo dbLoadRecords\(\"db/judgementCh.db\",\"${PRAMS},NSAM=1024,CH=${CH},IX=${IX}\"\)
+done
 
