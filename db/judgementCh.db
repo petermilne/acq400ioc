@@ -1,0 +1,18 @@
+record(waveform, "${UUT}:JDG:MU:$(CH)")
+{
+    field(DTYP, "asynInt16ArrayIn")
+    field(INP,  "@asyn($(PORT),$(IX),$(TIMEOUT))MASK_UPPER")
+    field(FTVL, "SHORT")
+    field(NELM, "$(NSAM)")
+    field(SCAN, "I/O Intr")
+}
+
+record(waveform, "${UUT}:JDG:ML:$(CH)")
+{
+    field(DTYP, "asynInt16ArrayIn")
+    field(INP,  "@asyn($(PORT),$(IX),$(TIMEOUT))MASK_LOWER")
+    field(FTVL, "SHORT")
+    field(NELM, "$(NSAM)")
+    field(SCAN, "I/O Intr")
+}
+
