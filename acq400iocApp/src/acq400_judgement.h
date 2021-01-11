@@ -34,6 +34,9 @@ public:
 	virtual asynStatus readInt16Array(asynUser *pasynUser, epicsInt16 *value,
 	                                        size_t nElements, size_t *nIn);
 
+	virtual asynStatus writeInt16Array(asynUser *pasynUser, epicsInt16 *value,
+	                                        size_t nElements);
+
 	static int factory(const char *portName, int maxPoints, int nchan);
 	virtual void task();
 
@@ -71,6 +74,7 @@ protected:
     bool fill_requested;
     void fill_masks(asynUser *pasynUser, epicsInt16* raw,  int threshold);
     void fill_mask(epicsInt16* mask,  epicsInt16 value);
+    void fill_mask_chan(epicsInt16* mask,  int addr, epicsInt16* ch);
 };
 
 #endif /* ACQ400IOCAPP_SRC_ACQ400_JUDGEMENT_H_ */

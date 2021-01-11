@@ -1,18 +1,61 @@
-record(waveform, "${UUT}:JDG:MU:$(CH)")
+record(waveform, "${UUT}:JDG:MU:${CH}:V") {
+	field(DTYP, "Soft Channel")
+	field(NELM, "${NSAM}")
+	field(FTVL, "FLOAT")
+	field(DESC, "load volts MU data")
+	field(FLNK, "${UUT}:JDG:MU:${CH}:v2r")
+}
+
+record(aSub, "${UUT}:JDG:MU:${CH}:v2r") {
+	field(SNAM, "volts_to_raw_SHORT")
+
+	field(FTA,  "FLOAT")
+	field(NOA,  "${NSAM}")
+	field(INPA, "${UUT}:JDG:MU:${CH}:V")
+
+	field(FTO, "DOUBLE")
+	field(NOO, "1")
+#	field(INPO, "${UUT}:${SITE}:AI:CH:${CH}.EOFF")
+	field(INPO, "0")
+
+	field(FTS, "DOUBLE")
+	field(NOS, "1")
+#	field(INPS, "${UUT}:${SITE}:AI:CH:${CH}.ESLO")
+	field(INPS, "3276.8")						
+
+	field(FTVA, "SHORT")
+	field(NOVA, "${NSAM}")
+	field(OUTA, "${UUT}:JDG:MU:${CH}:w PP")
+	field(FLNK, "${UUT}:JDG:MU:${CH}:w")
+}
+
+record(waveform, "${UUT}:JDG:MU:${CH}:w")
+{
+    field(DTYP, "asynInt16ArrayOut")
+    field(INP,  "@asyn($(PORT),$(IX),$(TIMEOUT))MASK_UPPER")
+    field(FTVL, "SHORT")
+    field(NELM, "${NSAM}")
+    field(HOPR, "32767")
+    field(LOPR, "-32768")
+}
+
+record(waveform, "${UUT}:JDG:MU:${CH}")
 {
     field(DTYP, "asynInt16ArrayIn")
     field(INP,  "@asyn($(PORT),$(IX),$(TIMEOUT))MASK_UPPER")
     field(FTVL, "SHORT")
-    field(NELM, "$(NSAM)")
+    field(NELM, "${NSAM}")
     field(SCAN, "I/O Intr")
+    field(HOPR, "32767")
+    field(LOPR, "-32768")	
 }
 
-record(waveform, "${UUT}:JDG:ML:$(CH)")
+record(waveform, "${UUT}:JDG:ML:${CH}")
 {
     field(DTYP, "asynInt16ArrayIn")
     field(INP,  "@asyn($(PORT),$(IX),$(TIMEOUT))MASK_LOWER")
     field(FTVL, "SHORT")
-    field(NELM, "$(NSAM)")
+    field(NELM, "${NSAM}")
     field(SCAN, "I/O Intr")
 }
 

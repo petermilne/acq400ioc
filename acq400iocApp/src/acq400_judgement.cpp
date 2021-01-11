@@ -156,6 +156,14 @@ void acq400Judgement::fill_mask(epicsInt16* mask,  epicsInt16 value)
 	}
 }
 
+void acq400Judgement::fill_mask_chan(epicsInt16* mask,  int addr, epicsInt16* ch)
+{
+	for (int isam = FIRST_SAM; isam < nsam; ++isam){
+		mask[isam*nchan+addr] = ch[isam];
+	}
+	fill_requested = true;
+}
+
 void acq400Judgement::handle_burst(int vbn, int offset)
 {
 	updateTimeStamp();
@@ -294,6 +302,30 @@ asynStatus acq400Judgement::readInt16Array(asynUser *pasynUser, epicsInt16 *valu
     return status;
 }
 
+asynStatus acq400Judgement::writeInt16Array(asynUser *pasynUser, epicsInt16 *value,
+                                        size_t nElements)
+{
+	int function = pasynUser->reason;
+	int addr;
+	asynStatus status = asynSuccess;
+
+	asynPrint(pasynUser, ASYN_TRACEIO_DRIVER,
+	              "%s:%s: function=%d\n",
+	              driverName, __FUNCTION__, function);
+
+	status = pasynManager->getAddr(pasynUser, &addr);
+	if(status!=asynSuccess) return status;
+
+	if (function == P_MU){
+		memcpy(&CHN_MU[addr*nsam], value, nsam*sizeof(short));
+		fill_mask_chan(RAW_MU, addr, value);
+	}else if (function == P_ML){
+		memcpy(&CHN_ML[addr*nsam], value, nsam*sizeof(short));
+		fill_mask_chan(RAW_ML, addr, value);
+	}
+
+	return(status);
+}
 
 
 int acq400Judgement::factory(const char *portName, int maxPoints, int nchan)
