@@ -37,7 +37,11 @@ record(waveform, "${UUT}:JDG:MU:${CH}:w")
     field(NELM, "${NSAM}")
     field(HOPR, "32767")
     field(LOPR, "-32768")
+    field(DISV, "1")
+    field(SDIS, "${UUT}:JDG:MU:${CH}.PACT")	
 }
+
+
 
 record(waveform, "${UUT}:JDG:MU:${CH}")
 {
@@ -47,8 +51,33 @@ record(waveform, "${UUT}:JDG:MU:${CH}")
     field(NELM, "${NSAM}")
     field(SCAN, "I/O Intr")
     field(HOPR, "32767")
-    field(LOPR, "-32768")	
+    field(LOPR, "-32768")
+    field(FLNK, "${UUT}:JDG:MU:${CH}:r2v PP")
 }
+
+record(aSub, "${UUT}:JDG:MU:${CH}:r2v") {
+	field(SNAM, "raw_to_volts_SHORT")
+
+	field(FTA,  "SHORT")
+	field(NOA,  "${NSAM}")
+	field(INPA, "${UUT}:JDG:MU:${CH}")
+
+	field(FTO, "DOUBLE")
+	field(NOO, "1")
+#	field(INPO, "${UUT}:${SITE}:AI:CH:${CH}.EOFF")
+	field(INPO, "0")
+
+	field(FTS, "DOUBLE")
+	field(NOS, "1")
+#	field(INPS, "${UUT}:${SITE}:AI:CH:${CH}.ESLO")
+	field(INPS, "305.18e-6")						
+
+	field(FTVA, "FLOAT")
+	field(NOVA, "${NSAM}")
+	field(OUTA, "${UUT}:JDG:MU:${CH}:V PP")
+	field(FLNK, "${UUT}:JDG:MU:${CH}:V PP")
+}
+
 
 record(waveform, "${UUT}:JDG:ML:${CH}")
 {
