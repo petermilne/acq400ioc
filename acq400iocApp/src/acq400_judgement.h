@@ -17,7 +17,7 @@
 #define PS_MU	"MASK_UPPER"						/* asynInt16Array   r/w */
 #define PS_ML	"MASK_LOWER"						/* asynInt16Array   r/w */
 #define PS_RAW	"RAW"								/* asynInt16Array   r/o */
-#define PS_BN	"BUFFER_NUM"						/* asynTin32, 		r/o */
+#define PS_BN	"BUFFER_NUM"						/* asynInt32, 		r/o */
 
 #define PS_RESULT_FAIL "RESULT_FAIL"				/* asynInt32 		r/o */ /* per port P=2 */
 #define PS_RESULT_MASK32	"FAIL_MASK32"

@@ -70,3 +70,29 @@ ONSETTRANSIENT=0
 export EPICS_CAS_INTF_ADDR_LIST=localhost
 
 
+# JUDGEMENT:
+append to /mnt/local/sysconfig/epics.sh
+export SIZE=1024
+export IOC_PREINIT=./scripts/load.judgement
+
+append to /mnt/local/rc.user:
+set.site 0 sync_role master 50000
+set.site 1 rgm=3,0,1
+TLEN=1024
+ssb=$(get.site 0 ssb)
+blen=$((TLEN*ssb*2))
+# set -1, avoid es
+set.site 1 RTM_TRANSLEN=$((TLEN-1))
+sleep 0.5
+echo RTM_TRANSLEN set, now set bufferlen $blen
+set.site 0 bufferlen $blen
+echo "set bufferlen $blen recorded $(get.site 0 bufferlen)"
+
+echo >> /etc/sysconfig/acq400.conf "export StreamHead_LDI_SOURCE=%s.bq"
+#echo >> /etc/sysconfig/acq400.conf "export DemuxBufferShowES=1"
+#echo >> /etc/sysconfig/acq400.conf "export DemuxBufferVerbose=1"
+echo >> /etc/sysconfig/acq400.conf "export DemuxBufferSize=131072"
+
+echo "STREAM_OPTS=" >> /etc/sysconfig/acq400_streamd.conf
+
+
