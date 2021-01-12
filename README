@@ -96,3 +96,5 @@ echo >> /etc/sysconfig/acq400.conf "export DemuxBufferSize=131072"
 echo "STREAM_OPTS=" >> /etc/sysconfig/acq400_streamd.conf
 
 
+# WAN Environment. CLIENT probably wants to set 
+export EPICS_CA_ADDR_LIST=xxx

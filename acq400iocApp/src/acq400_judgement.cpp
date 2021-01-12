@@ -149,7 +149,7 @@ void acq400Judgement::fill_masks(asynUser *pasynUser, epicsInt16* raw,  int thre
 }
 void acq400Judgement::fill_mask(epicsInt16* mask,  epicsInt16 value)
 {
-	for (int isam = FIRST_SAM; isam < nsam; ++isam){
+	for (int isam = 0; isam < nsam; ++isam){
 		for (int ic = 0; ic < nchan; ++ic){
 			mask[isam*nchan+ic] = value;
 		}
@@ -158,7 +158,7 @@ void acq400Judgement::fill_mask(epicsInt16* mask,  epicsInt16 value)
 
 void acq400Judgement::fill_mask_chan(epicsInt16* mask,  int addr, epicsInt16* ch)
 {
-	for (int isam = FIRST_SAM; isam < nsam; ++isam){
+	for (int isam = 0; isam < nsam; ++isam){
 		mask[isam*nchan+addr] = ch[isam];
 	}
 	fill_requested = true;
@@ -194,8 +194,8 @@ void acq400Judgement::task()
 
 		if (fill_requested){
 			for (int ic=0; ic< nchan; ic++){
-				doCallbacksInt16Array(&CHN_MU[ic*nsam+FIRST_SAM], nsam-FIRST_SAM, P_MU, ic);
-				doCallbacksInt16Array(&CHN_ML[ic*nsam+FIRST_SAM], nsam-FIRST_SAM, P_ML, ic);
+				doCallbacksInt16Array(&CHN_MU[ic*nsam], nsam, P_MU, ic);
+				doCallbacksInt16Array(&CHN_ML[ic*nsam], nsam, P_ML, ic);
 			}
 			fill_requested = false;
 		}
@@ -229,7 +229,7 @@ asynStatus acq400Judgement::writeInt32(asynUser *pasynUser, epicsInt32 value)
     		fill_mask(RAW_MU, 0x7fff);
     		fill_mask(RAW_ML, 0x8000);
     	}
-		for (int isam = 0; isam < nsam; ++isam){
+		for (int isam = FIRST_SAM; isam < nsam; ++isam){
 			for (int ic = 0; ic < nchan; ++ic){
 				CHN_MU[ic*nsam+isam] = RAW_MU[isam*nchan+ic];
 				CHN_ML[ic*nsam+isam] = RAW_ML[isam*nchan+ic];
