@@ -95,6 +95,25 @@ echo >> /etc/sysconfig/acq400.conf "export DemuxBufferSize=131072"
 
 echo "STREAM_OPTS=" >> /etc/sysconfig/acq400_streamd.conf
 
+example python app:
+
+[pgm@hoy5 ~]$ export EPICS_CA_ADDR_LIST=acq1001_329
+[pgm@hoy5 ~]$ python
+Python 3.8.6 (default, Sep 25 2020, 00:00:00) 
+[GCC 10.2.1 20200723 (Red Hat 10.2.1-1)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import epics
+>>> import numpy as np
+>>> ramp=np.linspace(0,1,1024)
+>>> ramp3=ramp+3
+>>> mu01 = epics.PV('acq1001_329:1:JDG:MU:01:V')
+>>> mu01.put(ramp)
+1
+>>> mu01.put(ramp3)
+1
+>>> 
+
+
 
 # WAN Environment. CLIENT probably wants to set 
 export EPICS_CA_ADDR_LIST=xxx

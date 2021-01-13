@@ -35,7 +35,7 @@
 
 using namespace std;
 #include "Buffer.h"
-
+#include "ES.h"
 
 static const char *driverName="acq164AsynPortDriver";
 
@@ -72,6 +72,10 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 	createParam(PS_OK,					asynParamInt32,			&P_OK);
 
 	createParam(PS_RESULT_MASK32,		asynParamInt32,			&P_RESULT_MASK32);
+
+	createParam(PS_SAMPLE_COUNT,		asynParamInt32,			&P_SAMPLE_COUNT);
+	createParam(PS_SAMPLE_COUNT2,		asynParamInt32,			&P_SAMPLE_COUNT2);
+	createParam(PS_SAMPLE_TIME,			asynParamFloat64,		&P_SAMPLE_TIME);
 
 
 	setIntegerParam(P_NCHAN, 			nchan);
@@ -147,6 +151,23 @@ void acq400Judgement::fill_masks(asynUser *pasynUser, epicsInt16* raw,  int thre
 		}
 	}
 }
+
+static AbstractES& ESX = *AbstractES::evX_instance();
+
+int acq400Judgement::handle_es(unsigned* raw)
+{
+	for (int ii = 0; ii < 3; ++ii){
+		unsigned* esx = raw + ii*nchan;
+		if (ESX.isES(esx)){
+			sample_count = esx[4];
+			sample_count2 = esx[5];
+			return ii;
+		}
+	}
+	return -1;
+
+	updateTimeStamp();
+}
 void acq400Judgement::fill_mask(epicsInt16* mask,  epicsInt16 value)
 {
 	for (int isam = 0; isam < nsam; ++isam){
@@ -166,8 +187,10 @@ void acq400Judgement::fill_mask_chan(epicsInt16* mask,  int addr, epicsInt16* ch
 
 void acq400Judgement::handle_burst(int vbn, int offset)
 {
-	updateTimeStamp();
-	bool fail = calculate((epicsInt16*)Buffer::the_buffers[ib]->getBase()+offset, RAW_MU, RAW_ML);
+	epicsInt16* raw = (epicsInt16*)Buffer::the_buffers[ib]->getBase()+offset;
+	handle_es((unsigned*)raw);
+
+	bool fail = calculate(raw, RAW_MU, RAW_ML);
 
 	setIntegerParam(P_OK, !fail);
 	setIntegerParam(P_BN, vbn);

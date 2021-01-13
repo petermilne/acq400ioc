@@ -9,8 +9,9 @@ echo dbLoadRecords\(\"db/asynRecord.db\",\"P=${HOST}:,R=asyn:J1,PORT=J1,ADDR=0,O
 echo dbLoadRecords\(\"db/asynRecord.db\",\"P=${HOST}:,R=asyn:J1,PORT=J1,ADDR=3,OMAX=80,IMAX=80,TB3=0,TIB0=0\"\)
 
 
-eval $(get.site 0 aggregator)
 ix=0
+eval $(get.site 0 aggregator)
+
 for site in $(echo $sites | tr , \  ); do
 	nchan=$(get.site $site NCHAN)
 	for ch in $(seq 1 ${nchan}); do		

@@ -22,6 +22,9 @@
 #define PS_RESULT_FAIL "RESULT_FAIL"				/* asynInt32 		r/o */ /* per port P=2 */
 #define PS_RESULT_MASK32	"FAIL_MASK32"
 #define PS_OK	"OK"								/* asynInt32		r/o */
+#define PS_SAMPLE_COUNT	"SAMPLE_COUNT"				/* asynInt32		r/o */
+#define PS_SAMPLE_COUNT2	"SAMPLE_COUNT2"				/* asynInt32		r/o */
+#define PS_SAMPLE_TIME	"SAMPLE_TIME"				/* asynFloat64		r/o */ /* secs.usecs, synthetic */
 
 #define FIRST_SAM	2
 
@@ -41,6 +44,7 @@ public:
 	virtual void task();
 
 protected:
+	int handle_es(unsigned* raw);
 	void handle_burst(int vbn, int offset);
 	bool calculate(epicsInt16* raw, const epicsInt16* mu, const epicsInt16* ml);
 	/* return TRUE if any fail */
@@ -60,6 +64,9 @@ protected:
     int P_RESULT_FAIL;
     int P_OK;
     int P_RESULT_MASK32;
+    int P_SAMPLE_COUNT;
+    int P_SAMPLE_COUNT2;
+    int P_SAMPLE_TIME;
 
     /* our data */
     epicsInt16* RAW_MU;
@@ -69,6 +76,9 @@ protected:
     epicsInt16* RAW;
     epicsInt8* RESULT_FAIL;
     epicsInt32* FAIL_MASK32;
+    epicsInt32 sample_count;
+    epicsInt32 sample_count2;
+    epicsFloat64 sample_time;
 
     int ib;
     bool fill_requested;
