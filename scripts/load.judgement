@@ -8,10 +8,17 @@ echo dbLoadRecords\(\"db/judgementCommon.db\",\"${PRAMS}\"\)
 echo dbLoadRecords\(\"db/asynRecord.db\",\"P=${HOST}:,R=asyn:J1,PORT=J1,ADDR=0,OMAX=80,IMAX=80,TB3=0,TIB0=0\"\)
 echo dbLoadRecords\(\"db/asynRecord.db\",\"P=${HOST}:,R=asyn:J1,PORT=J1,ADDR=3,OMAX=80,IMAX=80,TB3=0,TIB0=0\"\)
 
-for ch in $(seq 1 ${NCHAN}); do
-SITE=$(((ch-1)/32+1))
-CH=$(printf "%02d" $ch)
-IX=$((ch-1))
-echo dbLoadRecords\(\"db/judgementCh.db\",\"${PRAMS},NSAM=1024,SITE=${SITE},CH=${CH},IX=${IX}\"\)
+
+eval $(get.site 0 aggregator)
+ix=0
+for site in $(echo $sites | tr , \  ); do
+	nchan=$(get.site $site NCHAN)
+	for ch in $(seq 1 ${nchan}); do		
+		CH=$(printf "%02d" $ch)		
+		echo dbLoadRecords\(\"db/judgementCh.db\",\"${PRAMS},FN=MU,PROKEY=MASK_UPPER,NSAM=1024,SITE=${site},CH=${CH},IX=${ix}\"\)
+		echo dbLoadRecords\(\"db/judgementCh.db\",\"${PRAMS},FN=ML,PROKEY=MASK_LOWER,NSAM=1024,SITE=${site},CH=${CH},IX=${ix}\"\)
+		ix=$((ix+1))
+	done	
 done
+
 

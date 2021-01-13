@@ -1,17 +1,17 @@
-record(waveform, "${UUT}:JDG:MU:${CH}:V") {
+record(waveform, "${UUT}:${SITE}:JDG:${FN}:${CH}:V") {
 	field(DTYP, "Soft Channel")
 	field(NELM, "${NSAM}")
 	field(FTVL, "FLOAT")
-	field(DESC, "load volts MU data")
-	field(FLNK, "${UUT}:JDG:MU:${CH}:v2r")
+	field(DESC, "load volts ${FN} data")
+	field(FLNK, "${UUT}:${SITE}:JDG:${FN}:${CH}:v2r")
 }
 
-record(aSub, "${UUT}:JDG:MU:${CH}:v2r") {
+record(aSub, "${UUT}:${SITE}:JDG:${FN}:${CH}:v2r") {
 	field(SNAM, "volts_to_raw_SHORT")
 
 	field(FTA,  "FLOAT")
 	field(NOA,  "${NSAM}")
-	field(INPA, "${UUT}:JDG:MU:${CH}:V")
+	field(INPA, "${UUT}:${SITE}:JDG:${FN}:${CH}:V")
 
 	field(FTO, "DOUBLE")
 	field(NOO, "1")
@@ -25,42 +25,40 @@ record(aSub, "${UUT}:JDG:MU:${CH}:v2r") {
 
 	field(FTVA, "SHORT")
 	field(NOVA, "${NSAM}")
-	field(OUTA, "${UUT}:JDG:MU:${CH}:w PP")
-	field(FLNK, "${UUT}:JDG:MU:${CH}:w")
+	field(OUTA, "${UUT}:${SITE}:JDG:${FN}:${CH}:w PP")
+	field(FLNK, "${UUT}:${SITE}:JDG:${FN}:${CH}:w")
 }
 
-record(waveform, "${UUT}:JDG:MU:${CH}:w")
+record(waveform, "${UUT}:${SITE}:JDG:${FN}:${CH}:w")
 {
     field(DTYP, "asynInt16ArrayOut")
-    field(INP,  "@asyn($(PORT),$(IX),$(TIMEOUT))MASK_UPPER")
+    field(INP,  "@asyn($(PORT),$(IX),$(TIMEOUT))${PROKEY}")
     field(FTVL, "SHORT")
     field(NELM, "${NSAM}")
     field(HOPR, "32767")
     field(LOPR, "-32768")
     field(DISV, "1")
-    field(SDIS, "${UUT}:JDG:MU:${CH}.PACT")	
+    field(SDIS, "${UUT}:${SITE}:JDG:${FN}:${CH}.PACT")	
 }
 
-
-
-record(waveform, "${UUT}:JDG:MU:${CH}")
+record(waveform, "${UUT}:${SITE}:JDG:${FN}:${CH}")
 {
     field(DTYP, "asynInt16ArrayIn")
-    field(INP,  "@asyn($(PORT),$(IX),$(TIMEOUT))MASK_UPPER")
+    field(INP,  "@asyn($(PORT),$(IX),$(TIMEOUT))${PROKEY}")
     field(FTVL, "SHORT")
     field(NELM, "${NSAM}")
     field(SCAN, "I/O Intr")
     field(HOPR, "32767")
     field(LOPR, "-32768")
-    field(FLNK, "${UUT}:JDG:MU:${CH}:r2v PP")
+    field(FLNK, "${UUT}:${SITE}:JDG:${FN}:${CH}:r2v PP")
 }
 
-record(aSub, "${UUT}:JDG:MU:${CH}:r2v") {
+record(aSub, "${UUT}:${SITE}:JDG:${FN}:${CH}:r2v") {
 	field(SNAM, "raw_to_volts_SHORT")
 
 	field(FTA,  "SHORT")
 	field(NOA,  "${NSAM}")
-	field(INPA, "${UUT}:JDG:MU:${CH}")
+	field(INPA, "${UUT}:${SITE}:JDG:${FN}:${CH}")
 
 	field(FTO, "DOUBLE")
 	field(NOO, "1")
@@ -74,17 +72,7 @@ record(aSub, "${UUT}:JDG:MU:${CH}:r2v") {
 
 	field(FTVA, "FLOAT")
 	field(NOVA, "${NSAM}")
-	field(OUTA, "${UUT}:JDG:MU:${CH}:V PP")
-	field(FLNK, "${UUT}:JDG:MU:${CH}:V PP")
-}
-
-
-record(waveform, "${UUT}:JDG:ML:${CH}")
-{
-    field(DTYP, "asynInt16ArrayIn")
-    field(INP,  "@asyn($(PORT),$(IX),$(TIMEOUT))MASK_LOWER")
-    field(FTVL, "SHORT")
-    field(NELM, "${NSAM}")
-    field(SCAN, "I/O Intr")
+	field(OUTA, "${UUT}:${SITE}:JDG:${FN}:${CH}:V PP")
+	field(FLNK, "${UUT}:${SITE}:JDG:${FN}:${CH}:V PP")
 }
 
