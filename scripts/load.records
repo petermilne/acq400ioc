@@ -19,6 +19,7 @@ SN=${SN#0}
 SN=${SN#0}
 
 FIRST_SITE=-1
+SHOTBUSY_OK=y
 
 source /etc/sysconfig/acq400.conf
 
@@ -1100,7 +1101,7 @@ load_mb() {
 		source /usr/local/epics/scripts/load.mgt400
 		echo "seq mgtStopOnLinkDown \"uut=${HOST}\"" >>/tmp/st_post.cmd
 	fi
-	if [ -e /dev/gpio/LED/ACT_G ]; then
+	if [ "$SHOTBUSY_OK" = "y"] && [ -e /dev/gpio/LED/ACT_G ]; then
 		echo "seq shotBusy \"uut=${HOST},verbose=${SHOT_BUSY_VERBOSE:-0}\"" >>/tmp/st_post.cmd
 	fi
 	echo 	
