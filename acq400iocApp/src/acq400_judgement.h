@@ -23,7 +23,7 @@
 #define PS_RESULT_MASK32	"FAIL_MASK32"
 #define PS_OK	"OK"								/* asynInt32		r/o */
 #define PS_SAMPLE_COUNT	"SAMPLE_COUNT"				/* asynInt32		r/o */
-#define PS_SAMPLE_COUNT2	"SAMPLE_COUNT2"				/* asynInt32		r/o */
+#define PS_CLOCK_COUNT	"CLOCK_COUNT"				/* asynInt32		r/o */
 #define PS_SAMPLE_TIME	"SAMPLE_TIME"				/* asynFloat64		r/o */ /* secs.usecs, synthetic */
 
 #define FIRST_SAM	2
@@ -65,7 +65,7 @@ protected:
     int P_OK;
     int P_RESULT_MASK32;
     int P_SAMPLE_COUNT;
-    int P_SAMPLE_COUNT2;
+    int P_CLOCK_COUNT;
     int P_SAMPLE_TIME;
 
     /* our data */
@@ -77,7 +77,7 @@ protected:
     epicsInt8* RESULT_FAIL;
     epicsInt32* FAIL_MASK32;
     epicsInt32 sample_count;
-    epicsInt32 sample_count2;
+    epicsInt32 clock_count;
     epicsFloat64 sample_time;
 
     int ib;

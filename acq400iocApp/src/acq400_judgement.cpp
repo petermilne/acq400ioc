@@ -74,7 +74,7 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 	createParam(PS_RESULT_MASK32,		asynParamInt32,			&P_RESULT_MASK32);
 
 	createParam(PS_SAMPLE_COUNT,		asynParamInt32,			&P_SAMPLE_COUNT);
-	createParam(PS_SAMPLE_COUNT2,		asynParamInt32,			&P_SAMPLE_COUNT2);
+	createParam(PS_CLOCK_COUNT,		    asynParamInt32,			&P_CLOCK_COUNT);
 	createParam(PS_SAMPLE_TIME,			asynParamFloat64,		&P_SAMPLE_TIME);
 
 
@@ -159,8 +159,8 @@ int acq400Judgement::handle_es(unsigned* raw)
 	for (int ii = 0; ii < 3; ++ii){
 		unsigned* esx = raw + ii*nchan;
 		if (ESX.isES(esx)){
-			sample_count = esx[4];
-			sample_count2 = esx[5];
+			setIntegerParam(P_SAMPLE_COUNT, sample_count = esx[4]);
+			setIntegerParam(P_CLOCK_COUNT,  clock_count = esx[5]);
 			return ii;
 		}
 	}
