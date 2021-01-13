@@ -229,10 +229,10 @@ asynStatus acq400Judgement::writeInt32(asynUser *pasynUser, epicsInt32 value)
     		fill_mask(RAW_MU, 0x7fff);
     		fill_mask(RAW_ML, 0x8000);
     	}
-		for (int isam = FIRST_SAM; isam < nsam; ++isam){
+		for (int isam = 0; isam < nsam; ++isam){
 			for (int ic = 0; ic < nchan; ++ic){
-				CHN_MU[ic*nsam+isam] = RAW_MU[isam*nchan+ic];
-				CHN_ML[ic*nsam+isam] = RAW_ML[isam*nchan+ic];
+				CHN_MU[ic*nsam+isam] = isam < FIRST_SAM? 0: RAW_MU[isam*nchan+ic];
+				CHN_ML[ic*nsam+isam] = isam < FIRST_SAM? 0: RAW_ML[isam*nchan+ic];
 			}
 		}
     	fill_requested = true;
