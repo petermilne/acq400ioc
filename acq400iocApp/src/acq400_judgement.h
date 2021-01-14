@@ -25,6 +25,7 @@
 #define PS_SAMPLE_COUNT	"SAMPLE_COUNT"				/* asynInt32		r/o */
 #define PS_CLOCK_COUNT	"CLOCK_COUNT"				/* asynInt32		r/o */
 #define PS_SAMPLE_TIME	"SAMPLE_TIME"				/* asynFloat64		r/o */ /* secs.usecs, synthetic */
+#define PS_BURST_COUNT  "BURST_COUNT"				/* asynInt32		r/o */
 
 #define FIRST_SAM	2
 
@@ -67,6 +68,7 @@ protected:
     int P_SAMPLE_COUNT;
     int P_CLOCK_COUNT;
     int P_SAMPLE_TIME;
+    int P_BURST_COUNT;
 
     /* our data */
     epicsInt16* RAW_MU;
@@ -78,6 +80,7 @@ protected:
     epicsInt32* FAIL_MASK32;
     epicsInt32 sample_count;
     epicsInt32 clock_count;
+    epicsInt32 burst_count;
     epicsFloat64 sample_time;
 
     int ib;

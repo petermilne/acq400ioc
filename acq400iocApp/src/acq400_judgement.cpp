@@ -76,6 +76,7 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 	createParam(PS_SAMPLE_COUNT,		asynParamInt32,			&P_SAMPLE_COUNT);
 	createParam(PS_CLOCK_COUNT,		    asynParamInt32,			&P_CLOCK_COUNT);
 	createParam(PS_SAMPLE_TIME,			asynParamFloat64,		&P_SAMPLE_TIME);
+	createParam(PS_BURST_COUNT, 		asynParamInt32, 		&P_BURST_COUNT);
 
 
 	setIntegerParam(P_NCHAN, 			nchan);
@@ -86,7 +87,7 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 	RAW_ML = new epicsInt16[nsam*nchan];
 	CHN_MU = new epicsInt16[nchan*nsam];
 	CHN_ML = new epicsInt16[nchan*nsam];
-	RESULT_FAIL = new epicsInt8[nchan];
+	RESULT_FAIL = new epicsInt8[nchan+1];		// index from 1, [0] is update %256
 	FAIL_MASK32 = new epicsInt32[nchan/32];
 	RAW = 0;   // get va from BUFFER
 
@@ -106,7 +107,7 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 
 bool acq400Judgement::calculate(epicsInt16* raw, const epicsInt16* mu, const epicsInt16* ml)
 {
-	memset(RESULT_FAIL, 0, sizeof(epicsInt8)*nchan);
+	memset(RESULT_FAIL+1, 0, sizeof(epicsInt8)*nchan);
 	memset(FAIL_MASK32, 0, sizeof(epicsInt32)*nchan/32);
 	bool fail = false;
 
@@ -117,7 +118,7 @@ bool acq400Judgement::calculate(epicsInt16* raw, const epicsInt16* mu, const epi
 			epicsInt16 xx = raw[ib];
 			if (xx > mu[ib] || xx < ml[ib]){
 				FAIL_MASK32[ic/32] |= 1 << (ic&0x1f);
-				RESULT_FAIL[ic] = 1;
+				RESULT_FAIL[ic+1] = 1;
 				fail = true;
 			}
 		}
@@ -161,12 +162,16 @@ int acq400Judgement::handle_es(unsigned* raw)
 		if (ESX.isES(esx)){
 			setIntegerParam(P_SAMPLE_COUNT, sample_count = esx[4]);
 			setIntegerParam(P_CLOCK_COUNT,  clock_count = esx[5]);
+			/** @@todo: not sure how to merge EPICS and SAMPLING timestamps.. go pure EPICS */
+			setIntegerParam(P_BURST_COUNT, ++burst_count);
+			RESULT_FAIL[0] = burst_count;			// burst_count%256 .. maybe match to exact count and TS */
+			updateTimeStamp();
 			return ii;
 		}
 	}
 	return -1;
 
-	updateTimeStamp();
+
 }
 void acq400Judgement::fill_mask(epicsInt16* mask,  epicsInt16 value)
 {
