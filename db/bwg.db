@@ -1,0 +1,35 @@
+# BWG : BRAM Waveform Generator
+
+# ao420fmc.db - DC set, gains, AWG gain and offset.
+record(ao, "${UUT}:BWG:${BANK}:NCO:FREQ") {
+	field(DTYP, "stream")
+	field(OUT, "@bwg.proto setNCO(${bank}) ${SPORT}")	
+	field(DESC, "Set NCO ${BANK} Frequency")
+	field(DRVL, "0.01")
+	field(DRVH, "20000000")
+	field(LINR, "LINEAR")
+# N = 20e6/2**32 *F      
+	field(ESLO, "406566128e-3")
+	field(HOPR, "50000")
+	field(LOPR, "100")
+	field(EGU,  "Hz")
+}
+
+record(ao, "${UUT}:BWG:${BANK}:SAMPLES") {
+	field(DTYP, "stream")
+	field(OUT, "@bwg.proto setLEN(${bank}) ${SPORT}")
+	field(DESC, "Set BWG ${BANK} actual length")
+	field(DRVL, "1")
+	field(DRVH, "4096")
+	field(LINR, "NO_CONVERSION")
+# actual value to write: N-1
+	field(AOFF, "1")
+	field(ASLO, "1")	
+	field(HOPR, "50000")
+	field(LOPR, "100")
+}
+
+record(bo, "${UUT}:BWG:${BANK}:EN"){
+	field(DTYP, "stream")
+	field(OUT, "@bwg.proto setENABLE(${bank}) ${SPORT}")	
+}

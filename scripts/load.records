@@ -1029,6 +1029,10 @@ do
 	fi
 done
 
+if [ "x$(usr/local/CARE/get-fpga-extra)" = "xNCO" ]; then
+	./scripts/load.bwg 14
+fi
+
 
 dblr '"db/mirror.db","UUT='${HOST}'"'
 

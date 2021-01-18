@@ -1,0 +1,14 @@
+#!/bin/sh
+
+source /etc/profile.d/epics.sh
+HOST=${1:-${IOC_HOST}}
+SITE=14
+
+source ./scripts/record_support.sh
+
+create_asyn_channel BWG 127.0.0.1:42${SITE}
+mprams="UUT=${HOST},SITE=${SITE},SPORT=BWG"
+
+
+dblr '"db/bwg.db","'${mprams},BANK=A,bank=a'"'
+dblr '"db/bwg.db","'${mprams},BANK=B,bank=b'"'

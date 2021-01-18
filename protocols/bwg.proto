@@ -1,0 +1,19 @@
+Terminator = CR;
+ExtraInput = Ignore;
+
+
+setNCO {
+	out "w\${1}_nco";
+	in "%d";
+}
+
+setLEN {
+	out "w\${1}_len";
+	in "%d";
+}
+
+setENABLE {
+	out "w\${1}_cr";
+	in "%d";
+}
+
