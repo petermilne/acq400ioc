@@ -30,17 +30,24 @@ record(longin, "${UUT}:JDG:CHX:FAIL:2")
 }
 
 
-record(longin, "${UUT}:JDG:CHX:SAMPLE_COUNT:1")
+record(longin, "${UUT}:JDG:CHX:SAMPLE_COUNT")
 {
     field(DTYP, "asynInt32")
     field(INP,  "@asyn($(PORT),0,$(TIMEOUT))SAMPLE_COUNT")
     field(SCAN, "I/O Intr")	
 }
 
-record(longin, "${UUT}:JDG:CHX:SAMPLE_COUNT:2")
+record(longin, "${UUT}:JDG:CHX:CLOCK_COUNT")
 {
     field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))SAMPLE_COUNT2")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))CLOCK_COUNT")
+    field(SCAN, "I/O Intr")
+}
+
+record(longin, "${UUT}:JDG:CHX:BURST_COUNT")
+{
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))BURST_COUNT")
     field(SCAN, "I/O Intr")
 }
 
