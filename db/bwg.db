@@ -9,7 +9,7 @@ record(ao, "${UUT}:BWG:${BANK}:NCO:FREQ") {
 	field(DRVH, "20000000")
 	field(LINR, "LINEAR")
 # N = 20e6/2**32 *F      
-	field(ESLO, "406566128e-3")
+	field(ESLO, "4.6566128e-3")
 	field(HOPR, "50000")
 	field(LOPR, "100")
 	field(EGU,  "Hz")

@@ -1,0 +1,39 @@
+record(waveform, "${UUT}:AO:BWG:${cid}:V") {
+	field(DTYP, "Soft Channel")
+	field(NELM, "${size}")
+	field(FTVL, "FLOAT")
+	field(DESC, "load raw BWG data")
+	field(FLNK, "${UUT}:AO:BWG:${cid}:v2r")
+}
+
+
+record(aSub, "${UUT}:AO:BWG:${cid}:v2r") {
+	field(SNAM, "volts_to_raw_DAC20")
+
+	field(FTA,  "FLOAT")
+	field(NOA,  "${size}")
+	field(INPA, "${UUT}:AO:BWG:${cid}:V")
+
+	field(FTO, "DOUBLE")
+	field(NOO, "1")
+#	field(INPO, "${UUT}:{SITE}:AI:CH:${cid}.EOFF")
+	field(INPO, "0")
+
+	field(FTS, "DOUBLE")
+	field(NOS, "1")
+#	field(INPS, "${UUT}:{SITE}:AI:CH:${cid}.ESLO")
+	field(INPS, "2.14748e8")						# 2**31/10 left justified
+	field(FTVA, "LONG")
+	field(NOVA, "${size}")
+	field(OUTA, "${UUT}:AO:BWG:${cid} PP")
+	field(FLNK, "${UUT}:AO:BWG:${cid}")
+}
+
+record(waveform, "${UUT}:AO:BWG:${cid}") {
+	field(DTYP, "wfAWGAcqHost")
+	field(INP,  "@/dev/bwg.${cid} PP")
+	field(NELM, "${size}")
+	field(FTVL, "${type}")
+	field(DESC, "load raw BWG data")
+}
+

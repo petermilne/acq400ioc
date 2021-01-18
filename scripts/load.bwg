@@ -1,14 +1,23 @@
 #!/bin/sh
 
 source /etc/profile.d/epics.sh
-HOST=${1:-${IOC_HOST}}
+HOST=${IOC_HOST}
 SITE=14
+
+
+echo '# load.bwg 01'
 
 source ./scripts/record_support.sh
 
-create_asyn_channel BWG 127.0.0.1:42${SITE}
+create_asyn_channel BWG 127.0.0.1:4234
 mprams="UUT=${HOST},SITE=${SITE},SPORT=BWG"
-
+wprams="UUT=${HOST},size=4096,type=LONG"
 
 dblr '"db/bwg.db","'${mprams},BANK=A,bank=a'"'
 dblr '"db/bwg.db","'${mprams},BANK=B,bank=b'"'
+
+for ch in 01 02 03 04 05 06 07 08; do
+	dblr '"db/wfBWG.db","'${wprams},cid=${ch}'"'
+done
+
+echo '#load.bwg 99'

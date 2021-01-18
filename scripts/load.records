@@ -1029,7 +1029,7 @@ do
 	fi
 done
 
-if [ "x$(usr/local/CARE/get-fpga-extra)" = "xNCO" ]; then
+if [ "x$(/usr/local/CARE/get-fpga-extra)" = "xNCO" ]; then
 	./scripts/load.bwg 14
 fi
 
