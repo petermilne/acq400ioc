@@ -57,7 +57,7 @@ record(waveform, "${UUT}:JDG:CHX:FAIL:ALL")
     field(DTYP, "asynInt8ArrayIn")
     field(INP,  "@asyn($(PORT),0,$(TIMEOUT))RESULT_FAIL")
     field(FTVL, "UCHAR")
-    field(NELM, "$(NCHAN)")
+    field(NELM, "$(NCHAN1)")
     field(SCAN, "I/O Intr")
 }
 
