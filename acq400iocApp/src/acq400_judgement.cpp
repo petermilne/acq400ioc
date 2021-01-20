@@ -61,22 +61,22 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 {
 	asynStatus status = asynSuccess;
 
-	createParam(PS_NCHAN,               asynParamInt32,         &P_NCHAN);
-	createParam(PS_NSAM,                asynParamInt32,         &P_NSAM);
-	createParam(PS_MASK_FROM_DATA,      asynParamInt32,         &P_MASK_FROM_DATA);
-	createParam(PS_MU,                  asynParamInt16Array,    &P_MU);
-	createParam(PS_ML,                  asynParamInt16Array,    &P_ML);
-	createParam(PS_RAW,                 asynParamInt16Array,    &P_RAW);
-	createParam(PS_BN, 					asynParamInt32, 		&P_BN);
-	createParam(PS_RESULT_FAIL,			asynParamInt32Array,    &P_RESULT_FAIL);
-	createParam(PS_OK,					asynParamInt32,			&P_OK);
+	createParam(PS_NCHAN,               asynParamInt32,         	&P_NCHAN);
+	createParam(PS_NSAM,                asynParamInt32,         	&P_NSAM);
+	createParam(PS_MASK_FROM_DATA,      asynParamInt32,         	&P_MASK_FROM_DATA);
+	createParam(PS_MU,                  asynParamInt16Array,    	&P_MU);
+	createParam(PS_ML,                  asynParamInt16Array,    	&P_ML);
+	createParam(PS_RAW,                 asynParamInt16Array,    	&P_RAW);
+	createParam(PS_BN, 		    asynParamInt32, 		&P_BN);
+	createParam(PS_RESULT_FAIL,	    asynParamInt32Array,    	&P_RESULT_FAIL);
+	createParam(PS_OK,		    asynParamInt32,		&P_OK);
 
-	createParam(PS_RESULT_MASK32,		asynParamInt32,			&P_RESULT_MASK32);
+	createParam(PS_RESULT_MASK32,	    asynParamInt32,		&P_RESULT_MASK32);
 
-	createParam(PS_SAMPLE_COUNT,		asynParamInt32,			&P_SAMPLE_COUNT);
-	createParam(PS_CLOCK_COUNT,		    asynParamInt32,			&P_CLOCK_COUNT);
-	createParam(PS_SAMPLE_TIME,			asynParamFloat64,		&P_SAMPLE_TIME);
-	createParam(PS_BURST_COUNT, 		asynParamInt32, 		&P_BURST_COUNT);
+	createParam(PS_SAMPLE_COUNT,	    asynParamInt32,		&P_SAMPLE_COUNT);
+	createParam(PS_CLOCK_COUNT,	    asynParamInt32,		&P_CLOCK_COUNT);
+	createParam(PS_SAMPLE_TIME,	    asynParamFloat64,		&P_SAMPLE_TIME);
+	createParam(PS_BURST_COUNT, 	    asynParamInt32, 		&P_BURST_COUNT);
 
 
 	setIntegerParam(P_NCHAN, 			nchan);
