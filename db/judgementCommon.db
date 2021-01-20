@@ -15,6 +15,15 @@ record(longout, "${UUT}:JDG:MASK_FROM_DATA")
    field(LOPR,  "0")
 }
 
+record(longout, "${UUT}:JDG:SAMPLE_DELTA_NS")
+{
+   field(PINI, "0")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SAMPLE_DELTA_NS")
+   field(HOPR, "1000000")
+   field(LOPR,  "0")
+}
+
 record(longin, "${UUT}:JDG:CHX:FAIL:1")
 {
     field(DTYP, "asynInt32")

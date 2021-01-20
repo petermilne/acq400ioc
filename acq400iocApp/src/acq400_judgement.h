@@ -11,21 +11,22 @@
 
 #include "asynPortDriver.h"
 
-#define PS_NCHAN "NCHAN"							/* asynInt32, 		r/o */
-#define PS_NSAM	"NSAM"								/* asynInt32,       r/o */
-#define PS_MASK_FROM_DATA "MAKE_MASK_FROM_DATA"		/* asynInt32,       r/w .. MU=y+val, ML=y-val */
-#define PS_MU	"MASK_UPPER"						/* asynInt16Array   r/w */
-#define PS_ML	"MASK_LOWER"						/* asynInt16Array   r/w */
-#define PS_RAW	"RAW"								/* asynInt16Array   r/o */
-#define PS_BN	"BUFFER_NUM"						/* asynInt32, 		r/o */
+#define PS_NCHAN 		"NCHAN"				/* asynInt32, 		r/o */
+#define PS_NSAM			"NSAM"				/* asynInt32,       r/o */
+#define PS_MASK_FROM_DATA 	"MAKE_MASK_FROM_DATA"		/* asynInt32,       r/w .. MU=y+val, ML=y-val */
+#define PS_MU			"MASK_UPPER"			/* asynInt16Array   r/w */
+#define PS_ML			"MASK_LOWER"			/* asynInt16Array   r/w */
+#define PS_RAW			"RAW"				/* asynInt16Array   r/o */
+#define PS_BN			"BUFFER_NUM"			/* asynInt32, 		r/o */
 
-#define PS_RESULT_FAIL "RESULT_FAIL"				/* asynInt32 		r/o */ /* per port P=2 */
+#define PS_RESULT_FAIL 		"RESULT_FAIL"			/* asynInt32 		r/o */ /* per port P=2 */
 #define PS_RESULT_MASK32	"FAIL_MASK32"
-#define PS_OK	"OK"								/* asynInt32		r/o */
-#define PS_SAMPLE_COUNT	"SAMPLE_COUNT"				/* asynInt32		r/o */
-#define PS_CLOCK_COUNT	"CLOCK_COUNT"				/* asynInt32		r/o */
-#define PS_SAMPLE_TIME	"SAMPLE_TIME"				/* asynFloat64		r/o */ /* secs.usecs, synthetic */
-#define PS_BURST_COUNT  "BURST_COUNT"				/* asynInt32		r/o */
+#define PS_OK			"OK"				/* asynInt32		r/o */
+#define PS_SAMPLE_COUNT		"SAMPLE_COUNT"			/* asynInt32		r/o */
+#define PS_CLOCK_COUNT		"CLOCK_COUNT"			/* asynInt32		r/o */
+#define PS_SAMPLE_TIME		"SAMPLE_TIME"			/* asynFloat64		r/o */ /* secs.usecs, synthetic */
+#define PS_BURST_COUNT  	"BURST_COUNT"			/* asynInt32		r/o */
+#define PS_SAMPLE_DELTA_NS	"SAMPLE_DELTA_NS"		/* asynInt32		r/w */
 
 #define FIRST_SAM	2
 
@@ -43,6 +44,7 @@ public:
 
 	static int factory(const char *portName, int maxPoints, int nchan);
 	virtual void task();
+	virtual asynStatus updateTimeStamp();
 
 protected:
 	int handle_es(unsigned* raw);
@@ -69,6 +71,7 @@ protected:
     int P_CLOCK_COUNT;
     int P_SAMPLE_TIME;
     int P_BURST_COUNT;
+    int P_SAMPLE_DELTA_NS;
 
     /* our data */
     epicsInt16* RAW_MU;
@@ -79,9 +82,10 @@ protected:
     epicsInt8* RESULT_FAIL;
     epicsInt32* FAIL_MASK32;
     epicsInt32 sample_count;
-    epicsInt32 clock_count;
+    unsigned clock_count[2];			     /* previous, current */
     epicsInt32 burst_count;
     epicsFloat64 sample_time;
+    epicsInt32 sample_delta_ns;
 
     int ib;
     bool fill_requested;

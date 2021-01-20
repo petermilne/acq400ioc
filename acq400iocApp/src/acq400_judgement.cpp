@@ -57,8 +57,10 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 		                    1, /* Autoconnect */
 		                    0, /* Default priority */
 		                    0) /* Default stack size*/,
-		nchan(_nchan), nsam(_nsam), fill_requested(false)
+		nchan(_nchan), nsam(_nsam), sample_delta_ns(0), fill_requested(false)
 {
+	clock_count[0] = clock_count[1] = 0;
+
 	asynStatus status = asynSuccess;
 
 	createParam(PS_NCHAN,               asynParamInt32,         	&P_NCHAN);
@@ -77,6 +79,7 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 	createParam(PS_CLOCK_COUNT,	    asynParamInt32,		&P_CLOCK_COUNT);
 	createParam(PS_SAMPLE_TIME,	    asynParamFloat64,		&P_SAMPLE_TIME);
 	createParam(PS_BURST_COUNT, 	    asynParamInt32, 		&P_BURST_COUNT);
+	createParam(PS_SAMPLE_DELTA_NS,     asynParamInt32, 		&P_SAMPLE_DELTA_NS);
 
 
 	setIntegerParam(P_NCHAN, 			nchan);
@@ -155,13 +158,37 @@ void acq400Judgement::fill_masks(asynUser *pasynUser, epicsInt16* raw,  int thre
 
 static AbstractES& ESX = *AbstractES::evX_instance();
 
+
+/* set EPICS TS assuming that the FIRST tick is at epich seconds %0 nsec eg GPS system, others, well, don't really care */
+asynStatus acq400Judgement::updateTimeStamp()
+{
+	epicsTimeStamp previous, now;
+	asynStatus rc = getIntegerParam(P_SAMPLE_DELTA_NS, &sample_delta_ns);
+	if (rc != asynSuccess){
+		return rc;
+	}else if (sample_delta_ns == 0){
+		return asynPortDriver::updateTimeStamp();
+	}else if ((rc = getTimeStamp(&previous)) != asynSuccess){
+		return rc;
+	}else{
+		epicsTimeGetCurrent(&now);
+		if (now.secPastEpoch > previous.secPastEpoch){
+			now.nsec = 0;
+			clock_count[0] = clock_count[1];
+		}else{
+			now.nsec = (clock_count[1] - clock_count[0]) * sample_delta_ns;
+		}
+		asynPortDriver::updateTimeStamp(&now);
+		return rc;
+	}
+}
 int acq400Judgement::handle_es(unsigned* raw)
 {
 	for (int ii = 0; ii < 3; ++ii){
 		unsigned* esx = raw + ii*nchan;
 		if (ESX.isES(esx)){
 			setIntegerParam(P_SAMPLE_COUNT, sample_count = esx[4]);
-			setIntegerParam(P_CLOCK_COUNT,  clock_count = esx[5]);
+			setIntegerParam(P_CLOCK_COUNT,  clock_count[1]= esx[5]);
 			/** @@todo: not sure how to merge EPICS and SAMPLING timestamps.. go pure EPICS */
 			setIntegerParam(P_BURST_COUNT, ++burst_count);
 			RESULT_FAIL[0] = burst_count;			// burst_count%256 .. maybe match to exact count and TS */
@@ -204,7 +231,7 @@ void acq400Judgement::handle_burst(int vbn, int offset)
 		callParamCallbacks(m32);
 	}
 
-	doCallbacksInt8Array(RESULT_FAIL,   nchan, P_RESULT_FAIL, 0);
+	doCallbacksInt8Array(RESULT_FAIL,   nchan+1, P_RESULT_FAIL, 0);
 }
 
 void acq400Judgement::task()
