@@ -68,7 +68,7 @@ public:
 	ConcreteAcqBoCommandDescr(const char* _fname):
 		AcqBoCommandDescr()
 	{
-		strncpy(fname, _fname, sizeof(fname));
+		strncpy(fname, _fname, sizeof(fname)-1);
 	}
 	virtual bool setValue(int xx) {
 		return system(fname) == 0;

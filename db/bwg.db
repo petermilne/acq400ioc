@@ -33,3 +33,55 @@ record(bo, "${UUT}:BWG:${BANK}:EN"){
 	field(DTYP, "stream")
 	field(OUT, "@bwg.proto setENABLE(${bank}) ${SPORT}")	
 }
+
+record(mbbo, "${UUT}:BWG:${BANK}:SWEEP:MODE"){
+	field(DTYP, "Soft Channel")
+	field(NOBT, "2")
+	field(ZRST, "OFF")
+	field(ONST, "SAW")
+	field(TWST, "RAMP")	
+}
+
+record(bo, "${UUT}:BWG:${BANK}:SWEEP:STEPMODE"){
+	field(DTYP, "Soft Channel")
+	field(DESC, "linear or log steps")
+	field(ZNAM, "LIN")
+	field(ONAM, "LOG")
+}
+
+record(ao, "${UUT}:BWG:${BANK}:SWEEP:F1"){
+	field(DTYP, "Soft Channel")
+	field(DESC, "Sweep START Frequency")
+	field(DRVL, "0.01")
+	field(DRVH, "20000000")
+	field(HOPR, "50000")
+	field(LOPR, "100")
+	field(EGU,  "Hz")	
+}
+
+record(ao, "${UUT}:BWG:${BANK}:SWEEP:F2"){
+	field(DTYP, "Soft Channel")
+	field(DESC, "Sweep STOP Frequency")
+	field(DRVL, "0.01")
+	field(DRVH, "20000000")
+	field(HOPR, "50000")
+	field(LOPR, "100")
+	field(EGU,  "Hz")	
+}
+
+record(ao, "${UUT}:BWG:${BANK}:SWEEP:PERIOD"){
+	field(DTYP, "Soft Channel")
+	field(DESC, "Sweep PERIOD")
+	field(DRVL, "0.01")
+	field(DRVH, "100")
+	field(HOPR, "100")
+	field(LOPR, "0.02")
+	field(EGU,  "s")		
+}
+
+record(ao, "${UUT}:BWG:${BANK}:SWEEP:DT"){
+	field(DTYP, "Soft Channel")
+	field(DESC, "Sweep DWELL time")
+	field(DRVL, "0.001")
+	field(DRVH, "100")	
+}

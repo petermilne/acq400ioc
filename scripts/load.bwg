@@ -20,4 +20,6 @@ for ch in 01 02 03 04 05 06 07 08; do
 	dblr '"db/wfBWG.db","'${wprams},cid=${ch}'"'
 done
 
+echo >>/tmp/st_post.cmd "seq bwg_sweep \"uut=${HOST},bank=A\""
+echo >>/tmp/st_post.cmd "seq bwg_sweep \"uut=${HOST},bank=B\""
 echo '#load.bwg 99'
