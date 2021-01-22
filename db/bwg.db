@@ -21,7 +21,7 @@ record(ao, "${UUT}:BWG:${BANK}:SAMPLES") {
 	field(DESC, "Set BWG ${BANK} actual length")
 	field(DRVL, "1")
 	field(DRVH, "4096")
-	field(LINR, "NO_CONVERSION")
+	field(LINR, "LINR")
 # actual value to write: N-1
 	field(AOFF, "1")
 	field(ASLO, "1")	

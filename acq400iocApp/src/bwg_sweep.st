@@ -7,7 +7,7 @@ option +s;
 #define STEP_MODE_LIN	0
 #define STEP_MODE_LOG	1
 #define MAXPOINTS	1024
-#define DT_MIN		0.001
+#define DT_MIN		0.01
 
 
 
@@ -39,11 +39,6 @@ double period_0;
 
 
 
-
-
-
-
-
 %{
 
 double fx[MAXPOINTS];
@@ -59,6 +54,9 @@ void make_lin_lut(double f1, double f2, int nticks)
 	
 	for (ii = 0; ii < nticks; ++ii, fxx += step){
 		fx[ii] = fxx;
+		if (nticks < 10){
+			printf("make_lin_lut[%d] %f\n", ii, fxx);
+		}
 	}	
 }
 void make_log_lut(double f1, double f2, int nticks)
@@ -66,14 +64,13 @@ void make_log_lut(double f1, double f2, int nticks)
 	/** @todo */
 	make_lin_lut(f1, f2, nticks);
 }
-int make_lut(double f1, double f2, double period, int dt, int step_mode)
+double make_lut(double f1, double f2, double period, double dt, int step_mode)
 {	
-	if ((nticks = period/dt) < MAXPOINTS){
-		dt = period/MAXPOINTS;
-	}else{
-		while((nticks = period/dt) > MAXPOINTS){
-			dt *= 2;
-		}
+	dt = DT_MIN;
+	printf("make_lut 01 period:%f dt:%f\n", period, dt);
+	
+	while((nticks = period/dt) > MAXPOINTS){
+		dt *= 2;
 	}
 	
 	if (step_mode == STEP_MODE_LIN){
@@ -83,6 +80,7 @@ int make_lut(double f1, double f2, double period, int dt, int step_mode)
 	}
 	tick = 0;
 	direction = 1;
+	printf("make_lut 99 period:%f dt:%f nticks:%d\n", period, dt, nticks);
 	return dt;
 }
 
@@ -100,8 +98,7 @@ double update(int mode)
 		if (tick >= MAXPOINTS){
 			direction = -1;
 			tick = MAXPOINTS-1;
-		}
-		if (tick < 0){
+		}else if (tick < 0){
 			direction = 1;
 			tick = 0;
 		}
@@ -117,13 +114,14 @@ ss bwg_sweep
 	state init
 	{
 		entry {
+			printf("bwg_sweep entry %s\n", "init");
 			pvGet(mode); 		mode0 = mode;
 			pvGet(step_mode); 	step_mode0 = step_mode;
 			pvGet(f1); 		f1_0 = f1;
 			pvGet(f2); 		f2_0 = f2;
 			pvGet(period);		period_0 = period;
 		}
-		when(mode) {
+		when(mode != 0) {
 			mode0 = mode;
 			dt = make_lut(f1, f2, period, dt, step_mode);
 			pvPut(dt);
@@ -132,12 +130,16 @@ ss bwg_sweep
 	
 	state run
 	{
+		entry {	
+			pvGet(fout);
+			//printf("bwg_sweep entry %s\n", "run");
+		}
 		when (mode != mode0 || f1 != f1_0 || f2 != f2_0 || step_mode != step_mode0 ||period != period_0) {
 			
 		} state init
 		
 		when(delay(dt)){
-			pvPut(fout, update(mode));
+			fout = update(mode); pvPut(fout);
 		} state run
 	}
 }

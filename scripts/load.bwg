@@ -22,4 +22,5 @@ done
 
 echo >>/tmp/st_post.cmd "seq bwg_sweep \"uut=${HOST},bank=A\""
 echo >>/tmp/st_post.cmd "seq bwg_sweep \"uut=${HOST},bank=B\""
+
 echo '#load.bwg 99'
