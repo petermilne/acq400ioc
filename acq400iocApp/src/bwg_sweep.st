@@ -4,6 +4,8 @@ program bwg_sweep
 option +r;
 option +s;
 
+
+
 #define STEP_MODE_LIN	0
 #define STEP_MODE_LOG	1
 #define MAXPOINTS	1024
@@ -40,7 +42,9 @@ double period_0;
 
 
 %{
-
+extern double log(double x);	
+extern double exp(double x);
+	
 double fx[MAXPOINTS];
 int nticks;
 int tick;
@@ -59,10 +63,21 @@ void make_lin_lut(double f1, double f2, int nticks)
 		}
 	}	
 }
+
 void make_log_lut(double f1, double f2, int nticks)
 {
-	/** @todo */
-	make_lin_lut(f1, f2, nticks);
+	int ii;
+	double lf1 = log(f1);
+	double lf2 = log(f2);
+	double step = (lf2-lf1)/ nticks;
+	double lfxx = lf1;
+	
+	for (ii = 0; ii < nticks; ++ii, lfxx += step){
+		fx[ii] = exp(lfxx);
+		if (nticks < 10){
+			printf("make_lin_lut[%d] %f\n", ii, fx[ii]);
+		}
+	}
 }
 double make_lut(double f1, double f2, double period, double dt, int step_mode)
 {	
