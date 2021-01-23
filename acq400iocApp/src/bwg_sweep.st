@@ -106,13 +106,13 @@ double update(int mode)
 	tick += direction;
 	
 	if (mode == 1){
-		if (tick >= MAXPOINTS){
+		if (tick >= nticks){
 			tick = 0;
 		}
 	}else if (mode == 2){
-		if (tick >= MAXPOINTS){
+		if (tick >= nticks){
 			direction = -1;
-			tick = MAXPOINTS-1;
+			tick = nticks-1;
 		}else if (tick < 0){
 			direction = 1;
 			tick = 0;
