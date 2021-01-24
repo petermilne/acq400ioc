@@ -13,6 +13,13 @@ create_asyn_channel BWG 127.0.0.1:4234
 mprams="UUT=${HOST},SITE=${SITE},SPORT=BWG"
 wprams="UUT=${HOST},size=4096,type=LONG"
 
+
+sprams="UUT=${HOST},CTRMAX=$CTR16,DT=0.1,DTC=0.1"
+for bank in A B; do
+	dblr '"db/_counter.db","'${sprams},SITE=BWG,SIG=${bank},lname=REPS'"'
+	dblr '"db/_counter.db","'${sprams},SITE=BWG,SIG=${bank},lname=NCO_CLK'"'
+done
+
 dblr '"db/bwg.db","'${mprams},BANK=A,bank=a'"'
 dblr '"db/bwg.db","'${mprams},BANK=B,bank=b'"'
 
@@ -22,11 +29,7 @@ for ch in 01 02 03 04 05 06 07 08; do
 	dblr '"db/wfBWG.db","'${wprams},cid=${ch}'"'
 done
 
-sprams="UUT=${HOST},CTRMAX=$CTR16,DT=0.1,DTC=0.1"
-for bank in A B; do
-	dblr '"db/_counter.db","'${sprams},SITE=BWG,SIG=${bank},lname=REPS'"'
-	dblr '"db/_counter.db","'${sprams},SITE=BWG,SIG=${bank},lname=NCO_CLK'"'
-done
+
 
 echo >>/tmp/st_post.cmd "seq bwg_sweep \"uut=${HOST},bank=A\""
 echo >>/tmp/st_post.cmd "seq bwg_sweep \"uut=${HOST},bank=B\""

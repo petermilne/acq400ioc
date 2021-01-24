@@ -100,4 +100,16 @@ record(longin, "${UUT}:BWG:${BANK}:NCO_CLK:rc") {
 	field(SCAN, "I/O Intr")
 }
 
+record(calc, "${UUT}:BWG:${BANK}:REPS:ACTIVE") {
+	field(INPL, "${CTRMAX}")
+	field(CALC, "A:=A<B?L+A:A; (A-B) ? 1: 0")
+	field(PREC, "1")
+}
+
+record(calc, "${UUT}:BWG:${BANK}:NCO_CLK:ACTIVE") {
+	field(INPL, "${CTRMAX}")
+	field(CALC, "A:=A<B?L+A:A; (A-B) ? 1: 0")
+	field(PREC, "1")
+}
+
 
