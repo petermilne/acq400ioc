@@ -3,14 +3,14 @@
 source /etc/profile.d/epics.sh
 HOST=${IOC_HOST}
 SITE=14
-
+CTR16=65536
 
 echo '# load.bwg 01'
 
 source ./scripts/record_support.sh
 
 create_asyn_channel BWG 127.0.0.1:4234
-mprams="UUT=${HOST},SITE=${SITE},SPORT=BWG"
+mprams="UUT=${HOST},SITE=${SITE},CTRMAX=$CTR16,SPORT=BWG"
 wprams="UUT=${HOST},size=4096,type=LONG"
 
 
