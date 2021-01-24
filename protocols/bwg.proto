@@ -19,10 +19,9 @@ setENABLE {
 
 getReps {
 	out "w\${1}_sta";
-	in "%d,%*d";
+	in "w\${1}_sta %d,%*d";
 }
 
 getNcoClk {
-	out "w\${1}_sta";
-	in "%*d,%d";
+	in "w\${1}_sta %*d,%d";
 }
