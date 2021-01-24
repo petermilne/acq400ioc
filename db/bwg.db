@@ -90,7 +90,7 @@ record(longin, "${UUT}:BWG:${BANK}:REPS:rc") {
 	field(DTYP, "stream")
 	field(INP, "@awg.proto getReps(${bank}) ${SPORT}")
 	field(DESC, "AWG number of cycles")
-	field(SCAN, "1 second")
+	field(SCAN, ".1 second")
 }
 
 record(longin, "${UUT}:BWG:${BANK}:NCO_CLK:rc") {
