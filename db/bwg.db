@@ -85,3 +85,19 @@ record(ao, "${UUT}:BWG:${BANK}:SWEEP:DT"){
 	field(DRVL, "0.001")
 	field(DRVH, "100")	
 }
+
+record(longin, "${UUT}:BWG:${BANK}:REPS:rc") {
+	field(DTYP, "stream")
+	field(INP, "@awg.proto getReps(${bank}) ${SPORT}")
+	field(DESC, "AWG number of cycles")
+	field(SCAN, "1 second")
+}
+
+record(longin, "${UUT}:BWG:${BANK}:NCO_CLK:rc") {
+	field(DTYP, "stream")
+	field(INP, "@awg.proto getNcoClk(${bank}) ${SPORT}")
+	field(DESC, "AWG number of cycles")
+	field(SCAN, "I/O Intr")
+}
+
+

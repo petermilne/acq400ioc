@@ -16,8 +16,16 @@ wprams="UUT=${HOST},size=4096,type=LONG"
 dblr '"db/bwg.db","'${mprams},BANK=A,bank=a'"'
 dblr '"db/bwg.db","'${mprams},BANK=B,bank=b'"'
 
+
+
 for ch in 01 02 03 04 05 06 07 08; do
 	dblr '"db/wfBWG.db","'${wprams},cid=${ch}'"'
+done
+
+sprams="UUT=${host},CTRMAX=$CTR16,DT=1,DTC=1"
+for bank in A B; do
+	dblr '"db/_counter.db","'${sprams},SITE=BWG,SIG=${bank},lname=REPS'"'
+	dblr '"db/_counter.db","'${sprams},SITE=BWG,SIG=${bank},lname=NCO_CLK'"'
 done
 
 echo >>/tmp/st_post.cmd "seq bwg_sweep \"uut=${HOST},bank=A\""

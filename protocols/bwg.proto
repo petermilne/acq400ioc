@@ -17,3 +17,12 @@ setENABLE {
 	in;
 }
 
+getReps {
+	out "w\${1}_sta";
+	in "%d,%*d";
+}
+
+getNcoClk {
+	out "w\${1}_sta";
+	in "%*d,%d";
+}
