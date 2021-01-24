@@ -112,4 +112,16 @@ record(calc, "${UUT}:BWG:${BANK}:NCO_CLK:ACTIVE") {
 	field(PREC, "1")
 }
 
+record(calc, "${UUT}:BWG:${BANK}:NCO_CLK:delta") {
+	field(INPC, "10")
+}
+
+record(calc, "${UUT}:BWG:${BANK}:REPS:delta") {
+	field(INPC, "10")
+}
+
+record(calc, "${UUT}:BWG:${BANK}:REPS:FREQ") {
+	field(CALC, "A==0?0: L<12? A/K: 0.1*B/(L*K)+0.9*VAL")
+}
+
 
