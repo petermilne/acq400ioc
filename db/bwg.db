@@ -88,14 +88,14 @@ record(ao, "${UUT}:BWG:${BANK}:SWEEP:DT"){
 
 record(longin, "${UUT}:BWG:${BANK}:REPS:rc") {
 	field(DTYP, "stream")
-	field(INP, "@awg.proto getReps(${bank}) ${SPORT}")
+	field(INP, "@bwg.proto getReps(${bank}) ${SPORT}")
 	field(DESC, "AWG number of cycles")
 	field(SCAN, ".1 second")
 }
 
 record(longin, "${UUT}:BWG:${BANK}:NCO_CLK:rc") {
 	field(DTYP, "stream")
-	field(INP, "@awg.proto getNcoClk(${bank}) ${SPORT}")
+	field(INP, "@bwg.proto getNcoClk(${bank}) ${SPORT}")
 	field(DESC, "AWG number of cycles")
 	field(SCAN, "I/O Intr")
 }
