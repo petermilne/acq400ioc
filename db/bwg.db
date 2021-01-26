@@ -90,14 +90,14 @@ record(longin, "${UUT}:BWG:${BANK}:REPS:rc") {
 	field(DTYP, "stream")
 	field(INP, "@bwg.proto getReps(${bank}) ${SPORT}")
 	field(DESC, "AWG number of cycles")
-	field(SCAN, ".1 second")
+	field(SCAN, "1 second")
 }
 
 record(longin, "${UUT}:BWG:${BANK}:NCO_CLK:rc") {
 	field(DTYP, "stream")
 	field(INP, "@bwg.proto getNcoClk(${bank}) ${SPORT}")
-	field(DESC, "AWG number of cycles")
-	field(SCAN, "I/O Intr")
+	field(DESC, "NCO Clock count")
+	field(SCAN, ".1 second")
 }
 
 record(calc, "${UUT}:BWG:${BANK}:REPS:ACTIVE") {
@@ -113,7 +113,7 @@ record(calc, "${UUT}:BWG:${BANK}:NCO_CLK:ACTIVE") {
 }
 
 record(calc, "${UUT}:BWG:${BANK}:NCO_CLK:delta") {
-	field(INPC, "10")
+	field(INPC, "1")
 }
 
 record(calc, "${UUT}:BWG:${BANK}:REPS:delta") {

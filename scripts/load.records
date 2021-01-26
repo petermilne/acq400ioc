@@ -406,7 +406,7 @@ load_400() {
 	
 	if [ "$is_adc" != "no" ]; then
 		if [ "x$MB_MODEL" = "xcpsc2" ]; then
-			make_AI $site 32
+			make_AI $site 16
 		else
 			make_AI $site
 		fi
