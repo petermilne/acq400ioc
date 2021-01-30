@@ -23,13 +23,16 @@ protected:
 	int P_NCHAN;
 	int P_NSAM;
 	int P_SCAN_MSEC;
-	int P_AI;
+	int P_AI_CH;
 
 	const int nsam;
 	const int nchan;
 	int scan_ms;
 
-acq400Ai(const char *portName, int nsam, int nchan, int scan_ms);
+	acq400Ai(const char *portName, int nsam, int nchan, int scan_ms);
+
+	void handleBuffer(int ib);
+	void outputSampleAt(epicsInt32* raw, int offset);
 public:
 	static int factory(const char *portName, int nsam, int nchan, int scan_ms);
 

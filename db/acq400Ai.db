@@ -1,0 +1,20 @@
+
+record(ai, "${UUT}:AI:CH:${cid}"){
+	field(DESC, "AI running mean")
+	field(DTYP, "asynInt32")
+	field(INP,  "@asyn($(SPORT),$(cid),$(TIMEOUT))AI")	
+#	field(DTYP, "aiAcqHost")
+#	field(INP,  "@${fname} ${idx}")
+	field(SCAN, "I/O Intr")
+	field(LINR, "SLOPE")
+	field(EGU,  "V")
+	field(PREC,  "3")
+	field(EOFF, "0")
+	field(EGUL, "${egul}")
+	field(EGUF, "${eguf}")
+	field(LINR, "LINEAR")
+	field(EGU,  "Volts")
+	field(ESLO, "${eslo}")
+	field(HOPR, "${hopr}")
+	field(LOPR, "${lopr}")	
+}

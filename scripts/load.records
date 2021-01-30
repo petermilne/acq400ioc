@@ -98,9 +98,9 @@ make_AI_records() {
 	for ix in $(seq $i1 $i2)
 	do
 		cid=$(printf "%02d" $ch)
-		PRAMS="UUT=$HOST:${site},cid=$cid,idx=$ix,fname=subrate"
+		PRAMS="UUT=$HOST:${site},cid=$cid,idx=$ix,fname=subrate,SPORT=AI0"
 		PRAMS=$PRAMS",egul=-$vmax,eguf=$vmax,lopr=-$vmax,hopr=$vmax,eslo=$eslo"		
-		dblr \"db/aiAcqHost.db\",\"$PRAMS\"		
+		dblr \"db/acq400Ai.db\",\"$PRAMS\"		
 		let ch=$ch+1
 	done
 				
@@ -157,6 +157,9 @@ make_AI_subrate() {
 		return
 	elif [ "x$sites" != "x" ]; then
 		let i1=0
+		echo acq400AiConfigure\("AI0", ${SIZE}, ${NCHAN}, 100\)
+		PRAMS="UUT=${HOST},PORT=AI0,ADDR=0,TIMEOUT=0,NCHAN=${NCHAN},NCHAN1=$((NCHAN+1))"
+		echo dbLoadRecords\(\"db/acq400AiCommon.db\",\"${PRAMS}\"\)
 		for site in $sites
 		do
 			nc=$(get.site $site NCHAN)

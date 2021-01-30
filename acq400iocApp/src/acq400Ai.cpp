@@ -33,6 +33,8 @@ using namespace std;
 static const char *driverName="acq400AiAsynPortDriver";
 
 
+#define SKIP	1		// skip ES
+
 void task_runner(void *drvPvt)
 {
 	acq400Ai *pPvt = (acq400Ai *)drvPvt;
@@ -53,10 +55,43 @@ acq400Ai::acq400Ai(const char *portName, int _nsam, int _nchan, int _scan_ms):
 		0) /* Default stack size*/,
 		nsam(_nsam), nchan(_nchan), scan_ms(_scan_ms)
 {
+	asynStatus status = asynSuccess;
+	createParam(PS_NCHAN,           asynParamInt32,         	&P_NCHAN);
+	createParam(PS_NSAM,            asynParamInt32,         	&P_NSAM);
+	createParam(PS_SCAN_MSEC,      	asynParamInt32,         	&P_SCAN_MSEC);
+	createParam(PS_AI_CH,      	asynParamInt32,         	&P_AI_CH);
 
+	setIntegerParam(P_NCHAN, 	nchan);
+	setIntegerParam(P_NSAM, 	nsam);
+	setIntegerParam(P_SCAN_MSEC, 	scan_ms);
+
+	status = (asynStatus)(epicsThreadCreate("acq400AiTask",
+			epicsThreadPriorityHigh,
+	                epicsThreadGetStackSize(epicsThreadStackMedium),
+			(EPICSTHREADFUNC)::task_runner,
+	                this) == NULL);
+	if (status) {
+		printf("%s:%s: epicsThreadCreate failure\n", driverName, __FUNCTION__);
+	        return;
+	}
 }
 
+void acq400Ai::outputSampleAt(epicsInt32* raw, int offset)
+{
+	int ii;
+	epicsInt32* cursor = raw+offset;
 
+	for (ii = 0; ii < nchan; ++ii){
+		setIntegerParam(ii, P_AI_CH, cursor[ii]);
+		callParamCallbacks(ii);
+	}
+}
+void acq400Ai::handleBuffer(int ib)
+{
+	epicsInt32* raw = (epicsInt32*)Buffer::the_buffers[ib]->getBase() + SKIP*nchan;
+
+	outputSampleAt(raw, 0);
+}
 void acq400Ai::task()
 {
 	int fc = open("/dev/acq400.0.bq", O_RDONLY);
@@ -67,7 +102,7 @@ void acq400Ai::task()
 	int ib;
 
 	while((ib = getBufferId(fc)) >= 0){
-		;
+		handleBuffer(ib);
 	}
 	printf("%s:%s: exit on getBufferId failure\n", driverName, __FUNCTION__);
 }
