@@ -1,0 +1,6 @@
+cp -a ../lib/linux-arm/libacq.so* lib/linux-arm
+cp -a ../lib/linux-x86_64/libacq.so* lib/linux-x86_64/
+cp ../ACQ400DRV/acq-util.h include
+cp ../ACQ400DRV/Buffer.h include
+cp ../ACQ400DRV/ES.h include
+

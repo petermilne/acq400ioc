@@ -23,6 +23,7 @@ acq400ioc_DBD += xxAcqHost.dbd
 acq400ioc_DBD += sysfs.dbd
 acq400ioc_DBD += lxb.dbd
 acq400ioc_DBD += acqAi.dbd
+acq400ioc_DBD += acq400Ai.dbd
 
 # Include dbd files from all support applications:
 #acq400ioc_DBD += xxx.dbd
@@ -47,11 +48,14 @@ acq400ioc_DBD += bwg_sweep.dbd
 acq400ioc_LIBS += acq2ioc
 acq400ioc_LIBS += seq pv
 #acq400ioc_LIBS +=fftw3
+acq400ioc_LIBS += acq
 
 #PROD_LIBS += stream
 #PROD_LIBS += asyn
 # acq400ioc_registerRecordDeviceDriver.cpp derives from acq400ioc.dbd
 acq400ioc_SRCS += acq400ioc_registerRecordDeviceDriver.cpp
+
+acq400ioc_SRCS += acq400Ai.cpp
 
 acq400ioc_SRCS += sncExample.st
 acq400ioc_SRCS += autoRepeat.st
