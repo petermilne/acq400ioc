@@ -82,7 +82,7 @@ void acq400Ai::outputSampleAt(epicsInt32* raw, int offset)
 	epicsInt32* cursor = raw+offset;
 
 	for (ii = 0; ii < nchan; ++ii){
-		setIntegerParam(ii, P_AI_CH, cursor[ii]);
+		setIntegerParam(ii, P_AI_CH, cursor[ii]>>8);
 		callParamCallbacks(ii);
 	}
 }
