@@ -2,9 +2,7 @@
 record(ai, "${UUT}:AI:CH:${cid}"){
 	field(DESC, "AI running mean")
 	field(DTYP, "asynInt32")
-	field(INP,  "@asyn($(SPORT),$(cid),$(TIMEOUT))AI")	
-#	field(DTYP, "aiAcqHost")
-#	field(INP,  "@${fname} ${idx}")
+	field(INP,  "@asyn($(SPORT),$(idx),$(TIMEOUT))AI")	
 	field(SCAN, "I/O Intr")
 	field(LINR, "SLOPE")
 	field(EGU,  "V")
@@ -18,3 +16,4 @@ record(ai, "${UUT}:AI:CH:${cid}"){
 	field(HOPR, "${hopr}")
 	field(LOPR, "${lopr}")	
 }
+

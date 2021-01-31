@@ -1,9 +1,27 @@
-record(longout, "${UUT}:AI:SCAN_MS")
+record(ao, "${UUT}:AI:SCAN_FREQ")
 {
-   field(PINI, "0")
-   field(DTYP, "asynInt32")
-   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SCAN_MS")
-   field(HOPR, "1000000")
-   field(LOPR,  "0")
-   field(VAL,   "100")
+	field(PINI, "2")
+	field(DTYP, "asynFloat64")
+	field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SCAN_FREQ")
+	field(HOPR, "1000000")
+	field(LOPR,  "1")
+	field(VAL,   "30")
+	field(EGU,  "Hz")
+	field(DRVH, "30")
+	field(DRVL, "1")		
+}
+
+record(calc, "${UUT}:0:SIG:SYN_S1:FREQ") {
+	field(FLNK, "{UUT}:0:FS")
+}
+
+record(ao, "${UUT}:0:FS") {
+	field(DESC, "AI Sample Frequency Hz")
+	field(DTYP, "asynFloat64")
+	field(OUT,  "@asyn($(SPORT),$(ADDR),$(TIMEOUT))FS")	
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:0:SIG:SYN_S1:FREQ")
+	field(EGU,  "Hz")
+	field(DRVH, "10.1456e3")
+	field(DRVL, "30.436e3")	
 }

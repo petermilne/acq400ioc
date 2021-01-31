@@ -29,6 +29,7 @@ record(longout, "${UUT}:0:RFD:s") {
 		field(OUT,  "${UUT}:0:RFD PP")
 }
 
+
 record(mbbo, "${UUT}:0:AWG_LOAD_CHANNELS") {
 		field(DTYP, "stream")
 		field(NOBT, "2")

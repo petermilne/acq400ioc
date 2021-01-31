@@ -34,6 +34,7 @@ static const char *driverName="acq400AiAsynPortDriver";
 
 
 #define SKIP	1		// skip ES
+#define DEF_SAMPLE_USEC		1000000/20.437e3		// @@todo
 
 void task_runner(void *drvPvt)
 {
@@ -47,23 +48,29 @@ acq400Ai::acq400Ai(const char *portName, int _nsam, int _nchan, int _scan_ms):
 	asynPortDriver(
 		portName,
 		_nchan, 														/* maxAddr */
-		asynInt32Mask | asynDrvUserMask, 		/* Interface mask */
+		asynInt32Mask | asynFloat64Mask | asynDrvUserMask, 		/* Interface mask */
 		asynInt32Mask,   				/* Interrupt mask */
 		0, /* asynFlags.  This driver does not block and it is not multi-device, so flag is 0 */
 		1, /* Autoconnect */
 		0, /* Default priority */
 		0) /* Default stack size*/,
-		nsam(_nsam), nchan(_nchan), scan_ms(_scan_ms)
+		nsam(_nsam), nchan(_nchan),
+		delta_ns(1000000),
+		step(_nsam),
+		buffer_start_sample(SKIP)
 {
+	memset(&t0, 0, sizeof(t0));
+	memset(&t1, 0, sizeof(t1));
+
 	asynStatus status = asynSuccess;
 	createParam(PS_NCHAN,           asynParamInt32,         	&P_NCHAN);
 	createParam(PS_NSAM,            asynParamInt32,         	&P_NSAM);
-	createParam(PS_SCAN_MSEC,      	asynParamInt32,         	&P_SCAN_MSEC);
+	createParam(PS_SCAN_FREQ,      	asynParamFloat64,         	&P_SCAN_FREQ);
+	createParam(PS_FS,		asynParamFloat64,		&P_FS);
 	createParam(PS_AI_CH,      	asynParamInt32,         	&P_AI_CH);
 
 	setIntegerParam(P_NCHAN, 	nchan);
 	setIntegerParam(P_NSAM, 	nsam);
-	setIntegerParam(P_SCAN_MSEC, 	scan_ms);
 
 	status = (asynStatus)(epicsThreadCreate("acq400AiTask",
 			epicsThreadPriorityHigh,
@@ -76,10 +83,31 @@ acq400Ai::acq400Ai(const char *portName, int _nsam, int _nchan, int _scan_ms):
 	}
 }
 
+/* set EPICS TS assuming that the FIRST tick is at epich seconds %0 nsec eg GPS system, others, well, don't really care */
+
+
+void epicsTimeStampAdd(epicsTimeStamp& ts, unsigned _delta_ns)
+{
+	if (ts.nsec + _delta_ns < 1000000000){
+		ts.nsec += _delta_ns;
+	}else{
+		ts.nsec += _delta_ns;
+		ts.nsec -= 1000000000;
+		ts.secPastEpoch += 1;
+	}
+}
+
+asynStatus acq400Ai::updateTimeStamp(epicsTimeStamp& ts)
+{
+	asynPortDriver::updateTimeStamp(&ts);
+	epicsTimeStampAdd(ts, delta_ns);
+	return asynSuccess;
+}
+
 void acq400Ai::outputSampleAt(epicsInt32* raw, int offset)
 {
 	int ii;
-	epicsInt32* cursor = raw+offset;
+	epicsInt32* cursor = raw + offset;
 
 	for (ii = 0; ii < nchan; ++ii){
 		setIntegerParam(ii, P_AI_CH, cursor[ii]>>8);
@@ -88,10 +116,49 @@ void acq400Ai::outputSampleAt(epicsInt32* raw, int offset)
 }
 void acq400Ai::handleBuffer(int ib)
 {
-	epicsInt32* raw = (epicsInt32*)Buffer::the_buffers[ib]->getBase() + SKIP*nchan;
+	epicsInt32* raw = (epicsInt32*)Buffer::the_buffers[ib]->getBase();
+	epicsTimeStamp ts = t0;
 
-	outputSampleAt(raw, 0);
+	for ( ; buffer_start_sample >= nsam; buffer_start_sample -= nsam){
+		;
+	}
+
+	for ( ; buffer_start_sample < nsam;  buffer_start_sample += step){
+		if (buffer_start_sample == 0) buffer_start_sample = 1;
+		printf("%s:%s: ib:%d bsi:%d\n", driverName, __FUNCTION__, ib, buffer_start_sample);
+		updateTimeStamp(ts);
+		outputSampleAt(raw, buffer_start_sample*nchan);
+	}
 }
+
+asynStatus acq400Ai::writeFloat64(asynUser *pasynUser, epicsFloat64 value)
+{
+	int function = pasynUser->reason;
+	asynStatus status = asynSuccess;
+	const char *paramName;
+
+	/* Set the parameter in the parameter library. */
+	status = (asynStatus) setDoubleParam(function, value);
+
+	/* Fetch the parameter string name for possible use in debugging */
+	getParamName(function, &paramName);
+
+	if (function == P_FS || function == P_SCAN_FREQ) {
+		double fs = 0;
+		double fscan = 0;
+		getDoubleParam(P_FS, &fs);
+		getDoubleParam(P_FS, &fscan);
+		if (fs == 0 || fscan == 0){
+			printf("%s ERROR: fs:%f Fscan:%f\n", __FUNCTION__, fs, fscan);
+			status = asynError;
+		}else{
+			step = fs/fscan;
+			printf("%s DEBUG: fs:%f Fscan:%f step:%u\n", __FUNCTION__, fs, fscan, step);
+		}
+	}
+	return status;
+}
+
 void acq400Ai::task()
 {
 	int fc = open("/dev/acq400.0.bq", O_RDONLY);
@@ -102,6 +169,10 @@ void acq400Ai::task()
 	int ib;
 
 	while((ib = getBufferId(fc)) >= 0){
+		t0 = t1; epicsTimeGetCurrent(&t1);
+		if (t0.secPastEpoch == 0){
+			continue;
+		}
 		handleBuffer(ib);
 	}
 	printf("%s:%s: exit on getBufferId failure\n", driverName, __FUNCTION__);
@@ -111,7 +182,7 @@ int acq400Ai::factory(const char *portName, int nsam, int nchan, int scan_ms)
 {
     	new acq400Ai(portName, nsam, nchan, scan_ms);
 
-    	return(asynSuccess);
+    	return asynSuccess;
 }
 
 
