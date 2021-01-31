@@ -57,7 +57,7 @@ acq400Ai::acq400Ai(const char *portName, int _nsam, int _nchan, int _scan_ms):
 		0, /* Default priority */
 		0) /* Default stack size*/,
 		nsam(_nsam), nchan(_nchan),
-		delta_ns(1000000),
+		delta_ns(NANO),
 		step(_nsam),
 		buffer_start_sample(SKIP)
 {
@@ -103,7 +103,8 @@ void epicsTimeStampAdd(epicsTimeStamp& ts, unsigned _delta_ns)
 
 asynStatus acq400Ai::updateTimeStamp(epicsTimeStamp& ts)
 {
-	asynPortDriver::updateTimeStamp(&ts);
+	//asynPortDriver::updateTimeStamp(&ts);
+	setTimeStamp(&ts);
 	epicsTimeStampAdd(ts, delta_ns);
 	return asynSuccess;
 }
@@ -131,6 +132,11 @@ void acq400Ai::handleBuffer(int ib)
 		if (buffer_start_sample == 0) buffer_start_sample = 1;
 		//printf("%s:%s: ib:%d bsi:%d\n", driverName, __FUNCTION__, ib, buffer_start_sample);
 		updateTimeStamp(ts);
+		if (ts.nsec == t0.nsec){
+			printf("error, ts did not change\n");
+		}else{
+			printf("delta %u\n", ts.nsec-t0.nsec);
+		}
 		outputSampleAt(raw, buffer_start_sample*nchan);
 	}
 }
