@@ -15,6 +15,8 @@
 #define PS_SCAN_FREQ		"SCAN_FREQ"			/* asynFloat64,       	r/w */
 #define PS_FS			"FS"				/* asynFloat64		r/w */
 #define PS_AI_CH		"AI"				/* asynInt32, per port  r/w */
+#define PS_STEP			"STEP"				/* asynInt32, data set step r/o */
+#define PS_DELTA_NS		"DELTA_NS"			/* asynInt32, time tick r/o */
 
 
 
@@ -27,6 +29,8 @@ protected:
 	int P_SCAN_FREQ;
 	int P_FS;
 	int P_AI_CH;
+	int P_STEP;
+	int P_DELTA_NS;
 
 	const int nsam;
 	const int nchan;

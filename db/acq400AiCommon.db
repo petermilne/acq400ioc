@@ -25,3 +25,17 @@ record(ao, "${UUT}:0:FS") {
 	field(DRVH, "10.1456e3")
 	field(DRVL, "30.436e3")	
 }
+
+record(longin, "${UUT}:AI:STEP") {
+	field(DTYP, "asynInt32")
+	field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))STEP")
+	field(SCAN, "I/O Intr")
+}
+
+record(longin, "${UUT}:AI:DELTA_NS") {
+	field(DTYP, "asynInt32")
+	field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))DELTA_NS")
+	field(SCAN, "I/O Intr")
+}
+
+

@@ -36,6 +36,8 @@ static const char *driverName="acq400AiAsynPortDriver";
 #define SKIP	1		// skip ES
 #define DEF_SAMPLE_USEC		1000000/20.437e3		// @@todo
 
+#define NANO		1000000000
+
 void task_runner(void *drvPvt)
 {
 	acq400Ai *pPvt = (acq400Ai *)drvPvt;
@@ -68,6 +70,8 @@ acq400Ai::acq400Ai(const char *portName, int _nsam, int _nchan, int _scan_ms):
 	createParam(PS_SCAN_FREQ,      	asynParamFloat64,         	&P_SCAN_FREQ);
 	createParam(PS_FS,		asynParamFloat64,		&P_FS);
 	createParam(PS_AI_CH,      	asynParamInt32,         	&P_AI_CH);
+	createParam(PS_STEP,      	asynParamInt32,         	&P_STEP);
+	createParam(PS_DELTA_NS,      	asynParamInt32,         	&P_DELTA_NS);
 
 	setIntegerParam(P_NCHAN, 	nchan);
 	setIntegerParam(P_NSAM, 	nsam);
@@ -88,11 +92,11 @@ acq400Ai::acq400Ai(const char *portName, int _nsam, int _nchan, int _scan_ms):
 
 void epicsTimeStampAdd(epicsTimeStamp& ts, unsigned _delta_ns)
 {
-	if (ts.nsec + _delta_ns < 1000000000){
+	if (ts.nsec + _delta_ns < NANO){
 		ts.nsec += _delta_ns;
 	}else{
 		ts.nsec += _delta_ns;
-		ts.nsec -= 1000000000;
+		ts.nsec -= NANO;
 		ts.secPastEpoch += 1;
 	}
 }
@@ -125,7 +129,7 @@ void acq400Ai::handleBuffer(int ib)
 
 	for ( ; buffer_start_sample < nsam;  buffer_start_sample += step){
 		if (buffer_start_sample == 0) buffer_start_sample = 1;
-		printf("%s:%s: ib:%d bsi:%d\n", driverName, __FUNCTION__, ib, buffer_start_sample);
+		//printf("%s:%s: ib:%d bsi:%d\n", driverName, __FUNCTION__, ib, buffer_start_sample);
 		updateTimeStamp(ts);
 		outputSampleAt(raw, buffer_start_sample*nchan);
 	}
@@ -158,6 +162,9 @@ asynStatus acq400Ai::writeFloat64(asynUser *pasynUser, epicsFloat64 value)
 			if (step < 200){
 				step = 200;
 			}
+			delta_ns = 1e9/fs*step;
+			setIntegerParam(P_STEP, step);
+			setIntegerParam(P_DELTA_NS, delta_ns);
 		}
 	}
 	return status;
