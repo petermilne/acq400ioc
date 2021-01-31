@@ -49,7 +49,7 @@ acq400Ai::acq400Ai(const char *portName, int _nsam, int _nchan, int _scan_ms):
 		portName,
 		_nchan, 														/* maxAddr */
 		asynInt32Mask | asynFloat64Mask | asynDrvUserMask, 		/* Interface mask */
-		asynInt32Mask,   				/* Interrupt mask */
+		asynInt32Mask,   						/* Interrupt mask */
 		0, /* asynFlags.  This driver does not block and it is not multi-device, so flag is 0 */
 		1, /* Autoconnect */
 		0, /* Default priority */
@@ -147,13 +147,17 @@ asynStatus acq400Ai::writeFloat64(asynUser *pasynUser, epicsFloat64 value)
 		double fs = 0;
 		double fscan = 0;
 		getDoubleParam(P_FS, &fs);
-		getDoubleParam(P_FS, &fscan);
+		getDoubleParam(P_SCAN_FREQ, &fscan);
 		if (fs == 0 || fscan == 0){
 			printf("%s ERROR: fs:%f Fscan:%f\n", __FUNCTION__, fs, fscan);
 			status = asynError;
 		}else{
 			step = fs/fscan;
 			printf("%s DEBUG: fs:%f Fscan:%f step:%u\n", __FUNCTION__, fs, fscan, step);
+
+			if (step < 200){
+				step = 200;
+			}
 		}
 	}
 	return status;

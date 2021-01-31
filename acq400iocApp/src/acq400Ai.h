@@ -12,7 +12,7 @@
 
 #define PS_NCHAN 		"NCHAN"				/* asynInt32, 		r/o */
 #define PS_NSAM			"NSAM"				/* asynInt32,       	r/o */
-#define PS_SCAN_FREQ		"SCAN_FREQ"			/* asynFloat64,       	r/o */
+#define PS_SCAN_FREQ		"SCAN_FREQ"			/* asynFloat64,       	r/w */
 #define PS_FS			"FS"				/* asynFloat64		r/w */
 #define PS_AI_CH		"AI"				/* asynInt32, per port  r/w */
 

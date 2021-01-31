@@ -12,15 +12,15 @@ record(ao, "${UUT}:AI:SCAN_FREQ")
 }
 
 record(calc, "${UUT}:0:SIG:SYN_S1:FREQ") {
-	field(FLNK, "{UUT}:0:FS")
+	field(FLNK, "${UUT}:0:FS PP")
 }
 
 record(ao, "${UUT}:0:FS") {
 	field(DESC, "AI Sample Frequency Hz")
 	field(DTYP, "asynFloat64")
-	field(OUT,  "@asyn($(SPORT),$(ADDR),$(TIMEOUT))FS")	
+	field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))FS")	
 	field(OMSL, "closed_loop")
-	field(DOL,  "${UUT}:0:SIG:SYN_S1:FREQ")
+	field(DOL,  "${UUT}:0:SIG:SYN_S1:FREQ PP")
 	field(EGU,  "Hz")
 	field(DRVH, "10.1456e3")
 	field(DRVL, "30.436e3")	
