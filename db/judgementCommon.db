@@ -68,6 +68,7 @@ record(waveform, "${UUT}:JDG:CHX:FAIL:ALL")
     field(FTVL, "UCHAR")
     field(NELM, "$(NCHAN1)")
     field(SCAN, "I/O Intr")
+    field(TSE,  "-2")
 }
 
 

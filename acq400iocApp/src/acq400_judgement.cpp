@@ -176,9 +176,13 @@ asynStatus acq400Judgement::updateTimeStamp()
 			now.nsec = 0;
 			clock_count[0] = clock_count[1];
 		}else{
-			now.nsec = (clock_count[1] - clock_count[0]) * sample_delta_ns;
+			unsigned delta = (clock_count[1] - clock_count[0]) * sample_delta_ns;
+			//printf("now.nsec %u -> %u\n", now.nsec, now.nsec+delta);
+			now.nsec += delta;
 		}
+
 		setTimeStamp(&now);
+		asynPortDriver::updateTimeStamp();
 		return rc;
 	}
 }
