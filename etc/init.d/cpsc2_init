@@ -35,6 +35,7 @@ for site in 1 2; do
 	dblr \"db/cpsc2sites.db\", \"UUT=${HOST},SITE=$site\"
 done
 
+if [ "x$SHOW_SFP_PACKETS" = "xy" ]; then
 # switch packet id to ch08, natural align CH01-CH04. 
 # FAILS for CH8 mode, there we'd miss CH08. Ignore that..
 let idx=1
@@ -51,6 +52,16 @@ for cid in 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16; do
 	dblr \"db/cpsc2spy.db\", \"UUT=${HOST},cid=${cid}\"
 	idx=$(($idx+1))
 done
+
+else
+let idx=1
+site=2
+for cid in 01 02 03 04 05 06 07 08; do
+	wp="idx=${idx},fname=AI.${site},size=${SIZE},type=LONG,vmax=10,maxcode=2147483648"
+	dblr \"db/wfAcqHost.db\", \"UUT=${HOST},SITE=${site},cid=${cid},${wp}\"
+	idx=$(($idx+1))
+done
+fi
 
 
 let idx=1

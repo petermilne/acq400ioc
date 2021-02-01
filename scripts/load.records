@@ -98,7 +98,7 @@ make_AI_records() {
 	for ix in $(seq $i1 $i2)
 	do
 		cid=$(printf "%02d" $ch)
-		PRAMS="UUT=$HOST:${site},cid=$cid,idx=$ix,fname=subrate,SPORT=AI0"
+		PRAMS="UUT=$HOST:${site},cid=$cid,idx=$ix,SPORT=AI0"
 		PRAMS=$PRAMS",egul=-$vmax,eguf=$vmax,lopr=-$vmax,hopr=$vmax,eslo=$eslo,TIMEOUT=1000"		
 		dblr \"db/acq400Ai.db\",\"$PRAMS\"		
 		let ch=$ch+1

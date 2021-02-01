@@ -34,7 +34,7 @@ static const char *driverName="acq400AiAsynPortDriver";
 
 
 #define SKIP	1		// skip ES
-#define DEF_SAMPLE_USEC		1000000/20.437e3		// @@todo
+
 
 #define NANO		1000000000
 

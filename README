@@ -66,4 +66,5 @@ CLOCKMONITOR=0
 # OnSetTransient. Ensures Trigger is SET. Not good for new Sample On Demand mode, to disable:
 ONSETTRANSIENT=0
 
-
+# CPSC2 : spy on SFP packets
+SHOW_SFP_PACKETS=y
