@@ -135,7 +135,7 @@ void acq400Ai::handleBuffer(int ib)
 		if (ts.nsec == t0.nsec){
 			printf("error, ts did not change\n");
 		}else{
-			printf("delta %u\n", ts.nsec-t0.nsec);
+			//printf("delta %u\n", ts.nsec-t0.nsec);
 		}
 		outputSampleAt(raw, buffer_start_sample*nchan);
 	}
@@ -163,7 +163,7 @@ asynStatus acq400Ai::writeFloat64(asynUser *pasynUser, epicsFloat64 value)
 			status = asynError;
 		}else{
 			step = fs/fscan;
-			printf("%s DEBUG: fs:%f Fscan:%f step:%u\n", __FUNCTION__, fs, fscan, step);
+			//printf("%s DEBUG: fs:%f Fscan:%f step:%u\n", __FUNCTION__, fs, fscan, step);
 
 			if (step < 200){
 				step = 200;
