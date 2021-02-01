@@ -44,7 +44,7 @@ public:
 
 	static int factory(const char *portName, int maxPoints, int nchan);
 	virtual void task();
-	virtual asynStatus updateTimeStamp();
+	virtual asynStatus updateTimeStamp(int offset);
 
 protected:
 	int handle_es(unsigned* raw);
@@ -82,6 +82,7 @@ protected:
     epicsInt8* RESULT_FAIL;
     epicsInt32* FAIL_MASK32;
     epicsInt32 sample_count;
+    epicsTimeStamp t0, t1;
     unsigned clock_count[2];			     /* previous, current */
     epicsInt32 burst_count;
     epicsFloat64 sample_time;

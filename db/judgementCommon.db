@@ -1,83 +1,91 @@
 record(longin, "${UUT}:JDG:BN")
 {
-   field(PINI, "0")
-   field(DTYP, "asynInt32")
-   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))BUFFER_NUM")
-   field(SCAN, "I/O Intr")
+	field(PINI, "0")
+	field(DTYP, "asynInt32")
+	field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))BUFFER_NUM")
+	field(SCAN, "I/O Intr")
+	field(TSE,  "-2")
 }
 
 record(longout, "${UUT}:JDG:MASK_FROM_DATA")
 {
-   field(PINI, "0")
-   field(DTYP, "asynInt32")
-   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))MAKE_MASK_FROM_DATA")
-   field(HOPR, "1000")
-   field(LOPR,  "0")
+	field(PINI, "0")
+	field(DTYP, "asynInt32")
+	field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))MAKE_MASK_FROM_DATA")
+	field(HOPR, "1000")
+	field(LOPR,  "0")
 }
 
 record(longout, "${UUT}:JDG:SAMPLE_DELTA_NS")
 {
-   field(PINI, "0")
-   field(DTYP, "asynInt32")
-   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SAMPLE_DELTA_NS")
-   field(HOPR, "1000000")
-   field(LOPR,  "0")
+	field(PINI, "0")
+	field(DTYP, "asynInt32")
+	field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SAMPLE_DELTA_NS")
+	field(HOPR, "1000000")
+	field(LOPR,  "0")
 }
 
 record(longin, "${UUT}:JDG:CHX:FAIL:1")
 {
-    field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))FAIL_MASK32")
-    field(SCAN, "I/O Intr")	
+	field(DTYP, "asynInt32")
+	field(INP,  "@asyn($(PORT),0,$(TIMEOUT))FAIL_MASK32")
+	field(SCAN, "I/O Intr")
+	field(TSE,  "-2")	
 }
 
 record(longin, "${UUT}:JDG:CHX:FAIL:2")
 {
-    field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),1,$(TIMEOUT))FAIL_MASK32")
-    field(SCAN, "I/O Intr")
+	field(DTYP, "asynInt32")
+	field(INP,  "@asyn($(PORT),1,$(TIMEOUT))FAIL_MASK32")
+	field(SCAN, "I/O Intr")
+	field(TSE,  "-2")	
 }
 
 
 record(longin, "${UUT}:JDG:CHX:SAMPLE_COUNT")
 {
-    field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))SAMPLE_COUNT")
-    field(SCAN, "I/O Intr")	
+	field(DTYP, "asynInt32")
+	field(INP,  "@asyn($(PORT),0,$(TIMEOUT))SAMPLE_COUNT")
+	field(SCAN, "I/O Intr")
+	field(TSE,  "-2")
 }
 
 record(longin, "${UUT}:JDG:CHX:CLOCK_COUNT")
 {
-    field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))CLOCK_COUNT")
-    field(SCAN, "I/O Intr")
+	field(DTYP, "asynInt32")
+	field(INP,  "@asyn($(PORT),0,$(TIMEOUT))CLOCK_COUNT")
+	field(SCAN, "I/O Intr")
+	field(TSE,  "-2")
 }
 
 record(longin, "${UUT}:JDG:CHX:BURST_COUNT")
 {
-    field(DTYP, "asynInt32")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))BURST_COUNT")
-    field(SCAN, "I/O Intr")
+	field(DTYP, "asynInt32")
+	field(INP,  "@asyn($(PORT),0,$(TIMEOUT))BURST_COUNT")
+	field(SCAN, "I/O Intr")
+	field(TSE,  "-2")	
 }
 
 
 record(waveform, "${UUT}:JDG:CHX:FAIL:ALL")
 {
-    field(DTYP, "asynInt8ArrayIn")
-    field(INP,  "@asyn($(PORT),0,$(TIMEOUT))RESULT_FAIL")
-    field(FTVL, "UCHAR")
-    field(NELM, "$(NCHAN1)")
-    field(SCAN, "I/O Intr")
-    field(TSE,  "-2")
+	field(DTYP, "asynInt8ArrayIn")
+	field(INP,  "@asyn($(PORT),0,$(TIMEOUT))RESULT_FAIL")
+	field(FTVL, "UCHAR")
+	field(NELM, "$(NCHAN1)")
+	field(SCAN, "I/O Intr")
+	field(TSE,  "-2")
 }
 
 
 record(bi, "${UUT}:JDG:OK")
-{
-   field(PINI, "0")
-   field(DTYP, "asynInt32")
-   field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))OK")
-   field(SCAN, "I/O Intr")
-   field(ZNAM, "Fail")
-   field(ONAM, "Pass")	
+{	
+	field(PINI, "0")
+	field(DTYP, "asynInt32")
+	field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))OK")
+	field(SCAN, "I/O Intr")
+	field(ZNAM, "Fail")
+	field(ONAM, "Pass")
+	field(TSE,  "-2")
 }
+
