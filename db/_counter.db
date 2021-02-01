@@ -81,7 +81,7 @@ record(calc, "${UUT}:${SITE}:${SIG}:${lname}:filter") {
 # reject filter if change > 25%
 record(calc, "${UUT}:${SITE}:${SIG}:${lname}:smoocount") {
 	field(INPA, "${UUT}:${SITE}:${SIG}:${lname}:delta")
-	field(INPB, "${UUT}:${SITE}:${SIG}:${lname}:smoo.LA")	
+	field(INPB, "${UUT}:${SITE}:${SIG}:${lname}:smoocount.LA")	
 	field(CALC, "MIN(ABS(A-B)/MIN(A,B)>0.25?1: VAL+1)")
 #                    1234567890123456789012345678901234567890	
 	field(FLNK, "${UUT}:${SITE}:${SIG}:${lname}:filcount")

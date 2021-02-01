@@ -159,7 +159,7 @@ void acq400Judgement::fill_masks(asynUser *pasynUser, epicsInt16* raw,  int thre
 static AbstractES& ESX = *AbstractES::evX_instance();
 
 
-/* set EPICS TS assuming that the FIRST tick is at epich seconds %0 nsec eg GPS system, others, well, don't really care */
+/* set EPICS TS assuming that the FIRST tick is at epoch seconds %0 nsec eg GPS system, others, well, don't really care */
 asynStatus acq400Judgement::updateTimeStamp()
 {
 	epicsTimeStamp previous, now;
