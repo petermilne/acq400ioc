@@ -167,7 +167,7 @@ make_AI_subrate() {
 			if [ "x$NSAMPLES" != "x" ]; then
 				make_AI_TR_records $site $i1 $nc-1 $NSAMPLES
 			fi
-			let i1=$i1+$nc
+			let i1=$i1+$(get.site $site active_chan)
 	 	done
 	fi
 }

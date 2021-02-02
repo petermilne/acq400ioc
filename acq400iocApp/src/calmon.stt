@@ -20,13 +20,13 @@ monitor adc_cal_mode;
 int adc_cal_mode0;
 
 
-float ext_eslo[33]; 	assign ext_eslo to "{uut}:{site}:AI:CAL:ESLO";
-float ext_eoff[33]; 	assign ext_eoff to "{uut}:{site}:AI:CAL:EOFF";
+float ext_eslo[33]; 	assign ext_eslo to "{uut}:1:AI:CAL:ESLO";
+float ext_eoff[33]; 	assign ext_eoff to "{uut}:1:AI:CAL:EOFF";
 
 float eslo[33];		assign eslo to {};	// index from 1
 float eoff[33]; 	assign eoff to {};
 
-int has_ch_gains;	assign has_ch_gains to "{uut}:{site}:HAS_CH_GAINS";
+int has_ch_gains;	assign has_ch_gains to "{uut}:1:HAS_CH_GAINS";
 
 int gain_changes;	assign gain_changes to "";
 int gain_changes0;
@@ -69,7 +69,7 @@ ss calmon {
 			pvGet(has_ch_gains);
 			uut = macValueGet("uut");
 			if (macValueGet("site") != 0){
-				xmlsite =site = macValueGet("site");
+				xmlsite = site = macValueGet("site");
 			}
 			if (macValueGet("xmlsite") != 0){
 				xmlsite = macValueGet("xmlsite");
@@ -138,8 +138,10 @@ ss calmon {
 						printf("ERROR return from acq400_getChannel()\n");
 					}
 				}
-				pvPut(ext_eslo);
-				pvPut(ext_eoff);
+				if (xmlsite == site){
+					pvPut(ext_eslo);
+					pvPut(ext_eoff);
+				}
 			}else{
 				printf("make_change: STUB\n");
 			}
