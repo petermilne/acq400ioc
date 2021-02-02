@@ -87,7 +87,7 @@ acq400Ai::acq400Ai(const char *portName, int _nsam, int _nchan, int _scan_ms):
 	}
 }
 
-/* set EPICS TS assuming that the FIRST tick is at epich seconds %0 nsec eg GPS system, others, well, don't really care */
+/* set EPICS TS assuming that the FIRST tick is at epoch seconds %0 nsec eg GPS system, others, well, don't really care */
 
 
 void epicsTimeStampAdd(epicsTimeStamp& ts, unsigned _delta_ns)

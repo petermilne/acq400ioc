@@ -53,17 +53,6 @@ for cid in 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16; do
 	idx=$(($idx+1))
 done
 
-else
-let idx=1
-site=2
-for cid in 01 02 03 04 05 06 07 08; do
-	wp="idx=${idx},fname=AI.${site},size=${SIZE},type=LONG,vmax=10,maxcode=2147483648"
-	dblr \"db/wfAcqHost.db\", \"UUT=${HOST},SITE=${site},cid=${cid},${wp},eslo=4.65661e-09\"
-	idx=$(($idx+1))
-done
-fi
-
-
 let idx=1
 site=3
 for cid in 01 02 03 04 05 06 07 08; do
@@ -77,6 +66,19 @@ for cid in 01 02 03 04 05 06 07 08; do
 	idx=$(($idx+1))
 
 done
+
+
+else
+let idx=1
+site=2
+for cid in 01 02 03 04 05 06 07 08; do
+	wp="idx=${idx},fname=AI.${site},size=${SIZE},type=LONG,vmax=10,maxcode=2147483648"
+	dblr \"db/wfAcqHost.db\", \"UUT=${HOST},SITE=${site},cid=${cid},${wp}\"
+	idx=$(($idx+1))
+done
+fi
+
+
 
 for sfp in 1 2 3; do
 	dblr \"db/cpsc2sfp.db\",\"UUT=${HOST},CH=${sfp},SPORT=S3\"

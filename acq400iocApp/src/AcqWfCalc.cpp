@@ -98,7 +98,7 @@ template <class T, int SHL> T scaleup(T raw) { return raw << SHL; }
 
 /** ARGS:
  * INPUTS:
- * INPA : const T raw[size}
+ * INPA : const T raw[size]
  * INPB : long maxcode
  * INPC : float vmax
  * INPD : long threshold (distance from rail for alarm)
