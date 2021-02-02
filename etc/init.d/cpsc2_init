@@ -74,6 +74,7 @@ site=2
 for cid in 01 02 03 04 05 06 07 08; do
 	wp="idx=${idx},fname=AI.${site},size=${SIZE},type=LONG,vmax=10,maxcode=2147483648"
 	dblr \"db/wfAcqHost.db\", \"UUT=${HOST},SITE=${site},cid=${cid},${wp}\"
+	dblr \"db/cpsc2_sum_alias.db\", \"UUT=${HOST},cid=${cid}\"
 	idx=$(($idx+1))
 done
 echo >>/tmp/st_post.cmd "seq ${calmon} \"uut=${HOST},site=2,xmlsite=1\""

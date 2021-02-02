@@ -1,0 +1,1 @@
+alias("${UUT}:2:AI:CH:${cid}", "${UUT}:AO:SUM:${cid}:V")
