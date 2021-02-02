@@ -37,6 +37,7 @@ char* doc;
 char fname[80];
 char* uut;
 char* site = "1";		// default site 1, should override 
+char* xmlsite;			// calibration _could_ come from another site, (DAC readback wants AI cal)
 int ch;
 int nchan;
 char pvname[80];
@@ -47,12 +48,12 @@ char pvfield[100];
 %{
 static char* getKey(int hrm, int gain) 
 { 
-	static char key[8];
+	static char key[32];
 	
 	if (hrm >= 0){
-		snprintf(key, 8, "%d,%d", hrm, gain);
+		snprintf(key, 32, "%d,%d", hrm, gain);
 	}else{
-		snprintf(key, 8, "%d", gain);
+		snprintf(key, 32, "%d", gain);
 	}
 	
 	return key; 
@@ -66,11 +67,15 @@ ss calmon {
 			pvGet(hi_res_mode);  hi_res_mode0 = hi_res_mode;
 			pvGet(adc_cal_mode); adc_cal_mode0 = adc_cal_mode;
 			pvGet(has_ch_gains);
-			uut = macValueGet("uut"); 
+			uut = macValueGet("uut");
 			if (macValueGet("site") != 0){
-				site = macValueGet("site");
+				xmlsite =site = macValueGet("site");
 			}
-			sprintf(fname, "/dev/sites/%s/caldef.xml",  site);			
+			if (macValueGet("xmlsite") != 0){
+				xmlsite = macValueGet("xmlsite");
+			}
+			
+			sprintf(fname, "/dev/sites/%s/caldef.xml",  xmlsite);			
 			doc = acq400_openDoc(fname, &nchan);
 		} state init2
 	}
