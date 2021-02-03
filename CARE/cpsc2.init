@@ -21,6 +21,7 @@ chmod a+rx /etc/sysconfig/*
 NB=$(cat /sys/module/acq420fmc/parameters/nbuffers)
 echo $(($NB-10)) > /sys/module/acq420fmc/parameters/distributor_first_buffer
 set.sys /sys/module/acq420fmc/parameters/xo_distributor_sample_size 32
+set.sys /sys/module/acq420fmc/parameters/sideport_does_not_touch_trg 1
 
 echo /mnt/local/rc.user 88 spawn post load settings
 
@@ -35,9 +36,24 @@ set.site 1 clkdiv 1
 set.site 1 hi_res_mode 1
 
 set.site 1 trg 1,1,1
-set.site 1 event0 1,0,1
+#set.site 1 event0 1,0,1
 set.site 2 trg 1,0,1
 set.site 2 clk 1,0,1
+
+
+set.site 1 rgm=3,0,1
+TLEN=10000
+ssb=$(get.site 0 ssb)
+blen=$((TLEN*ssb))
+# set -1, avoid es
+set.site 1 RTM_TRANSLEN=$((TLEN-1))
+sleep 0.5
+echo RTM_TRANSLEN set, now set bufferlen $blen
+set.site 0 bufferlen $blen
+echo "set bufferlen $blen recorded $(get.site 0 bufferlen)"
+
+echo >> /etc/sysconfig/acq400.conf "export StreamHead_LDI_SOURCE=%s.bq"
+
 # run DAC at same rate as ADC
 sleep 2
 set.site 2 CLKDIV 512
