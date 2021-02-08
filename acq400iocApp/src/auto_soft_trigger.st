@@ -4,8 +4,8 @@ auto_soft_trigger.stt : automatic soft trigger.
 program autoSoftTrigger
 option +r;
 
-int msecs;
-assign msecs to "{uut}:AUTO:SOFT_TRIGGER:MSECS";
+double delay_s;
+assign delay_s to "{uut}:AUTO:SOFT_TRIGGER:DELAY";
 
 int count;
 assign count to "{uut}:AUTO:SOFT_TRIGGER:COUNT";
@@ -25,7 +25,7 @@ ss autoSoftTrigger
 	state init
 	{
 		when(enable != 0){
-			pvGet(msecs);
+			pvGet(delay_s);
 			pvGet(count);
 		} state run
 	}
@@ -36,7 +36,7 @@ ss autoSoftTrigger
 			enable = 0; pvPut(count);
 		} state init
 		
-		when(delay(msecs)){
+		when(delay(delay_s)){
 			trigger = !trigger; pvPut(trigger);
 		} state run
 	}

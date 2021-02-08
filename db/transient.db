@@ -178,11 +178,12 @@ record(bo, "${UUT}:SIG:SOFT_TRIGGER:w") {
 	field(FLNK, "${UUT}:SIG:SOFT_TRIGGER:clr")	
 }
 
-record(longout, "${UUT}:AUTO:SOFT_TRIGGER:MSECS") {
+record(ao, "${UUT}:AUTO:SOFT_TRIGGER:DELAY") {
 	field(DESC, "sets period for auto soft trigger")
 	field(DTYP, "Soft Channel")
-	field(DRVL, "10")
-	field(DRVH, "10000")
+	field(DRVL, "0.01")
+	field(DRVH, "10")
+	field(EGU,  "s")
 }
 record(longout, "${UUT}:AUTO:SOFT_TRIGGER:COUNT") {
 	field(DESC, "sets number of triggers")
