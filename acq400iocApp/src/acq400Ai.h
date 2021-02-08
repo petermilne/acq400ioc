@@ -20,6 +20,21 @@
 #define PS_MEAN_OF_N		"MEAN_OF_N"			/* asynInt32, mean of n r/w n : 1<<{0,1,2,3,4,5,6,7,8} */
 
 
+class Acc {
+	const int nchan;
+public:
+	int *ch;
+	int nadd;
+
+
+	Acc(int _nchan): nchan(_nchan) {
+		ch = new int[nchan];
+	}
+	void clear() {
+		memset(ch, 0, nchan*sizeof(int));
+		nadd = 0;
+	}
+};
 
 class acq400Ai: public asynPortDriver {
 
@@ -42,14 +57,15 @@ protected:
 	int buffer_start_sample;
 	epicsTimeStamp t0, t1;
 
-	int *acc;
+
+
 	int mean_of_n0;
 
+	Acc acc;
 
 	acq400Ai(const char *portName, int nsam, int nchan, int scan_ms);
 
 	void handleBuffer(int ib);
-	void outputSampleAt(epicsInt32* raw, int offset, int last, int stride = 0, int shr = 0);
 public:
 	static int factory(const char *portName, int nsam, int nchan, int scan_ms);
 

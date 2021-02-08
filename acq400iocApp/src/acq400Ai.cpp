@@ -59,7 +59,7 @@ acq400Ai::acq400Ai(const char *portName, int _nsam, int _nchan, int _scan_ms):
 		nsam(_nsam), nchan(_nchan),
 		delta_ns(NANO),
 		step(_nsam),
-		buffer_start_sample(SKIP),mean_of_n0(0)
+		buffer_start_sample(SKIP),mean_of_n0(0), acc(_nchan)
 {
 	memset(&t0, 0, sizeof(t0));
 	memset(&t1, 0, sizeof(t1));
@@ -86,8 +86,6 @@ acq400Ai::acq400Ai(const char *portName, int _nsam, int _nchan, int _scan_ms):
 		printf("%s:%s: epicsThreadCreate failure\n", driverName, __FUNCTION__);
 	        return;
 	}
-
-	acc = new int[nchan];
 }
 
 /* set EPICS TS assuming that the FIRST tick is at epoch seconds %0 nsec eg GPS system, others, well, don't really care */
@@ -112,35 +110,18 @@ asynStatus acq400Ai::updateTimeStamp(epicsTimeStamp& ts)
 	return asynSuccess;
 }
 
-void acq400Ai::outputSampleAt(epicsInt32* raw, int offset, int last, int stride, int shr)
-{
-	int ii;
-	epicsInt32* cursor = raw + offset;
+bool isES(epicsInt32 *raw){
+	unsigned *uraw = (unsigned*)raw;
 
-	if (stride == 0){
-		for (ii = 0; ii < nchan; ++ii){
-			setIntegerParam(ii, P_AI_CH, cursor[ii]>>8);
-			callParamCallbacks(ii);
-		}
-	}else{
-		int sam;
-		int nadd = 0;
-		memset(acc, 0, nchan*sizeof(int));
-		for (sam = 0; sam < last; sam += stride, nadd += 1){
-			cursor += sam*nchan;
-			for (ii = 0; ii < nchan; ++ii){
-				acc[ii] += cursor[ii] >> 8;
-			}
-		}
-		printf("last:%d sam:%d cursor:%d nadd:%d shr:%d\n",
-				last, sam, cursor-raw-offset, nadd, shr);
+	return uraw[0] == 0xaa55f154 && uraw[1] == 0xaa55f154 && uraw[2] == 0xaa55f154;
 
-		for (ii = 0; ii < nchan; ++ii){
-			setIntegerParam(ii, P_AI_CH, acc[ii]>>shr);
-			callParamCallbacks(ii);
-		}
-	}
 }
+
+bool isCH01(epicsInt32 *raw) {
+	unsigned *uraw = (unsigned*)raw;
+	return (uraw[0]&0x00ff) == 0x20 && (uraw[1]&0x00ff) == 0x21;
+}
+
 void acq400Ai::handleBuffer(int ib)
 {
 	epicsInt32* raw = (epicsInt32*)Buffer::the_buffers[ib]->getBase();
@@ -153,12 +134,12 @@ void acq400Ai::handleBuffer(int ib)
 	for ( ; buffer_start_sample >= nsam; buffer_start_sample -= nsam){
 		;
 	}
-	int last = nsam- buffer_start_sample;
 
 	if (mean_of_n == 0){
-		stride = shr = 0;
+		shr = 0;
+		stride = nsam;
 	}else{
-		stride = last/(1<<mean_of_n) + 1;
+		stride = nsam/(1<<mean_of_n) + 1;
 		shr = mean_of_n;
 	}
 	if (mean_of_n != mean_of_n0){
@@ -168,15 +149,54 @@ void acq400Ai::handleBuffer(int ib)
 
 	for ( ; buffer_start_sample < nsam;  buffer_start_sample += step){
 		if (buffer_start_sample == 0) buffer_start_sample = 1;
-		//printf("%s:%s: ib:%d bsi:%d\n", driverName, __FUNCTION__, ib, buffer_start_sample);
-		updateTimeStamp(ts);
-		if (ts.nsec == t0.nsec){
-			printf("error, ts did not change\n");
-		}else{
-			//printf("delta %u\n", ts.nsec-t0.nsec);
+
+		epicsInt32* cursor = raw + buffer_start_sample*nchan;
+
+		for (int isam = 0; isam < nsam; isam += stride, cursor += stride*nchan){
+			while (isES(cursor)){
+				cursor += stride*nchan;
+				isam += 1;
+				printf("WARNING: ib:%02d SKIP ES:%d\n", ib, isam);
+			}
+			int ff = 0;
+			while(ff < nchan && !isCH01(cursor)){
+				cursor += 1;
+				++ff;
+			}
+			if (ff){
+				printf("WARNING: ib:%02d ff:%d\n", ib, ff);
+				if (ff == 64){
+					goto hbAbort;
+				}
+			}
+			for (int ic = 0; ic < nchan; ++ic){
+				if (ic < 4 && (cursor[ic]&0x00ff) != (0x20+ic)){
+					printf("ERROR ib:%02d isam:%d cursor:%08x\n", ib, isam, cursor[ic]);
+					goto hbAbort;
+				}
+				acc.ch[ic] += cursor[ic] >> 8;
+				//acc.ch[ic] = cursor[ic] >> 8;
+			}
+			if (++acc.nadd >= 1<<mean_of_n){
+				updateTimeStamp(ts);
+				if (ts.nsec == t0.nsec){
+					printf("error, ts did not change\n");
+				}
+				for (int ic = 0; ic < nchan; ++ic){
+					setIntegerParam(ic, P_AI_CH, acc.ch[ic]>>shr);
+					callParamCallbacks(ic);
+				}
+				acc.clear();
+			}
 		}
-		outputSampleAt(raw, buffer_start_sample*nchan, last, stride, shr);
 	}
+	return;
+
+hbAbort:
+	buffer_start_sample = 1;
+	acc.clear();
+	return;
+
 }
 
 asynStatus acq400Ai::writeFloat64(asynUser *pasynUser, epicsFloat64 value)

@@ -41,7 +41,7 @@ record(longin, "${UUT}:AI:DELTA_NS") {
 record(mbbo, "${UUT}:AI:MEAN_OF_N") {
 	field(DTYP, "asynInt32")
 	field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))MEAN_OF_N")
-	field(NOBT, "3")
+	field(NOBT, "2")
 	field(ZRST, "1")
 	field(ZRVL, "0")
 	field(ONST, "2")
@@ -52,14 +52,5 @@ record(mbbo, "${UUT}:AI:MEAN_OF_N") {
 	field(THVL, "3")
 	field(FRST, "16")
 	field(FRVL, "4")
-	field(FVST, "32")
-	field(FVVL, "5")
-	field(SXST, "64")
-	field(SXVL, "6")
-	field(SVST, "128")
-	field(SVVL, "7")
-	field(EIST, "256")
-	field(EIVL, "8")	
 }
-record
 
