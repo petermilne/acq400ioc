@@ -53,6 +53,7 @@ public:
 	static int factory(const char *portName, int nsam, int nchan, int scan_ms);
 
 	virtual asynStatus writeFloat64(asynUser *pasynUser, epicsFloat64 value);
+	virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
 
 	virtual asynStatus updateTimeStamp(epicsTimeStamp& ts);
 

@@ -50,7 +50,7 @@ acq400Ai::acq400Ai(const char *portName, int _nsam, int _nchan, int _scan_ms):
 	asynPortDriver(
 		portName,
 		_nchan, 														/* maxAddr */
-		asynInt32Mask | asynFloat64Mask | asynDrvUserMask, 		/* Interface mask */
+		asynInt32Mask | asynFloat64Mask | asynDrvUserMask | asynEnumMask, 		/* Interface mask */
 		asynInt32Mask,   						/* Interrupt mask */
 		0, /* asynFlags.  This driver does not block and it is not multi-device, so flag is 0 */
 		1, /* Autoconnect */
@@ -126,7 +126,7 @@ void acq400Ai::outputSampleAt(epicsInt32* raw, int offset, int stride, int shr)
 		memset(acc, 0, nchan*sizeof(int));
 		for (int sam = 0; sam < nsam; sam += stride){
 			for (ii = 0; ii < nchan; ++ii){
-				acc[ii] += cursor[sam+ii] >> 8;
+				acc[ii] += cursor[sam*nchan+ii] >> 8;
 			}
 		}
 		for (ii = 0; ii < nchan; ++ii){
@@ -150,6 +150,7 @@ void acq400Ai::handleBuffer(int ib)
 		mean_of_n = 1<<mean_of_n;
 		stride = nsam/ mean_of_n;
 		shr = mean_of_n;
+		printf("stride:%d shr:%d\n", stride, shr);
 	}
 
 	for ( ; buffer_start_sample >= nsam; buffer_start_sample -= nsam){
@@ -202,6 +203,17 @@ asynStatus acq400Ai::writeFloat64(asynUser *pasynUser, epicsFloat64 value)
 		}
 	}
 	return status;
+}
+
+asynStatus acq400Ai::writeInt32(asynUser *pasynUser, epicsInt32 value)
+{
+/*
+	int function = pasynUser->reason;
+	if (function == P_MEAN_OF_N){
+		printf("setting P_MEAN_OF_N %d\n", value);
+	}
+*/
+	return asynPortDriver::writeInt32(pasynUser, value);
 }
 
 void acq400Ai::task()
