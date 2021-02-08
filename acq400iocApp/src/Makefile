@@ -43,6 +43,7 @@ acq400ioc_DBD += pvmirror.dbd
 acq400ioc_DBD += on_delay.dbd
 acq400ioc_DBD += cpsc2_sfp_laneup_monitor.dbd
 acq400ioc_DBD += bwg_sweep.dbd
+acq400ioc_DBD += autoSoftTrigger.dbd
 
 # Add all the support libraries needed by this IOC
 acq400ioc_LIBS += acq2ioc
@@ -75,6 +76,7 @@ acq400ioc_SRCS += on_delay.st
 acq400ioc_SRCS += cpsc2_sfp_laneup_monitor.st
 acq400ioc_SRCS += cpsc2_aurora_status_flasher.st
 acq400ioc_SRCS += bwg_sweep.st
+acq400ioc_SRCS += auto_soft_trigger.st
 
 # Build the main IOC entry point on workstation OSs.
 acq400ioc_SRCS_DEFAULT += acq400iocMain.cpp \

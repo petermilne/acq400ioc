@@ -152,6 +152,8 @@ record(bo, "${UUT}:MODE:TRANSIENT:SET_ABORT:w") {
 	field(OUT,  "@mb.proto setAbort ${SPORT}")	
 }
 
+
+
 record(bo, "${UUT}:SIG:SOFT_TRIGGER") {
 	field(DTYP, "Soft Channel")
 	field(DESC, "set soft trigger")
@@ -174,6 +176,25 @@ record(bo, "${UUT}:SIG:SOFT_TRIGGER:w") {
 	field(DTYP, "stream")
 	field(OUT,  "@mb.proto setSoftTrigger ${SPORT}")
 	field(FLNK, "${UUT}:SIG:SOFT_TRIGGER:clr")	
+}
+
+record(longout, "${UUT}:AUTO:SOFT_TRIGGER:MSECS") {
+	field(DESC, "sets period for auto soft trigger")
+	field(DTYP, "Soft Channel")
+	field(DRVL, "10")
+	field(DRVH, "10000")
+}
+record(longout, "${UUT}:AUTO:SOFT_TRIGGER:COUNT") {
+	field(DESC, "sets number of triggers")
+	field(DTYP, "Soft Channel")
+	field(DRVL, "0")
+	field(DRVH, "99999")
+}
+record(bo, "${UUT}:AUTO:SOFT_TRIGGER:EN" ) {
+	field(DESC, "Clears SOFT_TRIGGER")
+	field(DTYP, "Soft Channel")
+	field(ZNAM, "OFF")
+	field(ONAM, "ON")
 }
 
 record(bo, "${UUT}:SIG:SOFT_TRIGGER:clr" ) {
