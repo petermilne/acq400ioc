@@ -38,4 +38,18 @@ record(longin, "${UUT}:AI:DELTA_NS") {
 	field(SCAN, "I/O Intr")
 }
 
+record(mbbo, "${UUT}:AI:MEAN_OF_N") {
+	field(DTYP, "asynInt32")
+	field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))MEAN_OF_N")
+	field(NOBT, "3")
+	field(ZRST, "1")
+	field(ONST, "2")
+	field(TWST, "4")
+	field(THST, "8")
+	field(FRST, "16")
+	field(FVST, "32")
+	field(SXST, "64")
+	field(SVST, "128")
+	field(EIST, "256")
+}
 

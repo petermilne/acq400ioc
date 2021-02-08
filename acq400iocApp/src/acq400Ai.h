@@ -17,11 +17,11 @@
 #define PS_AI_CH		"AI"				/* asynInt32, per port  r/w */
 #define PS_STEP			"STEP"				/* asynInt32, data set step r/o */
 #define PS_DELTA_NS		"DELTA_NS"			/* asynInt32, time tick r/o */
+#define PS_MEAN_OF_N		"MEAN_OF_N"			/* asynInt32, mean of n r/w n : 1<<{0,1,2,3,4,5,6,7,8} */
 
 
 
 class acq400Ai: public asynPortDriver {
-
 
 protected:
 	int P_NCHAN;
@@ -31,6 +31,7 @@ protected:
 	int P_AI_CH;
 	int P_STEP;
 	int P_DELTA_NS;
+	int P_MEAN_OF_N;
 
 	const int nsam;
 	const int nchan;
@@ -41,11 +42,13 @@ protected:
 	int buffer_start_sample;
 	epicsTimeStamp t0, t1;
 
+	int *acc;
+
 
 	acq400Ai(const char *portName, int nsam, int nchan, int scan_ms);
 
 	void handleBuffer(int ib);
-	void outputSampleAt(epicsInt32* raw, int offset);
+	void outputSampleAt(epicsInt32* raw, int offset, int stride = 0, int shr = 0);
 public:
 	static int factory(const char *portName, int nsam, int nchan, int scan_ms);
 

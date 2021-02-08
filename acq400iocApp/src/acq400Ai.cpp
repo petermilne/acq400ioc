@@ -72,6 +72,7 @@ acq400Ai::acq400Ai(const char *portName, int _nsam, int _nchan, int _scan_ms):
 	createParam(PS_AI_CH,      	asynParamInt32,         	&P_AI_CH);
 	createParam(PS_STEP,      	asynParamInt32,         	&P_STEP);
 	createParam(PS_DELTA_NS,      	asynParamInt32,         	&P_DELTA_NS);
+	createParam(PS_MEAN_OF_N,      	asynParamInt32,         	&P_MEAN_OF_N);
 
 	setIntegerParam(P_NCHAN, 	nchan);
 	setIntegerParam(P_NSAM, 	nsam);
@@ -85,6 +86,8 @@ acq400Ai::acq400Ai(const char *portName, int _nsam, int _nchan, int _scan_ms):
 		printf("%s:%s: epicsThreadCreate failure\n", driverName, __FUNCTION__);
 	        return;
 	}
+
+	acc = new int[nchan];
 }
 
 /* set EPICS TS assuming that the FIRST tick is at epoch seconds %0 nsec eg GPS system, others, well, don't really care */
@@ -109,20 +112,45 @@ asynStatus acq400Ai::updateTimeStamp(epicsTimeStamp& ts)
 	return asynSuccess;
 }
 
-void acq400Ai::outputSampleAt(epicsInt32* raw, int offset)
+void acq400Ai::outputSampleAt(epicsInt32* raw, int offset, int stride, int shr)
 {
 	int ii;
 	epicsInt32* cursor = raw + offset;
 
-	for (ii = 0; ii < nchan; ++ii){
-		setIntegerParam(ii, P_AI_CH, cursor[ii]>>8);
-		callParamCallbacks(ii);
+	if (stride == 0){
+		for (ii = 0; ii < nchan; ++ii){
+			setIntegerParam(ii, P_AI_CH, cursor[ii]>>8);
+			callParamCallbacks(ii);
+		}
+	}else{
+		memset(acc, 0, nchan*sizeof(int));
+		for (int sam = 0; sam < nsam; sam += stride){
+			for (ii = 0; ii < nchan; ++ii){
+				acc[ii] += cursor[sam+ii] >> 8;
+			}
+		}
+		for (ii = 0; ii < nchan; ++ii){
+			setIntegerParam(ii, P_AI_CH, acc[ii]>>shr);
+			callParamCallbacks(ii);
+		}
 	}
 }
 void acq400Ai::handleBuffer(int ib)
 {
 	epicsInt32* raw = (epicsInt32*)Buffer::the_buffers[ib]->getBase();
 	epicsTimeStamp ts = t0;
+	int mean_of_n;
+	getIntegerParam(P_MEAN_OF_N, &mean_of_n);
+	int stride;
+	int shr;
+
+	if (mean_of_n == 0){
+		stride = shr = 0;
+	}else{
+		mean_of_n = 1<<mean_of_n;
+		stride = nsam/ mean_of_n;
+		shr = mean_of_n;
+	}
 
 	for ( ; buffer_start_sample >= nsam; buffer_start_sample -= nsam){
 		;
@@ -137,7 +165,7 @@ void acq400Ai::handleBuffer(int ib)
 		}else{
 			//printf("delta %u\n", ts.nsec-t0.nsec);
 		}
-		outputSampleAt(raw, buffer_start_sample*nchan);
+		outputSampleAt(raw, buffer_start_sample*nchan, stride, shr);
 	}
 }
 
