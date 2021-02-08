@@ -59,7 +59,7 @@ acq400Ai::acq400Ai(const char *portName, int _nsam, int _nchan, int _scan_ms):
 		nsam(_nsam), nchan(_nchan),
 		delta_ns(NANO),
 		step(_nsam),
-		buffer_start_sample(SKIP)
+		buffer_start_sample(SKIP),mean_of_n0(0)
 {
 	memset(&t0, 0, sizeof(t0));
 	memset(&t1, 0, sizeof(t1));
@@ -112,7 +112,7 @@ asynStatus acq400Ai::updateTimeStamp(epicsTimeStamp& ts)
 	return asynSuccess;
 }
 
-void acq400Ai::outputSampleAt(epicsInt32* raw, int offset, int stride, int shr)
+void acq400Ai::outputSampleAt(epicsInt32* raw, int offset, int last, int stride, int shr)
 {
 	int ii;
 	epicsInt32* cursor = raw + offset;
@@ -123,12 +123,18 @@ void acq400Ai::outputSampleAt(epicsInt32* raw, int offset, int stride, int shr)
 			callParamCallbacks(ii);
 		}
 	}else{
+		int sam;
+		int nadd = 0;
 		memset(acc, 0, nchan*sizeof(int));
-		for (int sam = 0; sam < nsam; sam += stride){
+		for (sam = 0; sam < last; sam += stride, nadd += 1){
+			cursor += sam*nchan;
 			for (ii = 0; ii < nchan; ++ii){
-				acc[ii] += cursor[sam*nchan+ii] >> 8;
+				acc[ii] += cursor[ii] >> 8;
 			}
 		}
+		printf("last:%d sam:%d cursor:%d nadd:%d shr:%d\n",
+				last, sam, cursor-raw-offset, nadd, shr);
+
 		for (ii = 0; ii < nchan; ++ii){
 			setIntegerParam(ii, P_AI_CH, acc[ii]>>shr);
 			callParamCallbacks(ii);
@@ -144,17 +150,20 @@ void acq400Ai::handleBuffer(int ib)
 	int stride;
 	int shr;
 
+	for ( ; buffer_start_sample >= nsam; buffer_start_sample -= nsam){
+		;
+	}
+	int last = nsam- buffer_start_sample;
+
 	if (mean_of_n == 0){
 		stride = shr = 0;
 	}else{
-		mean_of_n = 1<<mean_of_n;
-		stride = nsam/ mean_of_n;
+		stride = last/(1<<mean_of_n) + 1;
 		shr = mean_of_n;
-		printf("stride:%d shr:%d\n", stride, shr);
 	}
-
-	for ( ; buffer_start_sample >= nsam; buffer_start_sample -= nsam){
-		;
+	if (mean_of_n != mean_of_n0){
+		printf("stride:%d shr:%d\n", stride, shr);
+		mean_of_n0 = mean_of_n;
 	}
 
 	for ( ; buffer_start_sample < nsam;  buffer_start_sample += step){
@@ -166,7 +175,7 @@ void acq400Ai::handleBuffer(int ib)
 		}else{
 			//printf("delta %u\n", ts.nsec-t0.nsec);
 		}
-		outputSampleAt(raw, buffer_start_sample*nchan, stride, shr);
+		outputSampleAt(raw, buffer_start_sample*nchan, last, stride, shr);
 	}
 }
 
@@ -203,17 +212,6 @@ asynStatus acq400Ai::writeFloat64(asynUser *pasynUser, epicsFloat64 value)
 		}
 	}
 	return status;
-}
-
-asynStatus acq400Ai::writeInt32(asynUser *pasynUser, epicsInt32 value)
-{
-/*
-	int function = pasynUser->reason;
-	if (function == P_MEAN_OF_N){
-		printf("setting P_MEAN_OF_N %d\n", value);
-	}
-*/
-	return asynPortDriver::writeInt32(pasynUser, value);
 }
 
 void acq400Ai::task()

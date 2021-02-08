@@ -43,17 +43,17 @@ protected:
 	epicsTimeStamp t0, t1;
 
 	int *acc;
+	int mean_of_n0;
 
 
 	acq400Ai(const char *portName, int nsam, int nchan, int scan_ms);
 
 	void handleBuffer(int ib);
-	void outputSampleAt(epicsInt32* raw, int offset, int stride = 0, int shr = 0);
+	void outputSampleAt(epicsInt32* raw, int offset, int last, int stride = 0, int shr = 0);
 public:
 	static int factory(const char *portName, int nsam, int nchan, int scan_ms);
 
 	virtual asynStatus writeFloat64(asynUser *pasynUser, epicsFloat64 value);
-	virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
 
 	virtual asynStatus updateTimeStamp(epicsTimeStamp& ts);
 
