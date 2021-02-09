@@ -8,3 +8,7 @@ eventCount 	{ in "%*d %*d %*d %*s %*x %d"; }
 
 sampleCount 	{ in "%d %*d %*d %*s %*x %*d"; }
 
+isTriggered {
+	out "is_triggered";
+	in "%d";
+}

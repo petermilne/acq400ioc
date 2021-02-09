@@ -13,3 +13,19 @@ record(longin, "${UUT}:1:EVT:SMPL:rc") {
 	field(DESC, "Event count")	
 	field(PRIO, "HIGH")
 }
+
+record(bi, "${UUT}:${SITE}:TRIGGERED") {
+	field(DTYP, "stream")
+	field(INP,  "@event.proto isTriggered ${SPORT}")
+	field(ZNAM, "NO")
+	field(ONAM, "YES")
+	field(SCAN, ".2 second")
+}
+
+record(ao, "${UUT}:${SITE}:SOD_TIMEOUT") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "Switch to free running clock on timeout")
+	field(DRVL, "0")
+	field(DRVH, "100")
+}
+

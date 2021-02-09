@@ -7,6 +7,8 @@ record (bi, "${UUT}:${SITE}:RUN") {
 	field(PINI, "YES")		
 }
 
+
+
 record (longout, "${UUT}:${SITE}:INTCLK_HZ") {
 	field(DTYP, "Soft Channel")
 	field(PINI, "YES")

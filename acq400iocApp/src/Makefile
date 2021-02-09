@@ -50,6 +50,7 @@ acq400ioc_DBD += wr_clk_mon.dbd
 acq400ioc_DBD += badledfixer.dbd
 acq400ioc_DBD += mgt8_shot_cycle.dbd
 acq400ioc_DBD += acq400_judgement.dbd
+acq400ioc_DBD += sodTimeout.dbd
 
 # Add all the support libraries needed by this IOC
 acq400ioc_LIBS += acq2ioc
@@ -62,6 +63,7 @@ acq400ioc_LIBS += acq
 # acq400ioc_registerRecordDeviceDriver.cpp derives from acq400ioc.dbd
 acq400ioc_SRCS += acq400ioc_registerRecordDeviceDriver.cpp
 acq400ioc_SRCS += acq400_judgement.cpp
+
 
 #acq400ioc_SRCS += sncExample.st
 acq400ioc_SRCS += autoRepeat.st
@@ -87,6 +89,7 @@ acq400ioc_SRCS += shot_busy.st
 acq400ioc_SRCS += wr_clk_mon.st
 acq400ioc_SRCS += badledfixer.st
 acq400ioc_SRCS += mgt8_shot_cycle.st
+acq400ioc_SRCS += sod_timeout.st
 
 # Build the main IOC entry point on workstation OSs.
 acq400ioc_SRCS_DEFAULT += acq400iocMain.cpp \
