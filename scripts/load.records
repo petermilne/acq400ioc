@@ -51,6 +51,9 @@ make_AI() {
 	type=SHORT
 	maxcode=32768
 	
+	PRAMS="UUT=${HOST},SITE=${site}"
+	dblr \"db/ai.db\",\"${PRAMS},SPORT=S${site}\"
+	
 	if [ -e /etc/acq400/$site/data32 ] && 
 			[ $(cat /etc/acq400/$site/data32) -eq 1 ]; then
 			type=LONG

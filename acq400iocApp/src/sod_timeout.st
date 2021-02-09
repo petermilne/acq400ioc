@@ -9,6 +9,7 @@ int triggered; assign triggered to "{uut}:1:TRIGGERED";
 monitor triggered;
 
 double timeout; assign timeout to "{uut}:1:SOD_TIMEOUT";
+monitor timeout;
 
 
 int clk_src; assign clk_src to "{uut}:0:SIG:SRC:CLK:0";
@@ -31,7 +32,7 @@ ss sodTimeout {
 		entry {
 			if (verbose) printf("idle\n");
 		}
-		when(triggered){
+		when(triggered && timeout > 0){
 			
 		} state busy
 	}

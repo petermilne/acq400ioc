@@ -1,0 +1,7 @@
+Terminator = LF;
+ExtraInput = Ignore;
+
+isTriggered {
+	out "is_triggered";
+	in "%d";
+}
