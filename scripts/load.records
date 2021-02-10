@@ -37,7 +37,7 @@ fi
 [ -e /usr/local/init/bolodsp.init ] && export BOLO8DSP=1
 
 CLOCKMONITOR=${CLOCKMONITOR:-0}
-ONSETTRANSIENT=${ONSETTRANSIENT:-1}
+
 
 source ./scripts/mtype.sh
 source ./scripts/record_support.sh
@@ -439,6 +439,7 @@ load_400() {
 		if [ "x${calmon}" != "xnone" ]; then
 			echo >>/tmp/st_post.cmd "seq ${calmon} \"uut=${HOST},site=${site}\""
 		fi
+		ONSETTRANSIENT=${ONSETTRANSIENT:-1}
 	fi
 
 	
