@@ -564,8 +564,11 @@ load_400() {
 		will_load_dio482pg=0
     elif [ "$has_output" = "yes" ] && [ "$AWG_DONE" = "n" ]; then
 		aprams="UUT=${HOST},SITE=${site},SPORT=S${site}"
+		
 		dblr '"db/xo.db","'${aprams}'"'
-		dblr '"db/awg.db","'${aprams}'"'
+		eval $(get.site 0 distributor)
+		dblr '"db/awg.db","'${aprams},dsites=${sites}'"'
+		echo "seq select_awg_distributor \"uut=${HOST},verbose=1\""
 		dblr '"db/acq4xx_rgm.db","'${aprams},onst=nc,twst=nc'"'
 		sprams="${aprams},CTRMAX=$CTR28,DT=1,DTC=1"
 		dblr '"db/_counter.db","'${sprams},SIG=AWG,lname=REPS'"'

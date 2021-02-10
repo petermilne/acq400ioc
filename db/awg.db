@@ -95,18 +95,44 @@ record (bo, "${UUT}:${SITE}:AWG:MODE:ABO") {
 }
 
 record (longin, "${UUT}:${SITE}:AWG:COMPLETED_SHOT") {
-    field(DTYP, "stream")
-    field(INP, "@awg.proto getCompletedShot ${SPORT}")
-    field(SCAN, ".2 second")
-    field(DESC, "Shot number last complete shot")
-    field(PINI, "YES")
-    field(FLNK, "${UUT}:${SITE}:AWG:SHOT_COMPLETE")
+    	field(DTYP, "stream")
+    	field(INP, "@awg.proto getCompletedShot ${SPORT}")
+    	field(SCAN, ".2 second")
+    	field(DESC, "Shot number last complete shot")
+    	field(PINI, "YES")
+    	field(FLNK, "${UUT}:${SITE}:AWG:SHOT_COMPLETE")
 }
 
 record (calc, "${UUT}:${SITE}:AWG:SHOT_COMPLETE") {
-    field(INPA, "${UUT}:${SITE}:SHOT")  
-    field(INPB, "${UUT}:${SITE}:AWG:COMPLETED_SHOT")
-    field(CALC, "A && A==B")       
+    	field(INPA, "${UUT}:${SITE}:SHOT")  
+    	field(INPB, "${UUT}:${SITE}:AWG:COMPLETED_SHOT")
+    	field(CALC, "A && A==B")       
 }
+
+record(stringout, "${UUT}:1:AWG:SITES") {
+	field(DTYP, "Soft Channel")
+	field(VAL,  "${dsites}")
+	field(PINI, "YES")
+}
+
+record(stringout, "${UUT}:1:AWG:SITES:n") {
+	field(DTYP, "Soft Channel")
+	field(VAL,  "none")
+	field(PINI, "YES")
+}
+
+record(stringout, "${UUT}:1:AWG:SITES:w") {
+	field(DTYP, "stream")
+	field(INP, "@awg.proto setDistributorSites S0")
+}
+
+record(bo, "${UUT}:1:AWG:DIST") {
+	field(DTYP, "Soft Channel")
+	field(ZNAM, "DC")
+	field(ONAM, "AWG")
+}
+
+
+
 
 

@@ -51,6 +51,7 @@ acq400ioc_DBD += badledfixer.dbd
 acq400ioc_DBD += mgt8_shot_cycle.dbd
 acq400ioc_DBD += acq400_judgement.dbd
 acq400ioc_DBD += sodTimeout.dbd
+acq400ioc_DBD += select_awg_distributor.dbd
 
 # Add all the support libraries needed by this IOC
 acq400ioc_LIBS += acq2ioc
@@ -90,6 +91,7 @@ acq400ioc_SRCS += wr_clk_mon.st
 acq400ioc_SRCS += badledfixer.st
 acq400ioc_SRCS += mgt8_shot_cycle.st
 acq400ioc_SRCS += sod_timeout.st
+acq400ioc_SRCS += select_awg_distributor.st
 
 # Build the main IOC entry point on workstation OSs.
 acq400ioc_SRCS_DEFAULT += acq400iocMain.cpp \
