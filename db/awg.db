@@ -123,7 +123,7 @@ record(stringout, "${UUT}:1:AWG:SITES:n") {
 
 record(stringout, "${UUT}:1:AWG:SITES:w") {
 	field(DTYP, "stream")
-	field(INP, "@awg.proto setDistributorSites S0")
+	field(OUT, "@awg.proto setDistributorSites S0")
 }
 
 record(bo, "${UUT}:1:AWG:DIST") {

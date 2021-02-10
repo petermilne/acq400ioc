@@ -24,8 +24,7 @@ ss selectAwgDistributor {
 		when() {
 			if (macValueGet("verbose")){
 				verbose = macValueGet("verbose")[0] - '0';
-			}
-			pvGet(sitelist);
+			}	
 			pvGet(dclist);
 			pvGet(distributor);
 		} state idle
@@ -45,6 +44,7 @@ ss selectAwgDistributor {
 			if (mode == 0){
 				strcpy(distributor, dclist); 
 			}else{
+				pvGet(sitelist);
 				strcpy(distributor, sitelist);
 			}
 			pvPut(distributor);
