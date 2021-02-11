@@ -1,16 +1,24 @@
 /* sod_timeout.stt .. activate free running clock on timeout after trigger..
  * flush through samples when not enough sod clocks 
+ * seq sodTimeout "uut=UUT,verbose=1,FLUSH_COUNT=N"
  * 
-brute force flush .. use c, runs about 7kHz.
-seq sodTimeout "uut=UUT,verbose=1,FLUSH_COUNT=N"
  * 
+ * sample_count : proxy for TRIGGERED (TRIGGERED is ARM in SOD Mode)
+ * 
+ * 
+ * wait(TRIGGERED)
+ * 
+ * delay(SOD_TIMEOUT)
+ * 
+ * flush(FLUSH_COUNT)
+ * ... reset sample_count to avoid an endless loop 
  * */
 
 
 program sodTimeout
 option +r;
 
-int sample_count; assign sample_count to "{uut}:1:SIG:sample_count:COUNT";
+int sample_count; assign sample_count to "{uut}:1:SIG:sample_count:ACTIVE";
 monitor sample_count;
 
 int sample_count_reset; assign sample_count_reset to "{uut}:1:SIG:sample_count:RESET";
@@ -68,7 +76,7 @@ ss sodTimeout {
 	
 	state idle {
 		entry {
-			if (verbose) printf("sodTimout::idle\n");
+			if (verbose) printf("sodTimeout::idle\n");
 		}
 		when(sample_count && timeout > 0){
 			
@@ -77,7 +85,7 @@ ss sodTimeout {
 	
 	state busy {
 		entry {
-			if (verbose) printf("sodTimout::busy\n");
+			if (verbose) printf("sodTimeout::busy\n");
 		}		
 		when(!sample_count) {
 			
@@ -91,10 +99,10 @@ ss sodTimeout {
 	state flush {
 		entry {
 			clk_src = STRG; pvPut(clk_src);
-			if (verbose) printf("sodTimout::flush\n");
-			soft_trigger(FLUSH_COUNT);
+			if (verbose) printf("sodTimeout::flush\n");
+			soft_trigger(flush_count);
 			sample_count_reset = 1; pvPut(sample_count_reset);
-			if (verbose) printf("sodTimout::flush2\n");
+			if (verbose) printf("sodTimeout::flush2\n");
 			
 		}
 		

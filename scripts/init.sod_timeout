@@ -1,0 +1,9 @@
+#!/bin/sh
+
+secs=${1:-5}
+flush_count=${2:-2000}
+
+HN=$(hostname)
+echo "seq sodTimeout \"uut=${HN},verbose=1,FLUSH_COUNT=${flush_count}\"" 
+echo "dbpf $HN:1:SOD_TIMEOUT ${secs}"
+

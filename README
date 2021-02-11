@@ -34,6 +34,10 @@ ATD : ANALOG THRESHOLD DETECT (TRIGGER) : automated
 DTD : DELTA TRIGGER DETECT : automated
 #was export IOC_PREINIT=./scripts/load.deltrg
 
+
+# SOD TIMEOUT : force a SOD capture to run to completion when pulses stop after SECS seconds from first pulse
+export SOD_TIMEOUT="SECONDS [FLUSH_COUNT]"  
+
 # allow more than 80 "channels" per module eg for LIA
 export ACQ400IOC_IDX_GT32=1
 
