@@ -18,10 +18,10 @@
 program sodTimeout
 option +r;
 
-int sample_count; assign sample_count to "{uut}:1:SIG:sample_count:ACTIVE";
-monitor sample_count;
+int sample_count_active; assign sample_count_active to "{uut}:1:SIG:sample_count:ACTIVE";
+monitor sample_count_active;
 
-int sample_count_reset; assign sample_count_reset to "{uut}:1:SIG:sample_count:RESET";
+int sc_reset; assign sc_reset to "{uut}:1:SIG:sample_count:RESET";
 double timeout; assign timeout to "{uut}:1:SOD_TIMEOUT";
 monitor timeout;
 
@@ -70,7 +70,7 @@ ss sodTimeout {
 			if (macValueGet("FLUSH_COUNT")){
 				flush_count = atoi(macValueGet("FLUSH_COUNT"));
 			}			
-			sample_count_reset = 1; pvPut(sample_count_reset);
+			sc_reset = 1; pvPut(sc_reset);
 		} state idle
 	}
 	
@@ -78,16 +78,16 @@ ss sodTimeout {
 		entry {
 			if (verbose) printf("sodTimeout::idle\n");
 		}
-		when(sample_count && timeout > 0){
+		when(sample_count_active && timeout > 0){
 			
 		} state busy
 	}
 	
 	state busy {
 		entry {
-			if (verbose) printf("sodTimeout::busy\n");
+			if (verbose) printf("sodTimeout::busy timeout:%f\n", timeout);
 		}		
-		when(!sample_count) {
+		when(!sample_count_active) {
 			
 		} state idle
 		
@@ -99,11 +99,9 @@ ss sodTimeout {
 	state flush {
 		entry {
 			clk_src = STRG; pvPut(clk_src);
-			if (verbose) printf("sodTimeout::flush\n");
+			if (verbose) printf("sodTimeout::flush sample_count_active %d\n", sample_count_active);
 			soft_trigger(flush_count);
-			sample_count_reset = 1; pvPut(sample_count_reset);
-			if (verbose) printf("sodTimeout::flush2\n");
-			
+			sc_reset = 1; pvPut(sc_reset);
 		}
 		
 		when(){
