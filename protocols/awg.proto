@@ -46,9 +46,9 @@ setOneShot {
     in;
 }
 setAbort {
-    out "playloop_oneshot %d";
+    out "playloop_oneshot 1";
     in;
-    out "awg_abort 1";
+    out "awg_abort %d";
     in;
 }
 
