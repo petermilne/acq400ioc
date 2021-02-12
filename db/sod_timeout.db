@@ -7,8 +7,6 @@ record(ao, "${UUT}:1:SOD_TIMEOUT:TIMEOUT") {
 	field(VAL,  "${SECS}")
 }
 
-record
-
 record(longout, "${UUT}:1:SOD_TIMEOUT:FLUSH_COUNT") {
 	field(DTYP, "Soft Channel")
 	field(PINI, "YES")

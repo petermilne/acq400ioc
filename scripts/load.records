@@ -1194,13 +1194,14 @@ if [ -e "/mnt/local/sysconfig/site-aliases.db" ]; then
 		dblr '"/mnt/local/sysconfig/site-aliases.db","UUT='${HOST}'"'
 fi
 
+[ ! -z "$SOD_TIMEOUT" ] && source /usr/local/epics/scripts/init.sod_timeout $SOD_TIMEOUT
 
 cat - <<EOF
 dbLoadRecords("db/local-aliases.db","UUT=${HOST}")
 iocInit()
 EOF
 
-[ ! -z "$SOD_TIMEOUT" ] && source /usr/local/epics/scripts/init.sod_timeout $SOD_TIMEOUT
+
 
 if [ -e "/tmp/st_post.cmd" ]; then
 	cat /tmp/st_post.cmd

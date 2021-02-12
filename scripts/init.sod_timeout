@@ -3,8 +3,7 @@
 secs=${1:-5}
 flush_count=${2:-2000}
 
+dblr \"db/sod_timeout.db\",\"UUT=${HOST},SECS=${secs},FC=${flush_count}\"
 
-echo "seq sodTimeout \"uut=${HOST},verbose=1\"" 
-
-dblr \"db/sod_timeout.db\",\"UUT=${HOST},SECS=${secs},FC=${flush_count}\"		
+echo "seq sodTimeout \"uut=${HOST},verbose=1\"" >>/tmp/st_post.cmd		
 
