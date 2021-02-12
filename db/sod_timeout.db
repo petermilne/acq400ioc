@@ -1,0 +1,27 @@
+record(ao, "${UUT}:1:SOD_TIMEOUT:TIMEOUT") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "Switch to free running clock on timeout")
+	field(DRVL, "0")
+	field(DRVH, "100")
+	field(PINI, "YES")
+	field(VAL,  "${SECS}")
+}
+
+record
+
+record(longout, "${UUT}:1:SOD_TIMEOUT:FLUSH_COUNT") {
+	field(DTYP, "Soft Channel")
+	field(PINI, "YES")
+	field(VAL,  "${FC}")
+}
+
+record(stringin, "${UUT}:1:SOD_TIMEOUT:STATE") {
+	field(DTYP, "Soft Channel")
+}
+
+
+record(longin, "${UUT}:1:SOD_TIMEOUT:COUNTDOWN") {
+	field(DTYP, "Soft Channel")
+	field(PINI, "YES")
+	field(VAL,  "0")
+}

@@ -1200,7 +1200,7 @@ dbLoadRecords("db/local-aliases.db","UUT=${HOST}")
 iocInit()
 EOF
 
-[ ! -z "$SOD_TIMEOUT" ] && /usr/local/epics/scripts/init.sod_timeout $SOD_TIMEOUT
+[ ! -z "$SOD_TIMEOUT" ] && source /usr/local/epics/scripts/init.sod_timeout $SOD_TIMEOUT
 
 if [ -e "/tmp/st_post.cmd" ]; then
 	cat /tmp/st_post.cmd

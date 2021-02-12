@@ -25,23 +25,25 @@ int transient_state; assign transient_state to "{uut}:MODE:TRANS_ACT:STATE";
 monitor transient_state;
 
 int sc_reset; assign sc_reset to "{uut}:1:SIG:sample_count:RESET";
-double timeout; assign timeout to "{uut}:1:SOD_TIMEOUT";
+double timeout; assign timeout to "{uut}:1:SOD_TIMEOUT:TIMEOUT";
 monitor timeout;
+
+int time_countdown; assign time_countdown to "{uut}:1:SOD_TIMEOUT:COUNTDOWN";
 
 
 int clk_src; assign clk_src to "{uut}:0:SIG:SRC:TRG:1";
 
-int strig;  assign strig to "{uut}:SIG:SOFT_TRIGGER:w";
+int flush_count; assign flush_count to "{uut}:1:SOD_TIMEOUT:FLUSH_COUNT";
+
+string state_str; assign state_str to "{uut}:1:SOD_TIMEOUT:STATE";
 
 #define STRG	0
-#define FLUSH_COUNT 10000
 
 int verbose;
 
 
 %{
 #define O_WRONLY	00000001
-int atoi(const char *nptr);
 int open(const char *pathname, int flags);
 int write(int fd, const void *buf, unsigned count);
 int close(int fd);
@@ -61,7 +63,7 @@ void soft_trigger(int count)
 	}
 }
 
-int flush_count = FLUSH_COUNT;
+
 }%
 
 ss sodTimeout {
@@ -69,41 +71,50 @@ ss sodTimeout {
 		when() {
 			if (macValueGet("verbose")){
 				verbose = macValueGet("verbose")[0] - '0';
-			}
-			if (macValueGet("FLUSH_COUNT")){
-				flush_count = atoi(macValueGet("FLUSH_COUNT"));
 			}			
-			
 		} state idle
 	}
 	
 	state idle {
 		entry {
 			sc_reset = 1; pvPut(sc_reset);
-			if (verbose) printf("sodTimeout::idle\n");
+			pvGet(flush_count);
+			time_countdown = 0; pvPut(time_countdown);
+						
+			sprintf(state_str, "sodTimeout::idle"); pvPut(state_str); 
+			if (verbose) printf("%s\n", state_str);
 		}
 		when(sample_count_active && timeout > 0){
+			time_countdown = timeout; pvPut(time_countdown);
+			
 			if (verbose) printf("sodTimeout::busy sample_count_active:%d\n", sample_count_active);
 		} state busy
 	}
 	
 	state busy {
-		entry {
-			if (verbose) printf("sodTimeout::busy timeout:%f\n", timeout);
+		entry {	
+			sprintf(state_str, "sodTimeout::busy:%d", time_countdown); pvPut(state_str);			
+			if (verbose) printf("%s\n", state_str);
 		}		
 		when(!sample_count_active && transient_state == 0) {
 			
 		} state idle
 		
-		when(delay(timeout)){			 						
+		when(time_countdown <= 0){
 			
 		} state flush
+		
+		when(delay(1)){			 						
+			time_countdown -= 1;
+			pvPut(time_countdown);
+		} state busy
 	}
 	
 	state flush {
 		entry {
 			clk_src = STRG; pvPut(clk_src);
-			if (verbose) printf("sodTimeout::flush sample_count_active %d\n", sample_count_active);
+			sprintf(state_str, "sodTimeout::flush"); pvPut(state_str);			
+			if (verbose) printf("%s\n", state_str);
 			soft_trigger(flush_count);
 			sc_reset = 1; pvPut(sc_reset);
 		}

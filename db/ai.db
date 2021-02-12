@@ -6,9 +6,3 @@ record(bi, "${UUT}:${SITE}:TRIGGERED") {
 	field(SCAN, ".2 second")
 }
 
-record(ao, "${UUT}:${SITE}:SOD_TIMEOUT") {
-	field(DTYP, "Soft Channel")
-	field(DESC, "Switch to free running clock on timeout")
-	field(DRVL, "0")
-	field(DRVH, "100")
-}
