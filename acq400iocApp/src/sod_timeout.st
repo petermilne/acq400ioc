@@ -21,6 +21,9 @@ option +r;
 int sample_count_active; assign sample_count_active to "{uut}:1:SIG:sample_count:ACTIVE";
 monitor sample_count_active;
 
+int sample_count_count; assign sample_count_count to "{uut}:1:SIG:sample_count:COUNT";
+monitor sample_count_count;
+
 int transient_state; assign transient_state to "{uut}:MODE:TRANS_ACT:STATE";
 monitor transient_state;
 
@@ -72,10 +75,10 @@ ss sodTimeout {
 			if (macValueGet("verbose")){
 				verbose = macValueGet("verbose")[0] - '0';
 			}			
-		} state idle
+		} state idle0
 	}
 	
-	state idle {
+	state idle0 {
 		entry {
 			sc_reset = 1; pvPut(sc_reset);
 			pvGet(flush_count);
@@ -84,7 +87,13 @@ ss sodTimeout {
 			sprintf(state_str, "sodTimeout::idle"); pvPut(state_str); 
 			if (verbose) printf("%s\n", state_str);
 		}
-		when(sample_count_active && timeout > 0){
+		when(delay(1)){
+			
+		} state idle1
+	}
+		
+	state idle1 {
+		when(sample_count_active && sample_count_count >= 1 && timeout > 0){
 			time_countdown = timeout; pvPut(time_countdown);
 			
 			if (verbose) printf("sodTimeout::busy sample_count_active:%d\n", sample_count_active);
@@ -98,7 +107,7 @@ ss sodTimeout {
 		}		
 		when(!sample_count_active && transient_state == 0) {
 			
-		} state idle
+		} state idle0
 		
 		when(time_countdown <= 0){
 			
@@ -115,12 +124,25 @@ ss sodTimeout {
 			clk_src = STRG; pvPut(clk_src);
 			sprintf(state_str, "sodTimeout::flush"); pvPut(state_str);			
 			if (verbose) printf("%s\n", state_str);
-			soft_trigger(flush_count);
-			sc_reset = 1; pvPut(sc_reset);
+			soft_trigger(flush_count);			
 		}
 		
 		when(delay(2)){
 			
-		} state idle
+		} state flush2
+	}
+	
+	state flush2 {
+		entry {
+			sprintf(state_str, "sodTimeout::flush2"); pvPut(state_str);			
+			if (verbose) printf("%s\n", state_str);
+		}
+		when(delay(1) && (transient_state == 0 || transient_state > 3)){
+			
+		} state idle0
+		
+		when(delay(3) && transient_state > 1 && transient_state <= 3){
+			
+		} state flush
 	}
 }
