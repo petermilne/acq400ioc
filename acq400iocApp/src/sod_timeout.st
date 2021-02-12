@@ -21,6 +21,9 @@ option +r;
 int sample_count_active; assign sample_count_active to "{uut}:1:SIG:sample_count:ACTIVE";
 monitor sample_count_active;
 
+int transient_state; assign transient_state to "{uut}:MODE:TRANS_ACT:STATE";
+monitor transient_state;
+
 int sc_reset; assign sc_reset to "{uut}:1:SIG:sample_count:RESET";
 double timeout; assign timeout to "{uut}:1:SOD_TIMEOUT";
 monitor timeout;
@@ -70,16 +73,17 @@ ss sodTimeout {
 			if (macValueGet("FLUSH_COUNT")){
 				flush_count = atoi(macValueGet("FLUSH_COUNT"));
 			}			
-			sc_reset = 1; pvPut(sc_reset);
+			
 		} state idle
 	}
 	
 	state idle {
 		entry {
+			sc_reset = 1; pvPut(sc_reset);
 			if (verbose) printf("sodTimeout::idle\n");
 		}
 		when(sample_count_active && timeout > 0){
-			
+			if (verbose) printf("sodTimeout::busy sample_count_active:%d\n", sample_count_active);
 		} state busy
 	}
 	
@@ -87,7 +91,7 @@ ss sodTimeout {
 		entry {
 			if (verbose) printf("sodTimeout::busy timeout:%f\n", timeout);
 		}		
-		when(!sample_count_active) {
+		when(!sample_count_active && transient_state == 0) {
 			
 		} state idle
 		
@@ -104,7 +108,7 @@ ss sodTimeout {
 			sc_reset = 1; pvPut(sc_reset);
 		}
 		
-		when(){
+		when(delay(2)){
 			
 		} state idle
 	}
