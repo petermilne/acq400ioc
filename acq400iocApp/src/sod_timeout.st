@@ -47,6 +47,7 @@ int soft_trigger; assign soft_trigger to "{uut}:SIG:SOFT_TRIGGER:w";
 #define FLUSH_PER_CALL	500
 
 int verbose;
+int sample_count_count0;
 
 ss sodTimeout {
 	state init {
@@ -90,6 +91,9 @@ ss sodTimeout {
 		
 		when(time_countdown <= 0){
 			clk_src = STRG; pvPut(clk_src);
+			pvGet(sample_count_count);
+			sample_count_count0 = sample_count_count;
+			sprintf(state_str, "sodTimeout::flush"); pvPut(state_str);
 		} state flush
 		
 		when(delay(1)){			 						
@@ -99,21 +103,23 @@ ss sodTimeout {
 	}
 	
 	state flush {
-		entry {
-			sprintf(state_str, "sodTimeout::flush %d", flush_count); pvPut(state_str);			
-			if (verbose) printf("%s\n", state_str);
+		option -e; /* Do entry{} every time ... */
+		entry {			
+			//if (verbose) printf("%s\n", state_str);
 			soft_trigger = FLUSH_PER_CALL; pvPut(soft_trigger);
-			flush_count -= FLUSH_PER_CALL;
-			if (verbose) printf("sodTimeout::flush flush_count %d\n", flush_count);
 		}
-				
-		when(flush_count <= 0){
+			
+		when(transient_state == 0 || transient_state > 3) {
+			
+		} state idle0
+		
+		when(sample_count_count - sample_count_count0 > flush_count){
 			
 		} state flush2
 		
-		when(delay(0.1)){
+		when(delay(0.02)){
 			
-		} state flush
+		} state flush		
 	}
 	
 	state flush2 {
