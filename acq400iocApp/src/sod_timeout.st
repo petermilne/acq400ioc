@@ -40,34 +40,13 @@ int flush_count; assign flush_count to "{uut}:1:SOD_TIMEOUT:FLUSH_COUNT";
 
 string state_str; assign state_str to "{uut}:1:SOD_TIMEOUT:STATE";
 
+int soft_trigger; assign soft_trigger to "{uut}:SIG:SOFT_TRIGGER:w";
+
 #define STRG	0
 
+#define FLUSH_PER_CALL	500
+
 int verbose;
-
-
-%{
-#define O_WRONLY	00000001
-int open(const char *pathname, int flags);
-int write(int fd, const void *buf, unsigned count);
-int close(int fd);
-
-void _soft_trigger(char* enable)
-{
-	int fd = open("/dev/acq400.0.knobs/soft_trig", O_WRONLY);
-	write(fd, enable, 2);
-	close(fd);
-
-}
-void soft_trigger(int count)
-{
-	while(count--){
-		_soft_trigger("1\n");
-		_soft_trigger("0\n");
-	}
-}
-
-
-}%
 
 ss sodTimeout {
 	state init {
@@ -110,7 +89,7 @@ ss sodTimeout {
 		} state idle0
 		
 		when(time_countdown <= 0){
-			
+			clk_src = STRG; pvPut(clk_src);
 		} state flush
 		
 		when(delay(1)){			 						
@@ -121,15 +100,20 @@ ss sodTimeout {
 	
 	state flush {
 		entry {
-			clk_src = STRG; pvPut(clk_src);
-			sprintf(state_str, "sodTimeout::flush"); pvPut(state_str);			
+			sprintf(state_str, "sodTimeout::flush %d", flush_count); pvPut(state_str);			
 			if (verbose) printf("%s\n", state_str);
-			soft_trigger(flush_count);			
+			soft_trigger = FLUSH_PER_CALL; pvPut(soft_trigger);
+			flush_count -= FLUSH_PER_CALL;
+			if (verbose) printf("sodTimeout::flush flush_count %d\n", flush_count);
 		}
-		
-		when(delay(2)){
+				
+		when(flush_count <= 0){
 			
 		} state flush2
+		
+		when(delay(0.1)){
+			
+		} state flush
 	}
 	
 	state flush2 {
