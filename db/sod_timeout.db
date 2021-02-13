@@ -5,6 +5,7 @@ record(ao, "${UUT}:1:SOD_TIMEOUT:TIMEOUT") {
 	field(DRVH, "100")
 	field(PINI, "YES")
 	field(VAL,  "${SECS}")
+	field(EGU,  "s")
 }
 
 record(longout, "${UUT}:1:SOD_TIMEOUT:FLUSH_COUNT") {
@@ -22,4 +23,5 @@ record(longin, "${UUT}:1:SOD_TIMEOUT:COUNTDOWN") {
 	field(DTYP, "Soft Channel")
 	field(PINI, "YES")
 	field(VAL,  "0")
+	field(EGU,  "s")
 }
