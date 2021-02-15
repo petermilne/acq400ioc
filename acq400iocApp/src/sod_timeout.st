@@ -75,7 +75,7 @@ ss sodTimeout {
 	state idle1 {
 		when(sample_count_active && sample_count_count >= 1 && timeout > 0){
 			time_countdown = timeout; pvPut(time_countdown);
-			
+			sample_count_count0 = sample_count_count;
 			if (verbose) printf("sodTimeout::busy sample_count_active:%d\n", sample_count_active);
 		} state busy
 	}
@@ -88,6 +88,12 @@ ss sodTimeout {
 		when(!sample_count_active && transient_state == 0) {
 			
 		} state idle0
+		
+		when(sample_count_count > sample_count_count0 && transient_state==1){
+			sample_count_count0 = sample_count_count;
+			time_countdown = timeout;
+			if (verbose) printf("%s reset countdown on new samples\n", state_str);
+		} state busy
 		
 		when(time_countdown <= 0){
 			clk_src = STRG; pvPut(clk_src);
