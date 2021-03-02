@@ -80,7 +80,7 @@ make_epics_knobs() {
 	do
 		NU=${PV#*:}
 		case ${PV} in
-		*ABO|*BURSTLEN)
+		*DIST|*ABO|*BURSTLEN)
 			make_caput $PV ${NU#*:} ${NU%%:*};;
 		*)
 			make_caget $PV ${NU#*:} ${NU%%:*};;

@@ -7,14 +7,14 @@ option +r;
 
 %% #include <string.h>
 
-int mode; assign mode to "{uut}:1:AWG:DIST";
+int mode; 		assign mode 		to "{UUT}:{SITE}:AWG:DIST";
 monitor mode;
 
 int mode0;
 
-string sitelist; 	assign sitelist to "{uut}:1:AWG:SITES";
-string dclist;   	assign dclist to "{uut}:1:AWG:SITES:n";
-string distributor;   	assign distributor to "{uut}:1:AWG:SITES:w";
+string sitelist; 	assign sitelist 	to "{UUT}:{SITE}:AWG:SITES";
+string dclist;   	assign dclist 		to "{UUT}:{SITE}:AWG:SITES:n";
+string distributor;   	assign distributor 	to "{UUT}:{SITE}:AWG:SITES:w";
 
 
 int verbose;
@@ -27,7 +27,8 @@ ss selectAwgDistributor {
 			}	
 			pvGet(dclist);
 			pvGet(distributor);
-		} state idle
+			pvGet(mode);
+		} state action
 	}
 	
 	state idle {
@@ -35,7 +36,7 @@ ss selectAwgDistributor {
 			if (verbose) printf("idle\n");
 		}
 		when(mode != mode0){
-			mode0 = mode;
+			
 		} state action
 	}
 	
@@ -51,7 +52,7 @@ ss selectAwgDistributor {
 			if (verbose) printf("action %s\n", distributor);
 		}
 		when() {
-			
+			mode0 = mode;
 		} state idle
 	}
 }

@@ -94,13 +94,24 @@ record (bo, "${UUT}:${SITE}:AWG:MODE:ABO") {
 	field(HIGH, "2")
 }
 
+
+record (bi, "${UUT}:${SITE}:AWG:ARM") {
+	field(DTYP, "stream")
+	field(INP, "@awg.proto getArm ${SPORT}")
+	field(SCAN, ".5 second")
+	field(DESC, "AWG is ARMED")
+	field(ZNAM, "0")
+	field(ONAM, "1")	
+	field(PINI, "YES")
+}
+
 record (longin, "${UUT}:${SITE}:AWG:COMPLETED_SHOT") {
-    	field(DTYP, "stream")
-    	field(INP, "@awg.proto getCompletedShot ${SPORT}")
-    	field(SCAN, ".2 second")
-    	field(DESC, "Shot number last complete shot")
-    	field(PINI, "YES")
-    	field(FLNK, "${UUT}:${SITE}:AWG:SHOT_COMPLETE")
+       field(DTYP, "stream")
+       field(INP, "@awg.proto getCompletedShot ${SPORT}")
+       field(SCAN, ".2 second")
+       field(DESC, "Shot number last complete shot")
+       field(PINI, "YES")
+       field(FLNK, "${UUT}:${SITE}:AWG:SHOT_COMPLETE")
 }
 
 record (calc, "${UUT}:${SITE}:AWG:SHOT_COMPLETE") {
@@ -130,6 +141,8 @@ record(bo, "${UUT}:1:AWG:DIST") {
 	field(DTYP, "Soft Channel")
 	field(ZNAM, "DC")
 	field(ONAM, "AWG")
+	field(VAL,  "0")
+	field(PINI, "YES")	
 }
 
 

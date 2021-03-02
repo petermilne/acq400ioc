@@ -16,6 +16,11 @@ getActive {
 	in "%d";
 }
 
+getArm {
+	out "awg_state_arm";
+	in "%d";
+}
+
 getML {
 	out "playloop_length";
 	in "%d %(\$1)d";
