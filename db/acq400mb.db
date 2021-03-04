@@ -36,9 +36,10 @@ record(bi, "${UUT}:0:DISTRIBUTOR:ON") {
 	field(ONAM, "1")	
 }
 
+# AGG and DIS are AMBIGUOUS.. use SPORT2
 record(longin, "${UUT}:0:AGGREGATOR") {
 	field(DTYP,  "stream")
-	field(INP,   "@acq400mb.proto getAggregator ${SPORT}")	
+	field(INP,   "@acq400mb.proto getAggregator ${SPORT2}")	
 	field(SCAN,  "5 second")
 	field(DESC,  "0-> DISABLED")	
 	field(PINI,  "YES")
@@ -46,13 +47,13 @@ record(longin, "${UUT}:0:AGGREGATOR") {
 
 record(stringin, "${UUT}:0:AGGREGATOR:SITES") {
 	field(DTYP,  "stream")
-	field(INP,   "@acq400mb.proto getAggregatorSites ${SPORT}")
+	field(INP,   "@acq400mb.proto getAggregatorSites ${SPORT2}")
 	field(SCAN,  "I/O Intr")		
 }
 
 record(bi, "${UUT}:0:AGGREGATOR:ON") {
 	field(DTYP,  "stream")
-	field(INP,   "@acq400mb.proto getAggregatorEn ${SPORT}")
+	field(INP,   "@acq400mb.proto getAggregatorEn ${SPORT2}")
 	field(SCAN,  "I/O Intr")
 	field(ZNAM, "0")
 	field(ONAM, "1")	
