@@ -13,6 +13,10 @@ monitor mode;
 int mode0;
 
 string sitelist; 	assign sitelist 	to "{UUT}:{SITE}:AWG:SITES";
+monitor sitelist;
+
+string sitelist0;
+
 string dclist;   	assign dclist 		to "{UUT}:{SITE}:AWG:SITES:n";
 string distributor;   	assign distributor 	to "{UUT}:{SITE}:AWG:SITES:w";
 
@@ -28,6 +32,8 @@ ss selectAwgDistributor {
 			pvGet(dclist);
 			pvGet(distributor);
 			pvGet(mode);
+			pvGet(sitelist);
+			strcpy(sitelist0, sitelist);
 		} state action
 	}
 	
@@ -35,11 +41,37 @@ ss selectAwgDistributor {
 		entry {
 			if (verbose) printf("idle\n");
 		}
+		
+		when(strcmp(sitelist, sitelist0)){
+		
+		} state sitelist_change
+		
 		when(mode != mode0){
 			
 		} state action
 	}
 	
+	state sitelist_change {
+		entry {
+			if (verbose) printf("sitelist_change %s -> %s\n", sitelist0, sitelist);
+			strcpy(sitelist0, sitelist);
+			if (strcmp(sitelist, "none") == 0){
+				if (mode != 0){
+					mode0 = mode = 0;
+					pvPut(mode);
+				}
+			}else{
+				if (mode == 0){
+					mode0 = mode = 1;
+					pvPut(mode);
+				}
+			}
+		}
+		when() {
+			
+		} state idle
+		
+	}
 	state action {
 		entry {
 			if (mode == 0){

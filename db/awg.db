@@ -120,21 +120,37 @@ record (calc, "${UUT}:${SITE}:AWG:SHOT_COMPLETE") {
     	field(CALC, "A && A==B")       
 }
 
-record(stringout, "${UUT}:1:AWG:SITES") {
+record(stringout, "${UUT}:${SITE}:AWG:SITES") {
 	field(DTYP, "Soft Channel")
 	field(VAL,  "${dsites}")
 	field(PINI, "YES")
 }
 
-record(stringout, "${UUT}:1:AWG:SITES:n") {
+record(stringout, "${UUT}:${SITE}:AWG:SITES:n") {
 	field(DTYP, "Soft Channel")
 	field(VAL,  "none")
 	field(PINI, "YES")
 }
 
-record(stringout, "${UUT}:1:AWG:SITES:w") {
+record(stringin, "${UUT}:${SITE}:AWG:SITES:r") {
 	field(DTYP, "stream")
-	field(OUT, "@awg.proto setDistributorSites S0")
+	field(INP, "@acq400mb.proto getDistributorSites S0")
+	field(SCAN, "I/O Intr")
+}
+
+record(bo, "${UUT}:${SITE}:AWG:SITES:s") {
+	field(DTYP, "Soft Channel")
+	field(DOL,  "${UUT}:${SITE}:AWG:SITES:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:${SITE}:AWG:SITES PP")
+}
+
+
+record(stringout, "${UUT}:${SITE}:AWG:SITES:w") {
+	field(DTYP, "stream")
+	field(OUT, "@acq400mb.proto setDistributorSites S0")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:AWG:SITES:s.PACT")
 }
 
 record(bo, "${UUT}:1:AWG:DIST") {

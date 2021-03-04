@@ -806,6 +806,8 @@ load_mb_sites() {
 		done
 	)
 
+	dblr '"db/acq400mb.db","UUT='${HOST}',SPORT=S0"'
+	
 	case $MB_MODEL in
 		kmcu*)
 			;;

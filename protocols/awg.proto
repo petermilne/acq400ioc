@@ -63,8 +63,3 @@ setBurstLen {
     out "rtm_translen %d";
 }
 
-# SITE0
-setDistributorSites {
-	out "distributor sites=%s";
-	in;
-}

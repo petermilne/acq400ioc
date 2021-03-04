@@ -1,0 +1,56 @@
+Terminator = LF;
+ExtraInput = Ignore;
+
+# dma_stat_desc_push
+# reply: count flags
+# 62 0
+
+# fails .. descr too long..
+getFifo {
+	out "\$1";
+	in "%d %(\$2)d";	
+}
+
+getFifoStatus {
+	out "\$1";
+	in "%*d %d";
+}
+	
+getAggregator {
+	out "aggregator";
+	in "reg=0x%x sites=%*s threshold=%*d DATA_MOVER_EN=%*s";
+}
+
+getAggregatorSites {
+	in "reg=0x%*x sites=%s threshold=%*d DATA_MOVER_EN=%*s";	
+}
+
+getAggregatorEn {	
+	in "reg=0x%*x sites=%s threshold=%*d DATA_MOVER_EN=%{off|on}";
+}
+
+getDistributor {
+	out "distributor";
+	in "reg=0x%08x sites=%*s comms=%*s";
+};
+
+getDistributorSites{
+	in "reg=0x%*08x sites=%s comms=%*s";
+}
+
+getDistributorComms{
+	in "reg=0x%*08x sites=%*s comms=%{9|B|A} pad=%*d";
+}
+
+getDistributorPad{
+	in "reg=0x%*08x sites=%*s comms=%*s pad=%d";
+}
+
+getDistributorEn {
+	in "reg=0x%*08x sites=%*s comms=%*s pad=%*d DATA_MOVER_EN=%{off|on}";
+}
+
+setDistributorSites {
+	out "distributor sites=%s";
+	in;
+}

@@ -42,34 +42,3 @@ record(bi, "${UUT}:0:SIG:CLK_MB:READY") {
 }
 
 
-record(longin, "${UUT}:0:DISTRIBUTOR") {
-	field(DTYP,  "stream")
-	field(INP,   "@mgt400.proto getDistributor ${SPORT}")	
-	field(SCAN,  "1 second")
-	field(DESC,  "0-> DISABLED")
-	field(FLNK,  "${UUT}:0:DISTRIBUTOR:SITES")
-}
-
-record(stringin, "${UUT}:0:DISTRIBUTOR:SITES") {
-	field(DTYP,  "stream")
-	field(INP,   "@mgt400.proto getDistributorSites ${SPORT}")
-	field(SCAN,  "I/O Intr")	
-	field(FLNK,  "${UUT}:0:DISTRIBUTOR:ON")
-}
-
-record(bi, "${UUT}:0:DISTRIBUTOR:ON") {
-	field(DTYP,  "stream")
-	field(INP,   "@mgt400.proto getDistributorEn ${SPORT}")
-	field(SCAN,  "I/O Intr")	
-}
-
-record(mbbi, "${UUT}:0:DISTRIBUTOR:COMMS") {
-	field(DTYP,  "stream")
-	field(INP,   "@mgt400.proto getDistributorComms ${SPORT}")
-	field(SCAN,  "I/O Intr")
-	field(NOBT,  "4")
-	field(ZRST,  "CPU")
-	field(ONST,  "COMMSB")
-	field(TWST,  "COMMSA")
-	field(THST,  "CPU")
-}

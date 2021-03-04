@@ -35,7 +35,7 @@ record(longin, "${UUT}:${chan}:AURORA:ERR") {
 record(longin, "${UUT}:${chan}:AGGREGATOR") {
 	field(DTYP,  "stream")
 	field(INP,   "@mgt400.proto getAggregator ${SPORT}")	
-	field(SCAN,  "5 second")
+	field(SCAN,  "2 second")
 	field(DESC,  "0-> DISABLED")	
 	field(PINI,  "YES")
 }
@@ -43,14 +43,14 @@ record(longin, "${UUT}:${chan}:AGGREGATOR") {
 record(stringin, "${UUT}:${chan}:AGGREGATOR:SITES") {
 	field(DTYP,  "stream")
 	field(INP,   "@mgt400.proto getAggregatorSites ${SPORT}")
-	field(SCAN,  "2 second")	
+	field(SCAN,  "I/O Intr")	
 	field(FLNK,  "${UUT}:${chan}:AGGREGATOR:ON")
 }
 
 record(bi, "${UUT}:${chan}:AGGREGATOR:ON") {
 	field(DTYP,  "stream")
 	field(INP,   "@mgt400.proto getAggregatorEn ${SPORT}")
-	field(SCAN,  "2 second")
+	field(SCAN,  "I/O Intr")
 }
 
 
