@@ -36,7 +36,7 @@ record(calcout, "${UUT}:MODE:BLT:BUFFERS:M") {
 	field(OUT,  "${UUT}:MODE:BLT:BUFFERS:w PP")
 	field(OOPT, "Every Time")
 	field(DOPT, "Use CALC")
-	field(DESC, "Round up capture buffers to offload modulus")
+	field(DESC, "Round up offload buffers modulus")
 }
 
 record(longout, "${UUT}:MODE:BLT:BUFFERS:w") {
@@ -109,8 +109,8 @@ record(longin, "${UUT}:MODE:BLT:ACT:SAMPLES") {
 	field(DTYP, "stream")
 	field(SCAN, "I/O Intr")
 	field(INP,  "@mgtdram8.proto mgt_get_mgt_samples ${SMON}")
-	field(DRVL, "0")
-	field(DRVH, "1000000000")
+	field(LOPR, "0")
+	field(HOPR, "1000000000")
 	field(VAL,  "0")
 }
 
