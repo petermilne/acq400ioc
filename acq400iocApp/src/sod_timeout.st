@@ -81,7 +81,7 @@ ss sodTimeout {
 		when(sample_count_active && sample_count_count >= 1 && timeout > 0){
 			time_countdown = timeout; pvPut(time_countdown);
 			sample_count_count0 = sample_count_count;
-			sample_count_at_flush = 0; pvPut(sample_count_at_flush);
+			
 			if (verbose) printf("sodTimeout::busy sample_count_active:%d\n", sample_count_active);
 		} state busy
 	}
@@ -89,7 +89,11 @@ ss sodTimeout {
 	state busy {
 		option -e; /* Do entry{} every time ... */
 		entry {	
-			sprintf(state_str, "sodTimeout::busy:%d", time_countdown); pvPut(state_str);			
+			sprintf(state_str, "sodTimeout::busy:%d", time_countdown); pvPut(state_str);
+			if (time_countdown + 1 == timeout){
+				// debounce .. busy can happen momentarily
+				sample_count_at_flush = 0; pvPut(sample_count_at_flush);
+			}
 			if (verbose) printf("%s\n", state_str);
 		}		
 		when(!sample_count_active && transient_state == 0) {
