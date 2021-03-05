@@ -18,6 +18,13 @@ record(stringin, "${UUT}:1:SOD_TIMEOUT:STATE") {
 	field(DTYP, "Soft Channel")
 }
 
+record(longout, "${UUT}:1:SOD_TIMEOUT:SAMPLE_COUNT") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "sample count at flush")
+	field(PINI, "YES")
+	field(VAL,  "0")	
+}
+
 
 record(longin, "${UUT}:1:SOD_TIMEOUT:COUNTDOWN") {
 	field(DTYP, "Soft Channel")

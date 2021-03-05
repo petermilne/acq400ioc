@@ -42,6 +42,9 @@ string state_str; assign state_str to "{uut}:1:SOD_TIMEOUT:STATE";
 
 int soft_trigger; assign soft_trigger to "{uut}:SIG:SOFT_TRIGGER:w";
 
+int sample_count_at_flush; assign sample_count_at_flush to "{uut}:1:SOD_TIMEOUT:SAMPLE_COUNT";
+
+
 #define STRG	0
 
 #define FLUSH_PER_CALL	500
@@ -66,6 +69,8 @@ ss sodTimeout {
 						
 			sprintf(state_str, "sodTimeout::idle"); pvPut(state_str); 
 			if (verbose) printf("%s\n", state_str);
+			
+			
 		}
 		when(delay(1)){
 			
@@ -76,11 +81,13 @@ ss sodTimeout {
 		when(sample_count_active && sample_count_count >= 1 && timeout > 0){
 			time_countdown = timeout; pvPut(time_countdown);
 			sample_count_count0 = sample_count_count;
+			sample_count_at_flush = 0; pvPut(sample_count_at_flush);
 			if (verbose) printf("sodTimeout::busy sample_count_active:%d\n", sample_count_active);
 		} state busy
 	}
 	
 	state busy {
+		option -e; /* Do entry{} every time ... */
 		entry {	
 			sprintf(state_str, "sodTimeout::busy:%d", time_countdown); pvPut(state_str);			
 			if (verbose) printf("%s\n", state_str);
@@ -99,6 +106,7 @@ ss sodTimeout {
 			clk_src = STRG; pvPut(clk_src);
 			pvGet(sample_count_count);
 			sample_count_count0 = sample_count_count;
+			sample_count_at_flush = sample_count_count; pvPut(sample_count_at_flush);
 			sprintf(state_str, "sodTimeout::flush"); pvPut(state_str);
 		} state flush
 		
@@ -112,6 +120,7 @@ ss sodTimeout {
 		option -e; /* Do entry{} every time ... */
 		entry {			
 			//if (verbose) printf("%s\n", state_str);
+			//if (verbose) printf("%s reset countdown on new samples %d\n", state_str, sample_count_at_flush);
 			soft_trigger = FLUSH_PER_CALL; pvPut(soft_trigger);
 		}
 			
