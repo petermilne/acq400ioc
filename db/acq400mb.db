@@ -36,6 +36,13 @@ record(bi, "${UUT}:0:DISTRIBUTOR:ON") {
 	field(ONAM, "1")	
 }
 
+record(longin, "${UUT}:0:DSSB") {
+	field(DTYP, "stream")
+	field(INP,  "@mb.proto get_dssb ${SPORT}")
+	field(PINI, "YES")
+	field(DESC, "distributor sample size bytes")
+}
+
 # AGG and DIS are AMBIGUOUS.. use SPORT2
 record(longin, "${UUT}:0:AGGREGATOR") {
 	field(DTYP,  "stream")
