@@ -57,6 +57,8 @@ record(calc, "${UUT}:${SITE}:AWG:LENGTH:PCT") {
     field(LOPR, "0")
     field(HOPR, "100")
 }
+
+
 record (longin, "${UUT}:${SITE}:AWG:REPS:rc") {
 	field(DTYP, "stream")
 	field(INP, "@awg.proto getReps ${SPORT}")
@@ -162,6 +164,19 @@ record(bo, "${UUT}:1:AWG:DIST") {
 }
 
 
+record (longin, "${UUT}:${SITE}:AWG:CURSOR:PUSH") {
+	field(DTYP, "stream")
+	field(INP, "@awg.proto getPushBuf ${SPORT}")
+	field(DESC, "last buffer filled")
+	field(SCAN, ".2 second")
+}
+
+record (longin, "${UUT}:${SITE}:AWG:CURSOR:PULL") {
+	field(DTYP, "stream")
+	field(INP, "@awg.proto getPullBuf ${SPORT}")
+	field(DESC, "last buffer processed")
+	field(SCAN, "I/O Intr")
+}
 
 
 

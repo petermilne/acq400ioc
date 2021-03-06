@@ -63,3 +63,10 @@ setBurstLen {
     out "rtm_translen %d";
 }
 
+getPushBuf {
+	out "awg_stream_buffers";
+	in "awg_stream:%d,%*d,%(LOPR)d,%(HOPR)d";
+}
+getPullBuf {	
+	in "awg_stream:%*d,%d,%(LOPR)d,%(HOPR)d";
+}
