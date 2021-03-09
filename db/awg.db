@@ -155,7 +155,7 @@ record(stringout, "${UUT}:${SITE}:AWG:SITES:w") {
 	field(SDIS, "${UUT}:${SITE}:AWG:SITES:s.PACT")
 }
 
-record(bo, "${UUT}:1:AWG:DIST") {
+record(bo, "${UUT}:${SITE}:AWG:DIST") {
 	field(DTYP, "Soft Channel")
 	field(ZNAM, "DC")
 	field(ONAM, "AWG")
