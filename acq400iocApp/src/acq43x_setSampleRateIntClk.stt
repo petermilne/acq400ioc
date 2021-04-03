@@ -36,7 +36,7 @@ string srcfreq; assign srcfreq to "{uut}:1:ACQ43X_SRCFREQ";
 
 int state_not_idle; assign state_not_idle to "{uut}:MODE:TRANS_ACT:STATE_NOT_IDLE";
 
-int HS_MAX=50000;
+int HS_MAX=52000;
 
  
 int adc_mode0;
