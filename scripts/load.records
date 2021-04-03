@@ -155,7 +155,7 @@ make_AI_TR() {
 		NSAMPLES=4096
 		TYPE=short
 	fi
-	ssb=$(get.site 0 ssb)
+	ssb=$(cat /etc/acq400/0/ssb)
 	echo 1>&2 "load.records: make_AI_TR ssb:$ssb NSAMPLES:$NSAMPLES"
 	
 	if [ $NSAMPLES -eq 100000 ]; then
