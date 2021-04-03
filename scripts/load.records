@@ -156,6 +156,8 @@ make_AI_TR() {
 		TYPE=short
 	fi
 	ssb=$(get.site 0 ssb)
+	echo 1>&2 "load.records: make_AI_TR ssb:$ssb NSAMPLES:$NSAMPLES"
+	
 	if [ $NSAMPLES -eq 100000 ]; then
 		if [ $ssb -gt 128 ]; then
 			echo '# memory conservation NSAMPLES=100000 $ssb gt 128 halve it'
@@ -1124,10 +1126,10 @@ load_mb() {
 		source /usr/local/epics/scripts/load.mgt400
 		echo "seq mgtStopOnLinkDown \"uut=${HOST}\"" >>/tmp/st_post.cmd
 	fi
-	if [ "$SHOTBUSY_OK" = "y"] && [ -e /dev/gpio/LED/ACT_G ]; then
+	if [ "x$SHOTBUSY_OK" = "xy" ] && [ -e /dev/gpio/LED/ACT_G ]; then
 		echo "seq shotBusy \"uut=${HOST},verbose=${SHOT_BUSY_VERBOSE:-0}\"" >>/tmp/st_post.cmd
 	fi
-	echo 	
+	echo 1>&2 "load.records:load_mb 99" 	
 }
 
 load_mod_present()
