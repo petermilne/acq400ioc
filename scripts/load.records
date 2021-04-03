@@ -146,7 +146,7 @@ make_AI_TR_records() {
 	FIRST_AI_TR_RECORDS=0	
 }
 
-make_AI_subrate() {
+make_AI_TR() {
 	kctrl=/dev/acq400/data/.control
 	if [ -e $kctrl ]; then
 		echo 1>&2 "load.records: control $(cat $kctrl)"
@@ -154,6 +154,18 @@ make_AI_subrate() {
 	else
 		NSAMPLES=4096
 		TYPE=short
+	fi
+	ssb=$(get.site 0 ssb)
+	if [ $NSAMPLES -eq 100000 ]; then
+		if [ $ssb -gt 128 ]; then
+			echo '# memory conservation NSAMPLES=100000 $ssb gt 128 halve it'
+			NSAMPLES=$(($NSAMPLES/2))
+			if [ $ssb -gt 192 ]; then
+				echo '# memory conservation NSAMPLES=100000 $ssb gt 192 halve it'
+				NSAMPLES=$(($NSAMPLES/2))
+			fi
+			echo "# NSAMPLES=$NSAMPLES"
+		fi
 	fi
 
 	eval $(cat /dev/acq400.0.knobs/aggregator)
@@ -1104,7 +1116,7 @@ load_mb() {
 		if [ -e /dev/acq400.0.knobs/sync_out_clk ]; then
 			load_mb_sync $KB
 		fi
-		make_AI_subrate
+		make_AI_TR
 	fi
 	[ -e /dev/gpio/TRG/d0 ] && load_mb_trg_gpio
 
