@@ -1,0 +1,67 @@
+record(longin, "${UUT}:0:DISTRIBUTOR") {
+	field(DTYP,  "stream")
+	field(INP,   "@acq400mb.proto getDistributor ${SPORT}")	
+	field(SCAN,  "2 second")
+	field(DESC,  "0-> DISABLED")	
+}
+
+record(stringin, "${UUT}:0:DISTRIBUTOR:SITES") {
+	field(DTYP,  "stream")
+	field(INP,   "@acq400mb.proto getDistributorSites ${SPORT}")
+	field(SCAN,  "I/O Intr")		
+}
+
+record(mbbi, "${UUT}:0:DISTRIBUTOR:COMMS") {
+	field(DTYP,  "stream")
+	field(INP,   "@acq400mb.proto getDistributorComms ${SPORT}")
+	field(SCAN,  "I/O Intr")
+	field(NOBT,  "4")
+	field(ZRST,  "CPU")
+	field(ONST,  "COMMSB")
+	field(TWST,  "COMMSA")
+	field(THST,  "CPU")
+}
+record(longin, "${UUT}:0:DISTRIBUTOR:PAD") {
+	field(DTYP,  "stream")
+	field(INP,   "@acq400mb.proto getDistributorPad ${SPORT}")	
+	field(SCAN,  "I/O Intr")
+	field(DESC,  "0-> DISABLED")
+}
+
+record(bi, "${UUT}:0:DISTRIBUTOR:ON") {
+	field(DTYP,  "stream")
+	field(INP,   "@acq400mb.proto getDistributorEn ${SPORT}")
+	field(SCAN,  "I/O Intr")
+	field(ZNAM, "0")
+	field(ONAM, "1")	
+}
+
+record(longin, "${UUT}:0:DSSB") {
+	field(DTYP, "stream")
+	field(INP,  "@mb.proto get_dssb ${SPORT}")
+	field(PINI, "YES")
+	field(DESC, "distributor sample size bytes")
+}
+
+# AGG and DIS are AMBIGUOUS.. use SPORT2
+record(longin, "${UUT}:0:AGGREGATOR") {
+	field(DTYP,  "stream")
+	field(INP,   "@acq400mb.proto getAggregator ${SPORT2}")	
+	field(SCAN,  "5 second")
+	field(DESC,  "0-> DISABLED")	
+	field(PINI,  "YES")
+}
+
+record(stringin, "${UUT}:0:AGGREGATOR:SITES") {
+	field(DTYP,  "stream")
+	field(INP,   "@acq400mb.proto getAggregatorSites ${SPORT2}")
+	field(SCAN,  "I/O Intr")		
+}
+
+record(bi, "${UUT}:0:AGGREGATOR:ON") {
+	field(DTYP,  "stream")
+	field(INP,   "@acq400mb.proto getAggregatorEn ${SPORT2}")
+	field(SCAN,  "I/O Intr")
+	field(ZNAM, "0")
+	field(ONAM, "1")	
+}

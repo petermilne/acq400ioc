@@ -729,6 +729,7 @@ load_mb_sites() {
 		done
 	)
 
+	dblr '"db/acq400mb.db","UUT='${HOST}',SPORT=S0,SPORT2=S0A"'
 	case $MB_MODEL in
 		cpsc2*)
 			;;
@@ -756,6 +757,7 @@ load_mb_sites() {
 	fi
 	dblr '"db/mb_common.db","UUT='${HOST}',SPORT=S0"'
 	create_asyn_channel S0 127.0.0.1:4220
+	create_asyn_channel S0A 127.0.0.1:4220	
 	create_asyn_channel NP 127.0.0.1:2226
 	create_asyn_channel SS 127.0.0.1:4220
 	create_asyn_channel ST 127.0.0.1:$(get-port-from-service acq4xx-transient-console)

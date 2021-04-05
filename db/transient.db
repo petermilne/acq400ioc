@@ -316,6 +316,7 @@ record(longout, "${UUT}:LIVE:PRE") {
 	field(OUT,  "@mb.proto setPre ${SPORT}")
 	field(DESC, "delay samples")
 	field(FLNK, "${UUT}:LIVE:delay_calc_post")
+	field(PINI,  "YES")
 }
 
 record(calcout, "${UUT}:LIVE:delay_calc_post") {
@@ -343,6 +344,13 @@ record(mbbi, "${UUT}:LIVE:MODE") {
 	field(ZRST, "off")
 	field(ONST, "free-run")
 	field(TWST, "pre-post")	
+}
+
+record(longin, "${UUT}:0:SSB") {
+	field(DTYP, "stream")
+	field(INP,  "@mb.proto get_ssb ${SPORT}")
+	field(PINI, "YES")
+	field(DESC, "aggregator sample size bytes")
 }
 
 # append existing record
