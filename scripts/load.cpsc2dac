@@ -10,8 +10,10 @@ for ch in A B; do
 	dblr '"db/counter.db","'${prams}'"'
 done
 ctprams="${cprams},CTRMAX=${CTR32},DT=1,DTC=1"
-for ch in 1 2; do
-	prams="${ctprams},lname=AURORA:${ch}:DUP,pname=scount_sfp${ch}_dup_seq"
+nch=1
+for ch in A B; do
+	prams="${ctprams},lname=AURORA:${ch}:DUP,pname=scount_sfp${nch}_dup_seq"
 	dblr '"db/counter.db","'${prams}'"'
+	nch=$((nch+1))
 done
 
