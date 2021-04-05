@@ -1,0 +1,17 @@
+# must be sourced from load.records
+		
+echo '# load.cpsc2dac'
+
+
+ctprams="${cprams},CTRMAX=${CTR16},DT=1,DTC=1"
+
+for ch in A B; do
+	prams="${ctprams},lname=AURORA:${ch}:BAD_PKTS,pname=bad_pkts${ch}"
+	dblr '"db/counter.db","'${prams}'"'
+done
+ctprams="${cprams},CTRMAX=${CTR32},DT=1,DTC=1"
+for ch in 1 2; do
+	prams="${ctprams},lname=AURORA:${ch}:DUP,pname=scount_sfp${ch}_dup_seq"
+	dblr '"db/counter.db","'${prams}'"'
+done
+

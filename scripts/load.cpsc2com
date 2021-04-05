@@ -1,5 +1,6 @@
 # must be sourced from load.records
 		
+echo '# load.cpsc2com'
 dblr '"db/cpcom.db","'${cprams},CH=1'"'
 dblr '"db/cpcom.db","'${cprams},CH=2'"'
 
