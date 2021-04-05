@@ -7,14 +7,14 @@ ctprams="${cprams},CTRMAX=${CTR16},DT=1,DTC=1"
 
 nch=1
 for ch in A B; do
-	prams="${ctprams},lname=AURORA:${nch}:BAD_PKTS,pname=bad_pkts${ch}"
+	prams="${ctprams},lname=AUR:${nch}:BAD_PKTS,pname=bad_pkts${ch}"
 	dblr '"db/counter.db","'${prams}'"'
 	nch=$((nch+1))
 done
 ctprams="${cprams},CTRMAX=${CTR32},DT=1,DTC=1"
 
 for nch in 1 2; do
-	prams="${ctprams},lname=AURORA:${nch}:DUP,pname=scount_sfp${nch}_dup_seq"
+	prams="${ctprams},lname=AUR:${nch}:DUP,pname=scount_sfp${nch}_dup_seq"
 	dblr '"db/counter.db","'${prams}'"'	
 done
 
