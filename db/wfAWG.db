@@ -16,7 +16,7 @@ record(aSub, "${UUT}:AO:AWG:${cid}:v2r") {
 
 	field(FTI,  "LONG")
 	field(NOI,  "1")
-	field(INPI, "${cid}")	
+	field(INPI, "${ident}")	
 
 	field(FTO, "DOUBLE")
 	field(NOO, "1")
