@@ -16,6 +16,7 @@ for ch in 1 2; do
 	prams="${ctprams},lname=AURORA:${ch}:LANEUP,pname=scount_aurora${ch}_lane_up"
 	dblr '"db/counter.db","'${prams}'"'	
 	prams="${ctprams},lname=AURORA:${ch}:RXLEN,pname=scount_aurora${ch}_rx_len"
+	dblr '"db/counter.db","'${prams}'"'
 done
 
 ctprams="${cprams},CTRMAX=${CTR16},DT=1,DTC=1"
