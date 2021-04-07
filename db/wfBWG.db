@@ -14,6 +14,11 @@ record(aSub, "${UUT}:AO:BWG:${cid}:v2r") {
 	field(NOA,  "${size}")
 	field(INPA, "${UUT}:AO:BWG:${cid}:V")
 
+
+	field(FTI,  "LONG")
+	field(NOI,  "1")
+	field(INPI, "${cid}")	
+
 	field(FTO, "DOUBLE")
 	field(NOO, "1")
 #	field(INPO, "${UUT}:{SITE}:AI:CH:${cid}.EOFF")

@@ -189,26 +189,34 @@ long raw_to_volts(aSubRecord *prec) {
 /** ARGS:
  * INPUTS:
  * INPA : const T volts[size]
+ * INPI : ident : embed in low order bits, valid IF SHL > 0
  * INPO : double AOFF if set
  * INPS : double ASLO if set
  * OUTPUTS:
  * VALA : link to raw
  */
-template <class T>
+
+template <class T, int SHL>
 long volts_to_raw(aSubRecord *prec) {
 	float * volts = reinterpret_cast<float*>(prec->a);
 	int len = prec->nea;
 	T *raw = reinterpret_cast<T *>(prec->vala);
 	double aoff = *reinterpret_cast<double*>(prec->o);
 	double aslo = *reinterpret_cast<double*>(prec->s);
+	const T mask = ~(SHL? (1<<SHL)-1: (T)0);
+	const int ident = SHL? *reinterpret_cast<int*>(prec->i): 0;
+
+	if (::verbose){
+		printf("volts_to_raw() T:%d SHL:%d mask:%lx ident:%lx\n", sizeof(T), SHL, (long)mask, (long)ident);
+	}
 
 	for (int ii=0; ii <len; ii++) {
 		double yy = (volts[ii] - aoff) * aslo;
 
-		raw[ii] = static_cast<T>(yy);
+		raw[ii] = (static_cast<T>(yy) & mask) | ident;
 
 		if (::verbose && ii < 5){
-			printf("volts_to_raw [%d] %.2f -> %ld  # aslo %e aoff %e\n", ii, volts[ii], raw[ii], aslo, aoff);
+			printf("volts_to_raw [%d] %.2f -> %ld  # aslo %e aoff %e\n", ii, volts[ii], (long)raw[ii], aslo, aoff);
 		}
 	}
 	/* ideally set NORD in OUTPUT to NORD in input .. */
@@ -465,8 +473,9 @@ static registryFunctionRef my_asub_Ref[] = {
        {"raw_to_volts_LONG",  (REGISTRYFUNCTION) raw_to_volts<long, 0, 8>},
        {"raw_to_volts_DAC20",  (REGISTRYFUNCTION) raw_to_volts<long, 12, 12>},
        {"raw_to_volts_SHORT",  (REGISTRYFUNCTION) raw_to_volts<short, 0, 0>},
-       {"volts_to_raw_SHORT", (REGISTRYFUNCTION) volts_to_raw<short>},
-       {"volts_to_raw_DAC20", (REGISTRYFUNCTION) volts_to_raw<long>},
+       {"volts_to_raw_SHORT", (REGISTRYFUNCTION) volts_to_raw<short, 0>},
+       {"volts_to_raw_LONG", (REGISTRYFUNCTION) volts_to_raw<long, 0>},
+       {"volts_to_raw_DAC20", (REGISTRYFUNCTION) volts_to_raw<long, 12>},
        {"cart2pol", (REGISTRYFUNCTION) cart2pol<short>},
        {"cart2pol_LONG", (REGISTRYFUNCTION) cart2pol<long>},
        {"cart2pol_SHORT", (REGISTRYFUNCTION) cart2pol<short>},
