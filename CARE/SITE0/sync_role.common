@@ -152,6 +152,7 @@ if [ "${MOD:0:7}" = "acq2106" ]; then
     set_common_master=set_common_master_acq2106
 # Si5326 minimum output rate. 2M works for slave XO hardware
     FMIN=200000
+    is_acq2106=1
 else
     set_slave=set_slave_acq1001
     set_common_master=set_common_master_acq1001
@@ -159,6 +160,7 @@ else
     FMIN=4000000
 # avoid local clkdiv on slow SLAVE SAR devices		
     is_42x && CLKDX_OUT=d2
+    is_acq2106=0
 fi
 
 FS_DEF=200000; is_48x && FS_DEF=20000000
@@ -236,7 +238,7 @@ set_48x_override() {
     set.site 0 SIG:CLK_MB:FIN $fin
     $set_mb $1
     set.site 0 SIG:SRC:CLK:1 MCLK
-    set.site 0 SYS:CLK:OE_CLK1_ZYNQ 1
+    [ $is_acq2106 -ne 0 ] && set.site 0 SYS:CLK:OE_CLK1_ZYNQ 1
     set.site 1 CLKDIV=${CLKDIV:-1}
     # Configure HDMI Clock out
     set.site 0 SIG:SYNC_OUT:CLK:DX  d0
