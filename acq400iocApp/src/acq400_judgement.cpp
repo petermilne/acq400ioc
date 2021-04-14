@@ -120,8 +120,6 @@ bool acq400Judgement::onCalculate(bool fail)
 	    return rc;
 	}
 
-	printf("%s update:%d fail:%d %s\n", __FUNCTION__, update, fail, "UPDATE");
-
 	switch(update){
 	case UPDATE_ALWAYS:
 		break;
@@ -140,8 +138,26 @@ bool acq400Judgement::onCalculate(bool fail)
 			break;
 		}
 	}
-	printf("%s update:%d fail:%d %s\n", __FUNCTION__, update, fail, "UPDATE");
+
 	for (int ic = 0; ic < nchan; ic++){
+		bool cfail = FAIL_MASK32[ic/32] & (1 << (ic&0x1f));
+		switch(update){
+		case UPDATE_ALWAYS:
+			break;
+		case UPDATE_ON_FAIL:
+			if (!cfail){
+				continue;
+			}else{
+				break;
+			}
+		case UPDATE_ON_SUCCESS:
+			if (cfail){
+				continue;
+			}else{
+				break;
+			}
+		}
+
 		doCallbacksInt16Array(&RAW[ic*nsam], nsam, P_RAW, ic);
 	}
 	return fail;
