@@ -65,3 +65,12 @@ record(bi, "${UUT}:0:AGGREGATOR:ON") {
 	field(ZNAM, "0")
 	field(ONAM, "1")	
 }
+
+record(ao, "${UUT}:0:PCOMP") {
+	field(DTYP, "dsSysfsAo")
+	field(OUT,  "@/sys/module/acq420fmc/parameters/pcomp")
+	field(ASLO, "0.5")
+	field(DRVL, "0")
+	field(DRVH, "100")
+}
+
