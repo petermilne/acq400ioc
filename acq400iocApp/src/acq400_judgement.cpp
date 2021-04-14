@@ -121,22 +121,8 @@ bool acq400Judgement::onCalculate(bool fail)
 	}
 
 	switch(update){
-	case UPDATE_ALWAYS:
-		break;
 	case UPDATE_NEVER:
 		return fail;
-	case UPDATE_ON_FAIL:
-		if (!fail){
-			return fail;
-		}else{
-			break;
-		}
-	case UPDATE_ON_SUCCESS:
-		if (fail){
-			return fail;
-		}else{
-			break;
-		}
 	}
 
 	for (int ic = 0; ic < nchan; ic++){
