@@ -95,7 +95,7 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 	CHN_ML = new epicsInt16[nchan*nsam];
 	RESULT_FAIL = new epicsInt8[nchan+1];		// index from 1, [0] is update %256
 	FAIL_MASK32 = new epicsInt32[nchan/32];
-	RAW = 0;   // get va from BUFFER
+	RAW = new epicsInt16[nsam*nchan];
 
     /* Create the thread that computes the waveforms in the background */
     status = (asynStatus)(epicsThreadCreate("acq400JudgementTask",
@@ -128,10 +128,15 @@ bool acq400Judgement::calculate(epicsInt16* raw, const epicsInt16* mu, const epi
 					RESULT_FAIL[ic+1] = 1;
 					fail = true;
 				}
+				RAW[ic*nsam+isam] = xx;
 			}else{
 				raw[ib] = 0;		// keep the ES out of the output data..
 			}
 		}
+	}
+	// @todo ... maybe discriminate on fail
+	for (int ic = 0; ic < nchan; ic++){
+		doCallbacksInt16Array(&RAW[ic*nsam], nsam, P_RAW, ic);
 	}
 	return fail;
 }
