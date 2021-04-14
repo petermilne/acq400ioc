@@ -83,6 +83,7 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 	createParam(PS_SAMPLE_TIME,	    asynParamFloat64,		&P_SAMPLE_TIME);
 	createParam(PS_BURST_COUNT, 	    asynParamInt32, 		&P_BURST_COUNT);
 	createParam(PS_SAMPLE_DELTA_NS,     asynParamInt32, 		&P_SAMPLE_DELTA_NS);
+	createParam(PS_UPDATE,     	    asynParamInt32, 		&P_UPDATE);
 
 
 	setIntegerParam(P_NCHAN, 			nchan);
@@ -110,6 +111,39 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 }
 
 
+bool acq400Judgement::onCalculate(bool fail)
+{
+	epicsInt32 update;
+
+	asynStatus rc = getIntegerParam(P_UPDATE, &update);
+	if (rc != asynSuccess){
+	    return rc;
+	}
+
+	switch(update){
+	case UPDATE_ALWAYS:
+		break;
+	case UPDATE_NEVER:
+		return fail;
+	case UPDATE_ON_FAIL:
+		if (!fail){
+			return fail;
+		}else{
+			break;
+		}
+	case UPDATE_ON_SUCCESS:
+		if (fail){
+			return fail;
+		}else{
+			break;
+		}
+	}
+
+	for (int ic = 0; ic < nchan; ic++){
+		doCallbacksInt16Array(&RAW[ic*nsam], nsam, P_RAW, ic);
+	}
+	return fail;
+}
 
 bool acq400Judgement::calculate(epicsInt16* raw, const epicsInt16* mu, const epicsInt16* ml)
 {
@@ -134,11 +168,8 @@ bool acq400Judgement::calculate(epicsInt16* raw, const epicsInt16* mu, const epi
 			}
 		}
 	}
-	// @todo ... maybe discriminate on fail
-	for (int ic = 0; ic < nchan; ic++){
-		doCallbacksInt16Array(&RAW[ic*nsam], nsam, P_RAW, ic);
-	}
-	return fail;
+
+	return onCalculate(fail);
 }
 
 void acq400Judgement::fill_masks(asynUser *pasynUser, epicsInt16* raw,  int threshold)

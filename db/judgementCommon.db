@@ -89,3 +89,14 @@ record(bi, "${UUT}:JDG:OK")
 	field(TSE,  "-2")
 }
 
+record(mbbo, "${UUT}:JDG:UPDATE")
+{
+	field(DTYP, "asynInt32")
+	field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))UPDATE_ON")	
+	field(NOBT, "2")
+	field(ZRST, "UPDATE_NEVER")
+	field(ONST, "UPDATE_ON_FAIL")
+	field(TWST, "UPDATE_ON_SUCCESS")
+	field(THST, "UPDATE_ALWAYS")	
+}
+

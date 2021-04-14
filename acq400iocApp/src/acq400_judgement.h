@@ -27,6 +27,14 @@
 #define PS_SAMPLE_TIME		"SAMPLE_TIME"			/* asynFloat64		r/o */ /* secs.usecs, synthetic */
 #define PS_BURST_COUNT  	"BURST_COUNT"			/* asynInt32		r/o */
 #define PS_SAMPLE_DELTA_NS	"SAMPLE_DELTA_NS"		/* asynInt32		r/w */
+#define PS_UPDATE		"UPDATE_ON"			/* asynInt32		r/w */
+
+enum UPDATE {
+	UPDATE_NEVER,
+	UPDATE_ON_FAIL,
+	UPDATE_ON_SUCCESS,
+	UPDATE_ALWAYS
+};
 
 #define FIRST_SAM	2
 
@@ -35,12 +43,12 @@ public:
 	virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
 
 	virtual asynStatus readInt8Array(asynUser *pasynUser, epicsInt8 *value,
-	                                        size_t nElements, size_t *nIn);
+			size_t nElements, size_t *nIn);
 	virtual asynStatus readInt16Array(asynUser *pasynUser, epicsInt16 *value,
-	                                        size_t nElements, size_t *nIn);
+			size_t nElements, size_t *nIn);
 
 	virtual asynStatus writeInt16Array(asynUser *pasynUser, epicsInt16 *value,
-	                                        size_t nElements);
+			size_t nElements);
 
 	static int factory(const char *portName, int maxPoints, int nchan);
 	virtual void task();
@@ -51,48 +59,50 @@ protected:
 	void handle_burst(int vbn, int offset);
 	bool calculate(epicsInt16* raw, const epicsInt16* mu, const epicsInt16* ml);
 	/* return TRUE if any fail */
+	bool onCalculate(bool fail);
 
 	acq400Judgement(const char* portName, int nchan, int nsam);
 
 	const int nchan;
 	const int nsam;
-    /** Values used for pasynUser->reason, and indexes into the parameter library. */
-    int P_NCHAN;
-    int P_NSAM;
-    int P_MASK_FROM_DATA;
-    int P_MU;
-    int P_ML;
-    int P_RAW;
-    int P_BN;
-    int P_RESULT_FAIL;
-    int P_OK;
-    int P_RESULT_MASK32;
-    int P_SAMPLE_COUNT;
-    int P_CLOCK_COUNT;
-    int P_SAMPLE_TIME;
-    int P_BURST_COUNT;
-    int P_SAMPLE_DELTA_NS;
+	/** Values used for pasynUser->reason, and indexes into the parameter library. */
+	int P_NCHAN;
+	int P_NSAM;
+	int P_MASK_FROM_DATA;
+	int P_MU;
+	int P_ML;
+	int P_RAW;
+	int P_BN;
+	int P_RESULT_FAIL;
+	int P_OK;
+	int P_RESULT_MASK32;
+	int P_SAMPLE_COUNT;
+	int P_CLOCK_COUNT;
+	int P_SAMPLE_TIME;
+	int P_BURST_COUNT;
+	int P_SAMPLE_DELTA_NS;
+	int P_UPDATE;
 
-    /* our data */
-    epicsInt16* RAW_MU;
-    epicsInt16* RAW_ML;
-    epicsInt16* CHN_MU;
-    epicsInt16* CHN_ML;
-    epicsInt16* RAW;
-    epicsInt8* RESULT_FAIL;
-    epicsInt32* FAIL_MASK32;
-    epicsInt32 sample_count;
-    epicsTimeStamp t0, t1;
-    unsigned clock_count[2];			     /* previous, current */
-    epicsInt32 burst_count;
-    epicsFloat64 sample_time;
-    epicsInt32 sample_delta_ns;
+	/* our data */
+	epicsInt16* RAW_MU;
+	epicsInt16* RAW_ML;
+	epicsInt16* CHN_MU;
+	epicsInt16* CHN_ML;
+	epicsInt16* RAW;
+	epicsInt8* RESULT_FAIL;
+	epicsInt32* FAIL_MASK32;
+	epicsInt32 sample_count;
+	epicsTimeStamp t0, t1;
+	unsigned clock_count[2];			     /* previous, current */
+	epicsInt32 burst_count;
+	epicsFloat64 sample_time;
+	epicsInt32 sample_delta_ns;
 
-    int ib;
-    bool fill_requested;
-    void fill_masks(asynUser *pasynUser, epicsInt16* raw,  int threshold);
-    void fill_mask(epicsInt16* mask,  epicsInt16 value);
-    void fill_mask_chan(epicsInt16* mask,  int addr, epicsInt16* ch);
+	int ib;
+	bool fill_requested;
+	void fill_masks(asynUser *pasynUser, epicsInt16* raw,  int threshold);
+	void fill_mask(epicsInt16* mask,  epicsInt16 value);
+	void fill_mask_chan(epicsInt16* mask,  int addr, epicsInt16* ch);
 };
 
 #endif /* ACQ400IOCAPP_SRC_ACQ400_JUDGEMENT_H_ */
