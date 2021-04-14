@@ -117,15 +117,19 @@ bool acq400Judgement::calculate(epicsInt16* raw, const epicsInt16* mu, const epi
 	memset(FAIL_MASK32, 0, sizeof(epicsInt32)*nchan/32);
 	bool fail = false;
 
-	/* skip isam==0 : ES */
-	for (int isam = FIRST_SAM; isam < nsam; ++isam){
+	for (int isam = 0; isam < nsam; ++isam){
 		for (int ic = 0; ic < nchan; ++ic){
 			int ib = isam*nchan+ic;
-			epicsInt16 xx = raw[ib];
-			if (xx > mu[ib] || xx < ml[ib]){
-				FAIL_MASK32[ic/32] |= 1 << (ic&0x1f);
-				RESULT_FAIL[ic+1] = 1;
-				fail = true;
+
+			if (isam >= FIRST_SAM){
+				epicsInt16 xx = raw[ib];
+				if (xx > mu[ib] || xx < ml[ib]){
+					FAIL_MASK32[ic/32] |= 1 << (ic&0x1f);
+					RESULT_FAIL[ic+1] = 1;
+					fail = true;
+				}
+			}else{
+				raw[ib] = 0;		// keep the ES out of the output data..
 			}
 		}
 	}
