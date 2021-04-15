@@ -169,6 +169,7 @@ make_AI_TR() {
 			echo "# NSAMPLES=$NSAMPLES"
 		fi
 	fi
+	export NSAMPLES
 
 	eval $(cat /dev/acq400.0.knobs/aggregator)
 	sites=$(echo $sites | tr , \  )

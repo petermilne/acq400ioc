@@ -5,7 +5,8 @@ if [ -f /mnt/local/sysconfig/epics.sh ]; then
 	source /mnt/local/sysconfig/epics.sh
 fi
 source ./scripts/record_support.sh
-echo "#records added by load.BOLO8BLF $HOST $SITE"
+NSAMPLES=${NSAMPLES:-10000}
+echo "#records added by load.BOLO8BLF $HOST $SITE NSAMPLES $NSAMPLES"
 
 HS=$HOST:$SITE
 
@@ -72,9 +73,8 @@ if [ ! -z $BOLO8DSP ] && [ $BOLO8DSP -eq 1 ]; then
 		ZCH=$(printf "%02d" $c1)
 		dblr '"db/bolo8-wfAcqHost.db","'${PRAMS},cid=${cid},CH=${ZCH},P1="PHI",pmax=$PHIMAX,desc=$PHIDESC,ESLO=1.8626e-9'"'
 	done
-	
-	# warning : hardcoded lengths
-	PRAMS="UUT=${HOST},SITE=${SITE},SPL_WF_LEN=4096,SPL_TW_LEN=100000"
+		
+	PRAMS="UUT=${HOST},SITE=${SITE},SPL_WF_LEN=4096,SPL_TW_LEN=${NSAMPLES}"
 	PWRMAX=10
 	PWRDESC='"Power"'
 	# PWR values 
