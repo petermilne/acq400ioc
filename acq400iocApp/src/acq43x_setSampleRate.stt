@@ -48,7 +48,7 @@ int state_not_idle; assign state_not_idle to "{uut}:MODE:TRANS_ACT:STATE_NOT_IDL
 
 double clk_mb_fin;  assign clk_mb_fin to "{uut}:0:SIG:CLK_MB:FIN";
 
-int HS_MAX=50000;
+int HS_MAX=52000;
 
 double S01_min =  4000000;
 double S01_max = 37000000;
@@ -76,7 +76,7 @@ ss rate_set
 			if (strncmp(uut, "acq2106", 6) == 0){
 				S01_min = 1000000;
 			}
-			printf("init model: %s  S01_min %.0f\n", uut, S01_min);
+			printf("init model: %s  S01_min %.0f HS_MAX %d\n", uut, S01_min, HS_MAX);
 			pvGet(adc_mode);
 			adc_mode0 = adc_mode;
 			pvGet(Fs);
