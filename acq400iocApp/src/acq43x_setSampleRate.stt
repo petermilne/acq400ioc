@@ -151,7 +151,8 @@ ss rate_set
 	state wait_fin {
 		when(fin < Fmin && ++retry < max_retry){
 			snprintf(info, 40, 
-				"WARNING needs Fin > %d, currently %.1f retry%d/%d", Fmin, fin, retry, max_retry);
+				"WARNING needs Fin > %d, a %.1f r %d/%d", Fmin, fin, retry, max_retry);
+			/*       0123456789012345678901234567890123456789  */
 			pvPut(info);
 			printf("acq43x_setSampleRate %s\n", info);
 		} state wait_fin_retry
@@ -224,7 +225,8 @@ ss rate_set
 	state error {
 		when() {
 			snprintf(info, 40, 
-				"ERROR: unable to change ADC_MODE while running");
+				"ERROR: unable to change ADC_MODE in run");
+			/*       0123456789012345678901234567890123456789  */
 			pvPut(info);
 			printf("acq43x_setSampleRate: %s\n", info);
 			Fs = Fs0;
