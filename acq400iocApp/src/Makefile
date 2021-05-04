@@ -75,6 +75,7 @@ acq400ioc_SRCS += acq43x_setSampleRateIntClk.st
 acq400ioc_SRCS += onSetTransient.st
 acq400ioc_SRCS += mgtStopOnLinkDown.st
 acq400ioc_SRCS += calmon.st
+acq400ioc_SRCS += calmonAO.st
 acq400ioc_SRCS += calmon42x.st
 acq400ioc_SRCS += calmon480.st
 acq400ioc_SRCS += setMB_ClockMonitor.st

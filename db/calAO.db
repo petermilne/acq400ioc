@@ -1,0 +1,34 @@
+record(waveform, "${UUT}:${SITE}:AO:CAL:ESLO") {
+	field(DTYP, "Soft Channel")
+	field(NELM, "${nchanp1}")
+	field(FTVL, "FLOAT")
+	field(DESC, "Slope each channel 1..N, index from 0")
+}
+
+record(waveform, "${UUT}:${SITE}:AO:CAL:EOFF") {
+	field(DTYP, "Soft Channel")
+	field(NELM, "${nchanp1}")
+	field(FTVL, "FLOAT")
+	field(DESC, "Offset each channel 1..N, index from 0")	
+}
+
+#record(waveform, "${UUT}:${SITE}:AO:CHX") {
+#	field(DTYP, "Soft Channel")
+#	field(NELM, "${nchanp1}")
+#	field(FTVL, "FLOAT")
+#	field(DESC, "AI channels presented as a waveform")	
+#}
+
+record (bo, "${UUT}:${SITE}:HAS_CH_GAINS") {
+	field(DTYP, "Soft Channel")
+	field(VAL,  "${CHG}")
+}
+
+record (mbbo, "${UUT}:${SITE}:DAC_CAL") {
+	field(DTYP, "Soft Channel")
+	field(NOBT, "2")
+	field(ZRST, "default")
+	field(ONST, "caldef")
+	field(TWST, "calibrated")
+	field(VAL,  "2")
+}

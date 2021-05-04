@@ -1,4 +1,5 @@
 registrar(calmonRegistrar)
+registrar(calmonAORegistrar)
 registrar(calmon42xRegistrar)
 registrar(calmon480Registrar)
 registrar(v2f_calRegistrar)
