@@ -80,7 +80,7 @@ case $(nameFromMT $1) in
 }
 hasOutput() {
 	case $1 in
-	$MT_DIO432|$MT_DIO432P|$MT_DIO482TD_PG|$MT_DIO482|$MT_AO420|$MT_AO424|$MT_AO428|$MT_ACQ436) echo "yes";;
+	$MT_DIO432|$MT_DIO432P|$MT_DIO482TD_PG|$MT_DIO482|$MT_AO420|$MT_AO4220|$MT_AO424|$MT_AO428|$MT_ACQ436) echo "yes";;
 	*) echo "no";;
 	esac
 }
