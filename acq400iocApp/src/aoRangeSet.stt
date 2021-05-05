@@ -13,6 +13,7 @@ double eslo;	assign eslo to "{UUT}:{SITE}:AO:SLOW_SET:CH:{CID}.ESLO";
 double hopr;	assign hopr to "{UUT}:{SITE}:AO:SLOW_SET:CH:{CID}.HOPR";
 double lopr;	assign lopr to "{UUT}:{SITE}:AO:SLOW_SET:CH:{CID}.LOPR";
 double val;	assign val  to "{UUT}:{SITE}:AO:SLOW_SET:CH:{CID}";
+int data32;     assign data32 to "{UUT}:{SITE}:data32";
 
 string model;	assign model to "{UUT}:{SITE}:MODEL";
 
@@ -25,6 +26,8 @@ int gain0;
 
 int fmc_set = 0;
 
+int denom = 65535;
+
 ss gain_set
 {
 	state init {
@@ -32,6 +35,10 @@ ss gain_set
 			ref0 = ref;
 			gain0 = gain;
 			pvGet(model);
+			pvGet(data32);
+			if (data32){
+				denom = 0x7fffffff;
+			}
 		
 			/* FMC is always fixed 5V */
 			if (!fmc_set && strncmp(model, "AO420FMC", 9) == 0){
@@ -55,7 +62,7 @@ ss gain_set
 				drvl = lopr = -5;
 				drvh = hopr = 4.9999;
 			}
-			eslo = (hopr - lopr) / 65535;
+			eslo = (hopr - lopr) / denom;
 			pvPut(drvl);
 			pvPut(drvh);
 			pvPut(eslo);
