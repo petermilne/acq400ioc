@@ -17,7 +17,6 @@ int data32;     assign data32 to "{UUT}:{SITE}:data32";
 
 string model;	assign model to "{UUT}:{SITE}:MODEL";
 
-
 monitor ref; 
 monitor gain;
 
@@ -26,7 +25,9 @@ int gain0;
 
 int fmc_set = 0;
 
-int denom = 65535;
+double denom = 65535;
+
+int first_time = 1;
 
 ss gain_set
 {
@@ -37,8 +38,8 @@ ss gain_set
 			pvGet(model);
 			pvGet(data32);
 			if (data32){
-				denom = 0x7fffffff;
-			}
+				denom = 0xffffffffU;
+			}	
 		
 			/* FMC is always fixed 5V */
 			if (!fmc_set && strncmp(model, "AO420FMC", 9) == 0){
@@ -51,7 +52,7 @@ ss gain_set
 	}
 	state run 
 	{
-		when(ref != ref0 || gain != gain0){
+		when(first_time || ref != ref0 || gain != gain0){
 			if (ref==0 && gain==0){
 				drvl = lopr = -2.5;
 				drvh = hopr = 2.4999;
@@ -63,6 +64,7 @@ ss gain_set
 				drvh = hopr = 4.9999;
 			}
 			eslo = (hopr - lopr) / denom;
+			printf("%s lo %.2f hi %.2f eslo %.2e\n", macValueGet("CID"), drvl, drvh, eslo);
 			pvPut(drvl);
 			pvPut(drvh);
 			pvPut(eslo);
@@ -70,6 +72,9 @@ ss gain_set
 			pvPut(lopr);
 			val = 0;
 			pvPut(val);
-		} state init
+			first_time = 0;
+			ref0 = ref;
+			gain0 = gain;			
+		} state run
 	}
 }
