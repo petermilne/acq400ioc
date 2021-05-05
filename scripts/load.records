@@ -232,6 +232,19 @@ load_AO() {
 				# PINI fails to set VAL on AO record. set GAIN (attenuation) to 100%
 				echo "dbpf ${HOST}:${site}:AWG:G:${ch} 100" >> /tmp/st_post.cmd
 			done;;
+		$MT_AO4220)
+			maxcode=524288
+			type=LONG		
+			nchan=4;
+			chg=1
+			dblr '"db/aoALL.db","'${cprams}'"'
+			for ch in $(seq 1 $nchan)
+			do
+				dblr '"db/ao420fmc.db","'${cprams},cid=$ch'"'
+				echo "seq ao420_range_set \"UUT=${HOST},SITE=${site},CID=$ch\"" >>/tmp/st_post.cmd
+				# PINI fails to set VAL on AO record. set GAIN (attenuation) to 100%
+				echo "dbpf ${HOST}:${site}:AWG:G:${ch} 100" >> /tmp/st_post.cmd
+			done;;			
 		$MT_AO428)
 			maxcode=524288
 			type=LONG		
