@@ -942,7 +942,7 @@ load_mb_sync() {
 			case $MB_MODEL in
             acq2106*)
              	#                   0     	1    	2    	3      	4 
-				lsb_x ${lp0},NOBT=3 EXT		HDMI 	GPG0 	COMM_A 	INT01M;;
+				lsb_x ${lp0},NOBT=3 ""		HDMI 	GPG0 	COMM_A 	INT01M;;
 			*)
 				lsb_x ${lp0},NOBT=3 EXT HDMI GPG0 	"" INT01M;;
 			esac;;
@@ -1043,7 +1043,12 @@ load_mb_sync() {
 	for dx in 0 1 2 3 4 5 6 7
 	do
 			case $dx in 
-			0|4)	hdmi_src="FP_GPIO";;
+			0|4)	
+					if [ "x$zclk_onst" != "x" ]; then
+						hdmi_src="WR_PPS"
+					else 
+						hdmi_src="FP_GPIO"
+					fi;;
 			1|5)	hdmi_src="HDMI_GPIO";;
 			2|6)    hdmi_src="HDMI_TRG";;
 			3|7)    hdmi_src="HDMI_SYNC";;
