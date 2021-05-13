@@ -89,6 +89,8 @@ static int verbose;
  * INPB : long maxcode
  * INPC : float vmax
  * INPD : long threshold (distance from rail for alarm)
+ * INPL : window start index (0: beginning of data set)
+ * INPM : window end index (0: end of data set)
  * INPO : double AOFF if set
  * INPS : double ASLO if set
  * OUTPUTS:
@@ -150,6 +152,9 @@ long raw_to_volts(aSubRecord *prec) {
 	double sumsq = 0;
 	bool compute_squares = p_stddev != 0 || p_rms != 0;
 
+	epicsUInt32 window1 = *(int*)prec->l;
+	epicsUInt32 window2 = *(int*)prec->m; if (window2 == 0) window2 = len;
+
 	if (::verbose && ++report_done == 1){
 		printf("aoff count: %u value: %p type: %d\n", prec->noo, prec->o, prec->fto);
 		printf("aslo count: %u value: %p type: %d\n", prec->nos, prec->s, prec->fts);
@@ -167,15 +172,17 @@ long raw_to_volts(aSubRecord *prec) {
 	min_value = scale<T, SHR>(raw[0]);
 	max_value = scale<T, SHR>(raw[0]);
 
-	for (epicsUInt32 ii=0; ii <len; ii++) {
+	for (epicsUInt32 ii = 0; ii <len; ii++) {
 		T rx = scale<T, SHR>(raw[ii]);
 
-		if (rx > max_value) max_value = rx;
-		if (rx < min_value) min_value = rx;
-		if (rx > alarm_threshold) 	over_range = 1;
-		if (rx < -alarm_threshold) over_range = -1;
-		if (compute_squares) sumsq += square<T>(rx);
+		if (ii >= window1 && ii <= window2){
+			if (rx > max_value) max_value = rx;
+			if (rx < min_value) min_value = rx;
+			if (rx > alarm_threshold) 	over_range = 1;
+			if (rx < -alarm_threshold) over_range = -1;
+			if (compute_squares) sumsq += square<T>(rx);
 		sum += rx;
+		}
 		yy = rx*aslo + aoff;
 		cooked[ii] = (float)yy;
 		if (::verbose && ii==0 && strstr(prec->name, ":01") != 0){
