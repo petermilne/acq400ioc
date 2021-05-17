@@ -154,6 +154,7 @@ long raw_to_volts(aSubRecord *prec) {
 
 	epicsUInt32 window1 = *(int*)prec->l;
 	epicsUInt32 window2 = *(int*)prec->m; if (window2 == 0) window2 = len;
+	epicsUInt32 winlen = window2 - window1;
 
 	if (::verbose && ++report_done == 1){
 		printf("aoff count: %u value: %p type: %d\n", prec->noo, prec->o, prec->fto);
@@ -221,10 +222,10 @@ long raw_to_volts(aSubRecord *prec) {
 	}
 	if (p_max) 	*p_max = max_value*aslo + aoff;
 	if (p_min) 	*p_min = min_value*aslo + aoff;
-	if (p_mean) 	*p_mean = (sum*aslo)/len + aoff;
+	if (p_mean) 	*p_mean = (sum*aslo)/winlen + aoff;
 
-	if (p_rms)	*p_rms = sqrt(sumsq/len)*aslo + aoff;
-	if (p_stddev)	*p_stddev = sqrt((sumsq - (sum*sum)/len)/len) * aslo;
+	if (p_rms)	*p_rms = sqrt(sumsq/winlen)*aslo + aoff;
+	if (p_stddev)	*p_stddev = sqrt((sumsq - (sum*sum)/winlen)/winlen) * aslo;
 	if (p_cv)	*p_cv = *p_stddev / *p_mean;
 	return 0;
 }
