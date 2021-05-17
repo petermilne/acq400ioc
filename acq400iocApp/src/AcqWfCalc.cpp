@@ -176,12 +176,12 @@ long raw_to_volts(aSubRecord *prec) {
 		T rx = scale<T, SHR>(raw[ii]);
 
 		if (ii >= window1 && ii <= window2){
-			if (rx > max_value) max_value = rx;
-			if (rx < min_value) min_value = rx;
+			if (rx > max_value) 		max_value = rx;
+			if (rx < min_value) 		min_value = rx;
 			if (rx > alarm_threshold) 	over_range = 1;
-			if (rx < -alarm_threshold) over_range = -1;
-			if (compute_squares) sumsq += square<T>(rx);
-		sum += rx;
+			if (rx < -alarm_threshold) 	over_range = -1;
+			if (compute_squares) 		sumsq += square<T>(rx);
+			sum += rx;
 		}
 		yy = rx*aslo + aoff;
 		cooked[ii] = (float)yy;
