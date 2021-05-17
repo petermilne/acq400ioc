@@ -169,8 +169,8 @@ long raw_to_volts(aSubRecord *prec) {
 		printf("%s : aslo:%.6e aoff:%.6e\n", prec->name, aslo, aoff);
 	}
 
-	min_value = scale<T, SHR>(raw[0]);
-	max_value = scale<T, SHR>(raw[0]);
+	min_value = scale<T, SHR>(raw[window1]);
+	max_value = scale<T, SHR>(raw[window1]);
 
 	for (epicsUInt32 ii = 0; ii <len; ii++) {
 		T rx = scale<T, SHR>(raw[ii]);
@@ -186,7 +186,8 @@ long raw_to_volts(aSubRecord *prec) {
 		yy = rx*aslo + aoff;
 		cooked[ii] = (float)yy;
 		if (::verbose && ii==0 && strstr(prec->name, ":01") != 0){
-			printf("%s : aslo:%.6e aoff:%.6e rx:%06x yy=%.5e\n", prec->name, aslo, aoff, (unsigned)rx, yy);
+			printf("%s : aslo:%.6e aoff:%.6e rx:%06x yy=%.5e window:%d,%d\n",
+					prec->name, aslo, aoff, (unsigned)rx, yy, window1, window2);
 		}
 	}
 	if (sizeof(T) == 4 && prec->novi == len && prec->novj == len){
