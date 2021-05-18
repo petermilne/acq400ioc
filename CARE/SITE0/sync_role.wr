@@ -15,9 +15,13 @@ P1=
 P2=
 P3=
 
-FIN_DEF=40M
-is_tiga && FIN_DEF=10M
-FIN_CLKSTAR=20000000
+if is_ds; then
+	FIN_DEF=20M48
+elif is_tiga; then
+	FIN_DEF=10M
+else
+	FIN_DEF=40M
+fi
 
 set.site 1 CLK=1 2>&1 > /dev/null
 
