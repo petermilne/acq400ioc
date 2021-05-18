@@ -616,7 +616,7 @@ load_400() {
 		
 		dblr '"db/xo.db","'${dprams}'"'
 		eval $(get.site 0 distributor)
-		dblr '"db/awg.db","'${dprams},dsites=${sites}'"'
+		dblr '"db/awg.db","'${dprams},dsites=\'${sites}\''"'
 		echo "seq select_awg_distributor \"${dprams},verbose=1\""
 		dblr '"db/acq4xx_rgm.db","'${dprams},onst=nc,twst=nc'"'
 		sprams="${aprams},CTRMAX=$CTR28,DT=1,DTC=1"
