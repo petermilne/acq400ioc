@@ -28,12 +28,8 @@ record(longout, "${UUT}:${SITE}:AI:WF:${cid}:TH") {
 	field(DESC, "alarm threshold in bits")
 }
 
-# INPA : raw waveform
-# INPB : maxcode bits
-# INPC : vmax		: ALT: INPC=aslo, INPB=1
-# INPD : alarm threshold
-# INPO : aoff
 
+# raw_to_volts WINDOW stats support
 record(longout, "${UUT}:${SITE}:AI:WF:W1") {
 	field(DTYP, "Soft Channel")
 	field(DESC, "Stats window 1")
@@ -48,6 +44,12 @@ record(longout, "${UUT}:${SITE}:AI:WF:W2") {
 	field(DRVH, "${size}")	
 	field(VAL,  "0")
 }
+
+# INPA : raw waveform
+# INPB : maxcode bits
+# INPC : vmax		: ALT: INPC=aslo, INPB=1
+# INPD : alarm threshold
+# INPO : aoff
 
 record(aSub, "${UUT}:${SITE}:AI:WF:${cid}:V") {	
 	field(SNAM, "raw_to_volts_${type}")

@@ -28,11 +28,77 @@ record(longout, "${UUT}:${SITE}:AI:WF:${cid}:TH") {
 	field(DESC, "alarm threshold in bits")
 }
 
-# INPA : raw waveform
-# INPB : maxcode bits
-# INPC : vmax		: ALT: INPC=aslo, INPB=1
-# INPD : alarm threshold
-# INPO : aoff
+# raw_to_volts WINDOW stats support
+# ALL @@todo ... needs 32 way fanout and ${OUT[ABCDEFGH]} links
+# epics.sh
+# cp db/wfAcqHostWindowPerChannel.db db/wfAcqHost.db
+# also add cid0 to load to records (doesn't matter that it's normally unused).
+record(longout, "${UUT}:${SITE}:AI:WF:W1") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "Stats window 1")
+	field(DRVL, "0")
+	field(DRVH, "${size}")
+	field(VAL,  "0")
+}
+record(longout, "${UUT}:${SITE}:AI:WF:W2") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "Stats window 2")
+	field(DRVL, "0")
+	field(DRVH, "${size}")	
+	field(VAL,  "0")
+}
+
+record(dfanout, "${UUT}:${SITE}:AI_WF:W1:fan1") {
+	field(DOL,  "${UUT}:${SITE}:AI_WF:W1")
+	field(OMSL, "closed_loop")
+	field(FLNK, "${UUT}:${SITE}:AI_WF:W1:fan2")
+}
+
+record(dfanout, "${UUT}:${SITE}:AI_WF:W1:fan2") {
+	field(DOL,  "${UUT}:${SITE}:AI_WF:W1")
+	field(OMSL, "closed_loop")
+	field(FLNK, "${UUT}:${SITE}:AI_WF:W1:fan3")
+}
+
+record(dfanout, "${UUT}:${SITE}:AI_WF:W1:fan3") {
+	field(DOL,  "${UUT}:${SITE}:AI_WF:W1")
+	field(OMSL, "closed_loop")
+	field(FLNK, "${UUT}:${SITE}:AI_WF:W1:fan4")
+}
+record(dfanout, "${UUT}:${SITE}:AI_WF:W1:fan4") {
+	field(DOL,  "${UUT}:${SITE}:AI_WF:W1")
+	field(OMSL, "closed_loop")
+}
+
+record(dfanout, "${UUT}:${SITE}:AI_WF:W2:fan1") {
+	field(DOL,  "${UUT}:${SITE}:AI_WF:W2")
+	field(OMSL, "closed_loop")
+	field(FLNK, "${UUT}:${SITE}:AI_WF:W2:fan2")
+}
+
+record(dfanout, "${UUT}:${SITE}:AI_WF:W2:fan2") {
+	field(DOL,  "${UUT}:${SITE}:AI_WF:W2")
+	field(OMSL, "closed_loop")
+	field(FLNK, "${UUT}:${SITE}:AI_WF:W2:fan3")
+}
+
+record(dfanout, "${UUT}:${SITE}:AI_WF:W2:fan3") {
+	field(DOL,  "${UUT}:${SITE}:AI_WF:W2")
+	field(OMSL, "closed_loop")
+	field(FLNK, "${UUT}:${SITE}:AI_WF:W2:fan4")
+}
+record(dfanout, "${UUT}:${SITE}:AI_WF:W2:fan4") {
+	field(DOL,  "${UUT}:${SITE}:AI_WF:W2")
+	field(OMSL, "closed_loop")
+}
+
+# @todo .. next to records belong own .db, call NCHAN times with ${cid}, ${fan}, ${outx} set
+record(dfanout, "${UUT}:${SITE}:AI_WF:W1:${fan}") {
+	field(${outx}, "${UUT}:${SITE}:AI:WF:${cid}.INPL")
+}
+record(dfanout, "${UUT}:${SITE}:AI_WF:W2:${fan}") {
+	field(${outx}, "${UUT}:${SITE}:AI:WF:${cid}.INPM")
+}
 
 record(longout, "${UUT}:${SITE}:AI:WF:${cid}:W1") {
 	field(DTYP, "Soft Channel")
@@ -48,6 +114,13 @@ record(longout, "${UUT}:${SITE}:AI:WF:${cid}:W2") {
 	field(DRVH, "${size}")	
 	field(VAL,  "0")
 }
+
+# INPA : raw waveform
+# INPB : maxcode bits
+# INPC : vmax		: ALT: INPC=aslo, INPB=1
+# INPD : alarm threshold
+# INPO : aoff
+
 
 record(aSub, "${UUT}:${SITE}:AI:WF:${cid}:V") {	
 	field(SNAM, "raw_to_volts_${type}")
