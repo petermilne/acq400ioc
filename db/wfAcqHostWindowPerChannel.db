@@ -1,0 +1,138 @@
+record(waveform, "${UUT}:${SITE}:AI:WF:${cid}") {	
+	field(DTYP, "wfAcqHost")
+	field(INP, "@${fname}.wf ${cid}")
+	field(SCAN, "I/O Intr")	
+	field(DESC, "AI waveform record raw")
+	field(NELM,"${size}")
+	field(FTVL,"${type}")
+	field(SDIS, "${UUT}:0:QS:XOFF")
+	field(DISV, "1")
+	field(FLNK,"${UUT}:${SITE}:AI:WF:${cid}:V")
+}
+
+
+
+record(bo, "${UUT}:${SITE}:AI:WF:${cid}:OVER") {
+	field(DTYP, "Soft Channel")
+	field(OMSL, "closed_loop")
+	field(DOL, "${UUT}:${SITE}:AI:WF:${cid}:V.VALB")
+	#field(OUT, "${UUT}:${SITE}:B8:${cid}")
+	field(PINI, "YES")
+	
+}
+
+record(longout, "${UUT}:${SITE}:AI:WF:${cid}:TH") {
+	field(DTYP, "Soft Channel")
+	field(VAL,  "512")
+	field(PINI, "YES")
+	field(DESC, "alarm threshold in bits")
+}
+
+# INPA : raw waveform
+# INPB : maxcode bits
+# INPC : vmax		: ALT: INPC=aslo, INPB=1
+# INPD : alarm threshold
+# INPO : aoff
+
+record(longout, "${UUT}:${SITE}:AI:WF:${cid}:W1") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "Stats window 1")
+	field(DRVL, "0")
+	field(DRVH, "${size}")
+	field(VAL,  "0")
+}
+record(longout, "${UUT}:${SITE}:AI:WF:${cid}:W2") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "Stats window 2")
+	field(DRVL, "0")
+	field(DRVH, "${size}")	
+	field(VAL,  "0")
+}
+
+record(aSub, "${UUT}:${SITE}:AI:WF:${cid}:V") {	
+	field(SNAM, "raw_to_volts_${type}")
+	
+	field(FTA,  "${type}")
+	field(NOA,  "${size}")
+	field(INPA, "${UUT}:${SITE}:AI:WF:${cid}")
+	
+	field(FTB,  "LONG")
+	field(NOB,  "1")
+	field(INPB, "${maxcode}")
+	
+	field(FTC,  "FLOAT")
+	field(NOC,  "1")
+	field(INPC,  "${vmax}")
+	
+	field(FTD,  "LONG")
+	field(NOD,  "1")
+	field(INPD, "${UUT}:${SITE}:AI:WF:${cid}:TH")
+	
+	field(FTL,  "LONG")
+	field(NOL,  "1")
+	field(INPL, "${UUT}:${SITE}:AI:WF:${cid}:W1")
+
+	field(FTM,  "LONG")
+	field(NOM,  "1")
+	field(INPM, "${UUT}:${SITE}:AI:WF:${cid}:W2")	
+	
+	field(FTVA, "FLOAT")
+	field(NOVA, "${size}")
+	field(DESC, "AI waveform record scaled to volts")
+	
+	field(FTVB, "LONG")
+	field(NOVB, "1")
+	field(OUTB, "${UUT}:${SITE}:AI:WF:${cid}:OVER PP")
+	
+	field(FTVC, "FLOAT")
+	field(NOVC, "1")
+#	field(DESC, "Min value in volts")
+	
+	field(FTVD, "FLOAT")
+	field(NOVD, "1")
+#	field(DESC, "Max value in volts")
+	
+	field(FTVE, "FLOAT")
+	field(NOVE, "1")
+#	field(DESC, "Mean value in volts")
+	
+	field(FTVF, "FLOAT")
+	field(NOVF, "1")
+#	field(DESC, "Stdev in volts")
+	
+	field(FTVG, "FLOAT")
+	field(NOVG, "1")
+#	field(DESC, "RMS in volts")	
+
+	field(FTVO, "DOUBLE")
+	field(NOVO, "1")
+	field(INPO, "${UUT}:${SITE}:AI:CH:${cid}.EOFF")
+	
+	field(FTVS, "DOUBLE")
+	field(NOVS, "1")
+	field(INPS, "${UUT}:${SITE}:AI:CH:${cid}.ESLO")
+	
+	field(FLNK, "${UUT}:${SITE}:AI:WF:${cid}:ACTIVE")
+}
+
+record(ao, "${UUT}:ACTIVITY_THRESHOLD") {
+	field(DTYP, "Soft Channel")
+	field(HOPR, "10")
+	field(LOPR, "0")
+}
+	
+record(calc, "${UUT}:${SITE}:AI:WF:${cid}:ACTIVE") {
+	field(INPA, "${UUT}:${SITE}:AI:WF:${cid}:V.VALG")
+	field(INPB, "${UUT}:ACTIVITY_THRESHOLD")
+	field(CALC, "A > B")
+	field(FLNK, "${UUT}:${SITE}:AI:WF:${cid}:UPDATES PP")
+	
+}
+
+record(calc, "${UUT}:${SITE}:AI:WF:${cid}:UPDATES") {
+	field(SCAN, "Passive")
+	field(CALC, "VAL + 1")
+# FLNK can be used as hook for further processing 	
+}
+
+
