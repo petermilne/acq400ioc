@@ -46,6 +46,33 @@ MB_MODEL=$(basename ${devicetree_image%*.dtb})
 
 FIRST_AI_WF_RECORDS=1
 
+load_wf_acq_host_window_per_channel() {
+    ch=$1; shift;
+    wprams="$*"
+    echo "# load_wf_acq_host_window_per_channel $ch $wprams"
+    
+    case $((ch%8)) in
+    0)
+    	outx=OUTA;;
+    1)
+    	outx=OUTB;;
+    2)
+    	outx=OUTC;;
+    3)
+    	outx=OUTD;;
+    4)
+    	outx=OUTE;;
+    5)
+    	outx=OUTF;;
+    6)
+    	outx=OUTG;;
+    7)
+    	outx=OUTH;;
+    esac
+    fan=fan$((1+ch/8))
+    dblr \"db/wfAcqHostWindowPerChannel.db\",\"${wprams},fan=${fan},outx=${outx}\"
+}
+
 make_AI() {
 	site=$1
 	type=SHORT
@@ -73,6 +100,8 @@ make_AI() {
 		wprams="${wprams},maxcode=${maxcode},vmax=${vmax},eslo=${eslo}"
 
 		dblr \"db/wfAcqHost.db\",\"${wprams}\"
+		
+		[ "x$WF_ACQ_HOST_WINDOW_PER_CHANNEL" = "xy" ] && load_wf_acq_host_window_per_channel  $ch "$wprams"
 	done
 	if [ $FIRST_AI_WF_RECORDS -eq 1 ]; then		  
 		dblr \"db/wfAcqHostTb.db\",\"${PRAMS},size=${SIZE}\"	

@@ -73,6 +73,8 @@ ONSETTRANSIENT=0
 # restrict EPICS to localhost. Some folks don't want to see EPICS CA activity on their LAN:
 export EPICS_CAS_INTF_ADDR_LIST=localhost
 
+# WF_ACQ_HOST_WINDOW_PER_CHANNEL .. normal is a window per site, to enable per channel:
+WF_ACQ_HOST_WINDOW_PER_CHANNEL=y
 
 # JUDGEMENT:
 append to /mnt/local/sysconfig/epics.sh
