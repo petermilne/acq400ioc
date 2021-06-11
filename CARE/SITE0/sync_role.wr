@@ -2,6 +2,7 @@
 # sync_role.wr
 # set.site 0 sync_role fpmaster|rpmaster|master|solo|slave FS FIN [opts] 
 
+set -x 
 
 TRG=
 TRG_SENSE=rising
@@ -67,8 +68,8 @@ set_mbclk() {
 set_mb=set_mbclk
 
 
-set_acq43x_sample_rate() {
-# do NOTHING
+set_acq43x_sample_rate() { 
+    echo set_acq43x_sample_rate stub
 }
 
 if [ -e /etc/acq400/1/ACQ43X_SAMPLE_RATE ]; then    
@@ -219,6 +220,7 @@ eval $(egu2int FS=${P2:-$FS_DEF})
 ROLE=$P1
 
 if is_ds; then
+    echo is_ds
     set.site 1 ACQ43X_SAMPLE_RATE 0
     case $FS in
     10000)
@@ -235,9 +237,13 @@ if is_ds; then
     	echo "ERROR: SR options 10k 20k 40k 80k 128k"; exit 1
     esac
     set.site 1  hi_res_mode 1	
+    echo FIN_DEF $FIN_DEF
+    FIN=$FIN_DEF
 fi
 
-eval $(egu2int FIN=${P3:-$FIN_DEF})
+##eval $(egu2int FIN=${P3:-$FIN_DEF})
+
+echo FIN $FIN
 
 role_set=0
 
