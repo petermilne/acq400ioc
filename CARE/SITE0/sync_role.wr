@@ -8,20 +8,13 @@ TRG_SENSE=rising
 CLK_SENSE=rising
 
 CMDLINE="$*"
-FMIN=4000000
 CLKDIV=1
 
 P1=
 P2=
 P3=
 
-if is_ds; then
-	FIN_DEF=20M48
-elif is_tiga; then
-	FIN_DEF=10M
-else
-	FIN_DEF=40M
-fi
+
 
 set.site 1 CLK=1 2>&1 > /dev/null
 
@@ -75,7 +68,7 @@ set_mb=set_mbclk
 
 
 set_acq43x_sample_rate() {
-    set.site 1 ACQ43X_SAMPLE_RATE $1
+# do NOTHING
 }
 
 if [ -e /etc/acq400/1/ACQ43X_SAMPLE_RATE ]; then    
@@ -136,18 +129,9 @@ CLKDX_OUT=d1
 if [ "${MOD:0:7}" = "acq2106" ]; then
     set_slave=set_slave_acq2106
     set_common_master=set_common_master_acq2106
-# Si5326 minimum output rate
-    FMIN=20000
-else
-    set_slave=set_slave_acq1001
-    set_common_master=set_common_master_acq1001
-# ics527 minimum output rate
-    FMIN=4000000
-# avoid local clkdiv on slow SLAVE SAR devices		
-    is_42x && CLKDX_OUT=d2
 fi
 
-FS_DEF=200000; is_48x && FS_DEF=20000000
+
 
 # common to all
 # report init status - this will be overwritten on successful completion
@@ -221,11 +205,39 @@ config_distributor_sites() {
 
 # execution here... FIN must match a valid load file eg 20M
 
-ROLE=$P1
-FINM=${P3:-$FIN_DEF}
-eval $(egu2int FS=${P2:-$FS_DEF} FIN=${P3:-$FIN_DEF})
+if is_ds; then
+	FS_DEF=40000
+elif is_tiga; then
+	FIN_DEF=10M
+	FS_DEF=200000
+else
+	FIN_DEF=40M
+	FS_DEF=200000; is_48x && FS_DEF=20000000
+fi
 
-FMIN=$FIN
+eval $(egu2int FS=${P2:-$FS_DEF})
+ROLE=$P1
+
+if is_ds; then
+    set.site 1 ACQ43X_SAMPLE_RATE 0
+    case $FS in
+    10000)
+    	FIN_DEF=5M12; hrmode=1;;
+    20000)
+    	FIN_DEF=10M24; hrmode=1;;    	
+    40000)
+    	FIN_DEF=20M48; hrmode=1;; 
+    80000)
+    	FIN_DEF=20M48; hrmode=0;; 
+    128000)
+    	FIN_DEF=32M768; hrmode=0;;
+    *)
+    	echo "ERROR: SR options 10k 20k 40k 80k 128k"; exit 1
+    esac
+    set.site 1  hi_res_mode 1	
+fi
+
+eval $(egu2int FIN=${P3:-$FIN_DEF})
 
 role_set=0
 
@@ -238,7 +250,7 @@ fpmaster|rpmaster|master|solo|slave)
     set_out
     D_TRG='d1'
     $set_common_master
-    /usr/local/CARE/acq2106+WR.init $FINM
+    /usr/local/CARE/acq2106+WR.init ${FIN}
     /usr/local/CARE/route-WR-FP    
     set_local_clock $FS;;       
 *)
