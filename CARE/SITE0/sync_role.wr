@@ -219,8 +219,7 @@ fi
 eval $(egu2int FS=${P2:-$FS_DEF})
 ROLE=$P1
 
-if is_ds; then
-    echo >&2  is_ds
+if is_ds; then    
     set.site 1 ACQ43X_SAMPLE_RATE 0
     case $FS in
     10000)
@@ -236,14 +235,9 @@ if is_ds; then
     *)
     	echo "ERROR: SR options 10k 20k 40k 80k 128k"; exit 1
     esac
-    set.site 1  hi_res_mode 1	
-    echo >&2 FIN_DEF $FIN_DEF
+    set.site 1  hi_res_mode $hrmode	
     FIN=$FIN_DEF
 fi
-
-##eval $(egu2int FIN=${P3:-$FIN_DEF})
-
-echo >&2 FIN $FIN
 
 role_set=0
 
