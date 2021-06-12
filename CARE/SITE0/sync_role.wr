@@ -2,7 +2,7 @@
 # sync_role.wr
 # set.site 0 sync_role fpmaster|rpmaster|master|solo|slave FS FIN [opts] 
 
-set -x 
+#set -x 
 
 TRG=
 TRG_SENSE=rising
@@ -69,7 +69,7 @@ set_mb=set_mbclk
 
 
 set_acq43x_sample_rate() { 
-    echo set_acq43x_sample_rate stub
+    echo 1>&2 set_acq43x_sample_rate stub
 }
 
 if [ -e /etc/acq400/1/ACQ43X_SAMPLE_RATE ]; then    
@@ -220,7 +220,7 @@ eval $(egu2int FS=${P2:-$FS_DEF})
 ROLE=$P1
 
 if is_ds; then
-    echo is_ds
+    echo >&2  is_ds
     set.site 1 ACQ43X_SAMPLE_RATE 0
     case $FS in
     10000)
@@ -237,13 +237,13 @@ if is_ds; then
     	echo "ERROR: SR options 10k 20k 40k 80k 128k"; exit 1
     esac
     set.site 1  hi_res_mode 1	
-    echo FIN_DEF $FIN_DEF
+    echo >&2 FIN_DEF $FIN_DEF
     FIN=$FIN_DEF
 fi
 
 ##eval $(egu2int FIN=${P3:-$FIN_DEF})
 
-echo FIN $FIN
+echo >&2 FIN $FIN
 
 role_set=0
 
@@ -256,8 +256,8 @@ fpmaster|rpmaster|master|solo|slave)
     set_out
     D_TRG='d1'
     $set_common_master
-    /usr/local/CARE/acq2106+WR.init ${FIN}
-    /usr/local/CARE/route-WR-FP    
+    /usr/local/CARE/acq2106+WR.init ${FIN} 1>&2
+    /usr/local/CARE/route-WR-FP    1>&2
     set_local_clock $FS;;       
 *)
  
