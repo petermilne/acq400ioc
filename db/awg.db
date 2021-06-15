@@ -94,6 +94,8 @@ record (bo, "${UUT}:${SITE}:AWG:MODE:ABO") {
 	field(OUT,  "@awg.proto setAbort ${SPORT}" )
 	field(DESC, "AWG operating mode: set oneshot to quit")
 	field(HIGH, "2")
+	field(ZNAM, "0")
+	field(ONAM, "1")	
 }
 
 
