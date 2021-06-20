@@ -96,6 +96,13 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 	RESULT_FAIL = new epicsInt8[nchan+1];		// index from 1, [0] is update %256
 	FAIL_MASK32 = new epicsInt32[nchan/32];
 	RAW = new epicsInt16[nsam*nchan];
+	WINL = new epicsInt16[nchan];
+	WINR = new epicsInt16[nchan];
+
+	for (int ic = 0; ic < nchan; ++ic){
+		WINL[ic] = FIRST_SAM;
+		WINR[ic] = nchan-1;
+	}
 
     /* Create the thread that computes the waveforms in the background */
     status = (asynStatus)(epicsThreadCreate("acq400JudgementTask",
@@ -156,6 +163,10 @@ bool acq400Judgement::calculate(epicsInt16* raw, const epicsInt16* mu, const epi
 
 	for (int isam = 0; isam < nsam; ++isam){
 		for (int ic = 0; ic < nchan; ++ic){
+
+			if (isam < WINL[ic] || isam > WINR[ic]){
+				continue;
+			}
 			int ib = isam*nchan+ic;
 
 			if (isam >= FIRST_SAM){
@@ -331,6 +342,7 @@ void acq400Judgement::task()
 asynStatus acq400Judgement::writeInt32(asynUser *pasynUser, epicsInt32 value)
 {
     int function = pasynUser->reason;
+    int addr;
     asynStatus status = asynSuccess;
     const char *paramName;
     const char* functionName = "writeInt32";
@@ -340,6 +352,9 @@ asynStatus acq400Judgement::writeInt32(asynUser *pasynUser, epicsInt32 value)
 
     /* Fetch the parameter string name for possible use in debugging */
     getParamName(function, &paramName);
+
+    status = pasynManager->getAddr(pasynUser, &addr);
+    if(status!=asynSuccess) return status;
 
     if (function == P_MASK_FROM_DATA) {
     	if (value){
@@ -356,6 +371,10 @@ asynStatus acq400Judgement::writeInt32(asynUser *pasynUser, epicsInt32 value)
 		}
 	}
     	fill_requested = true;
+    }else if (function == P_WINL){
+	    WINL[addr] = value;
+    }else if (function == P_WINR){
+	    WINR[addr] = value;
     } else {
         /* All other parameters just get set in parameter list, no need to
          * act on them here */

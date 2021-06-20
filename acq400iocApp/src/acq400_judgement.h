@@ -18,6 +18,8 @@
 #define PS_ML			"MASK_LOWER"			/* asynInt16Array   r/w */
 #define PS_RAW			"RAW"				/* asynInt16Array   r/o */
 #define PS_BN			"BUFFER_NUM"			/* asynInt32, 		r/o */
+#define PS_WINL			"WINL"                          /* asynInt32,       r/w Window Left */
+#define PS_WINR			"WINR"                          /* asynInt32,       r/w Window Right */
 
 #define PS_RESULT_FAIL 		"RESULT_FAIL"			/* asynInt32 		r/o */ /* per port P=2 */
 #define PS_RESULT_MASK32	"FAIL_MASK32"
@@ -71,6 +73,8 @@ protected:
 	int P_MASK_FROM_DATA;
 	int P_MU;
 	int P_ML;
+	int P_WINL;
+	int P_WINR;
 	int P_RAW;
 	int P_BN;
 	int P_RESULT_FAIL;
@@ -88,6 +92,8 @@ protected:
 	epicsInt16* RAW_ML;
 	epicsInt16* CHN_MU;
 	epicsInt16* CHN_ML;
+	epicsInt16* WINL;
+	epicsInt16* WINR;
 	epicsInt16* RAW;
 	epicsInt8* RESULT_FAIL;
 	epicsInt32* FAIL_MASK32;
