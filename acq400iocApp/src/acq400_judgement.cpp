@@ -37,7 +37,7 @@ using namespace std;
 #include "Buffer.h"
 #include "ES.h"
 
-static const char *driverName="acq164AsynPortDriver";
+static const char *driverName="acq400JudgementAsynPortDriver";
 
 #define NANO		1000000000
 
@@ -86,7 +86,6 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 	setIntegerParam(P_NCHAN, 			nchan);
 	setIntegerParam(P_NSAM, 			nsam);
 	setIntegerParam(P_MASK_FROM_DATA, 	0);
-
 
 	RESULT_FAIL = new epicsInt8[nchan+1];		// index from 1, [0] is update %256
 	FAIL_MASK32 = new epicsInt32[nchan/32];
@@ -149,14 +148,6 @@ bool acq400Judgement::onCalculate(bool fail)
 	return fail;
 }
 
-
-
-
-
-
-static AbstractES& ESX = *AbstractES::evX_instance();
-
-
 void epicsTimeStampAdd(epicsTimeStamp& ts, unsigned _delta_ns)
 {
 	if (ts.nsec + _delta_ns < NANO){
@@ -189,6 +180,9 @@ asynStatus acq400Judgement::updateTimeStamp(int offset)
 		return rc;
 	}
 }
+
+static AbstractES& ESX = *AbstractES::evX_instance();
+
 int acq400Judgement::handle_es(unsigned* raw)
 {
 	for (int ii = 0; ii < 3; ++ii){
@@ -203,8 +197,6 @@ int acq400Judgement::handle_es(unsigned* raw)
 		}
 	}
 	return -1;
-
-
 }
 
 
@@ -223,8 +215,8 @@ void acq400Judgement::task()
 		if (t0.secPastEpoch == 0){
 			continue;
 		}
-		handle_burst(ib*2, 		0);
-		handle_burst(ib*2+1, 	nsam*nchan);
+		handle_burst(ib*2,   0);
+		handle_burst(ib*2+1, nsam*nchan);
 
 		if (fill_requested){
 			for (int ic = 0; ic< nchan; ic++){
@@ -297,6 +289,8 @@ class acq400JudgementImpl : public acq400Judgement {
 
 	static const ETYPE MAXVAL;
 	static const ETYPE MINVAL;
+	static const ETYPE MAXLIM;
+	static const ETYPE MINLIM;
 	static const asynParamType AATYPE;
 
 	void fill_masks(asynUser *pasynUser, ETYPE* raw,  int threshold)
@@ -311,9 +305,9 @@ class acq400JudgementImpl : public acq400Judgement {
 
 				if (isam < 4 && (ic < 4 || (ic > 32 && ic < 36))) asynPrint(pasynUser, ASYN_TRACEIO_DRIVER,
 				              "%s:%s: raw[%d][%d] = %0x4 %s\n",
-				              driverName, __FUNCTION__, isam, ic, xx, xx > 32760 || xx < -32760? "RAILED": "");
+				              driverName, __FUNCTION__, isam, ic, xx, xx > MAXLIM || xx < -MINLIM? "RAILED": "");
 
-				if (xx > MAXVAL-10 || xx < -MINVAL+10){
+				if (xx > MAXLIM || xx < MINLIM){
 					// disable on railed signal (for testing with dummy module
 					RAW_MU[ib] = MAXVAL;
 					RAW_ML[ib] = MINVAL;
@@ -509,7 +503,14 @@ template<>
 const epicsInt32 acq400JudgementImpl<epicsInt32>::MAXVAL = 0x7fffff00;
 template<>
 const epicsInt32 acq400JudgementImpl<epicsInt32>::MINVAL = 0x80000000;
-
+template<>
+const epicsInt16 acq400JudgementImpl<epicsInt16>::MAXLIM = 0x7fe0;
+template<>
+const epicsInt16 acq400JudgementImpl<epicsInt16>::MINLIM = 0x8010;
+template<>
+const epicsInt32 acq400JudgementImpl<epicsInt32>::MAXLIM = 0x7ffffef0;
+template<>
+const epicsInt32 acq400JudgementImpl<epicsInt32>::MINLIM = 0x80000010;
 
 template<>
 asynStatus acq400JudgementImpl<epicsInt16>::writeInt16Array(asynUser *pasynUser, epicsInt16 *value,
