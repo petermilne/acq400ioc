@@ -80,6 +80,8 @@ WF_ACQ_HOST_WINDOW_PER_CHANNEL=y
 append to /mnt/local/sysconfig/epics.sh
 export SIZE=1024
 export IOC_PREINIT=./scripts/load.judgement
+# for 32 bit (24 bit ADC) :
+export IOC_PREINIT=./scripts/load.judgement32
 
 append to /mnt/local/rc.user:
 set.site 0 sync_role master 50000
