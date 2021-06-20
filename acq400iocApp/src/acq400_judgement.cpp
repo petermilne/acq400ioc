@@ -49,15 +49,15 @@ void task_runner(void *drvPvt)
 
 
 acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
-		asynPortDriver(portName,
-		                    _nchan, 														/* maxAddr */
-		                    asynInt32Mask | asynFloat64Mask | asynFloat64ArrayMask | asynEnumMask | asynInt8ArrayMask | asynInt16ArrayMask| asynDrvUserMask, /* Interface mask */
-		                    asynInt32Mask | asynFloat64Mask | asynFloat64ArrayMask | asynEnumMask | asynInt8ArrayMask | asynInt16ArrayMask,  				 /* Interrupt mask */
-		                    0, /* asynFlags.  This driver does not block and it is not multi-device, so flag is 0 */
-		                    1, /* Autoconnect */
-		                    0, /* Default priority */
-		                    0) /* Default stack size*/,
-		nchan(_nchan), nsam(_nsam), sample_delta_ns(0), fill_requested(false)
+	asynPortDriver(portName,
+/* maxAddr */		_nchan,
+/* Interface mask */    asynEnumMask|asynInt32Mask|asynFloat64Mask|asynInt8ArrayMask|asynInt16ArrayMask|asynInt32ArrayMask|asynDrvUserMask,
+/* Interrupt mask */	asynInt32Mask|asynFloat64Mask|asynInt8ArrayMask|asynInt16ArrayMask|asynInt32ArrayMask,
+/* asynFlags no block*/ 0,
+/* Autoconnect */       1,
+/* Default priority */  0,
+/* Default stack size*/ 0),
+	nchan(_nchan), nsam(_nsam), sample_delta_ns(0), fill_requested(false)
 {
 	clock_count[0] = clock_count[1] = 0;
 	memset(&t0, 0, sizeof(t0));
@@ -354,9 +354,10 @@ public:
 	acq400JudgementImpl(const char* portName, int _nchan, int _nsam) :
 		acq400Judgement(portName, _nchan, _nsam)
 	{
-		createParam(PS_MU,                  AATYPE,    	&P_MU);
-		createParam(PS_ML,                  AATYPE,    	&P_ML);
-		createParam(PS_RAW,                 AATYPE,    	&P_RAW);
+		createParam(PS_MU,  AATYPE,    	&P_MU);
+		createParam(PS_ML,  AATYPE,    	&P_ML);
+		createParam(PS_RAW, AATYPE,    	&P_RAW);
+
 		RAW_MU = new ETYPE[nsam*nchan];
 		RAW_ML = new ETYPE[nsam*nchan];
 		CHN_MU = new ETYPE[nchan*nsam];
@@ -419,11 +420,7 @@ public:
 
 		doCallbacksInt8Array(RESULT_FAIL,   nchan+1, P_RESULT_FAIL, 0);
 	}
-	/** Called when asyn clients call pasynInt32->write().
-	  * This function sends a signal to the simTask thread if the value of P_Run has changed.
-	  * For all parameters it sets the value in the parameter library and calls any registered callbacks..
-	  * \param[in] pasynUser pasynUser structure that encodes the reason and address.
-	  * \param[in] value Value to write. */
+	/** Called when asyn clients call pasynInt32->write(). */
 	virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value)
 	{
 	    int function = pasynUser->reason;
@@ -446,13 +443,13 @@ public:
 	    		fill_masks(pasynUser, (ETYPE*)Buffer::the_buffers[ib]->getBase(), (ETYPE)value);
 	    	}else{
 	    		/* never going to fail these limits */
-	    		fill_mask(RAW_MU, 0x7fff);
-	    		fill_mask(RAW_ML, 0x8000);
+	    		fill_mask(RAW_MU, MAXVAL);
+	    		fill_mask(RAW_ML, MINVAL);
 	    	}
 		for (int isam = 0; isam < nsam; ++isam){
 			for (int ic = 0; ic < nchan; ++ic){
-				CHN_MU[ic*nsam+isam] = isam < FIRST_SAM? 0: RAW_MU[isam*nchan+ic];
-				CHN_ML[ic*nsam+isam] = isam < FIRST_SAM? 0: RAW_ML[isam*nchan+ic];
+				CHN_MU[ic*nsam+isam] = isam<WINL[ic] || isam>WINR[ic] ? 0: RAW_MU[isam*nchan+ic];
+				CHN_ML[ic*nsam+isam] = isam<WINL[ic] || isam>WINR[ic] ? 0: RAW_ML[isam*nchan+ic];
 			}
 		}
 	    	fill_requested = true;
@@ -464,8 +461,6 @@ public:
 	        /* All other parameters just get set in parameter list, no need to
 	         * act on them here */
 	    }
-
-	    /* Do callbacks so higher layers see any changes */
 	    status = (asynStatus) callParamCallbacks();
 
 	    if (status)
@@ -482,7 +477,6 @@ public:
 	                                        size_t nElements)
 	{
 		int function = pasynUser->reason;
-		int addr;
 		asynStatus status = asynError;
 
 		asynPrint(pasynUser, ASYN_TRACEIO_DRIVER,
@@ -494,7 +488,6 @@ public:
 	                                        size_t nElements)
 	{
 		int function = pasynUser->reason;
-		int addr;
 		asynStatus status = asynError;
 
 		asynPrint(pasynUser, ASYN_TRACEIO_DRIVER,
@@ -611,9 +604,6 @@ int acq400Judgement::factory(const char *portName, int maxPoints, int nchan, uns
 				__FUNCTION__, data_size, (unsigned)sizeof(short), (unsigned)sizeof(long));
 		exit(1);
 	}
-
-
-
 }
 
 
@@ -621,33 +611,32 @@ int acq400Judgement::factory(const char *portName, int maxPoints, int nchan, uns
 
 extern "C" {
 
-/** EPICS iocsh callable function to call constructor for the testAsynPortDriver class.
-  * \param[in] portName The name of the asyn port driver to be created.
-  * \param[in] maxPoints The maximum  number of points in the volt and time arrays */
-int acq400JudgementConfigure(const char *portName, int maxPoints, int nchan, unsigned data_size)
-{
-	return acq400Judgement::factory(portName, maxPoints, nchan, data_size);
-}
+	/** EPICS iocsh callable function to call constructor for the testAsynPortDriver class.
+	  * \param[in] portName The name of the asyn port driver to be created.
+	  * \param[in] maxPoints The maximum  number of points in the volt and time arrays */
+	int acq400JudgementConfigure(const char *portName, int maxPoints, int nchan, unsigned data_size)
+	{
+		return acq400Judgement::factory(portName, maxPoints, nchan, data_size);
+	}
 
 
-/* EPICS iocsh shell commands */
+	/* EPICS iocsh shell commands */
 
-static const iocshArg initArg0 = { "portName",iocshArgString};
-static const iocshArg initArg1 = { "max points",iocshArgInt};
-static const iocshArg initArg2 = { "max chan",iocshArgInt};
-static const iocshArg initArg3 = { "data size",iocshArgInt};
-static const iocshArg * const initArgs[] = {&initArg0, &initArg1, &initArg2, &initArg3};
-static const iocshFuncDef initFuncDef = {"acq400JudgementConfigure",4,initArgs};
-static void initCallFunc(const iocshArgBuf *args)
-{
-	acq400JudgementConfigure(args[0].sval, args[1].ival, args[2].ival, args[3].ival);
-}
+	static const iocshArg initArg0 = { "portName",iocshArgString};
+	static const iocshArg initArg1 = { "max points",iocshArgInt};
+	static const iocshArg initArg2 = { "max chan",iocshArgInt};
+	static const iocshArg initArg3 = { "data size",iocshArgInt};
+	static const iocshArg * const initArgs[] = {&initArg0, &initArg1, &initArg2, &initArg3};
+	static const iocshFuncDef initFuncDef = {"acq400JudgementConfigure",4,initArgs};
+	static void initCallFunc(const iocshArgBuf *args)
+	{
+		acq400JudgementConfigure(args[0].sval, args[1].ival, args[2].ival, args[3].ival);
+	}
 
-void acq400_judgementRegister(void)
-{
-    iocshRegister(&initFuncDef,initCallFunc);
-}
+	void acq400_judgementRegister(void)
+	{
+	    iocshRegister(&initFuncDef,initCallFunc);
+	}
 
-epicsExportRegistrar(acq400_judgementRegister);
-
+	epicsExportRegistrar(acq400_judgementRegister);
 }
