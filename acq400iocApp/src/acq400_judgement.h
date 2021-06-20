@@ -88,12 +88,12 @@ protected:
 	int P_UPDATE;
 
 	/* our data */
-	epicsInt16* RAW_MU;
-	epicsInt16* RAW_ML;
-	epicsInt16* CHN_MU;
-	epicsInt16* CHN_ML;
-	epicsInt16* WINL;
-	epicsInt16* WINR;
+	epicsInt16* RAW_MU;	/* raw [sample][chan] Mask Upper */
+	epicsInt16* RAW_ML;	/* raw [sample][chan] Mask Lower */
+	epicsInt16* CHN_MU;	/* chn [chan][sample] Mask Upper */
+	epicsInt16* CHN_ML;	/* chn [chan][sample] Mask Lower */
+	epicsInt16* WINL;	/* window left [chan] 		 */
+	epicsInt16* WINR;	/* window right [chan] 		 */
 	epicsInt16* RAW;
 	epicsInt8* RESULT_FAIL;
 	epicsInt32* FAIL_MASK32;
