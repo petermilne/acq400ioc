@@ -72,7 +72,7 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 	createParam(PS_ML,                  asynParamInt16Array,    	&P_ML);
 	createParam(PS_RAW,                 asynParamInt16Array,    	&P_RAW);
 	createParam(PS_BN, 		    asynParamInt32, 		&P_BN);
-	createParam(PS_RESULT_FAIL,	    asynParamInt32Array,    	&P_RESULT_FAIL);
+	createParam(PS_RESULT_FAIL,	    asynParamInt8Array,    	&P_RESULT_FAIL);
 	createParam(PS_OK,		    asynParamInt32,		&P_OK);
 
 	createParam(PS_RESULT_MASK32,	    asynParamInt32,		&P_RESULT_MASK32);
