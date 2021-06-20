@@ -42,26 +42,23 @@ enum UPDATE {
 
 class acq400Judgement: public asynPortDriver {
 public:
-	virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
-
 	virtual asynStatus readInt8Array(asynUser *pasynUser, epicsInt8 *value,
 			size_t nElements, size_t *nIn);
 	virtual asynStatus readInt16Array(asynUser *pasynUser, epicsInt16 *value,
 			size_t nElements, size_t *nIn);
 
-	virtual asynStatus writeInt16Array(asynUser *pasynUser, epicsInt16 *value,
-			size_t nElements);
-
-	static int factory(const char *portName, int maxPoints, int nchan);
+	static int factory(const char *portName, int maxPoints, int nchan, unsigned data_size);
 	virtual void task();
 	virtual asynStatus updateTimeStamp(int offset);
 
 protected:
 	int handle_es(unsigned* raw);
-	void handle_burst(int vbn, int offset);
+	virtual void handle_burst(int vbn, int offset) = 0;
 	bool calculate(epicsInt16* raw, const epicsInt16* mu, const epicsInt16* ml);
 	/* return TRUE if any fail */
 	bool onCalculate(bool fail);
+	virtual void doDataUpdateCallbacks(int ic) = 0;
+	virtual void doMaskUpdateCallbacks(int ic) = 0;
 
 	acq400Judgement(const char* portName, int nchan, int nsam);
 
@@ -88,13 +85,10 @@ protected:
 	int P_UPDATE;
 
 	/* our data */
-	epicsInt16* RAW_MU;	/* raw [sample][chan] Mask Upper */
-	epicsInt16* RAW_ML;	/* raw [sample][chan] Mask Lower */
-	epicsInt16* CHN_MU;	/* chn [chan][sample] Mask Upper */
-	epicsInt16* CHN_ML;	/* chn [chan][sample] Mask Lower */
+
 	epicsInt16* WINL;	/* window left [chan] 		 */
 	epicsInt16* WINR;	/* window right [chan] 		 */
-	epicsInt16* RAW;
+
 	epicsInt8* RESULT_FAIL;
 	epicsInt32* FAIL_MASK32;
 	epicsInt32 sample_count;
@@ -106,9 +100,6 @@ protected:
 
 	int ib;
 	bool fill_requested;
-	void fill_masks(asynUser *pasynUser, epicsInt16* raw,  int threshold);
-	void fill_mask(epicsInt16* mask,  epicsInt16 value);
-	void fill_mask_chan(epicsInt16* mask,  int addr, epicsInt16* ch);
 };
 
 #endif /* ACQ400IOCAPP_SRC_ACQ400_JUDGEMENT_H_ */
