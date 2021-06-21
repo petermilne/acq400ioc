@@ -28,8 +28,6 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#define MAX_ENUM_STRING_SIZE 20
-
 #include "acq-util.h"
 #include <vector>
 
@@ -39,15 +37,13 @@ using namespace std;
 
 static const char *driverName="acq400JudgementAsynPortDriver";
 
-#define NANO		1000000000
-
 void task_runner(void *drvPvt)
 {
 	acq400Judgement *pPvt = (acq400Judgement *)drvPvt;
 	pPvt->task();
 }
 
-
+/** abstract base class with Judgement common definitions. Use Judgement::factory() to instantiate a concrete class */
 acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 	asynPortDriver(portName,
 /* maxAddr */		_nchan,
@@ -98,16 +94,16 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 		WINR[ic] = nchan-1;
 	}
 
-    /* Create the thread that computes the waveforms in the background */
-    status = (asynStatus)(epicsThreadCreate("acq400JudgementTask",
-                          epicsThreadPriorityHigh,
-                          epicsThreadGetStackSize(epicsThreadStackMedium),
-						  (EPICSTHREADFUNC)::task_runner,
-                          this) == NULL);
-    if (status) {
-        printf("%s:%s: epicsThreadCreate failure\n", driverName, __FUNCTION__);
-        return;
-    }
+	/* Create the thread that computes the waveforms in the background */
+	status = (asynStatus)(epicsThreadCreate("acq400JudgementTask",
+			epicsThreadPriorityHigh,
+			epicsThreadGetStackSize(epicsThreadStackMedium),
+			(EPICSTHREADFUNC)::task_runner,
+			this) == NULL);
+	if (status) {
+		printf("%s:%s: epicsThreadCreate failure\n", driverName, __FUNCTION__);
+		return;
+	}
 }
 
 bool acq400Judgement::onCalculate(bool fail)
@@ -147,6 +143,8 @@ bool acq400Judgement::onCalculate(bool fail)
 	}
 	return fail;
 }
+
+#define NANO		1000000000
 
 void epicsTimeStampAdd(epicsTimeStamp& ts, unsigned _delta_ns)
 {
@@ -209,7 +207,6 @@ void acq400Judgement::task()
 		Buffer::create(getRoot(0), Buffer::bufferlen);
 	}
 
-
 	while((ib = getBufferId(fc)) >= 0){
 		t0 = t1; epicsTimeGetCurrent(&t1);
 		if (t0.secPastEpoch == 0){
@@ -233,52 +230,52 @@ void acq400Judgement::task()
 asynStatus acq400Judgement::readInt8Array(asynUser *pasynUser, epicsInt8 *value,
                                         size_t nElements, size_t *nIn)
 {
-    int function = pasynUser->reason;
-    asynStatus status = asynSuccess;
-    epicsTimeStamp timeStamp;
+	int function = pasynUser->reason;
+	asynStatus status = asynSuccess;
+	epicsTimeStamp timeStamp;
 
-    getTimeStamp(&timeStamp);
-    pasynUser->timestamp = timeStamp;
+	getTimeStamp(&timeStamp);
+	pasynUser->timestamp = timeStamp;
 
-    printf("%s function:%d\n", __FUNCTION__, function);
+	printf("%s function:%d\n", __FUNCTION__, function);
 
-    if (status)
-        epicsSnprintf(pasynUser->errorMessage, pasynUser->errorMessageSize,
-                  "%s:%s: status=%d, function=%d",
-                  driverName, __FUNCTION__, status, function);
-    else
-        asynPrint(pasynUser, ASYN_TRACEIO_DRIVER,
-              "%s:%s: function=%d\n",
-              driverName, __FUNCTION__, function);
-    return status;
+	if (status)
+		epicsSnprintf(pasynUser->errorMessage, pasynUser->errorMessageSize,
+				"%s:%s: status=%d, function=%d",
+				driverName, __FUNCTION__, status, function);
+	else
+		asynPrint(pasynUser, ASYN_TRACEIO_DRIVER,
+				"%s:%s: function=%d\n",
+				driverName, __FUNCTION__, function);
+	return status;
 }
 
 asynStatus acq400Judgement::readInt16Array(asynUser *pasynUser, epicsInt16 *value,
                                         size_t nElements, size_t *nIn)
 {
-    int function = pasynUser->reason;
-    asynStatus status = asynSuccess;
-    epicsTimeStamp timeStamp;
+	int function = pasynUser->reason;
+	asynStatus status = asynSuccess;
+	epicsTimeStamp timeStamp;
 
-    getTimeStamp(&timeStamp);
-    pasynUser->timestamp = timeStamp;
+	getTimeStamp(&timeStamp);
+	pasynUser->timestamp = timeStamp;
 
-    printf("%s function:%d\n", __FUNCTION__, function);
+	printf("%s function:%d\n", __FUNCTION__, function);
 
-    if (status)
-        epicsSnprintf(pasynUser->errorMessage, pasynUser->errorMessageSize,
-                  "%s:%s: status=%d, function=%d",
-                  driverName, __FUNCTION__, status, function);
-    else
-        asynPrint(pasynUser, ASYN_TRACEIO_DRIVER,
-              "%s:%s: function=%d\n",
-              driverName, __FUNCTION__, function);
-    return status;
+	if (status)
+		epicsSnprintf(pasynUser->errorMessage, pasynUser->errorMessageSize,
+				"%s:%s: status=%d, function=%d",
+				driverName, __FUNCTION__, status, function);
+	else
+		asynPrint(pasynUser, ASYN_TRACEIO_DRIVER,
+				"%s:%s: function=%d\n",
+				driverName, __FUNCTION__, function);
+	return status;
 }
 
 
 
-
+/** Concrete Judgement class specialised by data type */
 template <class ETYPE>
 class acq400JudgementImpl : public acq400Judgement {
 	ETYPE* RAW_MU;	/* raw [sample][chan] Mask Upper */
@@ -368,22 +365,17 @@ public:
 
 		for (int isam = 0; isam < nsam; ++isam){
 			for (int ic = 0; ic < nchan; ++ic){
-
-				if (isam < WINL[ic] || isam > WINR[ic]){
-					continue;
-				}
 				int ib = isam*nchan+ic;
+				ETYPE xx = isam > FIRST_SAM? raw[ib]: 0; 	// keep the ES out of the output data..
 
-				if (isam >= FIRST_SAM){
-					ETYPE xx = raw[ib];
+				RAW[ic*nsam+isam] = xx;			 	// for plotting
+
+				if (isam >= WINL[ic] && isam <= WINR[ic]){  	// make Judgment inside window
 					if (xx > mu[ib] || xx < ml[ib]){
 						FAIL_MASK32[ic/32] |= 1 << (ic&0x1f);
 						RESULT_FAIL[ic+1] = 1;
 						fail = true;
 					}
-					RAW[ic*nsam+isam] = xx;
-				}else{
-					raw[ib] = 0;		// keep the ES out of the output data..
 				}
 			}
 		}
@@ -491,26 +483,16 @@ public:
 	}
 };
 
-template<>
-const asynParamType acq400JudgementImpl<epicsInt16>::AATYPE = asynParamInt16Array;
-template<>
-const asynParamType acq400JudgementImpl<epicsInt32>::AATYPE = asynParamInt32Array;
-template<>
-const epicsInt16 acq400JudgementImpl<epicsInt16>::MAXVAL = 0x7fff;
-template<>
-const epicsInt16 acq400JudgementImpl<epicsInt16>::MINVAL = 0x8000;
-template<>
-const epicsInt32 acq400JudgementImpl<epicsInt32>::MAXVAL = 0x7fffff00;
-template<>
-const epicsInt32 acq400JudgementImpl<epicsInt32>::MINVAL = 0x80000000;
-template<>
-const epicsInt16 acq400JudgementImpl<epicsInt16>::MAXLIM = 0x7fe0;
-template<>
-const epicsInt16 acq400JudgementImpl<epicsInt16>::MINLIM = 0x8010;
-template<>
-const epicsInt32 acq400JudgementImpl<epicsInt32>::MAXLIM = 0x7ffffef0;
-template<>
-const epicsInt32 acq400JudgementImpl<epicsInt32>::MINLIM = 0x80000010;
+template<> const asynParamType acq400JudgementImpl<epicsInt16>::AATYPE = asynParamInt16Array;
+template<> const asynParamType acq400JudgementImpl<epicsInt32>::AATYPE = asynParamInt32Array;
+template<> const epicsInt16 acq400JudgementImpl<epicsInt16>::MAXVAL = 0x7fff;
+template<> const epicsInt16 acq400JudgementImpl<epicsInt16>::MINVAL = 0x8000;
+template<> const epicsInt32 acq400JudgementImpl<epicsInt32>::MAXVAL = 0x7fffff00;
+template<> const epicsInt32 acq400JudgementImpl<epicsInt32>::MINVAL = 0x80000000;
+template<> const epicsInt16 acq400JudgementImpl<epicsInt16>::MAXLIM = 0x7fe0;
+template<> const epicsInt16 acq400JudgementImpl<epicsInt16>::MINLIM = 0x8010;
+template<> const epicsInt32 acq400JudgementImpl<epicsInt32>::MAXLIM = 0x7ffffef0;
+template<> const epicsInt32 acq400JudgementImpl<epicsInt32>::MINLIM = 0x80000010;
 
 template<>
 asynStatus acq400JudgementImpl<epicsInt16>::writeInt16Array(asynUser *pasynUser, epicsInt16 *value,
@@ -590,7 +572,7 @@ void acq400JudgementImpl<epicsInt32>::doMaskUpdateCallbacks(int ic){
 
 
 
-
+/** factory() method: creates concrete class with specialized data type: either epicsInt16 or epicsInt32 */
 int acq400Judgement::factory(const char *portName, int maxPoints, int nchan, unsigned data_size)
 {
 	switch(data_size){
@@ -619,7 +601,6 @@ extern "C" {
 	{
 		return acq400Judgement::factory(portName, maxPoints, nchan, data_size);
 	}
-
 
 	/* EPICS iocsh shell commands */
 
