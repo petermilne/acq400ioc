@@ -48,7 +48,7 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 	asynPortDriver(portName,
 /* maxAddr */		_nchan,
 /* Interface mask */    asynEnumMask|asynInt32Mask|asynFloat64Mask|asynInt8ArrayMask|asynInt16ArrayMask|asynInt32ArrayMask|asynDrvUserMask,
-/* Interrupt mask */	asynInt32Mask|asynFloat64Mask|asynInt8ArrayMask|asynInt16ArrayMask|asynInt32ArrayMask,
+/* Interrupt mask */	asynEnumMask|asynInt32Mask|asynFloat64Mask|asynInt8ArrayMask|asynInt16ArrayMask|asynInt32ArrayMask,
 /* asynFlags no block*/ 0,
 /* Autoconnect */       1,
 /* Default priority */  0,
@@ -78,6 +78,8 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 	createParam(PS_SAMPLE_DELTA_NS,     asynParamInt32, 		&P_SAMPLE_DELTA_NS);
 	createParam(PS_UPDATE,     	    asynParamInt32, 		&P_UPDATE);
 
+	createParam(PS_WINL,                asynParamInt32,              &P_WINL);
+	createParam(PS_WINR,                asynParamInt32,              &P_WINR);
 
 	setIntegerParam(P_NCHAN, 			nchan);
 	setIntegerParam(P_NSAM, 			nsam);

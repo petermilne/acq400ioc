@@ -490,6 +490,7 @@ static registryFunctionRef my_asub_Ref[] = {
        {"raw_to_volts_INT24",  (REGISTRYFUNCTION) raw_to_volts<long, 0>},
        {"raw_to_volts_SHORT",  (REGISTRYFUNCTION) raw_to_volts<short, 0>},
        {"volts_to_raw_SHORT", (REGISTRYFUNCTION) volts_to_raw<short>},
+       {"volts_to_raw_LONG", (REGISTRYFUNCTION) volts_to_raw<long>},
        {"volts_to_raw_DAC20", (REGISTRYFUNCTION) volts_to_raw<long>},
        {"cart2pol", (REGISTRYFUNCTION) cart2pol<short>},
        {"cart2pol_LONG", (REGISTRYFUNCTION) cart2pol<long>},
