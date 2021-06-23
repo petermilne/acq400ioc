@@ -291,6 +291,7 @@ class acq400JudgementImpl : public acq400Judgement {
 	static const ETYPE MAXLIM;
 	static const ETYPE MINLIM;
 	static const asynParamType AATYPE;
+	static const int SCALE;
 
 	void fill_masks(asynUser *pasynUser, ETYPE* raw,  int threshold)
 	{
@@ -428,7 +429,7 @@ public:
 
 	    if (function == P_MASK_FROM_DATA) {
 	    	if (value){
-	    		fill_masks(pasynUser, (ETYPE*)Buffer::the_buffers[ib]->getBase(), (ETYPE)value);
+	    		fill_masks(pasynUser, (ETYPE*)Buffer::the_buffers[ib]->getBase(), (ETYPE)value*SCALE);
 	    	}else{
 	    		/* never going to fail these limits */
 	    		fill_mask(RAW_MU, MAXVAL);
@@ -495,6 +496,9 @@ template<> const epicsInt16 acq400JudgementImpl<epicsInt16>::MAXLIM = 0x7fe0;
 template<> const epicsInt16 acq400JudgementImpl<epicsInt16>::MINLIM = 0x8010;
 template<> const epicsInt32 acq400JudgementImpl<epicsInt32>::MAXLIM = 0x7ffffef0;
 template<> const epicsInt32 acq400JudgementImpl<epicsInt32>::MINLIM = 0x80000010;
+
+template<> const int acq400JudgementImpl<epicsInt16>::SCALE = 1;
+template<> const int acq400JudgementImpl<epicsInt32>::SCALE = 256;
 
 template<>
 asynStatus acq400JudgementImpl<epicsInt16>::writeInt16Array(asynUser *pasynUser, epicsInt16 *value,

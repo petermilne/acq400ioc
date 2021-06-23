@@ -86,7 +86,9 @@ record(longout, "${UUT}:${SITE}:JDG:${FN}:${CH}:WIN:L")
 	field(DTYP, "asynInt32")
 	field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))WINL")
 	field(HOPR, "${NSAM}")
-	field(LOPR,  "0")	
+	field(LOPR,  "2")
+	field(VAL,   "2")
+	field(PINI,  "YES")
 }
 
 record(longout, "${UUT}:${SITE}:JDG:${FN}:${CH}:WIN:R")
@@ -94,6 +96,8 @@ record(longout, "${UUT}:${SITE}:JDG:${FN}:${CH}:WIN:R")
 	field(DTYP, "asynInt32")
 	field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))WINR")
 	field(HOPR, "${NSAM}")
-	field(LOPR,  "0")	
+	field(LOPR,  "2")
+	field(VAL,   "${NSAM}")
+	field(PINI,  "YES")
 }
 
