@@ -44,6 +44,8 @@ source ./scripts/record_support.sh
 source /tmp/u-boot_env
 MB_MODEL=$(basename ${devicetree_image%*.dtb})
 
+HAS_WR=0; [ -e /etc/acq400/0/wr_tai_cur ] && HAS_WR=1
+
 FIRST_AI_WF_RECORDS=1
 
 load_wf_acq_host_window_per_channel() {
@@ -971,9 +973,9 @@ load_mb_sync() {
 			case $MB_MODEL in
             acq2106*)
              	#                   0     	1    	2    	3      	4 
-				lsb_x ${lp0},NOBT=3 ""		HDMI 	GPG0 	COMM_A 	INT01M;;
+				lsb_x ${lp0},NOBT=3 "nc"		HDMI 	GPG0 	COMM_A 	INT01M;;
 			*)
-				lsb_x ${lp0},NOBT=3 EXT HDMI GPG0 	"" INT01M;;
+				lsb_x ${lp0},NOBT=3 EXT HDMI GPG0 	"nc" INT01M;;
 			esac;;
 		TRG)
 			if [ $(has_dsp_trg $MB_MODEL) -ne 0 ]; then
@@ -1050,12 +1052,13 @@ load_mb_sync() {
 			dblr '"db/fpctl2.db","'${CPRAMS},${lprams},${fprams}'"';;
 		esac
 	done
-	case $MB_MODEL in
-            acq2106*)
-            	zclk_onst="WR31M25";;
-            *)
-            	zclk_onst="";;
+	case $HAS_WR in
+	1)
+		zclk_onst="WR31M25";;
+	*)
+		zclk_onst="nc";;
 	esac
+
 	dblr '"db/zclk.db","'${CPRAMS},ZCLK_ONST=${zclk_onst}'"'
 	for FUN in SYNC TRG GPIO CLK
 	do
@@ -1072,15 +1075,17 @@ load_mb_sync() {
 	for dx in 0 1 2 3 4 5 6 7
 	do
 			case $dx in 
-			0|4)	
-					if [ "x$zclk_onst" != "x" ]; then
-						hdmi_src="WR_PPS"
-					else 
-						hdmi_src="FP_GPIO"
-					fi;;
+			0)	
+					hdmi_src="FP_GPIO";;
 			1|5)	hdmi_src="HDMI_GPIO";;
 			2|6)    hdmi_src="HDMI_TRG";;
 			3|7)    hdmi_src="HDMI_SYNC";;
+			4)	
+				if [ $HAS_WR -eq 1 ]; then
+					hdmi_src="WR_PPS"
+				else 
+					hdmi_src="FP_GPIO"
+				fi;;
 			esac
 			dblr '"db/sig_event_src.db","'${CPRAMS},BIT=${dx},HDMI=${hdmi_src}'"'
 	done
