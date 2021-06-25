@@ -254,7 +254,7 @@ fpmaster|rpmaster|master|solo|slave)
     /usr/local/CARE/route-WR-FP    1>&2
     set_local_clock $FS;;       
 *)
- 
+
 	role_set=-1;;
 esac
 
@@ -264,7 +264,7 @@ esac
 if [ $role_set -eq 0 ]; then
 # Configure distributor (XO) after AI.
 	config_distributor_sites $D_TRG
-	echo $CMDLINE > /dev/shm/role
+	echo "$CMDLINE ;# FIN=$FIN > /dev/shm/role
 	exit 0
 else
 	case $ROLE in
