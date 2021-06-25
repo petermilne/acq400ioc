@@ -264,7 +264,7 @@ esac
 if [ $role_set -eq 0 ]; then
 # Configure distributor (XO) after AI.
 	config_distributor_sites $D_TRG
-	echo "$CMDLINE ;# FIN=$FIN > /dev/shm/role
+	echo "$CMDLINE ;# FIN=$FIN" > /dev/shm/role
 	exit 0
 else
 	case $ROLE in
