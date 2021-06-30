@@ -17,6 +17,16 @@ record(bo, "${UUT}:${SITE}:LED:TRG") {
 	field(PINI, "YES")	
 }
 
+record(bo, "${UUT}:${SITE}:LED:DO5") {
+	field(DTYP, "stream")
+	field(DESC, "DO5 LED .. aliases CLK")
+	field(OUT,  "@dio432.proto setPGDO_BIT(15) ${SPORT}")	
+	field(ZNAM, "0")
+	field(ONAM, "1")
+	field(VAL,  "0")
+	field(PINI, "YES")	
+}
+
 record(bo, "${UUT}:${SITE}:LED:DO4") {
 	field(DTYP, "stream")
 	field(OUT,  "@dio432.proto setPGDO_BIT(8) ${SPORT}")	

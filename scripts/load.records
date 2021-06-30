@@ -768,6 +768,7 @@ load_dio482pg() {
 	dblr '"db/dio482pg.db","'${cprams}$self,S0=S0WR'"'
 	dblr '"db/dio482pg_leds.db","'${cprams}'"' 
 	if [ $do_count -le 5 ]; then
+		set.site $site num_pg $do_count
 		for dx in $(seq $do_count); do		
 			echo "seq pg4_flasher \"uut=${HOST},site=${site},dox=${dx}\""		
 			dblr '"db/dio482pg_do4.db","'${cprams},UX=$dx,IX=$(($dx-1))'"'
