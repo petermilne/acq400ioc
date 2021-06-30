@@ -235,10 +235,9 @@ if is_ds; then
     *)
     	echo "ERROR: SR options 10k 20k 40k 80k 128k"; exit 1
     esac
-    set.site 1  hi_res_mode $hrmode	    
+    set.site 1  hi_res_mode $hrmode	
 fi
-FIN=$FIN_DEF
-
+eval $(egu2int FIN=${FIN_DEF})
 role_set=0
 
 D_TRG='d0'
@@ -250,7 +249,7 @@ fpmaster|rpmaster|master|solo|slave)
     set_out
     D_TRG='d1'
     $set_common_master
-    /usr/local/CARE/acq2106+WR.init ${FIN} 1>&2
+    /usr/local/CARE/acq2106+WR.init ${FIN_DEF}
     /usr/local/CARE/route-WR-FP    1>&2
     set_local_clock $FS;;       
 *)
@@ -259,12 +258,10 @@ fpmaster|rpmaster|master|solo|slave)
 esac
 
 
-
-
 if [ $role_set -eq 0 ]; then
 # Configure distributor (XO) after AI.
 	config_distributor_sites $D_TRG
-	echo "$CMDLINE ;# FIN=$FIN" > /dev/shm/role
+	echo "$CMDLINE ;# FIN=$FIN FIN_DEF=$FIN_DEF" > /dev/shm/role
 	exit 0
 else
 	case $ROLE in
