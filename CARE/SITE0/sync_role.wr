@@ -235,9 +235,9 @@ if is_ds; then
     *)
     	echo "ERROR: SR options 10k 20k 40k 80k 128k"; exit 1
     esac
-    set.site 1  hi_res_mode $hrmode	
-    FIN=$FIN_DEF
+    set.site 1  hi_res_mode $hrmode	    
 fi
+FIN=$FIN_DEF
 
 role_set=0
 
