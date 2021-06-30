@@ -487,10 +487,10 @@ load_400() {
 	    	case $model in
 	    	$MT_DIO482TD_PG)
 	    		if [ "x$DIO482TD_PG5" = "xy" ]; then
-	    			will_load_dio482pg=5;;
+	    			will_load_dio482pg=5
 	    		else
-	        		will_load_dio482pg=4;;
-	        	fi
+	        		will_load_dio482pg=4
+	        	fi;;
 	        *)
 	        	will_load_dio482pg=32;;
 	        esac	    	
