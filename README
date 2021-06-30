@@ -125,6 +125,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 # PG module: defaults as PG4 (PGx4, CLKOUT, TRG)
 # PG5 option:   PGx5,TRG)
 DIO482TD_PG5=y
+DIO482TD_PG5=notrg
 
 
 # WAN Environment. CLIENT probably wants to set 

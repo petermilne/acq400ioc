@@ -9,6 +9,12 @@ record(bo, "${UUT}:${SITE}:TRGOUT") {
 	field(PINI, "YES")	
 }
 
+record(bo, "$UUT:${SITE}:HAS_TRGIN"){
+	field(DTYP, "Soft Channel")
+	field(VAL,  "${hastrg}")
+	field(PINI, "YES")
+}
+
 record(longin, "${UUT}:${SITE}:WR:TS:rc") {
 	field(SCAN, "1 second")
 	field(DTYP, "stream")	

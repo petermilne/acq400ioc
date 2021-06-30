@@ -486,7 +486,7 @@ load_400() {
 	    if [ -e /dev/acq400.$site.knobs/gpg_enable ]; then
 	    	case $model in
 	    	$MT_DIO482TD_PG)
-	    		if [ "x$DIO482TD_PG5" = "xy" ]; then
+	    		if [ "x$DIO482TD_PG5" != "x" ]; then
 	    			will_load_dio482pg=5
 	    		else
 	        		will_load_dio482pg=4
@@ -765,7 +765,12 @@ load_dio482pg() {
     5)
  		self=",SELF=SXST";;
     esac
-	dblr '"db/dio482pg.db","'${cprams}$self,S0=S0WR'"'
+    if [ "x$DIO482TD_PG5" = "xnotrg" ]; then
+    	hastrg=0
+    else
+    	hastrg=1
+    fi
+	dblr '"db/dio482pg.db","'${cprams}$self,hastrg=${hastrg},S0=S0WR'"'
 	dblr '"db/dio482pg_leds.db","'${cprams}'"' 
 	if [ $do_count -le 5 ]; then
 		set.site $site num_pg $do_count
