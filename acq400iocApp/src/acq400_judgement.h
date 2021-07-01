@@ -48,6 +48,7 @@ public:
 			size_t nElements, size_t *nIn);
 
 	static int factory(const char *portName, int maxPoints, int nchan, unsigned data_size);
+	static int verbose;
 	virtual void task();
 	virtual asynStatus updateTimeStamp(int offset);
 

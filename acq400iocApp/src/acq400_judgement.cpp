@@ -93,7 +93,7 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 
 	for (int ic = 0; ic < nchan; ++ic){
 		WINL[ic] = FIRST_SAM;
-		WINR[ic] = nchan-1;
+		WINR[ic] = nsam-1;
 	}
 
 	/* Create the thread that computes the waveforms in the background */
@@ -107,6 +107,8 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 		return;
 	}
 }
+
+int acq400Judgement::verbose = ::getenv_default("acq400JudgementImpl_VERBOSE", 0);
 
 bool acq400Judgement::onCalculate(bool fail)
 {
@@ -140,7 +142,9 @@ bool acq400Judgement::onCalculate(bool fail)
 				break;
 			}
 		}
-
+		if (verbose){
+			printf("%s doDataUpdateCallbacks(%d)\n", __FUNCTION__, ic);
+		}
 		doDataUpdateCallbacks(ic);
 	}
 	return fail;
@@ -209,11 +213,16 @@ void acq400Judgement::task()
 		Buffer::create(getRoot(0), Buffer::bufferlen);
 	}
 
+	if ((ib = getBufferId(fc)) < 0){
+		fprintf(stderr, "ERROR: getBufferId() fail");
+		return;
+	}
+
+	epicsTimeGetCurrent(&t0);
+
 	while((ib = getBufferId(fc)) >= 0){
-		t0 = t1; epicsTimeGetCurrent(&t1);
-		if (t0.secPastEpoch == 0){
-			continue;
-		}
+		epicsTimeGetCurrent(&t1);
+
 		handle_burst(ib*2,   0);
 		handle_burst(ib*2+1, nsam*nchan);
 
@@ -223,6 +232,7 @@ void acq400Judgement::task()
 			}
 			fill_requested = false;
 		}
+		t0 = t1;
 	}
 	printf("%s:%s: exit on getBufferId failure\n", driverName, __FUNCTION__);
 }
@@ -292,6 +302,8 @@ class acq400JudgementImpl : public acq400Judgement {
 	static const ETYPE MINLIM;
 	static const asynParamType AATYPE;
 	static const int SCALE;
+
+	static int verbose;
 
 	void fill_masks(asynUser *pasynUser, ETYPE* raw,  int threshold)
 	{
@@ -391,6 +403,7 @@ public:
 		ETYPE* raw = (ETYPE*)Buffer::the_buffers[ib]->getBase()+offset;
 		handle_es((unsigned*)raw);
 
+
 		updateTimeStamp(offset);
 		setIntegerParam(P_SAMPLE_COUNT, sample_count);
 		setIntegerParam(P_CLOCK_COUNT,  clock_count[1]);
@@ -402,6 +415,10 @@ public:
 
 		setIntegerParam(P_OK, !fail);
 		setIntegerParam(P_BN, vbn);
+		callParamCallbacks();
+		if (verbose > 1){
+			printf("%s vbn:%3d off:%d fail:%d\n", __FUNCTION__, vbn, offset, fail);
+		}
 		for(int m32 = 0; m32 < nchan/32; ++m32){
 			setIntegerParam(m32, P_RESULT_MASK32, FAIL_MASK32[m32]);
 			callParamCallbacks(m32);
@@ -498,7 +515,9 @@ template<> const epicsInt32 acq400JudgementImpl<epicsInt32>::MAXLIM = 0x7ffffef0
 template<> const epicsInt32 acq400JudgementImpl<epicsInt32>::MINLIM = 0x80000010;
 
 template<> const int acq400JudgementImpl<epicsInt16>::SCALE = 1;
-template<> const int acq400JudgementImpl<epicsInt32>::SCALE = 256;
+template<> const int acq400JudgementImpl<epicsInt32>::SCALE = 256*256;   // scale 32 bit number to 16 bit code step.
+
+template<class T> int acq400JudgementImpl<T>::verbose = ::getenv_default("acq400JudgementImpl_VERBOSE", 0);
 
 template<>
 asynStatus acq400JudgementImpl<epicsInt16>::writeInt16Array(asynUser *pasynUser, epicsInt16 *value,
