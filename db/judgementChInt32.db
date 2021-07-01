@@ -101,3 +101,16 @@ record(longout, "${UUT}:${SITE}:JDG:${FN}:${CH}:WIN:R")
 	field(PINI,  "YES")
 }
 
+record(waveform, "${UUT}:${SITE}:JDG:${FN}:${CH}:WINDEX")
+{
+    field(DTYP, "asynInt32ArrayIn")
+    field(INP,  "@asyn($(PORT),$(IX),$(TIMEOUT))WINDEX")
+    field(FTVL, "SHORT")
+    field(NELM, "${NSAM}")
+    field(SCAN, "I/O Intr")
+    field(HOPR, "32767")
+    field(LOPR, "-32768")
+}
+
+
+

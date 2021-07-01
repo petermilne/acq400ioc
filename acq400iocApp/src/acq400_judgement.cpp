@@ -296,6 +296,7 @@ class acq400JudgementImpl : public acq400Judgement {
 	ETYPE* CHN_MU;	/* chn [chan][sample] Mask Upper */
 	ETYPE* CHN_ML;	/* chn [chan][sample] Mask Lower */
 	ETYPE* RAW;
+	ETYPE* WINDEX;	/* window extent [nsam] 		 */
 
 	static const ETYPE MAXVAL;
 	static const ETYPE MINVAL;
@@ -351,6 +352,17 @@ class acq400JudgementImpl : public acq400Judgement {
 		fill_requested = true;
 	}
 
+	void fill_windex(int ic){
+		int winl = WINL[ic];
+		int winr = WINR[ic];
+
+		for (int isam = 0; isam < nsam; ++isam){
+			WINDEX[ic*nsam + isam] = (isam < winl || isam > winr) ?
+					0: std::min(CHN_MU[ic*nsam + isam]+SCALE*20, (int)MAXVAL);
+		}
+		doMaskUpdateCallbacks(ic);
+	}
+
 	asynStatus write_ETYPE_Array(asynUser *pasynUser, ETYPE *value, size_t nElements)
 	{
 		int function = pasynUser->reason;
@@ -393,6 +405,7 @@ public:
 		CHN_MU = new ETYPE[nchan*nsam];
 		CHN_ML = new ETYPE[nchan*nsam];
 		RAW    = new ETYPE[nsam*nchan];
+		WINDEX = new ETYPE[nchan*nsam];
 	}
 
 
@@ -485,8 +498,10 @@ public:
 	    	fill_requested = true;
 	    }else if (function == P_WINL){
 		    WINL[addr] = value;
+		    fill_windex(addr);
 	    }else if (function == P_WINR){
 		    WINR[addr] = value;
+		    fill_windex(addr);
 	    } else {
 	        /* All other parameters just get set in parameter list, no need to
 	         * act on them here */

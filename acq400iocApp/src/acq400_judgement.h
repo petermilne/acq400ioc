@@ -17,6 +17,7 @@
 #define PS_MU			"MASK_UPPER"			/* asynInt16Array   r/w */
 #define PS_ML			"MASK_LOWER"			/* asynInt16Array   r/w */
 #define PS_RAW			"RAW"				/* asynInt16Array   r/o */
+#define PS_WINDEX		"WINDEX"			/* asynInt16Array   r/o .. flags extent of  WINDOW for graph*/
 #define PS_BN			"BUFFER_NUM"			/* asynInt32, 		r/o */
 #define PS_WINL			"WINL"                          /* asynInt32,       r/w Window Left */
 #define PS_WINR			"WINR"                          /* asynInt32,       r/w Window Right */
@@ -71,6 +72,7 @@ protected:
 	int P_MASK_FROM_DATA;
 	int P_MU;
 	int P_ML;
+	int P_WINDEX;
 	int P_WINL;
 	int P_WINR;
 	int P_RAW;
