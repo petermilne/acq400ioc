@@ -351,6 +351,29 @@ class acq400JudgementImpl : public acq400Judgement {
 		fill_requested = true;
 	}
 
+	asynStatus write_ETYPE_Array(asynUser *pasynUser, ETYPE *value, size_t nElements)
+	{
+		int function = pasynUser->reason;
+		int addr;
+		asynStatus status = asynSuccess;
+
+		asynPrint(pasynUser, ASYN_TRACEIO_DRIVER,
+				"%s:%s: function=%d\n",
+				driverName, __FUNCTION__, function);
+
+		status = pasynManager->getAddr(pasynUser, &addr);
+		if(status!=asynSuccess) return status;
+
+		if (function == P_MU){
+			memcpy(&CHN_MU[addr*nsam], value, nsam*sizeof(ETYPE));
+			fill_mask_chan(RAW_MU, addr, value);
+		}else if (function == P_ML){
+			memcpy(&CHN_ML[addr*nsam], value, nsam*sizeof(ETYPE));
+			fill_mask_chan(RAW_ML, addr, value);
+		}
+
+		return(status);
+	}
 	void doMaskUpdateCallbacks(int ic){
 		assert(0);
 	}
@@ -524,52 +547,14 @@ template<>
 asynStatus acq400JudgementImpl<epicsInt16>::writeInt16Array(asynUser *pasynUser, epicsInt16 *value,
 		size_t nElements)
 {
-	int function = pasynUser->reason;
-	int addr;
-	asynStatus status = asynSuccess;
-
-	asynPrint(pasynUser, ASYN_TRACEIO_DRIVER,
-			"%s:%s: function=%d\n",
-			driverName, __FUNCTION__, function);
-
-	status = pasynManager->getAddr(pasynUser, &addr);
-	if(status!=asynSuccess) return status;
-
-	if (function == P_MU){
-		memcpy(&CHN_MU[addr*nsam], value, nsam*sizeof(short));
-		fill_mask_chan(RAW_MU, addr, value);
-	}else if (function == P_ML){
-		memcpy(&CHN_ML[addr*nsam], value, nsam*sizeof(short));
-		fill_mask_chan(RAW_ML, addr, value);
-	}
-
-	return(status);
+	return write_ETYPE_Array(pasynUser, value, nElements);
 }
 
 template<>
 asynStatus acq400JudgementImpl<epicsInt32>::writeInt32Array(asynUser *pasynUser, epicsInt32 *value,
 		size_t nElements)
 {
-	int function = pasynUser->reason;
-	int addr;
-	asynStatus status = asynSuccess;
-
-	asynPrint(pasynUser, ASYN_TRACEIO_DRIVER,
-			"%s:%s: function=%d\n",
-			driverName, __FUNCTION__, function);
-
-	status = pasynManager->getAddr(pasynUser, &addr);
-	if(status!=asynSuccess) return status;
-
-	if (function == P_MU){
-		memcpy(&CHN_MU[addr*nsam], value, nsam*sizeof(long));
-		fill_mask_chan(RAW_MU, addr, value);
-	}else if (function == P_ML){
-		memcpy(&CHN_ML[addr*nsam], value, nsam*sizeof(long));
-		fill_mask_chan(RAW_ML, addr, value);
-	}
-
-	return(status);
+	return write_ETYPE_Array(pasynUser, value, nElements);
 }
 
 
