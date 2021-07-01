@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include <math.h>
+#include <algorithm>
 
 #include <epicsTypes.h>
 #include <epicsTime.h>
@@ -86,7 +87,7 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 	setIntegerParam(P_MASK_FROM_DATA, 	0);
 
 	RESULT_FAIL = new epicsInt8[nchan+1];		// index from 1, [0] is update %256
-	FAIL_MASK32 = new epicsInt32[nchan/32];
+	FAIL_MASK32 = new epicsInt32[std::max(nchan/32, 1)];
 
 	WINL = new epicsInt16[nchan];
 	WINR = new epicsInt16[nchan];
@@ -419,12 +420,12 @@ public:
 		if (verbose > 1){
 			printf("%s vbn:%3d off:%d fail:%d\n", __FUNCTION__, vbn, offset, fail);
 		}
-		for(int m32 = 0; m32 < nchan/32; ++m32){
+		for(int m32 = 0; m32 < std::max(nchan/32, 1); ++m32){
 			setIntegerParam(m32, P_RESULT_MASK32, FAIL_MASK32[m32]);
 			callParamCallbacks(m32);
 		}
 
-		doCallbacksInt8Array(RESULT_FAIL,   nchan+1, P_RESULT_FAIL, 0);
+
 	}
 	/** Called when asyn clients call pasynInt32->write(). */
 	virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value)
@@ -576,12 +577,14 @@ template<>
 void acq400JudgementImpl<epicsInt16>::doDataUpdateCallbacks(int ic)
 {
 	doCallbacksInt16Array(&RAW[ic*nsam], nsam, P_RAW, ic);
+	doCallbacksInt8Array(RESULT_FAIL,   nchan+1, P_RESULT_FAIL, 0);
 }
 
 template<>
 void acq400JudgementImpl<epicsInt32>::doDataUpdateCallbacks(int ic)
 {
 	doCallbacksInt32Array(&RAW[ic*nsam], nsam, P_RAW, ic);
+	doCallbacksInt8Array(RESULT_FAIL,   nchan+1, P_RESULT_FAIL, 0);
 }
 
 template<>
