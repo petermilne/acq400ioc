@@ -299,7 +299,6 @@ class acq400JudgementImpl : public acq400Judgement {
 	ETYPE* CHN_MU;	/* chn [chan][sample] Mask Upper */
 	ETYPE* CHN_ML;	/* chn [chan][sample] Mask Lower */
 	ETYPE* RAW;
-	ETYPE* WINDEX;	/* window extent [nsam] 		 */
 
 	static const ETYPE MAXVAL;
 	static const ETYPE MINVAL;
@@ -355,17 +354,6 @@ class acq400JudgementImpl : public acq400Judgement {
 		fill_requested = true;
 	}
 
-	void fill_windex(int ic){
-		int winl = WINL[ic];
-		int winr = WINR[ic];
-
-		for (int isam = 0; isam < nsam; ++isam){
-			WINDEX[ic*nsam + isam] = (isam < winl || isam > winr) ?
-					0: std::min(CHN_MU[ic*nsam + isam]+SCALE*20, (int)MAXVAL);
-		}
-		doMaskUpdateCallbacks(ic);
-	}
-
 	asynStatus write_ETYPE_Array(asynUser *pasynUser, ETYPE *value, size_t nElements)
 	{
 		int function = pasynUser->reason;
@@ -408,7 +396,6 @@ public:
 		CHN_MU = new ETYPE[nchan*nsam];
 		CHN_ML = new ETYPE[nchan*nsam];
 		RAW    = new ETYPE[nsam*nchan];
-		WINDEX = new ETYPE[nchan*nsam];
 	}
 
 
@@ -485,29 +472,29 @@ public:
 	    if(status!=asynSuccess) return status;
 
 	    if (function == P_MASK_FROM_DATA) {
-	    	if (value){
-	    		fill_masks(pasynUser, (ETYPE*)Buffer::the_buffers[ib]->getBase(), (ETYPE)value*SCALE);
-	    	}else{
-	    		/* never going to fail these limits */
-	    		fill_mask(RAW_MU, MAXVAL);
-	    		fill_mask(RAW_ML, MINVAL);
-	    	}
-		for (int isam = 0; isam < nsam; ++isam){
-			for (int ic = 0; ic < nchan; ++ic){
-				CHN_MU[ic*nsam+isam] = isam<WINL[ic] || isam>WINR[ic] ? 0: RAW_MU[isam*nchan+ic];
-				CHN_ML[ic*nsam+isam] = isam<WINL[ic] || isam>WINR[ic] ? 0: RAW_ML[isam*nchan+ic];
-			}
-		}
-	    	fill_requested = true;
+		    if (value){
+			    fill_masks(pasynUser, (ETYPE*)Buffer::the_buffers[ib]->getBase(), (ETYPE)value*SCALE);
+		    }else{
+			    /* never going to fail these limits */
+			    fill_mask(RAW_MU, MAXVAL);
+			    fill_mask(RAW_ML, MINVAL);
+		    }
+		    for (int isam = 0; isam < nsam; ++isam){
+			    for (int ic = 0; ic < nchan; ++ic){
+				    CHN_MU[ic*nsam+isam] = isam<WINL[ic] || isam>WINR[ic] ? 0: RAW_MU[isam*nchan+ic];
+				    CHN_ML[ic*nsam+isam] = isam<WINL[ic] || isam>WINR[ic] ? 0: RAW_ML[isam*nchan+ic];
+			    }
+		    }
+		    fill_requested = true;
 	    }else if (function == P_WINL){
 		    WINL[addr] = value;
-		    fill_windex(addr);
+		    fill_requested = true;
 	    }else if (function == P_WINR){
 		    WINR[addr] = value;
-		    fill_windex(addr);
+		    fill_requested = true;
 	    } else {
-	        /* All other parameters just get set in parameter list, no need to
-	         * act on them here */
+		    /* All other parameters just get set in parameter list, no need to
+		     * act on them here */
 	    }
 	    status = (asynStatus) callParamCallbacks();
 

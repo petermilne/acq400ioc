@@ -97,15 +97,3 @@ record(longout, "${UUT}:${SITE}:JDG:${CH}:WIN:R")
 	field(LOPR,  "0")	
 }
 
-record(waveform, "${UUT}:${SITE}:JDG:${CH}:WINDEX")
-{
-    field(DTYP, "asynInt16ArrayIn")
-    field(INP,  "@asyn($(PORT),$(IX),$(TIMEOUT))WINDEX")
-    field(FTVL, "SHORT")
-    field(NELM, "${NSAM}")
-    field(SCAN, "I/O Intr")
-    field(HOPR, "32767")
-    field(LOPR, "-32768")
-}
-
-
