@@ -231,9 +231,7 @@ void acq400Judgement::task()
 		handle_burst(ib*2+1, nsam*nchan);
 
 		if (fill_requested){
-			for (int ic = 0; ic< nchan; ic++){
-				doMaskUpdateCallbacks(ic);
-			}
+			fill_request_task();
 			fill_requested = false;
 		}
 		t0 = t1;
@@ -383,6 +381,19 @@ class acq400JudgementImpl : public acq400Judgement {
 	void doDataUpdateCallbacks(int ic){
 		assert(0);
 	}
+	virtual void fill_request_task() {
+		for (int isam = 0; isam < nsam; ++isam){
+			for (int ic = 0; ic < nchan; ++ic){
+				CHN_MU[ic*nsam+isam] = isam<WINL[ic] || isam>WINR[ic] ? 0: RAW_MU[isam*nchan+ic];
+				CHN_ML[ic*nsam+isam] = isam<WINL[ic] || isam>WINR[ic] ? 0: RAW_ML[isam*nchan+ic];
+			}
+		}
+
+		for (int ic = 0; ic< nchan; ic++){
+			doMaskUpdateCallbacks(ic);
+		}
+	}
+
 public:
 	acq400JudgementImpl(const char* portName, int _nchan, int _nsam) :
 		acq400Judgement(portName, _nchan, _nsam)
@@ -479,12 +490,7 @@ public:
 			    fill_mask(RAW_MU, MAXVAL);
 			    fill_mask(RAW_ML, MINVAL);
 		    }
-		    for (int isam = 0; isam < nsam; ++isam){
-			    for (int ic = 0; ic < nchan; ++ic){
-				    CHN_MU[ic*nsam+isam] = isam<WINL[ic] || isam>WINR[ic] ? 0: RAW_MU[isam*nchan+ic];
-				    CHN_ML[ic*nsam+isam] = isam<WINL[ic] || isam>WINR[ic] ? 0: RAW_ML[isam*nchan+ic];
-			    }
-		    }
+
 		    fill_requested = true;
 	    }else if (function == P_WINL){
 		    WINL[addr] = value;

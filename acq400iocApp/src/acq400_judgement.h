@@ -50,6 +50,7 @@ public:
 	static int factory(const char *portName, int maxPoints, int nchan, unsigned data_size);
 	static int verbose;
 	virtual void task();
+	virtual void fill_request_task(void) = 0;
 	virtual asynStatus updateTimeStamp(int offset);
 
 protected:
