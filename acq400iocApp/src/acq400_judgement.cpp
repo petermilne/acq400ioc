@@ -351,14 +351,14 @@ class acq400JudgementImpl : public acq400Judgement {
 		}
 		fill_requested = true;
 	}
-	void handle_window_limit_change(epicsInt16* winx, int addr, epicsInt32 value)
+	void handle_window_limit_change(int p_winx, epicsInt16* winx, int addr, epicsInt32 value)
 	{
 		if (value < FIRST_SAM) 	value = FIRST_SAM;
 		if (value > nsam) 	value = nsam;
 
 		if (addr == ADDR_WIN_ALL){
 			for (int ic = 0; ic < nchan; ++ic){
-				winx[ic] = value;
+				setIntegerParam(ic, p_winx, winx[ic] = value);
 				callParamCallbacks(ic);
 			}
 		}else{
@@ -507,10 +507,10 @@ public:
 
 		    fill_requested = true;
 	    }else if (function == P_WINL){
-		    handle_window_limit_change(WINL, addr, value);
+		    handle_window_limit_change(P_WINL, WINL, addr, value);
 		    fill_requested = true;
 	    }else if (function == P_WINR){
-		    handle_window_limit_change(WINR, addr, value);
+		    handle_window_limit_change(P_WINR, WINR, addr, value);
 		    fill_requested = true;
 	    } else {
 		    /* All other parameters just get set in parameter list, no need to
