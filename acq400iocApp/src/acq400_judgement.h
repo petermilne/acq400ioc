@@ -31,7 +31,7 @@
 #define PS_SAMPLE_DELTA_NS	"SAMPLE_DELTA_NS"		/* asynInt32		r/w */
 #define PS_UPDATE		"UPDATE_ON"			/* asynInt32		r/w */
 
-#define ADDR_WIN_ALL	999
+#define ADDR_WIN_ALL	nchan
 
 enum UPDATE {
 	UPDATE_NEVER,

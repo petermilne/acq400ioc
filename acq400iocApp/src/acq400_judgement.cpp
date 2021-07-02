@@ -47,7 +47,7 @@ void task_runner(void *drvPvt)
 /** abstract base class with Judgement common definitions. Use Judgement::factory() to instantiate a concrete class */
 acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 	asynPortDriver(portName,
-/* maxAddr */		_nchan,
+/* maxAddr */		_nchan+1,    /* nchan from 0 + ADDR_WIN_ALL */
 /* Interface mask */    asynEnumMask|asynInt32Mask|asynFloat64Mask|asynInt8ArrayMask|asynInt16ArrayMask|asynInt32ArrayMask|asynDrvUserMask,
 /* Interrupt mask */	asynEnumMask|asynInt32Mask|asynFloat64Mask|asynInt8ArrayMask|asynInt16ArrayMask|asynInt32ArrayMask,
 /* asynFlags no block*/ 0,

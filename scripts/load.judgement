@@ -21,7 +21,7 @@ for site in $(echo $sites | tr , \  ); do
 		echo dbLoadRecords\(\"db/judgementWin.db\",\"${PRAMS},NSAM=1024,SITE=${site},CH=${CH},IX=${ix}\"\)
 		ix=$((ix+1))
 	done
-	echo dbLoadRecords\(\"db/judgementWin.db\",\"${PRAMS},NSAM=1024,SITE=${site},CH=ALL,IX=999\"\)
+	echo dbLoadRecords\(\"db/judgementWin.db\",\"${PRAMS},NSAM=1024,SITE=${site},CH=ALL,IX=${NCHAN}\"\)
 done
 
 
