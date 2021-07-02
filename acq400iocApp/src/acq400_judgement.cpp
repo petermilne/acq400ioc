@@ -359,6 +359,7 @@ class acq400JudgementImpl : public acq400Judgement {
 		if (addr == ADDR_WIN_ALL){
 			for (int ic = 0; ic < nchan; ++ic){
 				winx[ic] = value;
+				callParamCallbacks(ic);
 			}
 		}else{
 			winx[addr] = value;
