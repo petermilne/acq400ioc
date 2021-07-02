@@ -351,6 +351,19 @@ class acq400JudgementImpl : public acq400Judgement {
 		}
 		fill_requested = true;
 	}
+	void handle_window_limit_change(epicsInt16* winx, int addr, epicsInt32 value)
+	{
+		if (value < FIRST_SAM) 	value = FIRST_SAM;
+		if (value > nsam) 	value = nsam;
+
+		if (addr == ADDR_WIN_ALL){
+			for (int ic = 0; ic < nchan; ++ic){
+				winx[ic] = value;
+			}
+		}else{
+			winx[addr] = value;
+		}
+	}
 
 	asynStatus write_ETYPE_Array(asynUser *pasynUser, ETYPE *value, size_t nElements)
 	{
@@ -419,7 +432,7 @@ public:
 		for (int isam = 0; isam < nsam; ++isam){
 			for (int ic = 0; ic < nchan; ++ic){
 				int ib = isam*nchan+ic;
-				ETYPE xx = isam > FIRST_SAM? raw[ib]: 0; 	// keep the ES out of the output data..
+				ETYPE xx = isam > FIRST_SAM? raw[ib]: 0;        // keep the ES out of the output data..
 
 				RAW[ic*nsam+isam] = xx;			 	// for plotting
 
@@ -474,7 +487,7 @@ public:
 	    const char* functionName = "writeInt32";
 
 	    /* Set the parameter in the parameter library. */
-	    status = (asynStatus) setIntegerParam(function, value);
+	    status = setIntegerParam(function, value);
 
 	    /* Fetch the parameter string name for possible use in debugging */
 	    getParamName(function, &paramName);
@@ -493,16 +506,16 @@ public:
 
 		    fill_requested = true;
 	    }else if (function == P_WINL){
-		    WINL[addr] = value;
+		    handle_window_limit_change(WINL, addr, value);
 		    fill_requested = true;
 	    }else if (function == P_WINR){
-		    WINR[addr] = value;
+		    handle_window_limit_change(WINR, addr, value);
 		    fill_requested = true;
 	    } else {
 		    /* All other parameters just get set in parameter list, no need to
 		     * act on them here */
 	    }
-	    status = (asynStatus) callParamCallbacks();
+	    status = callParamCallbacks();
 
 	    if (status)
 	        epicsSnprintf(pasynUser->errorMessage, pasynUser->errorMessageSize,

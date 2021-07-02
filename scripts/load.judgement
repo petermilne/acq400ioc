@@ -18,8 +18,10 @@ for site in $(echo $sites | tr , \  ); do
 		CH=$(printf "%02d" $ch)		
 		echo dbLoadRecords\(\"db/judgementCh.db\",\"${PRAMS},FN=MU,PROKEY=MASK_UPPER,NSAM=1024,SITE=${site},CH=${CH},IX=${ix}\"\)
 		echo dbLoadRecords\(\"db/judgementCh.db\",\"${PRAMS},FN=ML,PROKEY=MASK_LOWER,NSAM=1024,SITE=${site},CH=${CH},IX=${ix}\"\)
+		echo dbLoadRecords\(\"db/judgementWin.db\",\"${PRAMS},NSAM=1024,SITE=${site},CH=${CH},IX=${ix}\"\)
 		ix=$((ix+1))
-	done	
+	done
+	echo dbLoadRecords\(\"db/judgementWin.db\",\"${PRAMS},NSAM=1024,SITE=${site},CH=ALL,IX=999\"\)
 done
 
 
