@@ -81,7 +81,7 @@ record(waveform, "${UUT}:${SITE}:AI:WF:${CH}") {
 	field(INP,  "@asyn($(PORT),$(IX),$(TIMEOUT))RAW")
 }
 
-record(longout, "${UUT}:${SITE}:JDG:${FN}:${CH}:WIN:L")
+record(longout, "${UUT}:${SITE}:JDG:${CH}:WIN:L")
 {
 	field(DTYP, "asynInt32")
 	field(OUT,  "@asyn($(PORT),$(IX),$(TIMEOUT))WINL")
@@ -91,7 +91,7 @@ record(longout, "${UUT}:${SITE}:JDG:${FN}:${CH}:WIN:L")
 	field(PINI,  "YES")
 }
 
-record(longout, "${UUT}:${SITE}:JDG:${FN}:${CH}:WIN:R")
+record(longout, "${UUT}:${SITE}:JDG:${CH}:WIN:R")
 {
 	field(DTYP, "asynInt32")
 	field(OUT,  "@asyn($(PORT),$(IX),$(TIMEOUT))WINR")
@@ -101,7 +101,7 @@ record(longout, "${UUT}:${SITE}:JDG:${FN}:${CH}:WIN:R")
 	field(PINI,  "YES")
 }
 
-record(waveform, "${UUT}:${SITE}:JDG:${FN}:${CH}:WINDEX")
+record(waveform, "${UUT}:${SITE}:JDG:${CH}:WINDEX")
 {
     field(DTYP, "asynInt32ArrayIn")
     field(INP,  "@asyn($(PORT),$(IX),$(TIMEOUT))WINDEX")

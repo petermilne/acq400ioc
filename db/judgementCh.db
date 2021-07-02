@@ -81,7 +81,7 @@ record(waveform, "${UUT}:${SITE}:AI:WF:${CH}") {
 	field(INP,  "@asyn($(PORT),$(IX),$(TIMEOUT))RAW")
 }
 
-record(longout, "${UUT}:${SITE}:JDG:${FN}:${CH}:WIN:L")
+record(longout, "${UUT}:${SITE}:JDG:${CH}:WIN:L")
 {
 	field(DTYP, "asynInt32")
 	field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))WINL")
@@ -89,11 +89,23 @@ record(longout, "${UUT}:${SITE}:JDG:${FN}:${CH}:WIN:L")
 	field(LOPR,  "0")	
 }
 
-record(longout, "${UUT}:${SITE}:JDG:${FN}:${CH}:WIN:R")
+record(longout, "${UUT}:${SITE}:JDG:${CH}:WIN:R")
 {
 	field(DTYP, "asynInt32")
 	field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))WINR")
 	field(HOPR, "${NSAM}")
 	field(LOPR,  "0")	
 }
+
+record(waveform, "${UUT}:${SITE}:JDG:${CH}:WINDEX")
+{
+    field(DTYP, "asynInt16ArrayIn")
+    field(INP,  "@asyn($(PORT),$(IX),$(TIMEOUT))WINDEX")
+    field(FTVL, "SHORT")
+    field(NELM, "${NSAM}")
+    field(SCAN, "I/O Intr")
+    field(HOPR, "32767")
+    field(LOPR, "-32768")
+}
+
 
