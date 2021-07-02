@@ -93,6 +93,7 @@ protected:
 	epicsInt16* WINR;	/* window right [chan] 		 */
 
 	epicsInt8* RESULT_FAIL;
+	const int fail_mask_len;  /* number of elements in FAIL_MASK32 */
 	epicsInt32* FAIL_MASK32;
 	epicsInt32 sample_count;
 	epicsTimeStamp t0, t1;

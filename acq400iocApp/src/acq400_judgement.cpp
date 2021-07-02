@@ -54,7 +54,10 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 /* Autoconnect */       1,
 /* Default priority */  0,
 /* Default stack size*/ 0),
-	nchan(_nchan), nsam(_nsam), sample_delta_ns(0), fill_requested(false)
+	nchan(_nchan), nsam(_nsam),
+	fail_mask_len(std::max(nchan/32, 1)),
+	sample_delta_ns(0),
+	fill_requested(false)
 {
 	clock_count[0] = clock_count[1] = 0;
 	memset(&t0, 0, sizeof(t0));
@@ -87,7 +90,7 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam):
 	setIntegerParam(P_MASK_FROM_DATA, 	0);
 
 	RESULT_FAIL = new epicsInt8[nchan+1];		// index from 1, [0] is update %256
-	FAIL_MASK32 = new epicsInt32[std::max(nchan/32, 1)];
+	FAIL_MASK32 = new epicsInt32[fail_mask_len];
 
 	WINL = new epicsInt16[nchan];
 	WINR = new epicsInt16[nchan];
@@ -412,7 +415,7 @@ public:
 	bool calculate(ETYPE* raw, const ETYPE* mu, const ETYPE* ml)
 	{
 		memset(RESULT_FAIL+1, 0, sizeof(epicsInt8)*nchan);
-		memset(FAIL_MASK32, 0, sizeof(epicsInt32)*nchan/32);
+		memset(FAIL_MASK32, 0, fail_mask_len*sizeof(epicsInt32));
 		bool fail = false;
 
 		for (int isam = 0; isam < nsam; ++isam){
@@ -456,7 +459,7 @@ public:
 		if (verbose > 1){
 			printf("%s vbn:%3d off:%d fail:%d\n", __FUNCTION__, vbn, offset, fail);
 		}
-		for(int m32 = 0; m32 < std::max(nchan/32, 1); ++m32){
+		for(int m32 = 0; m32 < fail_mask_len; ++m32){
 			setIntegerParam(m32, P_RESULT_MASK32, FAIL_MASK32[m32]);
 			callParamCallbacks(m32);
 		}
