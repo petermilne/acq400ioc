@@ -31,24 +31,24 @@ record(bo, "${UUT}:${SITE}:JDG:RESET:WIN")
 record(longout, "${UUT}:${SITE}:JDG:RESET:WIN:L")
 {
 	field(DTYP, "Soft Channel")
-	field(OUT,  "${UUT}:${SITE}:JDG:ALL:WIN:L")
+	field(OUT,  "${UUT}:${SITE}:JDG:ALL:WIN:L PP")
 	field(DRVH, "${NSAM}")
 	field(DRVL,  "2")
 	field(HOPR, "${NSAM}")
 	field(LOPR,  "2")	
 	field(VAL,   "2")
 	field(PINI,  "YES")
+	field(FLNK, "${UUT}:${SITE}:JDG:RESET:WIN:R")
 }
 
 record(longout, "${UUT}:${SITE}:JDG:RESET:WIN:R")
 {
 	field(DTYP, "Soft Channel")
-	field(OUT,  "${UUT}:${SITE}:JDG:ALL:WIN:R")
+	field(OUT,  "${UUT}:${SITE}:JDG:ALL:WIN:R PP")
 	field(DRVH, "${NSAM}")
 	field(DRVL,  "2")	
 	field(HOPR, "${NSAM}")
 	field(LOPR,  "2")
 	field(VAL,   "${NSAM}")
 	field(PINI,  "YES")
-	field(FLNK, "${UUT}:${SITE}:JDG:RESET:WIN:R")
 }
