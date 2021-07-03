@@ -146,7 +146,7 @@ bool acq400Judgement::onCalculate(bool fail)
 				break;
 			}
 		}
-		if (verbose){
+		if (verbose > 1){
 			printf("%s doDataUpdateCallbacks(%d)\n", __FUNCTION__, ic);
 		}
 		doDataUpdateCallbacks(ic);
@@ -359,7 +359,8 @@ class acq400JudgementImpl : public acq400Judgement {
 		if (addr == ADDR_WIN_ALL){
 			for (int ic = 0; ic < nchan; ++ic){
 				setIntegerParam(ic, p_winx, winx[ic] = value);
-				callParamCallbacks(ic);
+				//callParamCallbacks(p_winx, ic);                 // callParamCallbacks(list=P_ARAM, addr=CH); @@todo BLOWS!
+				//callParamCallbacks(ic, p_winx);		  // @@todo REMOVE me .. doesn't BLOW but does nothing0
 			}
 		}else{
 			winx[addr] = value;
