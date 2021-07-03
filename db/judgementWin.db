@@ -2,8 +2,10 @@ record(longout, "${UUT}:${SITE}:JDG:${CH}:WIN:L")
 {
 	field(DTYP, "asynInt32")
 	field(OUT,  "@asyn($(PORT),$(IX),$(TIMEOUT))WINL")
+	field(DRVH, "${NSAM}")
+	field(DRVL,  "2")
 	field(HOPR, "${NSAM}")
-	field(LOPR,  "2")
+	field(LOPR,  "2")	
 	field(VAL,   "2")
 	field(PINI,  "YES")
 }
@@ -12,8 +14,41 @@ record(longout, "${UUT}:${SITE}:JDG:${CH}:WIN:R")
 {
 	field(DTYP, "asynInt32")
 	field(OUT,  "@asyn($(PORT),$(IX),$(TIMEOUT))WINR")
+	field(DRVH, "${NSAM}")
+	field(DRVL,  "2")	
 	field(HOPR, "${NSAM}")
 	field(LOPR,  "2")
 	field(VAL,   "${NSAM}")
 	field(PINI,  "YES")	
+}
+
+record(bo, "${UUT}:${SITE}:JDG:RESET:WIN")
+{
+	field(DESC, "Write here to init L/R")
+	field(DTYP, "Soft Channel")
+	field(FLNK, "${UUT}:${SITE}:JDG:RESET:WIN:L")
+}
+record(longout, "${UUT}:${SITE}:JDG:RESET:WIN:L")
+{
+	field(DTYP, "Soft Channel")
+	field(OUT,  "${UUT}:${SITE}:JDG:ALL:WIN:L")
+	field(DRVH, "${NSAM}")
+	field(DRVL,  "2")
+	field(HOPR, "${NSAM}")
+	field(LOPR,  "2")	
+	field(VAL,   "2")
+	field(PINI,  "YES")
+}
+
+record(longout, "${UUT}:${SITE}:JDG:RESET:WIN:R")
+{
+	field(DTYP, "Soft Channel")
+	field(OUT,  "${UUT}:${SITE}:JDG:ALL:WIN:R")
+	field(DRVH, "${NSAM}")
+	field(DRVL,  "2")	
+	field(HOPR, "${NSAM}")
+	field(LOPR,  "2")
+	field(VAL,   "${NSAM}")
+	field(PINI,  "YES")
+	field(FLNK, "${UUT}:${SITE}:JDG:RESET:WIN:R")
 }
