@@ -358,11 +358,19 @@ class acq400JudgementImpl : public acq400Judgement {
 
 		if (addr == ADDR_WIN_ALL){
 			for (int ic = 0; ic < nchan; ++ic){
-				setIntegerParam(ic, p_winx, winx[ic] = value);
-				//callParamCallbacks(p_winx, ic);                 // callParamCallbacks(list=P_ARAM, addr=CH); @@todo BLOWS!
-				//callParamCallbacks(ic, p_winx);		  // @@todo REMOVE me .. doesn't BLOW but does nothing0
+				winx[ic] = value;
+				printf("setIntegerParam(%d, %d, %d)\n", ic, p_winx, value);
+				asynStatus status = setIntegerParam(ic, p_winx, value);
+				if(status!=asynSuccess){
+					fprintf(stderr, "ERROR handle_window_limit_change setIntegerParam FAILED\n");
+				}
+
+				callParamCallbacks(ic);			// callParamCallbacks(addr=CH); @@todo REMOVE no effect
+				//callParamCallbacks(ic, ic);
+				//callParamCallbacks(ic, p_winx);	         // callParamCallbacks(ic, p_winx) seems backwards, but matches setIntegerParam
 			}
 		}else{
+			printf("handle_window_limit_change addr:%d p_winx:%d value:%d\n", addr, p_winx, value);
 			winx[addr] = value;
 		}
 	}
