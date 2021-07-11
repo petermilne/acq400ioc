@@ -1,0 +1,89 @@
+/* judgementWindowClearAll.stt *.
+ *
+ *
+ monitor: acq1001_444:1:JDG:RESET:WIN
+ set: 
+ 	 acq1001_444:1:JDG:11:WIN:L
+ 	 acq1001_444:1:JDG:11:WIN:R
+
+ */
+
+program judge_win_clr_all
+option +r;
+option +s;
+
+
+
+
+char* uut;
+char* site = "1";		// default site 1, should override 
+int nchan = 32;
+int wmin = 2;
+int wmax = 1024;
+
+int winl[33];	assign winl {};		/* output PV's, index from 1 */
+int winr[33];	assign winr {};
+
+int ch;
+int verbose;
+
+
+
+
+int reset; assign reset to "{uut}:{site}:JDG:RESET:WIN";	monitor reset;
+
+%{
+#include <stdlib.h>
+}%
+
+ss judge_win_clr_all {
+	state init{
+		entry {
+			uut = macValueGet("uut"); 
+			if (macValueGet("site") != 0){
+				site = macValueGet("site");
+			}
+			if (macValueGet("nchan") != 0){
+				nchan = atoi(macValueGet("nchan"));
+			}
+			if (macValueGet("verbose")){
+				verbose = macValueGet("verbose")[0] - '0';
+			}
+			if (macValueGet("wmin")){
+				wmin = atoi(macValueGet("wmin"));
+			}
+			if (macValueGet("wmax")){
+				wmax = atoi(macValueGet("wmax"));
+			}			
+			for (ch = 1; ch <= nchan; ++ch){
+				
+				char pvname[80];
+				
+				snprintf(pvname, sizeof(pvname), "%s:%s:JDG:%02d:WIN:L", uut, site, ch);
+				pvAssign(winl[ch], pvname);
+				snprintf(pvname, sizeof(pvname), "%s:%s:JDG:%02d:WIN:R", uut, site, ch);
+				pvAssign(winr[ch], pvname);
+			}
+		}
+		when() {
+
+		} state wait_action
+	}
+	state wait_action {
+		when(reset){
+		
+		} state commit
+	}
+	
+	state commit {
+		entry {
+			for (ch = 1; ch <= nchan; ++ch){
+				winl[ch] = wmin; pvPut(winl[ch]);
+				winr[ch] = wmax; pvPut(winr[ch]);
+			}			
+		}
+		when() {
+		
+		} state wait_action
+	}
+}
