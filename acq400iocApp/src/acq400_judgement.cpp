@@ -370,7 +370,7 @@ class acq400JudgementImpl : public acq400Judgement {
 				//callParamCallbacks(ic, p_winx);	         // callParamCallbacks(ic, p_winx) seems backwards, but matches setIntegerParam
 			}
 		}else{
-			printf("handle_window_limit_change addr:%d p_winx:%d value:%d\n", addr, p_winx, value);
+			//printf("handle_window_limit_change addr:%d p_winx:%d value:%d\n", addr, p_winx, value);
 			winx[addr] = value;
 		}
 	}

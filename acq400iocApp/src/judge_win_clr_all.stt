@@ -71,7 +71,7 @@ ss judge_win_clr_all {
 	}
 	state wait_action {
 		when(reset){
-		
+			reset = 0; pvPut(reset);
 		} state commit
 	}
 	
