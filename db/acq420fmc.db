@@ -88,7 +88,7 @@ record (longout, "${UUT}:${SITE}:CLKDIV") {
 	field(DTYP, "Soft Channel")	
 	field(FLNK, "${UUT}:${SITE}:clkdiv:e PP")
 	field(LOPR, "1")
-	field(HOPR, "65535")
+	field(HOPR, "${MAXDIV}")
 	field(VAL,  "1")
 	field(PINI, "YES")		
 }

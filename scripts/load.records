@@ -486,6 +486,7 @@ load_400() {
 	    if [ -e /dev/acq400.$site.knobs/gpg_enable ]; then
 	    	case $model in
 	    	$MT_DIO482TD_PG)
+	    		maxdiv=2000000000
 	    		if [ "x$DIO482TD_PG5" != "x" ]; then
 	    			will_load_dio482pg=5
 	    		else
@@ -568,7 +569,7 @@ load_400() {
 	dblr '"db/acq400fmc.db","'${cprams},'MAXHZ='${maxhz}'"'
 		
 	if [ "x$model" != "x$MT_ACQ480" ] && [ "$is_adc" != "ds" ]; then
-		dblr '"db/acq420fmc.db","'${cprams},'LO='${LO}'"'
+		dblr '"db/acq420fmc.db","'${cprams},'LO='${LO},MAXDIV=${maxdiv:-65536}'"'
 	fi
 
 	if [ ${site} -eq $FIRST_SITE ]; then
