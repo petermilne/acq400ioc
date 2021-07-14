@@ -1,6 +1,6 @@
 
 
-nsam=${BURSTLEN:-1024}
+nsam=${SIZE:-1024}
 NCHAN=$(get.site 0 NCHAN)
 echo acq400JudgementConfigure\("J1", ${NCHAN}, ${nsam}, 4\)
 PRAMS="UUT=${HOST},PORT=J1,ADDR=0,TIMEOUT=0,NCHAN=${NCHAN},NCHAN1=$((NCHAN+1))"
