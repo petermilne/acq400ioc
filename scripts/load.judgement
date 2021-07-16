@@ -1,8 +1,9 @@
 
 
 nsam=${SIZE:-1024}
+BURSTS_PER_BUFFER=${BURSTS_PER_BUFFER:-1}
 NCHAN=$(get.site 0 NCHAN)
-echo acq400JudgementConfigure\("J1", ${NCHAN}, ${nsam}, 2\)
+echo acq400JudgementConfigure\("J1", ${NCHAN}, ${nsam}, 2, ${BURSTS_PER_BUFFER}\)
 PRAMS="UUT=${HOST},PORT=J1,ADDR=0,TIMEOUT=0,NCHAN=${NCHAN},NCHAN1=$((NCHAN+1))"
 echo dbLoadRecords\(\"db/judgementCommon.db\",\"${PRAMS}\"\)
 echo dbLoadRecords\(\"db/asynRecord.db\",\"P=${HOST}:,R=asyn:J1,PORT=J1,ADDR=0,OMAX=80,IMAX=80,TB3=0,TIB0=0\"\)

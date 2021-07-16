@@ -49,7 +49,8 @@ public:
 	virtual asynStatus readInt16Array(asynUser *pasynUser, epicsInt16 *value,
 			size_t nElements, size_t *nIn);
 
-	static int factory(const char *portName, int maxPoints, int nchan, unsigned data_size);
+	static int factory(
+		const char *portName, int maxPoints, int nchan, unsigned data_size, int bursts_per_buffer);
 	static int verbose;
 	virtual void task();
 	virtual void fill_request_task(void) = 0;
@@ -64,10 +65,11 @@ protected:
 	virtual void doDataUpdateCallbacks(int ic) = 0;
 	virtual void doMaskUpdateCallbacks(int ic) = 0;
 
-	acq400Judgement(const char* portName, int nchan, int nsam);
+	acq400Judgement(const char* portName, int nchan, int nsam, int bursts_per_buffer=1);
 
 	const int nchan;
 	const int nsam;
+	const int bursts_per_buffer;
 	/** Values used for pasynUser->reason, and indexes into the parameter library. */
 	int P_NCHAN;
 	int P_NSAM;
