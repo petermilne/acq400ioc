@@ -15,13 +15,11 @@ record(aSub, "${UUT}:${SITE}:JDG:${FN}:${CH}:v2r") {
 
 	field(FTO, "DOUBLE")
 	field(NOO, "1")
-#	field(INPO, "${UUT}:${SITE}:AI:CH:${CH}.EOFF")
-	field(INPO, "0")
+	field(INPO, "${UUT}:${SITE}:AI:CH:${CH}.EOFF")
 
 	field(FTS, "DOUBLE")
 	field(NOS, "1")
-#	field(INPS, "${UUT}:${SITE}:AI:CH:${CH}.ESLO")
-	field(INPS, "3276.8")						
+	field(INPS, "${UUT}:${SITE}:AI:CH:${CH}.ESLO")				
 
 	field(FTVA, "SHORT")
 	field(NOVA, "${NSAM}")
@@ -62,14 +60,12 @@ record(aSub, "${UUT}:${SITE}:JDG:${FN}:${CH}:r2v") {
 
 	field(FTO, "DOUBLE")
 	field(NOO, "1")
-#	field(INPO, "${UUT}:${SITE}:AI:CH:${CH}.EOFF")
-	field(INPO, "0")
+	field(INPO, "${UUT}:${SITE}:AI:CH:${CH}.EOFF")
 
 	field(FTS, "DOUBLE")
 	field(NOS, "1")
-#	field(INPS, "${UUT}:${SITE}:AI:CH:${CH}.ESLO")
-	field(INPS, "305.18e-6")						
-
+	field(INPS, "${UUT}:${SITE}:AI:CH:${CH}.ESLO")
+					
 	field(FTVA, "FLOAT")
 	field(NOVA, "${NSAM}")
 	field(OUTA, "${UUT}:${SITE}:JDG:${FN}:${CH}:V PP")

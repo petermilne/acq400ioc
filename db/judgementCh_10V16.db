@@ -1,0 +1,13 @@
+# use where the AI calibration is NOT suitable for the 16b MU
+# eg 24bit data.
+
+record(aSub, "${UUT}:${SITE}:JDG:${FN}:${CH}:v2r") {
+	field(INPO, "0")
+	field(INPS, "3276.8")						
+}
+
+
+record(aSub, "${UUT}:${SITE}:JDG:${FN}:${CH}:r2v") {
+	field(INPO, "0")
+	field(INPS, "305.18e-6")						
+}
