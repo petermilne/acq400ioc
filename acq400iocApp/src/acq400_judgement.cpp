@@ -70,6 +70,7 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam, in
 	createParam(PS_NSAM,                asynParamInt32,         	&P_NSAM);
 	createParam(PS_MASK_FROM_DATA,      asynParamInt32,         	&P_MASK_FROM_DATA);
 	createParam(PS_MASK_BOXCAR,         asynParamInt32,             &P_MASK_BOXCAR);
+	createParam(PS_MASK_SQUARE,         asynParamInt32,             &P_MASK_SQUARE);
 
 	createParam(PS_BN, 		    asynParamInt32, 		&P_BN);
 	createParam(PS_RESULT_FAIL,	    asynParamInt8Array,    	&P_RESULT_FAIL);
@@ -345,6 +346,73 @@ class acq400JudgementImpl : public acq400Judgement {
 
 	static int verbose;
 
+	void square_off(ETYPE* mask, int nsquare)
+	/* locate flats and increase them on the mask side, indicated by nsquare polarity */
+	{
+		if (nsquare == 0){
+			return;
+		}
+		bool upper = nsquare>0;
+		if (!upper){
+			nsquare = -nsquare;
+		}
+
+		for (int ic = 0; ic < nchan; ++ic){
+			int mmin = MAXVAL;
+			int mmax = -MAXVAL;
+
+			for (int isam = FIRST_SAM; isam < nsam; ++isam){
+				int ib = isam*nchan+ic;
+				ETYPE xx = mask[ib];
+				if (xx < mmin){
+					mmin = xx;
+				}
+				if (xx > mmax){
+					mmax = xx;
+				}
+			}
+
+			if (upper){
+				ETYPE prv = mask[FIRST_SAM];
+				mmax = 9*mmax/10;
+				for (int isam = FIRST_SAM+1; isam < nsam; ++isam){
+					int ib = isam*nchan+ic;
+					ETYPE cur = mask[ib];
+					if (cur > mmax && prv < mmax){
+						for (int is2 = isam-1; isam-is2 < nsquare && is2 > FIRST_SAM; --is2){
+							int ib2 = is2*nchan+ic;
+							mask[ib2] = cur;
+						}
+					}else if (prv > mmax && cur < mmax){
+						for (int isquare = 0; isquare < nsquare && isam < nsam; ++isquare, ++isam){
+							int ib2 = isam*nchan+ic;
+							mask[ib2] = prv;
+						}
+					}
+					prv = cur;
+				}
+			}else{
+				ETYPE prv = mask[FIRST_SAM];
+				mmin = 9*mmin/10;
+				for (int isam = FIRST_SAM+1; isam < nsam; ++isam){
+					int ib = isam*nchan+ic;
+					ETYPE cur = mask[ib];
+					if (cur < mmin && prv > mmin){
+						for (int is2 = isam-1; isam-is2 < nsquare && is2 > FIRST_SAM; --is2){
+							int ib2 = is2*nchan+ic;
+							mask[ib2] = cur;
+						}
+					}else if (prv < mmin && cur > mmin){
+						for (int isquare = 0; isquare < nsquare && isam < nsam; ++isquare, ++isam){
+							int ib2 = isam*nchan+ic;
+							mask[ib2] = prv;
+						}
+					}
+					prv = cur;
+				}
+			}
+		}
+	}
 	void fill_masks(asynUser *pasynUser, ETYPE* raw,  int threshold)
 	{
 		ETYPE uplim = MAXVAL - threshold;
@@ -377,6 +445,15 @@ class acq400JudgementImpl : public acq400Judgement {
 				}
 
 			}
+		}
+		int nsquare = 0;
+		rc = getIntegerParam(P_MASK_SQUARE, &nsquare);
+		if (rc != asynSuccess){
+			printf("ERROR P_MASK_SQUARE %d\n", P_MASK_SQUARE);
+		}
+		if (nsquare){
+			square_off(RAW_MU, nsquare);
+			square_off(RAW_ML, -nsquare);
 		}
 	}
 

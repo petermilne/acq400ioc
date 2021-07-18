@@ -15,6 +15,7 @@
 #define PS_NSAM			"NSAM"				/* asynInt32,       r/o */
 #define PS_MASK_FROM_DATA 	"MAKE_MASK_FROM_DATA"		/* asynInt32,       r/w .. MU=y+val, ML=y-val */
 #define PS_MASK_BOXCAR		"MASK_BOXCAR"			/* asynInt32        r/w numb boxcar elements */
+#define PS_MASK_SQUARE		"MASK_SQUARE"			/* asynInt32        r/w numb squareoff elements */
 #define PS_MU			"MASK_UPPER"			/* asynInt16Array   r/w */
 #define PS_ML			"MASK_LOWER"			/* asynInt16Array   r/w */
 #define PS_RAW			"RAW"				/* asynInt16Array   r/o */
@@ -71,11 +72,13 @@ protected:
 	const int nchan;
 	const int nsam;
 	const int bursts_per_buffer;
+
 	/** Values used for pasynUser->reason, and indexes into the parameter library. */
 	int P_NCHAN;
 	int P_NSAM;
 	int P_MASK_FROM_DATA;
 	int P_MASK_BOXCAR;
+	int P_MASK_SQUARE;
 	int P_MU;
 	int P_ML;
 	int P_WINL;
