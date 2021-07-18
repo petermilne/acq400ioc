@@ -14,6 +14,7 @@
 #define PS_NCHAN 		"NCHAN"				/* asynInt32, 		r/o */
 #define PS_NSAM			"NSAM"				/* asynInt32,       r/o */
 #define PS_MASK_FROM_DATA 	"MAKE_MASK_FROM_DATA"		/* asynInt32,       r/w .. MU=y+val, ML=y-val */
+#define PS_MASK_BOXCAR		"MASK_BOXCAR"			/* asynInt32        r/w numb boxcar elements */
 #define PS_MU			"MASK_UPPER"			/* asynInt16Array   r/w */
 #define PS_ML			"MASK_LOWER"			/* asynInt16Array   r/w */
 #define PS_RAW			"RAW"				/* asynInt16Array   r/o */
@@ -74,6 +75,7 @@ protected:
 	int P_NCHAN;
 	int P_NSAM;
 	int P_MASK_FROM_DATA;
+	int P_MASK_BOXCAR;
 	int P_MU;
 	int P_ML;
 	int P_WINL;

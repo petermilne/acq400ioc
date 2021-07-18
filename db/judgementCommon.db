@@ -16,6 +16,17 @@ record(longout, "${UUT}:JDG:MASK_FROM_DATA")
 	field(LOPR,  "0")
 }
 
+record(longout, "${UUT}:JDG:MASK_BOXCAR")
+{
+	field(PINI, "0")
+	field(DTYP, "asynInt32")
+	field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))MASK_BOXCAR")
+	field(HOPR, "32")
+	field(LOPR,  "0")
+	field(PINI,  "YES")
+	field(VAL,   "0")
+}
+
 record(longout, "${UUT}:JDG:SAMPLE_DELTA_NS")
 {
 	field(PINI, "0")

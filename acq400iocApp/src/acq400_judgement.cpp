@@ -69,6 +69,7 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam, in
 	createParam(PS_NCHAN,               asynParamInt32,         	&P_NCHAN);
 	createParam(PS_NSAM,                asynParamInt32,         	&P_NSAM);
 	createParam(PS_MASK_FROM_DATA,      asynParamInt32,         	&P_MASK_FROM_DATA);
+	createParam(PS_MASK_BOXCAR,         asynParamInt32,             &P_MASK_BOXCAR);
 
 	createParam(PS_BN, 		    asynParamInt32, 		&P_BN);
 	createParam(PS_RESULT_FAIL,	    asynParamInt8Array,    	&P_RESULT_FAIL);
@@ -291,6 +292,40 @@ asynStatus acq400Judgement::readInt16Array(asynUser *pasynUser, epicsInt16 *valu
 }
 
 
+template <class ETYPE>
+class Boxcar {
+	ETYPE* base;
+	const int nchan;
+	const int nsam;
+	const int nbox;
+	int* sums;
+public:
+	Boxcar(ETYPE* _base, int _nchan, int _nsam, int _nbox, int i0):
+		base(_base),
+		nchan(_nchan),
+		nsam(_nsam),
+		nbox(_nbox)
+	{
+		sums = new int[nchan];
+		for (int ic = 0; ic < nchan; ++ic){
+			sums[ic] = 0;
+			for (int isam = i0; isam < i0+nbox; ++isam){
+				sums[ic] += base[isam*nchan+ic];
+			}
+		}
+	}
+	ETYPE operator() (int ix, int ic){
+		if (nbox == 0){
+			return base[ix*nchan+ic];
+		}
+		ETYPE yy = sums[ic]/nbox;
+		if (ix + nbox < nsam){
+			sums[ic] -= base[ix*nchan+ic];
+			sums[ic] += base[(ix+nbox)*nchan+ic];
+		}
+		return yy;
+	}
+};
 
 /** Concrete Judgement class specialised by data type */
 template <class ETYPE>
@@ -314,11 +349,19 @@ class acq400JudgementImpl : public acq400Judgement {
 	{
 		ETYPE uplim = MAXVAL - threshold;
 		ETYPE lolim = MINVAL + threshold;
+		int nbox = 0;
+
+		asynStatus rc = getIntegerParam(P_MASK_BOXCAR, &nbox);
+		if (rc != asynSuccess){
+			printf("ERROR P_MASK_BOXCAR %d\n", P_MASK_BOXCAR);
+		}
+
+		Boxcar<ETYPE> boxcar(raw, nchan, nsam, nbox, FIRST_SAM);
 
 		for (int isam = FIRST_SAM; isam < nsam; ++isam){
 			for (int ic = 0; ic < nchan; ++ic){
 				int ib = isam*nchan+ic;
-				ETYPE xx = raw[ib];
+				ETYPE xx = boxcar(isam, ic);
 
 				if (isam < 4 && (ic < 4 || (ic > 32 && ic < 36))) asynPrint(pasynUser, ASYN_TRACEIO_DRIVER,
 				              "%s:%s: raw[%d][%d] = %0x4 %s\n",
