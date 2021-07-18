@@ -346,6 +346,28 @@ class acq400JudgementImpl : public acq400Judgement {
 
 	static int verbose;
 
+	static bool gt(int l, int r){ return l > r; }
+	static bool lt(int l, int r){ return l < r; }
+
+	void _square_off(ETYPE* mask, int ic, int th, int nsquare, bool (*_gt)(int, int), bool (*_lt)(int, int)){
+		ETYPE prv = mask[FIRST_SAM];
+		for (int isam = FIRST_SAM+1; isam < nsam; ++isam){
+			int ib = isam*nchan+ic;
+			ETYPE cur = mask[ib];
+			if (_gt(cur, th) && _lt(prv, th)){
+				/* extend before */
+				for (int is2 = isam-1; isam-is2 < nsquare && is2 > FIRST_SAM; --is2){
+					mask[is2*nchan+ic] = cur;
+				}
+			}else if (_gt(prv, th) && _lt(cur, th)){
+				/* extend after */
+				for (int isquare = 0; isquare < nsquare && isam < nsam; ++isquare, ++isam){
+					mask[isam*nchan+ic] = prv;
+				}
+			}
+			prv = cur;
+		}
+	}
 	void square_off(ETYPE* mask, int nsquare)
 	/* locate flats and increase them on the mask side, indicated by nsquare polarity */
 	{
@@ -373,43 +395,9 @@ class acq400JudgementImpl : public acq400Judgement {
 			}
 
 			if (upper){
-				ETYPE prv = mask[FIRST_SAM];
-				mmax = 9*mmax/10;
-				for (int isam = FIRST_SAM+1; isam < nsam; ++isam){
-					int ib = isam*nchan+ic;
-					ETYPE cur = mask[ib];
-					if (cur > mmax && prv < mmax){
-						for (int is2 = isam-1; isam-is2 < nsquare && is2 > FIRST_SAM; --is2){
-							int ib2 = is2*nchan+ic;
-							mask[ib2] = cur;
-						}
-					}else if (prv > mmax && cur < mmax){
-						for (int isquare = 0; isquare < nsquare && isam < nsam; ++isquare, ++isam){
-							int ib2 = isam*nchan+ic;
-							mask[ib2] = prv;
-						}
-					}
-					prv = cur;
-				}
+				_square_off(mask, ic, mmax*.97, nsquare, gt, lt);
 			}else{
-				ETYPE prv = mask[FIRST_SAM];
-				mmin = 9*mmin/10;
-				for (int isam = FIRST_SAM+1; isam < nsam; ++isam){
-					int ib = isam*nchan+ic;
-					ETYPE cur = mask[ib];
-					if (cur < mmin && prv > mmin){
-						for (int is2 = isam-1; isam-is2 < nsquare && is2 > FIRST_SAM; --is2){
-							int ib2 = is2*nchan+ic;
-							mask[ib2] = cur;
-						}
-					}else if (prv < mmin && cur > mmin){
-						for (int isquare = 0; isquare < nsquare && isam < nsam; ++isquare, ++isam){
-							int ib2 = isam*nchan+ic;
-							mask[ib2] = prv;
-						}
-					}
-					prv = cur;
-				}
+				_square_off(mask, ic, mmin*.97, nsquare, lt, gt);
 			}
 		}
 	}
