@@ -349,25 +349,51 @@ class acq400JudgementImpl : public acq400Judgement {
 	static bool gt(int l, int r){ return l > r; }
 	static bool lt(int l, int r){ return l < r; }
 
-	void _square_off(ETYPE* mask, int ic, int th, int nsquare, bool (*_gt)(int, int), bool (*_lt)(int, int)){
+	const unsigned ndma;			/* 1 or 2 */
+
+	void square_off(ETYPE* mask, int nc, int ic, int th, int nsquare, bool (*_gt)(int, int), bool (*_lt)(int, int)){
 		ETYPE prv = mask[FIRST_SAM];
+
+
 		for (int isam = FIRST_SAM+1; isam < nsam; ++isam){
-			int ib = isam*nchan+ic;
+			int ib = isam*nc+ic;
 			ETYPE cur = mask[ib];
 			if (_gt(cur, th) && _lt(prv, th)){
 				/* extend before */
 				for (int is2 = isam-1; isam-is2 < nsquare && is2 > FIRST_SAM; --is2){
-					mask[is2*nchan+ic] = cur;
+					mask[is2*nc+ic] = cur;
 				}
 			}else if (_gt(prv, th) && _lt(cur, th)){
 				/* extend after */
 				for (int isquare = 0; isquare < nsquare && isam < nsam; ++isquare, ++isam){
-					mask[isam*nchan+ic] = prv;
+					mask[isam*nc+ic] = prv;
 				}
 			}
 			prv = cur;
 		}
 	}
+	void square_off(ETYPE* mask, int nsquare, bool upper, int nc, int ic){
+		int mmin = MAXVAL;
+		int mmax = -MAXVAL;
+
+		for (int isam = FIRST_SAM; isam < nsam; ++isam){
+			int ib = isam*nc+ic;
+			ETYPE xx = mask[ib];
+			if (xx < mmin){
+				mmin = xx;
+			}
+			if (xx > mmax){
+				mmax = xx;
+			}
+		}
+
+		if (upper){
+			square_off(mask, nc, ic, mmax*.97, nsquare, gt, lt);
+		}else{
+			square_off(mask, nc, ic, mmin*.97, nsquare, lt, gt);
+		}
+	}
+
 	void square_off(ETYPE* mask, int nsquare)
 	/* locate flats and increase them on the mask side, indicated by nsquare polarity */
 	{
@@ -380,24 +406,16 @@ class acq400JudgementImpl : public acq400Judgement {
 		}
 
 		for (int ic = 0; ic < nchan; ++ic){
-			int mmin = MAXVAL;
-			int mmax = -MAXVAL;
-
-			for (int isam = FIRST_SAM; isam < nsam; ++isam){
-				int ib = isam*nchan+ic;
-				ETYPE xx = mask[ib];
-				if (xx < mmin){
-					mmin = xx;
-				}
-				if (xx > mmax){
-					mmax = xx;
-				}
-			}
-
-			if (upper){
-				_square_off(mask, ic, mmax*.97, nsquare, gt, lt);
+			if (ndma == 1){
+				square_off(mask, nsquare, upper, nchan, ic);
 			}else{
-				_square_off(mask, ic, mmin*.97, nsquare, lt, gt);
+				int nc2 = nchan/2;
+				int m2 = nsam*nchan/2;
+				if (ic >= nc2){
+					square_off(mask,    nsquare, upper, nc2, ic);
+				}else{
+					square_off(mask+m2, nsquare, upper, nc2, ic-nc2);
+				}
 			}
 		}
 	}
@@ -417,6 +435,11 @@ class acq400JudgementImpl : public acq400Judgement {
 		for (int isam = FIRST_SAM; isam < nsam; ++isam){
 			for (int ic = 0; ic < nchan; ++ic){
 				int ib = isam*nchan+ic;
+				int im = ib;
+				if (ndma == 2){
+					im = (ic >= nchan/2? nsam*nchan/2: 0) + isam*nchan/2+ic;
+				}
+
 				ETYPE xx = boxcar(isam, ic);
 
 				if (isam < 4 && (ic < 4 || (ic > 32 && ic < 36))) asynPrint(pasynUser, ASYN_TRACEIO_DRIVER,
@@ -425,11 +448,11 @@ class acq400JudgementImpl : public acq400Judgement {
 
 				if (xx > MAXLIM || xx < MINLIM){
 					// disable on railed signal (for testing with dummy module
-					RAW_MU[ib] = MAXVAL;
-					RAW_ML[ib] = MINVAL;
+					RAW_MU[im] = MAXVAL;
+					RAW_ML[im] = MINVAL;
 				}else{
-					RAW_MU[ib] = xx>uplim? uplim: xx + threshold;
-					RAW_ML[ib] = xx<lolim? lolim: xx - threshold;
+					RAW_MU[im] = xx>uplim? uplim: xx + threshold;
+					RAW_ML[im] = xx<lolim? lolim: xx - threshold;
 				}
 
 			}
@@ -515,11 +538,32 @@ class acq400JudgementImpl : public acq400Judgement {
 	void doDataUpdateCallbacks(int ic){
 		assert(0);
 	}
+
 	virtual void fill_request_task() {
-		for (int isam = 0; isam < nsam; ++isam){
-			for (int ic = 0; ic < nchan; ++ic){
-				CHN_MU[ic*nsam+isam] = isam<WINL[ic] || isam>WINR[ic] ? 0: RAW_MU[isam*nchan+ic];
-				CHN_ML[ic*nsam+isam] = isam<WINL[ic] || isam>WINR[ic] ? 0: RAW_ML[isam*nchan+ic];
+		if (ndma == 1){
+			for (int isam = 0; isam < nsam; ++isam){
+				for (int ic = 0; ic < nchan; ++ic){
+					int iraw = isam*nchan+ic;
+					CHN_MU[ic*nsam+isam] = isam<WINL[ic] || isam>WINR[ic] ? 0: RAW_MU[iraw];
+					CHN_ML[ic*nsam+isam] = isam<WINL[ic] || isam>WINR[ic] ? 0: RAW_ML[iraw];
+				}
+			}
+		}else{
+			int nc2 = nchan/2;
+			int m2 = nsam*nc2;
+			for (int isam = 0; isam < nsam; ++isam){
+				int ic;
+				int iraw;
+				for (ic = 0; ic < nc2; ++ic){
+					iraw = isam*nc2+ic;
+					CHN_MU[ic*nsam+isam] = isam<WINL[ic] || isam>WINR[ic] ? 0: RAW_MU[iraw];
+					CHN_ML[ic*nsam+isam] = isam<WINL[ic] || isam>WINR[ic] ? 0: RAW_ML[iraw];
+				}
+				for ( ; ic < nchan; ++ic){
+					iraw = m2+isam*nc2+ic-nc2;
+					CHN_MU[ic*nsam+isam] = isam<WINL[ic] || isam>WINR[ic] ? 0: RAW_MU[iraw];
+					CHN_ML[ic*nsam+isam] = isam<WINL[ic] || isam>WINR[ic] ? 0: RAW_ML[iraw];
+				}
 			}
 		}
 
@@ -529,14 +573,15 @@ class acq400JudgementImpl : public acq400Judgement {
 	}
 
 public:
-	acq400JudgementImpl(const char* portName, int _nchan, int _nsam, int _bursts_per_buffer) :
-		acq400Judgement(portName, _nchan, _nsam, _bursts_per_buffer)
+	acq400JudgementImpl(const char* portName, int _nchan, int _nsam, int _bursts_per_buffer, unsigned _ndma) :
+		acq400Judgement(portName, _nchan, _nsam, _bursts_per_buffer),
+		ndma(_ndma)
 	{
 		createParam(PS_MU,  AATYPE,    	&P_MU);
 		createParam(PS_ML,  AATYPE,    	&P_ML);
 		createParam(PS_RAW, AATYPE,    	&P_RAW);
 
-		RAW_MU = new ETYPE[nsam*nchan];
+		RAW_MU = new ETYPE[nsam*nchan];     // 2D [2][nsam*nchan/2]
 		RAW_ML = new ETYPE[nsam*nchan];
 		CHN_MU = new ETYPE[nchan*nsam];
 		CHN_ML = new ETYPE[nchan*nsam];
@@ -544,15 +589,15 @@ public:
 	}
 
 
-	bool calculate(ETYPE* raw, const ETYPE* mu, const ETYPE* ml)
+	bool calculate(ETYPE* raw, const ETYPE* mu, const ETYPE* ml, int _nchan)
 	{
 		memset(RESULT_FAIL+1, 0, sizeof(epicsInt8)*nchan);
 		memset(FAIL_MASK32, 0, fail_mask_len*sizeof(epicsInt32));
 		bool fail = false;
 
 		for (int isam = 0; isam < nsam; ++isam){
-			for (int ic = 0; ic < nchan; ++ic){
-				int ib = isam*nchan+ic;
+			for (int ic = 0; ic < _nchan; ++ic){
+				int ib = isam*_nchan+ic;
 				ETYPE xx = isam > FIRST_SAM? raw[ib]: 0;        // keep the ES out of the output data..
 
 				RAW[ic*nsam+isam] = xx;			 	// for plotting
@@ -582,8 +627,17 @@ public:
 		/** @@todo: not sure how to merge EPICS and SAMPLING timestamps.. go pure EPICS */
 		setIntegerParam(P_BURST_COUNT, burst_count);
 
+		bool fail = false;
 
-		bool fail = calculate(raw, RAW_MU, RAW_ML);
+		if (ndma == 1){
+			fail = calculate(raw, RAW_MU, RAW_ML, nchan);
+		}else{
+			ETYPE* raw1 = (ETYPE*)Buffer::the_buffers[ib+1]->getBase()+offset;
+			int nc2 = nchan/2;
+			int m2 = nsam*nchan/2;
+			fail = calculate(raw,  RAW_MU,    RAW_ML,    nc2) ||
+			       calculate(raw1, RAW_MU+m2, RAW_ML+m2, nc2);
+		}
 
 		setIntegerParam(P_OK, !fail);
 		setIntegerParam(P_BN, vbn);
@@ -731,14 +785,14 @@ void acq400JudgementImpl<epicsInt32>::doMaskUpdateCallbacks(int ic){
 
 
 /** factory() method: creates concrete class with specialized data type: either epicsInt16 or epicsInt32 */
-int acq400Judgement::factory(const char *portName, int maxPoints, int nchan, unsigned data_size, int bursts_per_buffer)
+int acq400Judgement::factory(const char *portName, int maxPoints, int nchan, unsigned data_size, int bursts_per_buffer, unsigned ndma)
 {
 	switch(data_size){
 	case sizeof(short):
-		new acq400JudgementImpl<epicsInt16> (portName, maxPoints, nchan, bursts_per_buffer);
+		new acq400JudgementImpl<epicsInt16> (portName, maxPoints, nchan, bursts_per_buffer, ndma);
 		return(asynSuccess);
 	case sizeof(long):
-		new acq400JudgementImpl<epicsInt32> (portName, maxPoints, nchan, bursts_per_buffer);
+		new acq400JudgementImpl<epicsInt32> (portName, maxPoints, nchan, bursts_per_buffer, ndma);
 		return(asynSuccess);
 	default:
 		fprintf(stderr, "ERROR: %s data_size %u NOT supported must be %u or %u\n",
@@ -755,9 +809,9 @@ extern "C" {
 	/** EPICS iocsh callable function to call constructor for the testAsynPortDriver class.
 	  * \param[in] portName The name of the asyn port driver to be created.
 	  * \param[in] maxPoints The maximum  number of points in the volt and time arrays */
-	int acq400JudgementConfigure(const char *portName, int maxPoints, int nchan, unsigned data_size, unsigned bursts_per_buffer)
+	int acq400JudgementConfigure(const char *portName, int maxPoints, int nchan, unsigned data_size, unsigned bursts_per_buffer, unsigned ndma)
 	{
-		return acq400Judgement::factory(portName, maxPoints, nchan, data_size, bursts_per_buffer);
+		return acq400Judgement::factory(portName, maxPoints, nchan, data_size, bursts_per_buffer, ndma);
 	}
 
 	/* EPICS iocsh shell commands */
@@ -767,11 +821,12 @@ extern "C" {
 	static const iocshArg initArg2 = { "max chan", iocshArgInt};
 	static const iocshArg initArg3 = { "data size", iocshArgInt};
 	static const iocshArg initArg4 = { "bursts_per_buffer", iocshArgInt};
-	static const iocshArg * const initArgs[] = { &initArg0, &initArg1, &initArg2, &initArg3, &initArg4 };
+	static const iocshArg initArg5 = { "ndma", iocshArgInt};
+	static const iocshArg * const initArgs[] = { &initArg0, &initArg1, &initArg2, &initArg3, &initArg4, &initArg5 };
 	static const iocshFuncDef initFuncDef = { "acq400JudgementConfigure", 5, initArgs };
 	static void initCallFunc(const iocshArgBuf *args)
 	{
-		acq400JudgementConfigure(args[0].sval, args[1].ival, args[2].ival, args[3].ival, args[4].ival);
+		acq400JudgementConfigure(args[0].sval, args[1].ival, args[2].ival, args[3].ival, args[4].ival, args[5].ival);
 	}
 
 	void acq400_judgementRegister(void)

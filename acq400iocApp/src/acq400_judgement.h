@@ -52,7 +52,7 @@ public:
 			size_t nElements, size_t *nIn);
 
 	static int factory(
-		const char *portName, int maxPoints, int nchan, unsigned data_size, int bursts_per_buffer);
+		const char *portName, int maxPoints, int nchan, unsigned data_size, int bursts_per_buffer, unsigned ndma);
 	static int verbose;
 	virtual void task();
 	virtual void fill_request_task(void) = 0;
