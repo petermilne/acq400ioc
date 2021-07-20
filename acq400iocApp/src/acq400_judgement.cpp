@@ -326,6 +326,43 @@ public:
 	}
 };
 
+
+template <class ETYPE, unsigned NDMA>
+class RawBuffer {
+	const int nchan;
+	const int nsam;
+	ETYPE* raw[];
+public:
+	RawBuffer(ETYPE* _raw[], int _nsam, int _nchan):
+		nchan(_nchan), nsam(_nsam), raw(_raw)
+	{
+
+	}
+	ETYPE element (int is, int ic) const {
+		return raw[0][is*nsam+ic];
+	}
+	ETYPE& element (int is, int ic, ETYPE& val) {
+		raw[0][is*nsam+ic] = val;
+		return val;
+	}
+};
+
+template <>
+short RawBuffer<short, 2>::element(int is, int ic) const {
+	int icx = ic%(nchan/2);
+	short* rb = raw[ic >= nchan/2];
+	return rb[(is&~1)*nchan/2+icx+(is&1)];
+}
+
+template <>
+short& RawBuffer<short, 2>::element(int is, int ic, short& val) {
+	int icx = ic%(nchan/2);
+	short* rb = raw[ic >= nchan/2];
+	rb[(is&~1)*nchan/2+icx+(is&1)] = val;
+	return val;
+}
+
+
 /** Concrete Judgement class specialised by data type */
 template <class ETYPE>
 class acq400JudgementImpl : public acq400Judgement {
