@@ -347,24 +347,29 @@ class acq400JudgementImpl : public acq400Judgement {
 	static bool gt(int l, int r){ return l > r; }
 	static bool lt(int l, int r){ return l < r; }
 
-	void _square_off(ETYPE* mask, int ic, int th, int nsquare, bool (*_gt)(int, int), bool (*_lt)(int, int)){
+	const unsigned ndma;			/* 1 or 2 */
+	int _square_off(ETYPE* mask, int ic, int th, int nsquare, bool (*_gt)(int, int), bool (*_lt)(int, int)){
 		ETYPE prv = mask[FIRST_SAM];
+		int extend_before = false;
+		int extend_after = false;
+
 		for (int isam = FIRST_SAM+1; isam < nsam; ++isam){
 			int ib = isam*nchan+ic;
 			ETYPE cur = mask[ib];
 			if (_gt(cur, th) && _lt(prv, th)){
-				/* extend before */
+				extend_before = true;
 				for (int is2 = isam-1; isam-is2 < nsquare && is2 > FIRST_SAM; --is2){
 					mask[is2*nchan+ic] = cur;
 				}
 			}else if (_gt(prv, th) && _lt(cur, th)){
-				/* extend after */
+				extend_after = true;
 				for (int isquare = 0; isquare < nsquare && isam < nsam; ++isquare, ++isam){
 					mask[isam*nchan+ic] = prv;
 				}
 			}
 			prv = cur;
 		}
+		return extend_before + extend_after;
 	}
 	void square_off(ETYPE* mask, int nsquare)
 	/* locate flats and increase them on the mask side, indicated by nsquare polarity */
@@ -393,9 +398,11 @@ class acq400JudgementImpl : public acq400Judgement {
 			}
 
 			if (upper){
-				_square_off(mask, ic, mmax*.97, nsquare, gt, lt);
+				_square_off(mask, ic, mmax*.97, nsquare, gt, lt) == 2 ||
+				_square_off(mask, ic, mmax*.90, nsquare, gt, lt);
 			}else{
-				_square_off(mask, ic, mmin*.97, nsquare, lt, gt);
+				_square_off(mask, ic, mmin*.97, nsquare, lt, gt) == 2 ||
+				_square_off(mask, ic, mmin*.90, nsquare, lt, gt);
 			}
 		}
 	}
@@ -527,8 +534,9 @@ class acq400JudgementImpl : public acq400Judgement {
 	}
 
 public:
-	acq400JudgementImpl(const char* portName, int _nchan, int _nsam, int _bursts_per_buffer) :
-		acq400Judgement(portName, _nchan, _nsam, _bursts_per_buffer)
+	acq400JudgementImpl(const char* portName, int _nchan, int _nsam, int _bursts_per_buffer, unsigned _ndma) :
+		acq400Judgement(portName, _nchan, _nsam, _bursts_per_buffer),
+		ndma(_ndma)
 	{
 		createParam(PS_MU,  AATYPE,    	&P_MU);
 		createParam(PS_ML,  AATYPE,    	&P_ML);
@@ -729,14 +737,18 @@ void acq400JudgementImpl<epicsInt32>::doMaskUpdateCallbacks(int ic){
 
 
 /** factory() method: creates concrete class with specialized data type: either epicsInt16 or epicsInt32 */
-int acq400Judgement::factory(const char *portName, int maxPoints, int nchan, unsigned data_size, int bursts_per_buffer)
+int acq400Judgement::factory(const char *portName, int nchan, int maxPoints, unsigned data_size, int bursts_per_buffer, unsigned ndma)
 {
+	if (ndma != 1){
+		fprintf(stderr, "%s ERROR: 2D support NOT implemented\n", __FUNCTION__);
+		exit(1);
+	}
 	switch(data_size){
 	case sizeof(short):
-		new acq400JudgementImpl<epicsInt16> (portName, maxPoints, nchan, bursts_per_buffer);
+		new acq400JudgementImpl<epicsInt16> (portName, nchan, maxPoints, bursts_per_buffer, ndma);
 		return(asynSuccess);
 	case sizeof(long):
-		new acq400JudgementImpl<epicsInt32> (portName, maxPoints, nchan, bursts_per_buffer);
+		new acq400JudgementImpl<epicsInt32> (portName, nchan, maxPoints, bursts_per_buffer, ndma);
 		return(asynSuccess);
 	default:
 		fprintf(stderr, "ERROR: %s data_size %u NOT supported must be %u or %u\n",
@@ -753,23 +765,24 @@ extern "C" {
 	/** EPICS iocsh callable function to call constructor for the testAsynPortDriver class.
 	  * \param[in] portName The name of the asyn port driver to be created.
 	  * \param[in] maxPoints The maximum  number of points in the volt and time arrays */
-	int acq400JudgementConfigure(const char *portName, int maxPoints, int nchan, unsigned data_size, unsigned bursts_per_buffer)
+	int acq400JudgementConfigure(const char *portName, int nchan, int maxPoints, unsigned data_size, unsigned bursts_per_buffer, unsigned ndma)
 	{
-		return acq400Judgement::factory(portName, maxPoints, nchan, data_size, bursts_per_buffer);
+		return acq400Judgement::factory(portName, nchan, maxPoints, data_size, bursts_per_buffer, ndma);
 	}
 
 	/* EPICS iocsh shell commands */
 
 	static const iocshArg initArg0 = { "portName", iocshArgString};
-	static const iocshArg initArg1 = { "max points", iocshArgInt};
-	static const iocshArg initArg2 = { "max chan", iocshArgInt};
+	static const iocshArg initArg1 = { "max chan", iocshArgInt};
+	static const iocshArg initArg2 = { "max points", iocshArgInt};
 	static const iocshArg initArg3 = { "data size", iocshArgInt};
 	static const iocshArg initArg4 = { "bursts_per_buffer", iocshArgInt};
-	static const iocshArg * const initArgs[] = { &initArg0, &initArg1, &initArg2, &initArg3, &initArg4 };
-	static const iocshFuncDef initFuncDef = { "acq400JudgementConfigure", 5, initArgs };
+	static const iocshArg initArg5 = { "ndma", iocshArgInt};
+	static const iocshArg * const initArgs[] = { &initArg0, &initArg1, &initArg2, &initArg3, &initArg4, &initArg5 };
+	static const iocshFuncDef initFuncDef = { "acq400JudgementConfigure", 6, initArgs };
 	static void initCallFunc(const iocshArgBuf *args)
 	{
-		acq400JudgementConfigure(args[0].sval, args[1].ival, args[2].ival, args[3].ival, args[4].ival);
+		acq400JudgementConfigure(args[0].sval, args[1].ival, args[2].ival, args[3].ival, args[4].ival, args[5].ival);
 	}
 
 	void acq400_judgementRegister(void)
