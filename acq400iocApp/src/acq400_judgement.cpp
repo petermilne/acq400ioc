@@ -196,18 +196,16 @@ static AbstractES& ESX = *AbstractES::evX_instance();
 
 int acq400Judgement::handle_es(unsigned* raw)
 {
-	for (int ii = 0; ii < 3; ++ii){
-		unsigned* esx = raw + ii*nchan;
-		if (ESX.isES(esx)){
-			sample_count = esx[4];
-			clock_count[1]= esx[5];
-			/** @@todo: not sure how to merge EPICS and SAMPLING timestamps.. go pure EPICS */
-			++burst_count;
-			RESULT_FAIL[0] = burst_count;			// burst_count%256 .. maybe match to exact count and TS */
-			return ii;
-		}
+	if (ESX.isES(raw)){
+		sample_count = raw[4];
+		clock_count[1]= raw[5];
+		/** @@todo: not sure how to merge EPICS and SAMPLING timestamps.. go pure EPICS */
+		++burst_count;
+		RESULT_FAIL[0] = burst_count;			// burst_count%256 .. maybe match to exact count and TS */
+		return 0;
+	}else{
+		return -1;
 	}
-	return -1;
 }
 
 
