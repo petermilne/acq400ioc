@@ -210,8 +210,6 @@ int acq400Judgement::handle_es(unsigned* raw)
 	return -1;
 }
 
-
-
 void acq400Judgement::task()
 {
 	int fc = open("/dev/acq400.0.bq", O_RDONLY);
@@ -589,18 +587,19 @@ public:
 	}
 
 
-	bool calculate(ETYPE* raw, const ETYPE* mu, const ETYPE* ml, int _nchan)
+	bool calculate(ETYPE* raw, ETYPE* cooked, const ETYPE* mu, const ETYPE* ml, int _nchan)
 	{
 		memset(RESULT_FAIL+1, 0, sizeof(epicsInt8)*nchan);
 		memset(FAIL_MASK32, 0, fail_mask_len*sizeof(epicsInt32));
 		bool fail = false;
 
-		for (int isam = 0; isam < nsam; ++isam){
-			for (int ic = 0; ic < _nchan; ++ic){
-				int ib = isam*_nchan+ic;
+		for (int isam = 0; isam < nsam; isam += 2){
+			for (int ic = 0; ic < _nchan; ic++){
+				int ib = isam*_nchan+ic*2;
+				int ip = ic*nsam+isam;
 				ETYPE xx = isam > FIRST_SAM? raw[ib]: 0;        // keep the ES out of the output data..
 
-				RAW[ic*nsam+isam] = xx;			 	// for plotting
+				cooked[ip++] = xx;			 	// for plotting
 
 				if (isam >= WINL[ic] && isam <= WINR[ic]){  	// make Judgment inside window
 					if (xx > mu[ib] || xx < ml[ib]){
@@ -609,6 +608,8 @@ public:
 						fail = true;
 					}
 				}
+				xx = isam+1 > FIRST_SAM? raw[ib+1]: 0;
+				cooked[ip++] = xx;
 			}
 		}
 
@@ -630,13 +631,18 @@ public:
 		bool fail = false;
 
 		if (ndma == 1){
-			fail = calculate(raw, RAW_MU, RAW_ML, nchan);
+			fail = calculate(raw, RAW, RAW_MU, RAW_ML, nchan);
 		}else{
-			ETYPE* raw1 = (ETYPE*)Buffer::the_buffers[ib+1]->getBase()+offset;
+			if ((ib&1) == 0){
+				return;			// even ib's NOT wanted. Why are we even getting them?.
+			}
+			raw = (ETYPE*)Buffer::the_buffers[ib^1]->getBase()+offset;
+			ETYPE* raw1 = (ETYPE*)Buffer::the_buffers[ib]->getBase()+offset;
+			//printf("%s ib:%d raw:%p raw1:%p\n", __FUNCTION__, ib, raw, raw1);
 			int nc2 = nchan/2;
 			int m2 = nsam*nchan/2;
-			fail = calculate(raw,  RAW_MU,    RAW_ML,    nc2) ||
-			       calculate(raw1, RAW_MU+m2, RAW_ML+m2, nc2);
+			fail = calculate(raw,  RAW,    RAW_MU,    RAW_ML,    nc2);
+			fail = calculate(raw1, RAW+m2, RAW_MU+m2, RAW_ML+m2, nc2) || fail;
 		}
 
 		setIntegerParam(P_OK, !fail);
@@ -785,14 +791,14 @@ void acq400JudgementImpl<epicsInt32>::doMaskUpdateCallbacks(int ic){
 
 
 /** factory() method: creates concrete class with specialized data type: either epicsInt16 or epicsInt32 */
-int acq400Judgement::factory(const char *portName, int maxPoints, int nchan, unsigned data_size, int bursts_per_buffer, unsigned ndma)
+int acq400Judgement::factory(const char *portName, int nchan, int maxPoints, unsigned data_size, int bursts_per_buffer, unsigned ndma)
 {
 	switch(data_size){
 	case sizeof(short):
-		new acq400JudgementImpl<epicsInt16> (portName, maxPoints, nchan, bursts_per_buffer, ndma);
+		new acq400JudgementImpl<epicsInt16> (portName, nchan, maxPoints, bursts_per_buffer, ndma);
 		return(asynSuccess);
 	case sizeof(long):
-		new acq400JudgementImpl<epicsInt32> (portName, maxPoints, nchan, bursts_per_buffer, ndma);
+		new acq400JudgementImpl<epicsInt32> (portName, nchan, maxPoints, bursts_per_buffer, ndma);
 		return(asynSuccess);
 	default:
 		fprintf(stderr, "ERROR: %s data_size %u NOT supported must be %u or %u\n",
@@ -809,21 +815,21 @@ extern "C" {
 	/** EPICS iocsh callable function to call constructor for the testAsynPortDriver class.
 	  * \param[in] portName The name of the asyn port driver to be created.
 	  * \param[in] maxPoints The maximum  number of points in the volt and time arrays */
-	int acq400JudgementConfigure(const char *portName, int maxPoints, int nchan, unsigned data_size, unsigned bursts_per_buffer, unsigned ndma)
+	int acq400JudgementConfigure(const char *portName, int nchan, int maxPoints, unsigned data_size, unsigned bursts_per_buffer, unsigned ndma)
 	{
-		return acq400Judgement::factory(portName, maxPoints, nchan, data_size, bursts_per_buffer, ndma);
+		return acq400Judgement::factory(portName, nchan, maxPoints, data_size, bursts_per_buffer, ndma);
 	}
 
 	/* EPICS iocsh shell commands */
 
 	static const iocshArg initArg0 = { "portName", iocshArgString};
-	static const iocshArg initArg1 = { "max points", iocshArgInt};
-	static const iocshArg initArg2 = { "max chan", iocshArgInt};
+	static const iocshArg initArg1 = { "max chan", iocshArgInt};
+	static const iocshArg initArg2 = { "max points", iocshArgInt};
 	static const iocshArg initArg3 = { "data size", iocshArgInt};
 	static const iocshArg initArg4 = { "bursts_per_buffer", iocshArgInt};
 	static const iocshArg initArg5 = { "ndma", iocshArgInt};
 	static const iocshArg * const initArgs[] = { &initArg0, &initArg1, &initArg2, &initArg3, &initArg4, &initArg5 };
-	static const iocshFuncDef initFuncDef = { "acq400JudgementConfigure", 5, initArgs };
+	static const iocshFuncDef initFuncDef = { "acq400JudgementConfigure", 6, initArgs };
 	static void initCallFunc(const iocshArgBuf *args)
 	{
 		acq400JudgementConfigure(args[0].sval, args[1].ival, args[2].ival, args[3].ival, args[4].ival, args[5].ival);
