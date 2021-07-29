@@ -1329,7 +1329,10 @@ esac
 
 case $MB_MODEL in
 acq2106*)
-	echo >> /tmp/st_final.cmd "dbpf ${HOST}:0:SIG:SRC:CLK:0 INT01M";;
+	(
+	echo "dbpf ${HOST}:0:SIG:SRC:CLK:0 INT01M"
+	[ $(cat /dev/gpio/CHIP2/P27/value) -eq 1 ] && echo dbpf "${HOST}:SYS:VAN.CALC \"6.6*B - 18.9\"" 	
+	) >> /tmp/st_final.cmd;;
 acq10*)
 	echo "dbpf $HOST:SYS:CLK:FPMUX $clk"
 	if [ "x$HAS_ACQ43X" != "x" ] && [ $HAS_ACQ43X -eq 1 ] && [ $ACQ43X_SET_SAMPLE_RATE -gt 1 ]; then
