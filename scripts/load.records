@@ -900,6 +900,8 @@ load_mb_sites() {
 	case $MB_MODEL in
 		kmcu*)
 			;;
+		z7io*)
+			;;
 		acq2106*)
 			thst="ZCLK"
 			[ $(isRevA $MB_MODEL) -ne 0 ] && thst=""
@@ -1177,7 +1179,7 @@ KB=/dev/acq400.0.knobs
 
 load_mb() {
 	echo 1>&2 "load.records:load_mb"
-	
+		
 	case $MB_MODEL in
 		acq2106*)
 				ns=6; mt=acq2106;;
@@ -1187,6 +1189,8 @@ load_mb() {
 				ns=2; mt=acq1001;;
 		kmcu*)
 				ns=2; mt=kmcu;;
+		z7io*)
+				ns=2; mt=z7io;;
 		acq1014)
 				source ./scripts/acq1014_init
 				ns=1; mt=acq1001;;
