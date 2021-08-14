@@ -37,3 +37,13 @@ setSi5326TP {
 	out "si5326_tune_phase 1";
 	in "";
 }
+
+set_wrtd_txi {
+	out "wrtd_txi 1";
+	in "";
+}
+
+set_wrtd_txi_id {
+	out "wrtd_txi %s";
+	in "";
+}

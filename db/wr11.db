@@ -68,3 +68,16 @@ record(bo, "${UUT}:${SITE}:Si5326:TUNEPHASE")
 	field(OUT,  "@wr.proto setSi5326TP ${SPORT}")
 }
 
+record(bo, "${UUT}:${SITE}:WRTD_TXI")
+{
+	field(DTYP, "stream")
+	field(OUT,  "@wr.proto set_wrtd_txi ${SPORT}")
+	field(ZNAM, "1")
+	field(ONAM, "0")
+}
+
+record(stringout, "${UUT}:${SITE}:WRTD_TXI_ID")
+{
+	field(DTYP, "stream")
+	field(OUT,  "@wr.proto set_wrtd_txi_id ${SPORT}")	
+}
