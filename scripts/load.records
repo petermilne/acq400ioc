@@ -224,11 +224,10 @@ acq480_div() {
 	if [ "x$MB_MODEL" = "xkmcuz30" ]; then
 		echo 1
 	else
-		axi=/dev/acq400.0.knobs/has_axi_dma
-		if [ -e $axi ] && [ $(cat $axi) -eq 2 ]; then
-			echo 4
-		else
-			echo 1
+	    if [ $(cat /dev/acq400.1.knobs/acq480_two_lane_mode) -eq 1 ]; then
+	    	echo 4
+	    else
+	    	echo 1
 		fi
 	fi
 }
