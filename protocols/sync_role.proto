@@ -1,0 +1,12 @@
+Terminator = LF;
+ExtraInput = Ignore;
+
+set_sync_role {
+	out "sync_role %s";
+	in;
+}
+
+get_sync_role {
+	out "sync_role";
+	in "%s";
+}

@@ -856,7 +856,8 @@ load_mb_base() {
 			VAP=0;VAN=0
 		fi
 		dblr '"db/acq2006psu.db","UUT='${HOST},vap=$VAP,van=$VAN'"'
-	fi	
+	fi
+	dblr '"db/sync_role.db","UUT='${HOST}',SPORT=S0"'
 	load_gpg
 }
 
