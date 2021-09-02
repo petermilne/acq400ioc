@@ -8,5 +8,5 @@ set_sync_role {
 
 get_sync_role {
 	out "sync_role";
-	in "%s";
+	in "%40c";
 }
