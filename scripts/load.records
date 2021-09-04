@@ -819,7 +819,7 @@ load_mb_base() {
 	        load_mb_acq2106
 			dblr '"db/hwmonvolts_2106.db","UUT='${HOST}'"'
 			acq2106b=$(cat /sys/module/acq420fmc/parameters/is_acq2106B)
-			dblr '"db/acq2106clk.db","UUT='${HOST}',acq2106b='${acq2106b}',SPORT=S0"';;
+			dblr '"db/acq2106clk.db","UUT='${HOST}',acq2106b='${acq2106b}',SPORT=S0C"';;
 
 	kmcu*)
 			dblr '"db/hwmonvolts_mtca-rtm-2.db","UUT='${HOST}'"';;
@@ -857,7 +857,7 @@ load_mb_base() {
 		fi
 		dblr '"db/acq2006psu.db","UUT='${HOST},vap=$VAP,van=$VAN'"'
 	fi
-	dblr '"db/sync_role.db","UUT='${HOST}',SPORT=S0"'
+	dblr '"db/sync_role.db","UUT='${HOST}',SPORT=S0R"'
 	load_gpg
 }
 
@@ -927,6 +927,8 @@ load_mb_sites() {
 	create_asyn_channel S0 127.0.0.1:4220 ${S0_DEBUG}
     create_asyn_channel S0A 127.0.0.1:4220   
     create_asyn_channel S0B 127.0.0.1:4220   
+    create_asyn_channel S0C 127.0.0.1:4220
+    create_asyn_channel S0R 127.0.0.1:4220
 	create_asyn_channel NP 127.0.0.1:2226
 	create_asyn_channel SS 127.0.0.1:4220
 	create_asyn_channel ST 127.0.0.1:$(get-port-from-service acq4xx-transient-console)
