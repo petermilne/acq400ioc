@@ -182,6 +182,7 @@ set_out() {
     set.site 0 SIG:SYNC_OUT:TRG:DX 	d2
     set.site 0 SIG:SYNC_OUT:SYNC 	SYNC
     set.site 0 SIG:SYNC_OUT:SYNC:DX d2
+    set.sys /dev/acq400.0.knobs/mod_en 1
 }
 
 set_out_slave() {
@@ -191,6 +192,7 @@ set_out_slave() {
     set.site 0 SIG:SYNC_OUT:TRG:DX 	d0
     set.site 0 SIG:SYNC_OUT:SYNC 	SYNC
     set.site 0 SIG:SYNC_OUT:SYNC:DX d0
+    set.sys /dev/acq400.0.knobs/mod_en 1
 }
 
 # PV readback on triplet en,dx,edge can cause errors, so lock it

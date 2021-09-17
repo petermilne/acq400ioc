@@ -34,3 +34,11 @@ record (bi, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DET") {
 	field(PINI, "YES")
 }
 
+record (bi, "${UUT}:0:SIG:SYNC_BUS:OUT:DRVEN") {
+ 	field(DTYP, "biAcqHost")
+ 	field(INP, "@/dev/acq400.0.knobs/mod_en")
+	field(SCAN, "5 second")
+	field(ZNAM, "OFF")
+	field(ONAM, "ON")
+	field(PINI, "YES")	
+}
