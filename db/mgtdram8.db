@@ -47,8 +47,7 @@ record(longout, "${UUT}:MODE:BLT:BUFFERS:w") {
 }
 
 record(bo, "${UUT}:MODE:BLT:SET_ARM") {
-	field(DTYP, "Soft Channel")
-	field(OUT,  "@mgtdram8.proto set_mgt_arm ${SRUN}")
+	field(DTYP, "Soft Channel")	
 	field(DISV, "1")
 	field(SDIS, "${UUT}:MODE:BLT:SET_ARM")
 }
