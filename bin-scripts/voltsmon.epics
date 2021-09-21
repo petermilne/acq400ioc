@@ -17,6 +17,7 @@ monitor() {
 		esac
 	done
 	cat $1
+	rm $1
 }
 
 
@@ -30,7 +31,7 @@ do
 	MONPID=$!
 	sleep 5
 	[ -e /proc/$MONPID ] &&  kill -9 $MONPID
-	rm $TF
+	rm -f /tmp/voltsmon.*
 done
 
 
