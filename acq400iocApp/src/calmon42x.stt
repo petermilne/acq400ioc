@@ -115,10 +115,10 @@ ss calmon {
 										site, gains[ch], ch, eslo[ch], eoff[ch]);
 						}
 						pvPut(eslo[ch]);
-                        pvPut(eoff[ch]);
+						pvPut(eoff[ch]);
                                                 
-                        ext_eslo[ch] = eslo[ch];
-                        ext_eoff[ch] = eoff[ch];
+						ext_eslo[ch] = eslo[ch];
+						ext_eoff[ch] = eoff[ch];
 					}else{
 						printf("ERROR return from acq400_getChannel()\n");
 					}

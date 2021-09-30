@@ -16,6 +16,7 @@ MT_ACQ427=7
 MT_ACQ427F=A7
 MT_ACQ436=6D
 MT_ACQ437=6
+MT_ACQ465=A
 MT_ACQ480=8
 MT_ACQ423=9
 MT_BOLO8=60
@@ -52,6 +53,7 @@ nameFromMT() {
 					echo "acq427";;
 	$MT_ACQ436)		echo "acq436";;
 	$MT_ACQ437)		echo "acq437";;
+	$MT_ACQ465)             echo "acq465";;
 	$MT_ACQ480)		echo "acq480";;
 	$MT_BOLO8)		echo "bolo8";;
 	$MT_DIO432|$MT_DIO432P)
