@@ -154,7 +154,8 @@ long raw_to_volts(aSubRecord *prec) {
 
 	epicsUInt32 window1 = *(int*)prec->l;
 	epicsUInt32 window2 = *(int*)prec->m; if (window2 == 0) window2 = len;
-	epicsUInt32 winlen = window2 - window1;
+	epicsUInt32 winlen = window2 - window1 + 1;
+	// if window2 < window1, winlen-> infinity, so mean -> 0, which is fair enough
 
 	if (::verbose && ++report_done == 1){
 		printf("aoff count: %u value: %p type: %d\n", prec->noo, prec->o, prec->fto);
@@ -164,6 +165,7 @@ long raw_to_volts(aSubRecord *prec) {
 		printf("raw_to_volts() len:%d th:%ld p_over:%p\n",
 				len, alarm_threshold, p_over_range);
 		printf("scale %x becomes %x\n", 0xdead, (unsigned)scale<T, SHR>(0xdead));
+		printf("window %u %u %u\n", window1, window2, winlen);
 	}
 
 	if (::verbose > 1 && strstr(prec->name, ":01") != 0){
