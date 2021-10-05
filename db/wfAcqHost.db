@@ -65,7 +65,8 @@ record(aSub, "${UUT}:${SITE}:AI:${WF}:${cid}:V") {
 	
 	field(FTA,  "${type}")
 	field(NOA,  "${size}")
-	field(INPA, "${UUT}:${SITE}:AI:${WF}:${cid}")
+	# literal WF for INPA: shared source record...
+	field(INPA, "${UUT}:${SITE}:AI:WF:${cid}")
 	
 	field(FTB,  "LONG")
 	field(NOB,  "1")
