@@ -1,11 +1,13 @@
 #!/bin/sh
 # add  waveform duplicate 
 wf=${1:-W1}
-lnkx=${1:-LNK1}
+lnkx=${2:-LNK1}
 
-cat - >>/tmp/st_pre_double-my-channels-${wf}.cmd <<EOF
+INITSCR=/usr/local/epics/init.d/double-my-channels-${wf}.init
+
+cat - >>${INITSCR} <<EOF
 sed -n -e "/wfAcqHost.db/{s/WF=WF/WF=${wf}/;s/LNKX=LNK0/LNKX=${lnkx}/;p}" /tmp/st.cmd  
 EOF
 
-chmod a+rx /tmp/st_pre_double-my-channels-${wf}.cmd
+chmod a+rx ${INITSCR}
 
