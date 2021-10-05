@@ -126,14 +126,14 @@ template <class T, int SHR> T scale(T raw) { return raw >> SHR; }
 template <class T, int SHR>
 long raw_to_volts(aSubRecord *prec) {
 	double yy;
-	T *raw = (T *)prec->a;
-	epicsUInt32 len = prec->noa;
+	const T *raw = (T *)prec->a;
+	const epicsUInt32 len = prec->noa;
 	float * cooked = (float *)prec->vala;
-	long rmax = *(long*)prec->b;
-	float vmax = *(float*)prec->c;
-	double aoff = *(double*)prec->o;
-	double aslo = *(double*)prec->s;
-	long* p_thresh = (long*)prec->d;
+	const long rmax = *(long*)prec->b;
+	const float vmax = *(float*)prec->c;
+	const double aoff = *(double*)prec->o;
+	const double aslo = *(double*)prec->s;
+	const long* p_thresh = (long*)prec->d;
 	long* p_over_range = (long*)prec->valb;
 	float* p_min = (float*)prec->valc;
 	float* p_max = (float*)prec->vald;
@@ -152,9 +152,9 @@ long raw_to_volts(aSubRecord *prec) {
 	double sumsq = 0;
 	bool compute_squares = p_stddev != 0 || p_rms != 0;
 
-	epicsUInt32 window1 = *(int*)prec->l;
-	epicsUInt32 window2 = *(int*)prec->m; if (window2 == 0) window2 = len-1;
-	epicsUInt32 winlen = window2 - window1 + 1;
+	const epicsUInt32 window1 = *(int*)prec->l;
+	const epicsUInt32 window2 = *(int*)prec->m==0? len-1: *(int*)prec->m;
+	const epicsUInt32 winlen = window2 - window1 + 1;
 	// if window2 < window1, winlen-> infinity, so mean -> 0, which is fair enough
 
 	if (::verbose && ++report_done == 1){
