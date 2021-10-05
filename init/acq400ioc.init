@@ -64,7 +64,11 @@ make_stcmd() {
 			echo 1>&2 "source extension $file"
 			source $file
 		fi 
-	done	
+	done
+	cat - >> /tmp/st.cmd <<EOF
+dbl > /tmp/records.dbl'
+seqShow > /tmp/records.dbl.done'
+EOF
 	touch /dev/shm/AI
 }
 

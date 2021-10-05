@@ -1357,9 +1357,6 @@ fi
 
 IOC_READY_DELAY=${IOC_READY_DELAY:-3}
 
-echo 'dbl > /tmp/records.dbl'
-echo 'seqShow > /tmp/records.dbl.done'
-
 cat - >>/tmp/st_final.cmd <<EOF
 dbpf ${HOST}:LIVE:PREPCT 50 
 seq on_delay "pv=${HOST}:IOC_READY,val=1,delay=$IOC_READY_DELAY,priority=0" 
