@@ -1,4 +1,7 @@
-record(waveform, "${UUT}:${SITE}:AI:${WF}:${cid}") {	
+# ${WF} : default set to literal "WF", but possible to create clone
+
+# deliberate hard code WF
+record(waveform, "${UUT}:${SITE}:AI:WF:${cid}") {	
 	field(DTYP, "wfAcqHost")
 	field(INP, "@${fname}.wf ${cid}")
 	field(SCAN, "I/O Intr")	
@@ -7,10 +10,16 @@ record(waveform, "${UUT}:${SITE}:AI:${WF}:${cid}") {
 	field(FTVL,"${type}")
 	field(SDIS, "${UUT}:0:QS:XOFF")
 	field(DISV, "1")
-	field(FLNK,"${UUT}:${SITE}:AI:${WF}:${cid}:V")
+	field(FLNK,"${UUT}:${SITE}:AI:WF:${cid}:fan")
 }
 
+record(fanout, "${UUT}:${SITE}:AI:WF:${cid}:fan") {
+# LNKX=0, WF=WF reserved by system
+# Expansion available: LNKX=1.>F, WF=anything for duplicates
+	field(${LNKX},"${UUT}:${SITE}:AI:${WF}:${cid}:V")
+}
 
+# duplicate section .. use ${WF} from now ...
 
 record(bo, "${UUT}:${SITE}:AI:${WF}:${cid}:OVER") {
 	field(DTYP, "Soft Channel")

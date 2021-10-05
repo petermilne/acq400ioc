@@ -101,7 +101,7 @@ make_AI() {
 		wprams="${PRAMS},size=${SIZE},type=${type}"
 		wprams="${wprams},maxcode=${maxcode},vmax=${vmax},eslo=${eslo}"
 
-		dblr \"db/wfAcqHost.db\",\"WF=WF,${wprams}\"
+		dblr \"db/wfAcqHost.db\",\"WF=WF,LNKX=LNK0,${wprams}\"
 		
 		[ "x$WF_ACQ_HOST_WINDOW_PER_CHANNEL" = "xy" ] && load_wf_acq_host_window_per_channel  $ch "$wprams"
 	done

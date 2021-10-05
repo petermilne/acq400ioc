@@ -31,6 +31,7 @@ mkdir -p opkg/usr/local/bin/ opkg/usr/local/init/ \
 	opkg/usr/local/epics/db  \
 	opkg/usr/local/epics/protocols \
 	opkg/usr/local/epics/scripts \
+	opkg/usr/local/epics/init.d \
 	opkg/usr/local/CARE
 
 cp -r CARE/* opkg/usr/local/CARE

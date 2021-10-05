@@ -1,0 +1,11 @@
+#!/bin/sh
+# add  waveform duplicate 
+wf=${1:-W1}
+lnkx=${1:-LNK1}
+
+cat - >>/tmp/st_pre_double-my-channels-${wf}.cmd <<EOF
+sed -n -e "/wfAcqHost.db/{s/WF=WF/WF=${wf}/;s/LNKX=LNK0/LNKX=${lnkx}/;p}" /tmp/st.cmd  
+EOF
+
+chmod a+rx /tmp/st_pre_double-my-channels-${wf}.cmd
+
