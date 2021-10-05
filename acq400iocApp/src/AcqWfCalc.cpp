@@ -153,7 +153,7 @@ long raw_to_volts(aSubRecord *prec) {
 	bool compute_squares = p_stddev != 0 || p_rms != 0;
 
 	epicsUInt32 window1 = *(int*)prec->l;
-	epicsUInt32 window2 = *(int*)prec->m; if (window2 == 0) window2 = len;
+	epicsUInt32 window2 = *(int*)prec->m; if (window2 == 0) window2 = len-1;
 	epicsUInt32 winlen = window2 - window1 + 1;
 	// if window2 < window1, winlen-> infinity, so mean -> 0, which is fair enough
 
@@ -227,7 +227,7 @@ long raw_to_volts(aSubRecord *prec) {
 	if (p_mean) 	*p_mean = (sum*aslo)/winlen + aoff;
 
 	if (p_rms)	*p_rms = sqrt(sumsq/winlen)*aslo + aoff;
-	if (p_stddev)	*p_stddev = sqrt((sumsq - (sum*sum)/winlen)/winlen) * aslo;
+	if (p_stddev)	*p_stddev = winlen>1? sqrt((sumsq - (sum*sum)/winlen)/winlen) * aslo: 0;
 	if (p_cv)	*p_cv = *p_stddev / *p_mean;
 	return 0;
 }
