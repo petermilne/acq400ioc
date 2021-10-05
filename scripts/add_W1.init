@@ -8,8 +8,8 @@ INITSCR=/usr/local/epics/init.d/double-my-channels-${wf}.init_final
 
 cat - >${INITSCR} <<EOF
 TMPF=$(mktemp /tmp/double-my-channels-${wf}.XXXXXX)
-sed -n -e "/wfAcqHost.db/{s/WF=WF/WF=${wf}/;s/LNKX=LNK0/LNKX=${lnkx}/;p}" /tmp/st.cmd >TMPF
-cat $TMPF >> /tmp/st.cmd
+sed -n -e "/wfAcqHost.db/{s/WF=WF/WF=${wf}/;s/LNKX=LNK0/LNKX=${lnkx}/;p}" /tmp/st.cmd >\$TMPF
+cat \$TMPF >> /tmp/st.cmd
 EOF
 
 chmod a+rx ${INITSCR}
