@@ -1303,20 +1303,12 @@ fi
 
 [ ! -z "$SOD_TIMEOUT" ] && source /usr/local/epics/scripts/init.sod_timeout $SOD_TIMEOUT
 
-cat - <<EOF
-dbLoadRecords("db/local-aliases.db","UUT=${HOST}")
-iocInit()
-EOF
-
-
-
+# All the rest goes to st_final for post init..
+(
 if [ -e "/tmp/st_post.cmd" ]; then
 	cat /tmp/st_post.cmd
 fi
 
-if [ -x /usr/local/epics/scripts/${MB_MODEL}_init.sh ]; then
-		/usr/local/epics/scripts/${MB_MODEL}_init.sh create
-fi
 case $MB_MODEL in
 acq2006)	clk=XCLK;;
 acq1001|acq1002)
@@ -1334,11 +1326,9 @@ esac
 #fi
 
 case $MB_MODEL in
-acq2106*)
-	(
+acq2106*)	
 	echo "dbpf ${HOST}:0:SIG:SRC:CLK:0 INT01M"
-	[ $(cat /dev/gpio/CHIP2/P27/value) -eq 1 ] && echo dbpf "${HOST}:SYS:VAN.CALC \"6.6*B - 18.9\"" 	
-	) >> /tmp/st_final.cmd;;
+	[ $(cat /dev/gpio/CHIP2/P27/value) -eq 1 ] && echo dbpf "${HOST}:SYS:VAN.CALC \"6.6*B - 18.9\"" ;;
 acq10*)
 	echo "dbpf $HOST:SYS:CLK:FPMUX $clk"
 	if [ "x$HAS_ACQ43X" != "x" ] && [ $HAS_ACQ43X -eq 1 ] && [ $ACQ43X_SET_SAMPLE_RATE -gt 1 ]; then
@@ -1354,6 +1344,7 @@ if [ "x$IOC_POSTINIT" != "x" ]; then
 		source $IOC_POSTINIT
 	fi
 fi
+) >>/tmp/st_final.cmd
 
 IOC_READY_DELAY=${IOC_READY_DELAY:-3}
 

@@ -7,6 +7,8 @@ LOG=/var/log/epics.log
 NICE=10
 LG="logger -t acq400ioc.init"
 RL=/tmp/records.dbl
+HOST=${IOC_HOST:-$(hostname)}
+MB_MODEL=$(basename ${devicetree_image%*.dtb})
 
 if [ -f /etc/profile.d/epics.sh ]; then
 	source /etc/profile.d/epics.sh
@@ -66,10 +68,15 @@ make_stcmd() {
 		fi 
 	done
 	cat - >> /tmp/st.cmd <<EOF
-dbl > /tmp/records.dbl'
-seqShow > /tmp/records.dbl.done'
+dbLoadRecords("db/local-aliases.db","UUT=${HOST}")
+iocInit()	
+dbl > /tmp/records.dbl
+seqShow > /tmp/records.dbl.done
 EOF
 	touch /dev/shm/AI
+	if [ -x /usr/local/epics/scripts/${MB_MODEL}_init.sh ]; then
+		/usr/local/epics/scripts/${MB_MODEL}_init.sh create
+	fi
 }
 
 make_aliases_loop() {
