@@ -1276,7 +1276,7 @@ esac
 
 dblr '"db/mirror.db","UUT='${HOST}'"'
 
-for file in /usr/local/epics/init.d/*init*
+for file in /usr/local/epics/init.d/*.init
 do
 	if [ -x $file ]; then
 		echo 1>&2 "execute extension $file"

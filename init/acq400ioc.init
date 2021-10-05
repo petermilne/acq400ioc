@@ -55,6 +55,16 @@ make_stcmd() {
 		./scripts/extract_gains
 		./scripts/load.records > ${STCMD}
 	) fi
+	for file in /usr/local/epics/init.d/*.init_final
+	do
+		if [ -x $file ]; then
+			echo 1>&2 "execute extension $file"
+			$file
+		elif [ -e $file ]; then
+			echo 1>&2 "source extension $file"
+			source $file
+		fi 
+	done	
 	touch /dev/shm/AI
 }
 
@@ -101,6 +111,7 @@ restart() {
 	wait_ioc_records_loaded
 	stop_ioc
 	nice /usr/local/init/acq400ioc.init make_epics_knobs
+
 	[ "x$IOC_GLOBAL_ALIAS_PFX" != "x" ] && make_aliases $IOC_GLOBAL_ALIAS_PFX
 	cat /tmp/st_final.cmd >> /tmp/st.cmd
 	start_ioc
