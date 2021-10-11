@@ -53,7 +53,10 @@ record(bo, "${UUT}:${SITE}:BYPASS_TRG_DEBOUNCE:w") {
 	field(DTYP, "stream")
 	field(OUT,  "@wr.proto setBypassTrgDeb ${SPORT}")
 	field(DISV, "1")
-	field(SDIS, "${UUT}:${SITE}:BYPASS_TRG_DEBOUNCE:s.PACT")	
+	field(SDIS, "${UUT}:${SITE}:BYPASS_TRG_DEBOUNCE:s.PACT")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:${SITE}:BYPASS_TRG_DEBOUNCE")
+	
 }
 
 

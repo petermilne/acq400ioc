@@ -8,6 +8,8 @@ option +r;
 int mode; assign mode to "{uut}:{site}:BYPASS_TRG_DEBOUNCE:MODE";
 monitor mode;
 
+int bypass_debounce; assign bypass_debounce to "{uut}:{site}:BYPASS_TRG_DEBOUNCE";
+
 #define MODE_BP_AUTO 0
 #define MODE_BP_ON   1
 #define MODE_BP_OFF  2
@@ -21,12 +23,16 @@ monitor mode;
 int verbose;
 int sample_count_count0;
 
+int mode0 = 99;
+int site;
+
 ss pg_trg_deb {
 	state init {
 		when() {
 			if (macValueGet("verbose")){
 				verbose = macValueGet("verbose")[0] - '0';
-			}			
+			}
+			site = macValueGet("site")[0] - '0';
 		} state idle0
 	}
 	
@@ -34,22 +40,29 @@ ss pg_trg_deb {
 		entry {
 			
 		}
-		when(mode == MODE_BP_AUTO){
+		when(mode == MODE_BP_AUTO && mode0 != mode){
 			
 		} state auto_select
 		
-		when(mode == MODE_BP_ON){
+		when(mode == MODE_BP_ON && mode0 != mode){
 			
 		} state manual_on
 		
-		when(mode == MODE_BP_OFF){
+		when(mode == MODE_BP_OFF && mode0 != mode){
 			
 		} state manual_off	
+		exit {
+			mode0 = mode;
+		}
 	}
 	
 	state manual_on {
 		entry {
-			
+			bypass_debounce = 1;
+			pvPut(bypass_debounce);
+			if (verbose){
+				printf("pg_trg_debounce %d manual_on\n", site);
+			}
 		}
 		when() {
 			
@@ -58,7 +71,11 @@ ss pg_trg_deb {
 	
 	state manual_off {
 		entry {
-			
+			bypass_debounce = 0;
+			pvPut(bypass_debounce);
+			if (verbose){
+				printf("pg_trg_debounce %d manual_off\n", site);
+			}
 		}
 		when() {
 			
@@ -66,6 +83,11 @@ ss pg_trg_deb {
 	}
 	
 	state auto_select {
+		entry {
+			if (verbose){
+				printf("pg_trg_debounce %d auto_select\n", site);
+			}
+		}
 		when() {
 			
 		} state idle0

@@ -790,6 +790,7 @@ load_dio482pg() {
 	#	echo "seq clk_freq_flasher \"signal=${HOST}:0:SIG:TRG_S${site},led=${HOST}:${site}:LED:TRG\""
 		echo "seq clk_freq_flasher \"signal=${HOST}:${site}:SIG:sample_count,led=${HOST}:${site}:LED:TRG\""
 		) >> /tmp/st_final.cmd
+	echo "seq pg_trg_debounce \"uut=${HOST},site=${site},verbose=${PG_TRG_DEBOUNCE_VERBOSE:-0}\""
 	fi
 }
 
