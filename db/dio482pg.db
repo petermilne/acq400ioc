@@ -41,3 +41,45 @@ record(mbbo, "${UUT}:${SITE}:TRG:DX") {
 record(mbbo, "${UUT}:${SITE}:CLK:DX") {
 	field(${SELF},  "nc")
 }
+
+record(bo, "${UUT}:${SITE}:BYPASS_TRG_DEBOUNCE") {
+	field(DTYP, "Soft Channel")
+	field(ZNAM, "OFF")
+	field(ONAM, "ON")
+	field(FLNK, "${UUT}:${SITE}:BYPASS_TRG_DEBOUNCE:w PP")
+}
+
+record(bo, "${UUT}:${SITE}:BYPASS_TRG_DEBOUNCE:w") {
+	field(DTYP, "stream")
+	field(OUT,  "@wr.proto setBypassTrgDeb ${SPORT}")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:BYPASS_TRG_DEBOUNCE:s.PACT")	
+}
+
+
+record(bi, "${UUT}:${SITE}:BYPASS_TRG_DEBOUNCE:r") {
+	field(DTYP, "stream")
+	field(INP, "@wr.proto getBypassTrgDeb ${SPORT}")
+	field(SCAN, "2 second")
+	field(FLNK, "${UUT}:${SITE}:BYPASS_TRG_DEBOUNCE:s")
+}
+
+
+record(bo, "${UUT}:${SITE}:BYPASS_TRG_DEBOUNCE:s") {
+	field(DTYP, "Soft Channel")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:${SITE}:BYPASS_TRG_DEBOUNCE:r NPP")
+	field(OUT,  "${UUT}:${SITE}:BYPASS_TRG_DEBOUNCE PP")
+}
+
+
+record(mbbo, "${UUT}:${SITE}:BYPASS_TRG_DEBOUNCE:MODE") {
+	field(DTYP, "Soft Channel")
+	field(NOBT, "2")
+	field(ZRST, "auto")
+	field(ONST, "ON")
+	field(TWST, "OFF")
+}
+
+
+

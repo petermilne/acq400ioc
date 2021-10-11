@@ -47,3 +47,14 @@ set_wrtd_txi_id {
 	out "wrtd_txi %s";
 	in "";
 }
+
+
+setBypassTrgDeb {
+	out "bypass_trg_debounce %d";
+	in "";
+}
+
+getBypassTrgDeb {
+	out "bypass_trg_debounce";
+	in "%d";
+}
