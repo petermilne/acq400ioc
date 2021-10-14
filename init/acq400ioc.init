@@ -7,8 +7,7 @@ LOG=/var/log/epics.log
 NICE=10
 LG="logger -t acq400ioc.init"
 RL=/tmp/records.dbl
-HOST=${IOC_HOST:-$(hostname)}
-MB_MODEL=$(basename ${devicetree_image%*.dtb})
+
 
 if [ -f /etc/profile.d/epics.sh ]; then
 	source /etc/profile.d/epics.sh
@@ -28,6 +27,10 @@ if [ -f /mnt/local/sysconfig/epics.sh ]; then
 else
 	echo "WARNING: file /mnt/local/sysconfig/epics.sh missing"
 fi
+
+source /tmp/u-boot_env
+HOST=${IOC_HOST:-$(hostname)}
+MB_MODEL=$(basename ${devicetree_image%*.dtb})
 
 source /usr/local/epics/scripts/init_support.sh
 source /usr/local/epics/scripts/init_make_knobs.sh
