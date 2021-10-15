@@ -26,3 +26,8 @@ acq480_init_clk {
 	out "acq480_init_clk %dM";
 	in;
 }
+
+setCounterLatch {
+	out "counter_latch %d";
+	in;
+}
