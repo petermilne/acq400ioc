@@ -92,11 +92,13 @@ load_mgt400() {
 # kmcu sfp gpio do no exist
 [ -e /dev/gpio/MGT482/SFP1/PRESENT ] && load_mgt400_sfp
 
-for SITE in 11 12 13; do
+for SITE in 11 12 13 10 9; do
 	case $SITE in
 	11) id=C;;
 	12) id=B;;
 	13) id=A;;
+	9)  id=D;;
+	10  id=C;;
 	esac
 	[ -e /dev/acq400.$SITE.knobs ] && load_mgt400 $SITE $id
 done
