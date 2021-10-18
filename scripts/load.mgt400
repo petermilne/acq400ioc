@@ -98,7 +98,7 @@ for SITE in 11 12 13 10 9; do
 	12) id=B;;
 	13) id=A;;
 	9)  id=D;;
-	10  id=C;;
+	10) id=C;;
 	esac
 	[ -e /dev/acq400.$SITE.knobs ] && load_mgt400 $SITE $id
 done
