@@ -92,16 +92,25 @@ load_mgt400() {
 # kmcu sfp gpio do no exist
 [ -e /dev/gpio/MGT482/SFP1/PRESENT ] && load_mgt400_sfp
 
+MGTPORTS=""
+
 for SITE in 11 12 13 10 9; do
 	case $SITE in
-	11) id=C;;
-	12) id=B;;
 	13) id=A;;
-	9)  id=D;;
-	10) id=C;;
+	12) id=B;;
+	11) id=C;;
+	10) id=C;;	
+	9)  id=D;;	
 	esac
-	[ -e /dev/acq400.$SITE.knobs ] && load_mgt400 $SITE $id
+	if [ -e /dev/acq400.$SITE.knobs ]; then
+		MGTPORTS="${MGTPORTS}${id},"
+		load_mgt400 $SITE $id
+	fi
 done
+
+dblr '"db/acq2106_mgtports.db","UUT='${HOST}',MGTPORTS='${MGPORTS}'"'
+
+
 
 
 
