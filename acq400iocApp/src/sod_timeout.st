@@ -42,7 +42,8 @@ string state_str; assign state_str to "{uut}:1:SOD_TIMEOUT:STATE";
 
 int soft_trigger; assign soft_trigger to "{uut}:SIG:SOFT_TRIGGER:w";
 
-int sample_count_at_flush; assign sample_count_at_flush to "{uut}:1:SOD_TIMEOUT:SAMPLE_COUNT";
+int sample_count_at_flush; assign sample_count_at_flush to 	"{uut}:1:SOD_TIMEOUT:SAMPLE_COUNT";
+int sample_count_at_completion; assign sample_count_at_completion to "{uut}:1:SOD_TIMEOUT:SCOUNT_FINAL";
 
 
 #define STRG	0
@@ -147,7 +148,7 @@ ss sodTimeout {
 			if (verbose) printf("%s\n", state_str);
 		}
 		when(delay(1) && (transient_state == 0 || transient_state > 3)){
-			
+			sample_count_at_completion = sample_count_count; pvPut(sample_count_at_completion);
 		} state idle0
 		
 		when(delay(3) && transient_state > 1 && transient_state <= 3){
