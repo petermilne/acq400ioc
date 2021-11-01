@@ -1,0 +1,9 @@
+record(calc, "${UUT}:${SITE}:AI:WF:FS") {
+	field(INPA, "${UUT}:0:SIG:SYN_S${SITE}:FREQ")
+	field(INPB, "${DECIM}")
+# decimate filter could set B?	
+	field(CALC, "A/B")
+	field(DESC, "DDC Mixer (center) frequency")
+}
+
+

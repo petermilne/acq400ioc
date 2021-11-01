@@ -1,6 +1,8 @@
 SPEC_ATTEN=${SPEC_ATTEN:-15}
 SPEC_DECIM=${SPEC_DECIM:-1}
 
+source scripts/mtype.sh
+
 make_AI() {
 	site=$1
 	type=LONG
@@ -11,6 +13,8 @@ make_AI() {
 	let nchan=$(cat /etc/acq400/$site/NCHAN)
 	vmax=10
 
+	is_acq43x="$(isACQ43x $(cat /etc/acq400/1/MTYPE))" 	
+
 	let ch=0; while [ $ch -lt $nchan ]; do
 		let ch=$ch+1
 		cid=$(printf "%02d" $ch)
@@ -20,6 +24,9 @@ make_AI() {
 		wprams="${PRAMS},size=${SIZE},size2=${s2},type=${type},cid=${cid}"
 		wprams="${wprams},maxcode=${maxcode},vmax=${vmax},eslo=${eslo},DECIM=${SPEC_DECIM},ATTEN=${SPEC_ATTEN}"
 		echo dbLoadRecords\(\"db/wfSpecReal32.db\",\"${wprams}\"\)
+		if [ "$is_acq43x" = "yes" ]; then
+			echo dbLoadRecords\(\"db/wfSpecReal32_acq43x.db\",\"${wprams}\"\)
+		fi
 	done	
 }
 

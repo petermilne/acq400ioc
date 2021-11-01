@@ -25,12 +25,12 @@ record(ao, "${UUT}:AI:WF:PS:SMOO") {
 }
 
 record(calc, "${UUT}:${SITE}:AI:WF:FS") {
-	field(INPA, "${UUT}:0:SIG:SYN_S${SITE}:FREQ")
+	field(INPA, "${UUT}:0:SIG:CLK_S${SITE}:FREQ")
 	field(INPB, "${DECIM}")
-# decimate filter could set B?	
-	field(CALC, "A")
+	field(CALC, "A/B")
 	field(DESC, "DDC Mixer (center) frequency")
 }
+
 
 record(calc, "${UUT}:${SITE}:AI:WF:FMIXER") {
 	field(INPA, "0")

@@ -86,3 +86,10 @@ hasOutput() {
 	*) echo "no";;
 	esac
 }
+
+isACQ43x() {
+	case $1 in
+	$MT_ACQ430|$MT_ACQ435|$MT_ACQ436|$MT_ACQ437) echo "yes";;
+	*) echo "no";;
+	esac
+}
