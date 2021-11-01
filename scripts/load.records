@@ -425,7 +425,7 @@ load_400() {
 		fi		
 		has_ch_gains=1;;
 	
-	$MT_ACQ435|$MT_ACQ430|$MT_ACQ437|$MT_ACQ436|$MT_ACQ465)
+	$MT_ACQ435|$MT_ACQ430|$MT_ACQ437|$MT_ACQ436)
 		is_adc="ds"
 		has_rgm=1
 		case $model in
@@ -438,6 +438,10 @@ load_400() {
 			echo 1>&2 "HAS_ACQ43X Detected: $HAS_ACQ43X"
 		fi		
 		let LO=$LO/256;;
+	$MT_ACQ465)
+		is_adc="ds"
+		has_rgm=1;;
+				
 	$MT_ACQ480)		
 		let ACQ480_COUNT=$ACQ480_COUNT+1
 		[ $ACQ480_COUNT -eq 1 ] && \
