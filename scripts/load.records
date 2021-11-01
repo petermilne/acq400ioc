@@ -441,8 +441,8 @@ load_400() {
 	$MT_ACQ465)
 		is_adc="ds"
 		has_rgm=1
-		if [ ${site} -eq $FIRST_SITE ]; then
-			echo "set.site ${site} acq465_adc.init" >/etc/acq400/0/on_sync_role
+		if [ ${site} -eq $FIRST_SITE ]; then 	    
+			echo "[ -e  /var/www/d-tacq/rc-user-complete ] && set.site ${site} acq465_adc.init" >/etc/acq400/0/on_sync_role
 			chmod a+rx /etc/acq400/0/on_sync_role
 		fi;;
 	$MT_ACQ480)		
