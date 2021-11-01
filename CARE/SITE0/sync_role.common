@@ -346,6 +346,7 @@ else
 fi
 
 if [ $role_set -eq 0 ]; then
+	[ -x /etc/acq400/0/on_sync_role ] && /etc/acq400/0/on_sync_role
 # Configure distributor (XO) after AI.
 	config_distributor_sites $D_TRG
 	echo $CMDLINE > /dev/shm/role

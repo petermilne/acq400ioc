@@ -440,8 +440,11 @@ load_400() {
 		let LO=$LO/256;;
 	$MT_ACQ465)
 		is_adc="ds"
-		has_rgm=1;;
-				
+		has_rgm=1
+		if [ ${site} -eq $FIRST_SITE ]; then
+			echo "set.site ${site} acq465_adc.init" >/etc/acq400/0/on_sync_role
+			chmod a+rx /etc/acq400/0/on_sync_role
+		fi;;
 	$MT_ACQ480)		
 		let ACQ480_COUNT=$ACQ480_COUNT+1
 		[ $ACQ480_COUNT -eq 1 ] && \
