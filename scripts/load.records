@@ -577,7 +577,7 @@ load_400() {
 	
 	dblr '"db/acq400fmc.db","'${cprams},'MAXHZ='${maxhz}'"'
 		
-	if [ "x$model" != "x$MT_ACQ480" ] && [ "$is_adc" != "ds" ]; then
+	if [ "x$model" != "x$MT_ACQ480" ] && [ "$is_adc" != "ds" ] || [ "x$model" = "x$MT_ACQ465" ]; then
 		dblr '"db/acq420fmc.db","'${cprams},'LO='${LO},MAXDIV=${maxdiv:-65536}'"'
 	fi
 
