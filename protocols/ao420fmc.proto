@@ -1,0 +1,7 @@
+Terminator = LF;
+ExtraInput = Ignore;
+
+setRange {
+	out "dac_range_0\$1 %d";
+	in;
+}

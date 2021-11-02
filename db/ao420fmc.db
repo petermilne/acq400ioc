@@ -14,8 +14,8 @@ record(ao, "${UUT}:${SITE}:AO:SLOW_SET:CH:${cid}") {
 }
 
 record(bo, "${UUT}:${SITE}:AO:GAIN:CH:${cid}") {
-        field(DTYP, "dsSysfsBo")
-        field(OUT, "@/etc/acq400/${SITE}/dac_range_0${cid}")
+	field(DTYP, "stream")
+        field(OUT, "@ao420fmc.proto setRange(${cid}) ${SPORT}")
         field(SCAN, "Passive")
         field(DESC, "AO GAIN")
         field(ZNAM, "x1")
