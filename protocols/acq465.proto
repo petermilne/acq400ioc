@@ -1,0 +1,7 @@
+Terminator = LF;
+ExtraInput = Ignore;
+
+acq465_fil_def {
+	out "acq465_filter_default %d";	
+	in;
+}
