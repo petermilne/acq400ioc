@@ -15,7 +15,7 @@ record(ao, "${UUT}:${SITE}:AO:SLOW_SET:CH:${cid}") {
 
 record(bo, "${UUT}:${SITE}:AO:GAIN:CH:${cid}") {
         field(DTYP, "dsSysfsBo")
-        field(OUT, "@/dev/acq400.${SITE}.knobs/dac_range_0${cid}")
+        field(OUT, "@/etc/acq400/${SITE}/dac_range_0${cid}")
         field(SCAN, "Passive")
         field(DESC, "AO GAIN")
         field(ZNAM, "x1")
