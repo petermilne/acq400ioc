@@ -10,3 +10,9 @@ get_sync_role {
 	out "sync_role";
 	in "%40c";
 }
+
+
+setCounterLatch {
+	out "counter_latch %d";
+	in;
+}

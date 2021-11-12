@@ -28,3 +28,38 @@ record (stringout, "${UUT}:SYS:SYNC_ROLE:s") {
 	field(DOL,  "${UUT}:SYS:SYNC_ROLE:r NPP")
 	field(OUT,  "${UUT}:SYS:SYNC_ROLE PP")
 }
+
+record(bo, "${UUT}:0:COUNTER_LATCH:REQ") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "Counter latch request eg gps")
+	field(ZNAM, "0")
+	field(ONAM, "1")	
+	field(FLNK, "${UUT}:0:COUNTER_LATCH:c")
+}
+
+
+record(calcout, "${UUT}:0:COUNTER_LATCH:c") {
+	field(INPA, "${UUT}:0:COUNTER_LATCH:REQ")
+# INP may be overridden eg by wr.db	
+	field(INPB, "0") 
+	field(INPC, "${UUT}:0:SIG:SYN_EXT:ACTIVE")
+	
+	field(CALC, "(A||B)&&C")	
+	field(OUT,  "${UUT}:0:COUNTER_LATCH PP")
+	field(DOPT, "Use CALC")
+	field(OOPT, "On Change")
+	field(SCAN, "2 second")
+}
+
+
+
+
+record(bo, "${UUT}:0:COUNTER_LATCH") {
+	field(DTYP, "stream")	
+	field(DOL,  "${UUT}:0:COUNTER_LATCH:c")
+	field(OMSL, "closed_loop")
+	field(OUT,  "@sync_role.proto setCounterLatch ${SPORT}")
+	field(ZNAM, "0")
+	field(ONAM, "1")
+	field(PINI, "YES")
+}

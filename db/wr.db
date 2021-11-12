@@ -147,11 +147,10 @@ record(longin, "${UUT}:${SITE}:WR:WRTT1:rc") {
 	field(PRIO, "LOW")
 }
 
-record(bo, "${UUT}:${SITE}:COUNTER_LATCH") {
-	field(DTYP, "stream")
-	field(SCAN,  "1 second")
-	field(DOL,  "${UUT}:${SITE}:WR:PPS:ACTIVE")
-	field(OMSL, "closed_loop")
-	field(OUT,  "@acq2106clk.proto setCounterLatch ${SPORT}")	
+record(calcout, "${UUT}:0:COUNTER_LATCH:c") {
+	field(INPB, "${UUT}:${SITE}:WR:PPS:ACTIVE") 	
 }
+
+
+
 
