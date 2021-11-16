@@ -108,7 +108,7 @@ for SITE in 11 12 13 10 9; do
 	fi
 done
 
-dblr '"db/acq2106_mgtports.db","UUT='${HOST}',MGTPORTS='${MGPORTS}'"'
+dblr '"db/acq2106_mgtports.db","UUT='${HOST}',MGTPORTS='${MGTPORTS}'"'
 
 
 
