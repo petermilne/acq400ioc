@@ -762,7 +762,7 @@ load_gpg() {
 
 load_dio482pg() {
  	site=$1
- 	do_count=$2
+ 	do_count=${2:-32}
  	shift; shift
  	cprams="$*"
  	
@@ -779,15 +779,19 @@ load_dio482pg() {
 		self=",SELF=FVST";;
     5)
  		self=",SELF=SXST";;
+ 	*)
+ 		self=",SELF=FTST";;
     esac
-    if [ "x$DIO482TD_PG5" = "xnotrg" ]; then
+    if [ $do_count -gt 5 ] || [ "x$DIO482TD_PG5" = "xnotrg" ]; then
+    	self=",SELF=FFST"
     	hastrg=0
     else
     	hastrg=1
     fi
 	dblr '"db/dio482pg.db","'${cprams}$self,hastrg=${hastrg},S0=S0WR'"'
-	dblr '"db/dio482pg_leds.db","'${cprams}'"' 
+	
 	if [ $do_count -le 5 ]; then
+		dblr '"db/dio482pg_leds.db","'${cprams}'"' 
 		set.site $site num_pg $do_count
 		for dx in $(seq $do_count); do		
 			echo "seq pg4_flasher \"uut=${HOST},site=${site},dox=${dx}\""		
