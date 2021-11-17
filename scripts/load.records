@@ -3,6 +3,8 @@
 HOST=${IOC_HOST:-$(hostname)}
 SIZE=${SIZE:-4096}
 TYPE=${TYPE:-SHORT}
+CB_QSIZE=${CB_QSIZE:-2000}
+PVD_TABLE_SIZE=${PVD_TABLE_SIZE:-1024}
 FNAME=AI
 
 HSIZE=256
@@ -1187,6 +1189,7 @@ load_system() {
 	dba="ipaddrbis=$ipb,IP0=$ip0,IP1=$ip1,SW=$sw,GW=$gw"
 cat - <<EOF
 epicsEnvSet("STREAM_PROTOCOL_PATH","./protocols")
+dbPvdTableSize($PVD_TABLE_SIZE)
 dbLoadDatabase("dbd/acq400ioc.dbd",0,0)
 acq400ioc_registerRecordDeviceDriver(pdbbase)
 dbLoadRecords("db/system.db","UUT=${HOST},$dba,SPORT=S0")
@@ -1295,6 +1298,8 @@ acq2106*)
 esac
 
 dblr '"db/mirror.db","UUT='${HOST}'"'
+
+echo "callbackSetQueueSize($CB_QSIZE)"
 
 for file in /usr/local/epics/init.d/*.init
 do

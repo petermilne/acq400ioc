@@ -144,3 +144,6 @@ DIO482TD_PG5=notrg
 
 # WAN Environment. CLIENT probably wants to set 
 export EPICS_CA_ADDR_LIST=xxx
+
+# recommended for LARGE systems
+CB_QSIZE=4000
