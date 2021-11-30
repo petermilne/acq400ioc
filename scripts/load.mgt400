@@ -92,7 +92,7 @@ load_mgt400() {
 # kmcu sfp gpio do no exist
 [ -e /dev/gpio/MGT482/SFP1/PRESENT ] && load_mgt400_sfp
 
-MGTPORTS=""
+MGTPORTS=0
 
 for SITE in 11 12 13 10 9; do
 	case $SITE in
@@ -103,7 +103,7 @@ for SITE in 11 12 13 10 9; do
 	9)  id=D;;	
 	esac
 	if [ -e /dev/acq400.$SITE.knobs ]; then
-		MGTPORTS="${MGTPORTS}${id},"
+		MGTPORTS=$(($MGTPORTS+1))
 		load_mgt400 $SITE $id
 	fi
 done

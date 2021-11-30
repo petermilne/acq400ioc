@@ -1,5 +1,6 @@
 record(longin, "${UUT}:MGTPORTS") {
 	field(DTYP, "Soft Channel")
+	field(DESC, "Number of ports")
 	field(VAL,  "${MGTPORTS}")
 	field(PINI, "YES")
 }
