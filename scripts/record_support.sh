@@ -14,7 +14,7 @@ get_nchan() {
 }
 
 dblr() {
-	echo 'dbLoadRecords(' $* ');'
+	echo 'dbLoadRecords(' $* ')'
 }
 get_range() {
 	site=$1
