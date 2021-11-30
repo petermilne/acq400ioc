@@ -781,6 +781,8 @@ load_dio482pg() {
 		self=",SELF=FVST";;
     5)
  		self=",SELF=SXST";;
+    6)
+ 		self=",SELF=SVST";;
  	*)
  		self=",SELF=FTST";;
     esac
