@@ -34,13 +34,9 @@ record(longin, "${UUT}:${SITE}:WR:WRTT:rc") {
 }
 
 record(mbbo, "${UUT}:${SITE}:TRG:DX") {
-	field(${SELF}, "TRGIN")
 	field(SVST,    "WRTT")
 }
 
-record(mbbo, "${UUT}:${SITE}:CLK:DX") {
-	field(${SELF},  "nc")
-}
 
 record(bo, "${UUT}:${SITE}:BYPASS_TRG_DEBOUNCE") {
 	field(DTYP, "Soft Channel")

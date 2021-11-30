@@ -771,28 +771,28 @@ load_dio482pg() {
 	load_gpg $site
 	dblr '"db/signal.db","'${cprams}',FNAM=SYNC,FN=sync,ZNAM=internal,ONAM=external,DISV=1"'
 
-	self=""
     case $site in
     2)
-		self=",SELF=THST";;
+		self="SELF=THST";;
     3)
-		self=",SELF=FRST";;
+		self="SELF=FRST";;
     4)
-		self=",SELF=FVST";;
+		self="SELF=FVST";;
     5)
- 		self=",SELF=SXST";;
+ 		self="SELF=SXST";;
     6)
- 		self=",SELF=SVST";;
+ 		self="SELF=SVST";;
  	*)
- 		self=",SELF=FTST";;
+ 		self="";;
     esac
     if [ $do_count -gt 5 ] || [ "x$DIO482TD_PG5" = "xnotrg" ]; then
-    	self=",SELF=FFST"
+    	self=""
     	hastrg=0
     else
     	hastrg=1
     fi
-	dblr '"db/dio482pg.db","'${cprams}$self,hastrg=${hastrg},S0=S0WR'"'
+	dblr '"db/dio482pg.db","'${cprams},hastrg=${hastrg},S0=S0WR'"'
+	[ "$self" != "" ] && dblr '"db/dio482pg_self.db","'${cprams},$self,S0=S0WR'"'
 	
 	if [ $do_count -le 5 ]; then
 		dblr '"db/dio482pg_leds.db","'${cprams}'"' 
