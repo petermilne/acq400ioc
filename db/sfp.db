@@ -1,0 +1,22 @@
+record(ai, "${UUT}:SFP:${PORT}:RXPWR"){
+	field(DTYP, "stream")
+	field(INP,  "@sfp.proto getRxPwr ${SPORT}")
+	field(SCAN, "I/O Intr")	
+	field(EGU,   "uW")
+}
+
+record(ai, "${UUT}:SFP:${PORT}:TXPWR"){
+	field(DTYP, "stream")
+	field(INP,  "@sfp.proto getTxPwr ${SPORT}")
+	field(SCAN, "I/O Intr")	
+	field(EGU,   "uW")
+}
+
+record(ai, "${UUT}:SFP:${PORT}:TEMP"){
+	field(DTYP, "stream")
+	field(INP,  "@sfp.proto getTemp ${SPORT}")
+	field(SCAN, "I/O Intr")	
+	field(EGU,   "C")
+}
+
+

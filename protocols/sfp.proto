@@ -1,0 +1,29 @@
+Terminator = LF;
+ExtraInput = Ignore
+
+#Temp:  31.28 C
+#VCC:   3.26 V
+#Tx Bias:1492.50 uA
+#Tx Power: 429.90 uW
+#Rx Pwr: 454.10 uW
+
+
+getTemp {
+	in "Temp:  %f C";
+}
+
+getVCC {
+	in "VCC:   %f V"
+}
+
+getRxPwr {
+	in "Rx Pwr: %f uW";
+}
+
+getTxPwr {
+	in "Tx Power: %f uW"
+}
+
+getTxBias {
+	in "Tx Bias:%f uA";
+}
