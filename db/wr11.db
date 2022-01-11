@@ -81,3 +81,39 @@ record(stringout, "${UUT}:${SITE}:WRTD_TXI_ID")
 	field(DTYP, "stream")
 	field(OUT,  "@wr.proto set_wrtd_txi_id ${SPORT}")	
 }
+
+record(bo, "${UUT}:${SITE}:SFP_TX_DISABLE") {
+	field(DTYP, "Soft Channel")
+	field(ONAM, "1")
+	field(ZNAM, "0")
+	
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:RUN")
+	field(FLNK, "${UUT}:${SITE}:SFP_TX_DISABLE:w")
+}
+
+record(bo, "${UUT}:${SITE}:SFP_TX_DISABLE:w") {
+	field(DTYP, "stream")
+	field(OUT,  "@acq43x.proto setSfpTxDisable ${SPORT}")	
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:SFP_TX_DISABLE:s.PACT")
+	field(DOL,  "${UUT}:${SITE}:SFP_TX_DISABLE PP")
+	field(OMSL, "closed_loop")
+	field(FLNK, "${UUT}:${SITE}:RTM_TRANSLEN:ONCHANGE")
+}
+
+record(bi, "${UUT}:${SITE}:SFP_TX_DISABLE:r") {
+	field(DTYP, "stream")
+	field(INP,  "@acq43x.proto getSfpTxDisable ${SPORT}")
+	field(SCAN, "5 second")
+	field(FLNK, "${UUT}:${SITE}:SFP_TX_DISABLE:s")
+}
+
+record(bo, "${UUT}:${SITE}:SFP_TX_DISABLE:s") {
+	field(DTYP, "Soft Channel")
+	field(DOL,  "${UUT}:${SITE}:SFP_TX_DISABLE:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:${SITE}:SFP_TX_DISABLE PP")
+}
+
+

@@ -58,3 +58,13 @@ getBypassTrgDeb {
 	out "bypass_trg_debounce";
 	in "%d";
 }
+
+setSfpTxDisable {
+	out "sfp_tx_disable %d";
+	in;
+}
+
+getSfpTxDisable {
+	out "sfp_tx_disable";
+	in "%d";
+}
