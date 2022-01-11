@@ -146,6 +146,10 @@ getSitelist {
 	in "%s";
 }
 
+store_optimise_bufferlen {
+	out "optimise_bufferlen %(\$1)d %d";
+	in;
+}
 setFitRtmTranslenBuffer {
 	out "fit_rtm_translen_to_buffer %d";
 	in;

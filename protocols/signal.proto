@@ -51,3 +51,8 @@ getBLEN {
 	out "bufferlen";
 	in "%u";
 }
+
+setBLEN {
+	out "bufferlen %d";
+	in;
+}
