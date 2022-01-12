@@ -181,7 +181,7 @@ record(bo, "${UUT}:${SITE}:ES_ENABLE") {
 
 record(bo, "${UUT}:${SITE}:ES_ENABLE:w") {
 	field(DTYP, "stream")
-	field(OUT,  "@acq43x.proto setEsEnable ${SPORT}")	
+	field(OUT,  "@ai.proto setEsEnable ${SPORT}")	
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:ES_ENABLE:s.PACT")
 	field(DOL,  "${UUT}:${SITE}:ES_ENABLE PP")
@@ -191,7 +191,7 @@ record(bo, "${UUT}:${SITE}:ES_ENABLE:w") {
 
 record(bi, "${UUT}:${SITE}:ES_ENABLE:r") {
 	field(DTYP, "stream")
-	field(INP,  "@acq43x.proto getEsEnable ${SPORT}")
+	field(INP,  "@ai.proto getEsEnable ${SPORT}")
 	field(SCAN, "1 second")
 	field(FLNK, "${UUT}:${SITE}:ES_ENABLE:s")
 }

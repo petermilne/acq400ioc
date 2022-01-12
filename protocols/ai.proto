@@ -5,3 +5,13 @@ isTriggered {
 	out "is_triggered";
 	in "%d";
 }
+
+setEsEnable {
+	out "es_enable %d";
+	in;
+}
+
+getEsEnable {
+	out "es_enable";
+	in;
+}

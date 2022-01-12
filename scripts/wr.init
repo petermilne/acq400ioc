@@ -1,5 +1,6 @@
 # MUST be sourced from load.records
 
+echo '# wr.init'
 # copy from load.mgt400
 load_mgt400_sfp() 
 {
