@@ -94,7 +94,7 @@ record(bo, "${UUT}:${SITE}:SFP_TX_DISABLE") {
 
 record(bo, "${UUT}:${SITE}:SFP_TX_DISABLE:w") {
 	field(DTYP, "stream")
-	field(OUT,  "@acq43x.proto setSfpTxDisable ${SPORT}")	
+	field(OUT,  "@wr.proto setSfpTxDisable ${SPORT}")	
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:SFP_TX_DISABLE:s.PACT")
 	field(DOL,  "${UUT}:${SITE}:SFP_TX_DISABLE PP")
@@ -104,7 +104,7 @@ record(bo, "${UUT}:${SITE}:SFP_TX_DISABLE:w") {
 
 record(bi, "${UUT}:${SITE}:SFP_TX_DISABLE:r") {
 	field(DTYP, "stream")
-	field(INP,  "@acq43x.proto getSfpTxDisable ${SPORT}")
+	field(INP,  "@wr.proto getSfpTxDisable ${SPORT}")
 	field(SCAN, "5 second")
 	field(FLNK, "${UUT}:${SITE}:SFP_TX_DISABLE:s")
 }
