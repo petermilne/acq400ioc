@@ -203,14 +203,6 @@ record(bo, "${UUT}:${SITE}:ES_ENABLE:s") {
 	field(OUT,  "${UUT}:${SITE}:ES_ENABLE PP")
 }
 
-record(longin, "${UUT}:0:BLEN") {
-	field(SCAN, "10 second")
-	field(PINI, "YES")
-	field(DTYP, "stream")
-	field(INP,  "@signal.proto getBLEN ${SPORT}")
-}
-
-
 record(longout, "${UUT}:0:BLEN") {
 	field(DTYP, "Soft Channel")
 	field(LOPR, "4096")

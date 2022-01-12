@@ -1,5 +1,5 @@
-Terminator = LF;
-ExtraInput = Ignore
+Terminator = CR LF;
+ExtraInput = Ignore;
 
 #Temp:  31.28 C
 #VCC:   3.26 V
@@ -9,21 +9,21 @@ ExtraInput = Ignore
 
 
 getTemp {
-	in "Temp:  %f C";
+	in "\_Temp:\_%f C";
 }
 
 getVCC {
-	in "VCC:   %f V"
+	in "\_VCC:\_%f V"
 }
 
 getRxPwr {
-	in "Rx Pwr: %f uW";
+	in "\_Rx Pwr:\_%f uW";
 }
 
 getTxPwr {
-	in "Tx Power: %f uW"
+	in "\_Tx Power:\_%f uW"
 }
 
 getTxBias {
-	in "Tx Bias:%f uA";
+	in "\_Tx Bias:%f uA";
 }
