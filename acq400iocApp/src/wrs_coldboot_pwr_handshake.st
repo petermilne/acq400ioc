@@ -21,6 +21,10 @@ int verbose;
 
 int upcount0;
 
+/* Rx Pwr thresholds in uW */
+#define TH_RX_LO	5
+#define TH_RX_HI	10
+
 ss wrs_coldboot_pwr_handshake {
 	state init {
 		when() {
@@ -30,28 +34,36 @@ ss wrs_coldboot_pwr_handshake {
 		} state wait_rxpwr_down_0
 	}
 	state wait_rxpwr_down_0 {
-		when(upcount > 0 && rxpower < 5){
+		when(upcount > 0 && rxpower < TH_RX_LO){
 			upcount0 = upcount;
 		} state wait_rxpwr_down_1
 	}
 	
 	state wait_rxpwr_down_1 {		
-		when(upcount != upcount0 && rxpower < 5){
+		when(upcount != upcount0 && rxpower < TH_RX_LO){
 			txdisable = 1; pvPut(txdisable);
 			printf("wrs_coldboot_pwr_handshake rxpower:%d %s\n", rxpower, "TXDISABLE");
 		} state wait_rxpwr_up_0
+		
+		when(upcount != upcount0 && rxpower >= TH_RX_LO){			
+			printf("wrs_coldboot_pwr_handshake rxpower:%d %s GLITCH\n", rxpower, "TXDISABLE");
+		} state wait_rxpwr_down_0		
 	}
 	
 	state wait_rxpwr_up_0 {
-		when(rxpower > 10){
+		when(rxpower > TH_RX_HI){
 			upcount0 = upcount;
 		} state wait_rxpwr_up_1
 	}
 	
 	state wait_rxpwr_up_1 {
-		when(upcount != upcount0 && rxpower > 10){
+		when(upcount != upcount0 && rxpower > TH_RX_HI){
 			txdisable = 0;  pvPut(txdisable);
 			printf("wrs_coldboot_pwr_handshake rxpower:%d %s\n", rxpower, "TXDISABLE OFF");
 		} state wait_rxpwr_down_0
+		
+		when(upcount != upcount0 && rxpower <= TH_RX_HI){
+			printf("wrs_coldboot_pwr_handshake rxpower:%d %s GLITCH\n", rxpower, "TXDISABLE OFF");
+		} state wait_rxpwr_up_0
 	}	
 }
