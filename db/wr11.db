@@ -86,9 +86,7 @@ record(bo, "${UUT}:${SITE}:SFP_TX_DISABLE") {
 	field(DTYP, "Soft Channel")
 	field(ONAM, "1")
 	field(ZNAM, "0")
-	
-	field(DISV, "1")
-	field(SDIS, "${UUT}:${SITE}:RUN")
+
 	field(FLNK, "${UUT}:${SITE}:SFP_TX_DISABLE:w")
 }
 
@@ -98,8 +96,7 @@ record(bo, "${UUT}:${SITE}:SFP_TX_DISABLE:w") {
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:SFP_TX_DISABLE:s.PACT")
 	field(DOL,  "${UUT}:${SITE}:SFP_TX_DISABLE PP")
-	field(OMSL, "closed_loop")
-	field(FLNK, "${UUT}:${SITE}:RTM_TRANSLEN:ONCHANGE")
+	field(OMSL, "closed_loop")	
 }
 
 record(bi, "${UUT}:${SITE}:SFP_TX_DISABLE:r") {
