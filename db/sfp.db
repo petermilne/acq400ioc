@@ -3,13 +3,22 @@ record(ai, "${UUT}:SFP:${PORT}:RXPWR"){
 	field(INP,  "@sfp.proto getRxPwr ${SPORT}")
 	field(SCAN, "I/O Intr")	
 	field(EGU,   "uW")
+	field(FLNK,  "${UUT}:SFP:${PORT}:RXPWR:COUNT PP")
 }
+
+
+record(calc, "${UUT}:SFP:${PORT}:RXPWR:COUNT") {
+	field(INPA, "1")
+	field(CALC, "VAL+A")
+}
+
 
 record(ai, "${UUT}:SFP:${PORT}:TXPWR"){
 	field(DTYP, "stream")
 	field(INP,  "@sfp.proto getTxPwr ${SPORT}")
 	field(SCAN, "I/O Intr")	
 	field(EGU,   "uW")
+	
 }
 
 record(ai, "${UUT}:SFP:${PORT}:TEMP"){

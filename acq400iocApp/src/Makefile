@@ -54,6 +54,7 @@ acq400ioc_DBD += sodTimeout.dbd
 acq400ioc_DBD += select_awg_distributor.dbd
 acq400ioc_DBD += judge_win_clr_all.dbd
 acq400ioc_DBD += pg_trg_debounce.dbd
+acq400ioc_DBD += wrs_coldboot_pwr_handshake.dbd
 
 # Add all the support libraries needed by this IOC
 acq400ioc_LIBS += acq2ioc
@@ -97,6 +98,7 @@ acq400ioc_SRCS += sod_timeout.st
 acq400ioc_SRCS += select_awg_distributor.st
 acq400ioc_SRCS += judge_win_clr_all.st
 acq400ioc_SRCS += pg_trg_debounce.st
+acq400ioc_SRCS += wrs_coldboot_pwr_handshake.st
 
 # Build the main IOC entry point on workstation OSs.
 acq400ioc_SRCS_DEFAULT += acq400iocMain.cpp \
