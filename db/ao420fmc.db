@@ -37,7 +37,7 @@ record(ao, "${UUT}:${SITE}:AWG:G:${cid}") {
 	field(SCAN, "Passive")
 	field(DESC, "AWG GAIN adjust")
         field(DRVL, "0.000")
-        field(DRVH, "100")
+        field(DRVH, "99.997")
         field(LINR, "LINEAR")
 # full scale: 32768        
         field(ESLO, "0.003051757")
@@ -46,7 +46,7 @@ record(ao, "${UUT}:${SITE}:AWG:G:${cid}") {
         field(HOPR, "100.0")
         field(LOPR, "0.000")
         field(EGU,  "%")
-        field(VAL,  "100.0")	
+        field(VAL,  "99.997")	
 }
 
 record(ao, "${UUT}:${SITE}:AWG:D:${cid}") {
@@ -54,8 +54,8 @@ record(ao, "${UUT}:${SITE}:AWG:D:${cid}") {
 	field(OUT, "@/dev/acq400.${SITE}.knobs/D${cid}")
 	field(SCAN, "Passive")
 	field(DESC, "AWG DC adjust")
-        field(DRVL, "-100.0")
-        field(DRVH, "100.0")
+        field(DRVL, "-99.997")
+        field(DRVH, "99.997")
         field(LINR, "LINEAR")
 # full scale: 32767	
         field(ESLO, "0.003051851")
