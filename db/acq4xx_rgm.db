@@ -114,6 +114,14 @@ record(calcout, "${UUT}:${SITE}:_rgm") {
 	field(OUT,  "@signal.proto setSig(rgm) ${SPORT}")
 }
 
+record(longout, "${UUT}:${SITE}:BPB") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "Bursts per buffer")
+	field(LOPR, "1")
+	field(HOPR, "100")
+	field(VAL,  "1")
+	field(PINI, "YES")
+}
 record(longout, "${UUT}:${SITE}:RTM_TRANSLEN") {
 	field(DTYP, "Soft Channel")
 	field(LOPR, "1")
@@ -131,41 +139,52 @@ record(calcout, "${UUT}:${SITE}:RTM_TRANSLEN:ONCHANGE") {
 	field(CALC, "A+B+C")	
 	field(OOPT, "On Change")
 	field(DOPT, "Use CALC")
-	field(OUT,  "${UUT}:0:RTM_FIT PP")
+	field(OUT,  "${UUT}:${SITE}:RTM_TRANSLENp PP")
 	field(LOPR, "0")
 	field(HOPR, "16777216")
-	field(FLNK, "${UUT}:${SITE}:RTM_TRANSLEN:w PP")	
+	
 }
 
-record(longout, "${UUT}:0:RTM_FIT")
-{
-	field(DTYP, "stream")
+#record(longout, "${UUT}:0:RTM_FIT")
+#{
+#	field(DTYP, "stream")
 #	field(OUT,  "@mb.proto setFitRtmTranslenBuffer S0")
-	field(OUT,  "@mb.proto store_optimise_bufferlen(${UUT}:0:SSB) S0")
+#	field(OUT,  "@mb.proto store_optimise_bufferlen(${UUT}:0:SSB) S0")
+#}
+
+record(longout, "${UUT}:${SITE}:RTM_TRANSLENp") {
+	field(DTYP, "Soft Channel")
+	field(LOPR, "1")
+	field(HOPR, "16777215")
+	field(DESC, "writes physical reg, with adjustments")
+	
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:RUN")
+	field(FLNK, "${UUT}:${SITE}:RTM_TRANSLENp:w PP")	
 }
 
-record(longout, "${UUT}:${SITE}:RTM_TRANSLEN:w") {
+record(longout, "${UUT}:${SITE}:RTM_TRANSLENp:w") {
 	field(DTYP, "stream")
 	field(OUT,  "@acq43x.proto setRtmTranslen ${SPORT}")	
 	field(DISV, "1")
-	field(SDIS, "${UUT}:${SITE}:RTM_TRANSLEN:s.PACT")
-	field(DOL,  "${UUT}:${SITE}:RTM_TRANSLEN PP")
+	field(SDIS, "${UUT}:${SITE}:RTM_TRANSLENp:s.PACT")
+	field(DOL,  "${UUT}:${SITE}:RTM_TRANSLENp PP")
 	field(OMSL, "closed_loop")
 
 }
 
-record(longin, "${UUT}:${SITE}:RTM_TRANSLEN:r") {
+record(longin, "${UUT}:${SITE}:RTM_TRANSLENp:r") {
 	field(DTYP, "stream")
 	field(INP,  "@acq43x.proto getRtmTranslen ${SPORT}")
 	field(SCAN, "1 second")
-	field(FLNK, "${UUT}:${SITE}:RTM_TRANSLEN:s")
+	field(FLNK, "${UUT}:${SITE}:RTM_TRANSLENp:s")
 }
 
-record(longout, "${UUT}:${SITE}:RTM_TRANSLEN:s") {
+record(longout, "${UUT}:${SITE}:RTM_TRANSLENp:s") {
 	field(DTYP, "Soft Channel")
-	field(DOL,  "${UUT}:${SITE}:RTM_TRANSLEN:r NPP")
+	field(DOL,  "${UUT}:${SITE}:RTM_TRANSLENp:r NPP")
 	field(OMSL, "closed_loop")
-	field(OUT,  "${UUT}:${SITE}:RTM_TRANSLEN PP")
+	field(OUT,  "${UUT}:${SITE}:RTM_TRANSLENp PP")
 }
 
 
