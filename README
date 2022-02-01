@@ -91,6 +91,9 @@ export IOC_PREINIT=./scripts/load.judgement
 # for 32 bit (24 bit ADC) :
 export IOC_PREINIT=./scripts/load.judgement32
 
+
+# adjustment for off by one error in some personalities eg ACQ424
+export RTM_TRANSLEN_ADJ=2
 append to /mnt/local/rc.user:
 set.site 0 sync_role master 50000
 set.site 1 rgm=3,0,1

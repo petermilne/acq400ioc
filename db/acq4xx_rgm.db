@@ -127,7 +127,8 @@ record(longout, "${UUT}:${SITE}:RTM_TRANSLEN") {
 record(calcout, "${UUT}:${SITE}:RTM_TRANSLEN:ONCHANGE") {
 	field(INPA, "${UUT}:${SITE}:RTM_TRANSLEN")
 	field(INPB, "${UUT}:${SITE}:ES_ENABLE")
-	field(CALC, "A+B")	
+	field(INPC, "${RADJ}")
+	field(CALC, "A+B+C")	
 	field(OOPT, "On Change")
 	field(DOPT, "Use CALC")
 	field(OUT,  "${UUT}:0:RTM_FIT PP")
