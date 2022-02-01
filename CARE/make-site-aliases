@@ -1,0 +1,11 @@
+#!/bin/sh
+
+HN1=$(hostname)
+HN2=${1:-TRITON2}
+
+grep -v ':[a-z]*$' /tmp/records.dbl | grep -v rawc64 | grep ^$(hostname) | \
+sed -e "s/^${HN1}//" | \
+awk '{ print "alias( \"'${HN1}'"$1"\", \"'${HN2}'"$1"\" )" }' \
+       	>/mnt/local/sysconfig/site-aliases.db
+
+
