@@ -114,7 +114,7 @@ record(calcout, "${UUT}:${SITE}:_rgm") {
 	field(OUT,  "@signal.proto setSig(rgm) ${SPORT}")
 }
 
-record(longout, "${UUT}:${SITE}:BPB") {
+record(longout, "${UUT}:0:BPB") {
 	field(DTYP, "Soft Channel")
 	field(DESC, "Bursts per buffer")
 	field(LOPR, "1")
@@ -122,6 +122,16 @@ record(longout, "${UUT}:${SITE}:BPB") {
 	field(VAL,  "1")
 	field(PINI, "YES")
 }
+
+record(longout, "${UUT}:0:MAXBLEN") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "Buffer KBUF len")
+	field(LOPR, "32768")
+	field(HOPR, "4194304")
+	field(VAL,  "1")
+	field(PINI, "YES")
+}
+
 record(longout, "${UUT}:${SITE}:RTM_TRANSLEN") {
 	field(DTYP, "Soft Channel")
 	field(LOPR, "1")
@@ -136,7 +146,7 @@ record(calcout, "${UUT}:${SITE}:RTM_TRANSLEN:ONCHANGE") {
 	field(INPA, "${UUT}:${SITE}:RTM_TRANSLEN")
 	field(INPB, "${UUT}:${SITE}:ES_ENABLE")
 	field(INPC, "${RADJ}")
-	field(CALC, "A+B+C")	
+	field(CALC, "A-B+C")	
 	field(OOPT, "On Change")
 	field(DOPT, "Use CALC")
 	field(OUT,  "${UUT}:${SITE}:RTM_TRANSLENp PP")
