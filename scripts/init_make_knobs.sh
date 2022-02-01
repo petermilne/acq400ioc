@@ -49,7 +49,10 @@ make_epics_knobs() {
 	if [ -e /tmp/epics_knobs_done ]; then
 		return
 	fi
-
+	RLP=${RL%.*}P.dbl
+	grep  -v .[a-z]$ $RL | grep -v rawc64 | grep -v fan | grep -v mux  | grep -v clk0$ > $RLP
+	
+	
 	mkdir -p /etc/acq400/S
 	for PV in $(egrep SYS:[0-9][Vv]\|SYS:VA?\|SYS:vcc?\|Z:TEMP\|MGTD $RL)
 	do
@@ -57,7 +60,7 @@ make_epics_knobs() {
 		make_caget $PV ${NU#*:} S
 	done
 	
-	for PV in $(egrep :.:SIG $RL | grep -v .[a-z]$ | grep -v rawc64)
+	for PV in $(egrep :.:SIG $RLP)
 	do
 		NU=${PV#*:}
 		SITE=${NU%%:*}
@@ -69,14 +72,14 @@ make_epics_knobs() {
 		esac
 	done
 
-	for PV in $(egrep CAL:E $RL | grep -v .[a-z]$)
+	for PV in $(egrep CAL:E $RLP)
 	do
 		NU=${PV#*:}
 		SITE=${NU%%:*}
 		make_caget_w $PV ${NU#*:} ${SITE}	
 	done	
 
-	for PV in $(egrep -e AWG $RL)
+	for PV in $(egrep -e AWG $RLP)
 	do
 		NU=${PV#*:}
 		case ${PV} in
@@ -86,7 +89,7 @@ make_epics_knobs() {
 			make_caget $PV ${NU#*:} ${NU%%:*};;
 		esac
 	done
-	for PV in $(egrep -e MODE:BLT $RL | grep -v .[a-z]$)
+	for PV in $(egrep -e MODE:BLT $RLP)
 	do
 		NU=${PV#*:}
 		case ${PV} in
@@ -96,26 +99,26 @@ make_epics_knobs() {
 			make_caget $PV ${NU#*:} 0;;
 		esac
 	done	
-	for PV in $(egrep -e DECIM -e OSR $RL)
+	for PV in $(egrep -e DECIM -e OSR $RLP)
 	do
 		NU=${PV#*:}
 		make_caget $PV ${NU#*:} ${NU%%:*}
 	done
 	
 	for PV in $(egrep -e FIR:01$ -e HPF:0[1-8] -e T50R -e ACQ480:MR \
-			-e LFNS -e INVERT -e ACQ4.X_SAMPLE_RATE -e GAIN -e RANGE -e ACQ465 $RL | grep -v [a-z]$)
+			-e LFNS -e INVERT -e ACQ4.X_SAMPLE_RATE -e GAIN -e RANGE -e ACQ465 $RLP)
 	do
 		NU=${PV#*:}
 		SITE=${NU%%:*}
 		make_caput $PV ${NU#*:} ${SITE}		
 	done
-	for PV in $(grep :SYS:CLK $RL | grep -v [a-z]$ | grep -v clk0$ )
+	for PV in $(grep :SYS:CLK $RLP )
 	do
 		make_caput $PV ${PV#*:} 0
 	done
 	
 	for PV in $(egrep -e :[1-6]:CLK -e :[1-6]:TRG  -e :[1-6]:SYNC -e :[1-6]:EVE \
-			  -e :1:RGM -e :1:RTM -e :[1-6]:XDT -e :1:DT -e :[1-6]:ANATRG $RL \
+			  -e :1:RGM -e :1:RTM -e :[1-6]:XDT -e :1:DT -e :[1-6]:ANATRG $RLP \
 			| grep -v ':[0-9a-z_]*$' )
 	do		
 		pv1=${PV#*:}
@@ -123,7 +126,7 @@ make_epics_knobs() {
 		make_caput $PV ${pv1#*:} $site
 	done
 
-	for PV in $(egrep -e :[1-6]:.*_DELAY -e :[1-6]:READ_LAT -e :[1-6]:LATENCY -e WR:TRG $RL \
+	for PV in $(egrep -e :[1-6]:.*_DELAY -e :[1-6]:READ_LAT -e :[1-6]:LATENCY -e WR:TRG $RLP \
 			| grep -v ':[0-9a-z_]*$' )
 	do		
 		pv1=${PV#*:}
@@ -131,7 +134,7 @@ make_epics_knobs() {
 		make_caput $PV ${pv1#*:} $site -n
 	done	
 	
-	for PV in $(egrep -e GPG -e DO:[1-8] /tmp/records.dbl | grep -v :[a-z]$)
+	for PV in $(egrep -e GPG -e DO:[1-8] $RLP)
 	do
 		pv1=${PV#*:}
 		site=${pv1%%:*}
@@ -143,25 +146,25 @@ make_epics_knobs() {
 		esac
 	done
 
-	for PV in $(egrep -e SC32 $RL | grep -v fan | grep -v mux | grep -v [a-z]$)
+	for PV in $(egrep -e SC32 $RLP)
 	do
 		pv1=${PV#*:}
 		site=${pv1%%:*}
 		make_caput $PV ${pv1#*:} $site
 	done
-	for PV in $(egrep -e MODE:TRANSIENT -e MODE:CONTINUOUS $RL | grep -v [a-z]$)
+	for PV in $(egrep -e MODE:TRANSIENT -e MODE:CONTINUOUS $RLP)
 	do
 		pv1=${PV#*:}
 		make_caput $PV ${pv1#*:} 0
 	done
 
-	for PV in $(egrep -e FPGA:TEMP $RL | grep -v [a-z]$)
+	for PV in $(egrep -e FPGA:TEMP $RLP)
 	do
 		pv1=${PV#*:}
 		make_caput $PV ${pv1#*:} 13
 	done
 		
-	for PV in $(egrep -e MODE:T -e IOC_READY $RL | grep -v [wsrft]$)
+	for PV in $(egrep -e MODE:T -e IOC_READY $RLP)
 	do
 		pv1=${PV#*:}
 		kn1=${pv1#*:}
@@ -174,7 +177,7 @@ make_epics_knobs() {
 			fi
 		fi
 	done
-	for PV in $(egrep -e 0:WR $RL | grep -v [a-z]$)
+	for PV in $(egrep -e 0:WR $RLP)
 	do
 		pv1=${PV#*:}
 		kn1=${pv1#*:}
@@ -184,13 +187,13 @@ make_epics_knobs() {
 			make_caget $PV $kn1 11
 		fi
 	done
-	for PV in $(egrep -e Si5326:TUNEPHASE:BUSY -e Si5326:TUNEPHASE:OK $RL | grep -v [a-z]$)
+	for PV in $(egrep -e Si5326:TUNEPHASE:BUSY -e Si5326:TUNEPHASE:OK $RLP)
 	do
 		NU=${PV#*:}
 		SITE=${NU%%:*}
 		make_caget $PV ${NU#*:} ${SITE}
 	done
-	for PV in $(egrep -e COS:EN:L16 $RL)
+	for PV in $(egrep -e COS:EN:L16 $RLP)
 	do
 		pv1=${PV#*:}
 		site=${pv1%%:*}
