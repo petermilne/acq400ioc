@@ -94,18 +94,7 @@ export IOC_PREINIT=./scripts/load.judgement32
 
 # adjustment for off by one error in some personalities eg ACQ424
 export RTM_TRANSLEN_ADJ=2
-append to /mnt/local/rc.user:
-set.site 0 sync_role master 50000
-set.site 1 rgm=3,0,1
-TLEN=1024
-ssb=$(get.site 0 ssb)
-blen=$((TLEN*ssb*2))
-# set -1, avoid es
-set.site 1 RTM_TRANSLEN=$((TLEN-1))
-sleep 0.5
-echo RTM_TRANSLEN set, now set bufferlen $blen
-set.site 0 bufferlen $blen
-echo "set bufferlen $blen recorded $(get.site 0 bufferlen)"
+# bufferlength optimisation for burst mode is now AUTOMATED by rtm_buffer_mon
 # if the burst rate is high >10Hz, you might get better results with multiple bursts per buffer.
 # increase bufferlen accordingly, and set this variable (default is 1)
 export BURSTS_PER_BUFFER=${BURSTS_PER_BUFFER:-1}

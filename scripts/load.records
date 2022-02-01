@@ -590,7 +590,7 @@ load_400() {
 
 	if [ ${site} -eq $FIRST_SITE ]; then
 		blen=$(cat /sys/module/acq420fmc/parameters/bufferlen)
-		mprams="UUT=${HOST},SITE=${site},BLEN=${blen},RADJ=${RTM_TRANSLEN_ADJ:-0},SPORT=S${site}M"
+		mprams="UUT=${HOST},SITE=${site},BLEN=${blen},RADJ=${RTM_TRANSLEN_ADJ:-0},BPB=${BURSTS_PER_BUFFER:-1},SPORT=S${site}M"
 
 		if [ $HAS_ACQ43X -eq 1 ]; then
 			dblr '"db/acq4xx_rgm.db","'${mprams},onst=SRTM,twst=RGM'"'

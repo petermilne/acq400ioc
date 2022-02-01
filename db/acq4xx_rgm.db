@@ -119,7 +119,7 @@ record(longout, "${UUT}:0:BPB") {
 	field(DESC, "Bursts per buffer")
 	field(LOPR, "1")
 	field(HOPR, "100")
-	field(VAL,  "1")
+	field(VAL,  "${BPB}")
 	field(PINI, "YES")
 }
 
