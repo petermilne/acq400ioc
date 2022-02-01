@@ -6,6 +6,8 @@ ${HOST}:FEATURE
 ## Names in ALL CAPS (other than ${HOST} are public names)
 ## Names ending in lower case eg :r, :s, :w are for internal use and should NOT be used.
 
+
+
 # site-aliases
 please leave all PV's with the names they have ${HOST}:${SITE}:stuff
 however, any aliases set in /mnt/local/sysconfig/site-aliases.db will be loaded as aliases
@@ -13,15 +15,11 @@ at build time. So we hope that sites can tolerate the canonical ACQ400 names alo
 site-conformant names as aliases.
 
 ## HOST prefix substitution
-/usr/local/CARE/make-site-aliases [NEW_HOST_PREFIX] will alias ALL public names, 
-substituting NEW_HOST_PREFIX for ${HOST}
 
-To set it up, first boot the uut, then run /usr/local/CARE/make-site-aliases, then reboot.
+-make aliases for all public names by change the PV PREFIX from $(hostname)
+-export IOC_HOST=ioc_119
 
-Users are of course free to create aliases that work on the name suffix as well.
-We did not attempt to automate this.
-
-
+- for more complicated transformations, create a custom alias file, perhaps using /tmp/records.dbl as source
 
 To trace streamdevice operation:
 ./scripts/set.epics-trace [Sx]
