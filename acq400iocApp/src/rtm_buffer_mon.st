@@ -71,7 +71,7 @@ ss rtm_buffer_mon {
 				blen = (pages+1) * MINDMA;
 				rtm_translen = blen/(bpb*ssb);
 			}
-			if (blen <= maxblen){
+			if (blen > maxblen){
 				printf(PNAME "ERROR: Buffer overrun, go with what we've got");
 				blen = maxblen; 
 				pvPut(blen);
