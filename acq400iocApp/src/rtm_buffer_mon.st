@@ -12,17 +12,24 @@ option +r;
 int maxblen; 		assign maxblen 		to "{uut}:0:MAXBLEN";
 int blen;    		assign blen 		to "{uut}:0:BLEN";
 int bpb;     		assign bpb		to "{uut}:0:BPB";
+int ssb;		assign ssb		to "{uut}:0:SSB";
 int rtm_translen; 	assign rtm_translen 	to "{uut}:1:RTM_TRANSLEN";		monitor rtm_translen;
 int rgm;		assign rgm 		to "{uut}:1:RGM";			monitor rgm;
 int optimise_bufferlen;	assign optimise_bufferlen to "{uut}:0:OPTIMISE_BUFFERLEN";
 
 
+#define PNAME		"rtm_buffer_mon "
 #define MENU_RTM	3
+
+#define MINDMA		4096
 
 int verbose;
 
 int rtm_translen0 = -1;
 int rgm0 = -1;
+
+int pages;
+
 
 ss rtm_buffer_mon {
 	state init {
@@ -30,6 +37,7 @@ ss rtm_buffer_mon {
 			if (macValueGet("verbose")){
 				verbose = macValueGet("verbose")[0] - '0';
 			}
+			pvGet(maxblen);
 		} state wait_rgm_change
 	}
 	state wait_rgm_change {
@@ -45,13 +53,39 @@ ss rtm_buffer_mon {
 	
 	state go_continuous {
 		when() {
-			
+			if (verbose) printf(PNAME "go_continuous\n");
+			blen = maxblen; 
+			pvPut(blen);
+			pvPut(optimise_bufferlen);
 		} state wait_rgm_change
 	} 
 	
 	state go_rtm {
 		when() {
-			
+			if (verbose) printf(PNAME "go_rtm\n");
+			pvGet(bpb);
+			pvGet(ssb);
+			blen = bpb * ssb * rtm_translen;
+			pages =  blen / MINDMA;
+			if (blen % MINDMA){
+				blen = (pages+1) * MINDMA;
+				rtm_translen = blen/(bpb*ssb);
+			}
+			if (blen <= maxblen){
+				printf(PNAME "ERROR: Buffer overrun, go with what we've got");
+				blen = maxblen; 
+				pvPut(blen);
+				pvPut(optimise_bufferlen);
+			}else{
+				pvPut(blen);
+				if (rtm_translen != rtm_translen0){
+					pvPut(rtm_translen);
+					rtm_translen0 = rtm_translen;
+					if (verbose) printf(PNAME "info: new blen %d new translen %d\n", blen, rtm_translen);
+				}else{
+					if (verbose) printf(PNAME "info: new blen %d keep translen %d\n", blen, rtm_translen);
+				}
+			}
 		} state wait_rgm_change
 	}
 }
