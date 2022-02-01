@@ -123,12 +123,12 @@ record(longout, "${UUT}:0:BPB") {
 	field(PINI, "YES")
 }
 
-record(longout, "${UUT}:0:MAXBLEN") {
-	field(DTYP, "Soft Channel")
+record(longin, "${UUT}:0:MAXBLEN") {
+	field(DTYP, "longinAcqHost")
+	field(INP, "@/sys/module/acq420fmc/parameters/bufferlen")		
 	field(DESC, "Buffer KBUF len")
 	field(LOPR, "32768")
-	field(HOPR, "4194304")
-	field(VAL,  "1")
+	field(HOPR, "4194304")	
 	field(PINI, "YES")
 }
 
