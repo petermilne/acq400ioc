@@ -155,12 +155,13 @@ record(calcout, "${UUT}:${SITE}:RTM_TRANSLEN:ONCHANGE") {
 	
 }
 
-#record(longout, "${UUT}:0:RTM_FIT")
-#{
-#	field(DTYP, "stream")
-#	field(OUT,  "@mb.proto setFitRtmTranslenBuffer S0")
-#	field(OUT,  "@mb.proto store_optimise_bufferlen(${UUT}:0:SSB) S0")
-#}
+
+record(bo, "${UUT}:0:OPTIMISE_BUFFERLEN")
+{
+	field(DTYP, "stream")
+	field(OUT,  "@mb.proto store_optimise_bufferlen(${UUT}:0:SSB) S0")
+}
+
 
 record(longout, "${UUT}:${SITE}:RTM_TRANSLENp") {
 	field(DTYP, "Soft Channel")

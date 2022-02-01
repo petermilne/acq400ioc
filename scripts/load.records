@@ -607,6 +607,7 @@ load_400() {
 			fi
 		fi
 		dblr '"db/has_rgm.db","'${mprams},HAS_RGM=$has_rgm'"'
+		echo "seq rtm_buffer_mon \"uut=${HOST},verbose=1\""
 		create_asyn_channel S${site}M 127.0.0.1:$((4220+${site}))	
 	fi	
 	if [ "${is_adc}" != "no" ]; then		
