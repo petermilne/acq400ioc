@@ -31,6 +31,7 @@
 extern "C" {
 	void* acq400_openDoc(const char* docfile, int* nchan);
 	int acq400_getChannel(void *prv, int ch, const char* sw, float* eslo, float* eoff, int nocal);
+	int acq400_isData32(void* prv);
 };
 
 using namespace tinyxml2;
@@ -102,7 +103,24 @@ static int _acq400_getChannel(XMLNode *range, int ch, float* eslo, float* eoff, 
 	return set_values(nominal, eslo, eoff);
 	return 0;
 }
+int acq400_isData32(void* prv)
+{
+	XMLDocument* doc = static_cast<XMLDocument*>(prv);
+	XMLNode* node;
+	int code_max;
 
+	RETERRNULL(node, doc, "ACQ");
+	RETERRNULL(node, node, "AcqCalibration");
+	RETERRNULL(node, node, "Data");
+	XMLError rc =  node->ToElement()->QueryIntAttribute("code_max", &code_max);
+
+	if (rc == XML_NO_ERROR){
+		return code_max > 65535;
+	}else{
+		printf("ERROR getting code_max %d\n", rc);
+		return 0;
+	}
+}
 int acq400_getChannel(void *prv, int ch, const char* sw, float* eslo, float* eoff, int nocal)
 /* returns >0 on success */
 {
