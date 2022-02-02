@@ -23,6 +23,8 @@ SN=${SN#0}
 FIRST_SITE=-1
 SHOTBUSY_OK=y
 
+HAS_ACQ427=0
+
 source /etc/sysconfig/acq400.conf
 
 source /etc/sites
@@ -265,7 +267,7 @@ load_AO() {
 			fi
 			for ch in $(seq 1 $nchan)
 			do
-				dblr '"db/ao420fmc.db","'${cprams},cid=$ch'"'
+				dblr '"db/ao420fmc.db","'${cprams},cid=$ch,REFV=${HAS_ACQ427}'"'
 				echo "seq ao420_range_set \"UUT=${HOST},SITE=${site},CID=$ch\"" >>/tmp/st_post.cmd
 				# PINI fails to set VAL on AO record. set GAIN (attenuation) to 100%
 				echo "dbpf ${HOST}:${site}:AWG:G:${ch} 100" >> /tmp/st_post.cmd
@@ -359,6 +361,8 @@ load_400_statics() { (
 	dblr '"db/acq400.db","'${cprams},${dba}'"'		
 ) }
 
+
+
 load_400() {
 	site=$1
 	
@@ -407,15 +411,18 @@ load_400() {
 		is_adc="sar"
 		has_rgm=1
 		calmon=calmon42x
+		has_ch_gains=1
 		case $model in
-		$MT_ACQ423)
-			has_ch_gains=1
+		$MT_ACQ427|$MT_ACQ427F)
+			HAS_ACQ427=1;;
+		$MT_ACQ423)			
 			gains="GX=fixed"
 			gain_file_pfx="gain423";;
 		$MT_ACQ424)
+			has_ch_gains=0
 			LO=66000000;;
 		*)
-			has_ch_gains=1;;						
+			;;						
 		esac;;
 	
 	$MT_BOLO8|$MT_BOLO8B)
