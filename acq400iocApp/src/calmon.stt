@@ -52,12 +52,12 @@ int scale;
 %{
 static char* getKey(int hrm, int gain) 
 { 
-	static char key[8];
+	static char key[16];
 	
 	if (hrm >= 0){
-		snprintf(key, 8, "%d,%d", hrm, gain);
+		snprintf(key, 16, "%d,%d", hrm, gain);
 	}else{
-		snprintf(key, 8, "%d", gain);
+		snprintf(key, 16, "%d", gain);
 	}
 	
 	return key; 
@@ -139,8 +139,7 @@ ss calmon {
 										site, ch, eslo[ch], eoff[ch]);
 						}
 						if (scale){
-							eslo[ch] /= scale;
-							eoff[ch] /= scale;
+							eslo[ch] *= scale;
 						}
 						pvPut(eslo[ch]);
                                                 pvPut(eoff[ch]);

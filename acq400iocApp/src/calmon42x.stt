@@ -22,6 +22,7 @@ float eslo[33];		assign eslo to {};	// index from 1
 float eoff[33]; 	assign eoff to {};
 
 int has_ch_gains;	assign has_ch_gains to "{uut}:{site}:HAS_CH_GAINS";
+int data32;		assign data32 to "{uut}:{site}:data32";
 
 int gain_changes;	assign gain_changes to "";
 int gain_changes0;
@@ -36,9 +37,12 @@ int ch;
 int nchan;
 char pvname[80];
 char pvfield[100];
+
+int scale;
+
 %%extern void* acq400_openDoc(const char* docfile, int* nchan);
 %%extern int acq400_getChannel(void *prv, int ch, const char* sw, float* eslo, float* eoff, int nocal);
-
+%%extern int acq400_isData32(void* prv);
 %{
 static char* getKey(int gain) 
 { 
@@ -104,6 +108,15 @@ ss calmon {
 			pvGet(adc_cal_mode);
 			if (adc_cal_mode != 0){
 				printf("make_change site=%s %s\n", site, adc_cal_mode==1? "caldef": "calibrated");
+				
+				scale = 0;
+				if (acq400_isData32(doc)){
+					pvGet(data32);
+					if (data32 ==0){
+						scale = 256;
+					}
+				}
+				
 				for (ch = 1; ch <= nchan; ++ch){
 					if (has_ch_gains){
 						pvGet(gains[ch]);
@@ -114,6 +127,9 @@ ss calmon {
 							printf("site:%s g:%d ch:%2d eslo:%.6e eoff:%.6e\n", 
 										site, gains[ch], ch, eslo[ch], eoff[ch]);
 						}
+						if (scale){
+							eslo[ch] *= scale;
+						}						
 						pvPut(eslo[ch]);
 						pvPut(eoff[ch]);
                                                 
