@@ -26,14 +26,36 @@ record(bo, "${UUT}:${SITE}:AO:GAIN:CH:${cid}") {
 }
 
 record(bo, "${UUT}:${SITE}:AO:REF"){
-        field(DTYP, "dsSysfsBo")
-        field(OUT, "@/dev/acq400.${SITE}.knobs/dac_range_REF")
-        field(SCAN, "Passive")
+	field(DTYP, "Soft Channel")
         field(DESC, "AO REF")
         field(ZNAM, "2.5V")
         field(ONAM, "5.0V")
 	field(VAL,  "${REFV}")
 	field(PINI, "YES")
+	field(FLNK, "${UUT}:${SITE}:AO:REF:w")
+}
+
+record(bo, "${UUT}:${SITE}:AO:REF:w"){
+	field(DTYP, "dsSysfsBo")
+	field(OUT, "@/dev/acq400.${SITE}.knobs/dac_range_REF")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:AO:REF:s.PACT")
+	field(DOL,  "${UUT}:${SITE}:AO:REF PP")
+	field(OMSL, "closed_loop")		
+}
+
+record(bi, "${UUT}:${SITE}:AO:REF:r") {
+	field(DTYP, "dsSysfsBi")
+	field(INP, "@/dev/acq400.${SITE}.knobs/dac_range_REF")
+	field(SCAN, "5 second")
+	field(FLNK, "${UUT}:${SITE}:AO:REF:s")
+}
+
+record(bo, "${UUT}:${SITE}:AO:REF:s") {
+	field(DTYP, "Soft Channel")
+	field(DOL,  "${UUT}:${SITE}:AO:REF:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:${SITE}:AO:REF PP")
 }
 
 record(ao, "${UUT}:${SITE}:AWG:G:${cid}") {

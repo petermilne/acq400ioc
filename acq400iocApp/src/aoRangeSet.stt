@@ -42,10 +42,9 @@ ss gain_set
 			}	
 		
 			/* FMC is always fixed 5V */
-			if (!fmc_set && strncmp(model, "AO420FMC", 9) == 0){
-				ref = 1;
+			if (!fmc_set && strncmp(model, "AO420FMC", 8) == 0){
+				ref0 = ref = 1;
 				pvPut(ref);
-				ref0 = !ref;
 				fmc_set = 1;							
 			}				
 		} state run
