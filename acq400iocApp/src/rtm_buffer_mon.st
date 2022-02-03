@@ -1,9 +1,21 @@
 /* rtm_buffer_mon.st
- * Optimise rtm_buffer such that BPB pulses occur per buffer
+ * Optimise rtm_buffer such that BPB pulses occur per buffer. Restore full buffer for continuous capture.
  * Heuristic for BPB: < 50Hz : 1, < 100Hz : 2, > 100Hz 4   NOT AUTOMATED
- * BLEN must be a multiple of BPB*SSB and 4096
+ * BLEN must be a multiple of BPB*SSB and MINDMA
  * SM may adjust RTM_TRANSLEN to achieve goal
  * Later, adust WF SIZE for clean plot 
+
+
+ * SSB :         Sample Size Bytes
+ * MINDMA :      DMA transfers are modulo one page (4096b)
+ * BPB :         Bursts per buffer:  
+for a responsive system, ideally BPB==1, but if the burst rate is too high, we need to compromise.
+ * RTM_TRANSLEN: length of Burst in samples
+ * MAXBLEN :     maximum bufferlen (kernel memory allocation on device driver load)
+ * RGM:          mode control 0: CONTINUOUS, 3: BURST
+ * OPTIMISE_BUFFERLEN : 
+for CONTINUOUS data, set buffer length to largest N samples that fit the buffer
+buffers are ALWAYS channel aligned.
  * */
 
 program rtm_buffer_mon
