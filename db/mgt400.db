@@ -53,6 +53,22 @@ record(bi, "${UUT}:${chan}:AGGREGATOR:ON") {
 	field(SCAN,  "I/O Intr")
 }
 
+record(bi, "${UUT}:${chan}:AGGREGATOR:SPAD:EN:r") {
+	field(DTYP,  "stream")
+	field(INP,   "@mgt400.proto getSpadEn ${SPORT}")
+	field(SCAN,  "5 second")
+	field(FLNK,  "${UUT}:${chan}:AGGREGATOR:SPAD:LEN")
+}
+
+record(calc, "${UUT}:${chan}:AGGREGATOR:SPAD:LEN") {
+	field(INPA, "${UUT}:${chan}:AGGREGATOR:SPAD:EN:r")
+	field(INPB, "${UUT}:0:SPAD:LEN:r")
+	field(CALC, "A? B: 0")	
+}
+
+record(longin, "${UUT}:${chan}:AGGREGATOR:SSB") {
+	field(DTYP, "Soft Channel")
+}
 
 record (bo, "${UUT}:MGT:SFP:${chan}:CLRSTATS") {
 	field(DTYP, "boAcqHost")	

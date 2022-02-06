@@ -48,3 +48,8 @@ getAggregatorSites {
 getAggregatorEn {	
 	in "reg=0x%*x sites=%*s DATA_MOVER_EN=%{off|on}";
 }
+
+getSpadEn {
+	out "spad";
+	in "%d";
+}

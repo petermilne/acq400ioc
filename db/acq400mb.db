@@ -41,6 +41,7 @@ record(longin, "${UUT}:0:DSSB") {
 	field(INP,  "@mb.proto get_dssb ${SPORT}")
 	field(PINI, "YES")
 	field(DESC, "distributor sample size bytes")
+	field(SCAN, "5 second")
 }
 
 # AGG and DIS are AMBIGUOUS.. use SPORT2

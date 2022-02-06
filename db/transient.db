@@ -332,6 +332,7 @@ record(longin, "${UUT}:0:SSB") {
 	field(INP,  "@mb.proto get_ssb ${SPORT}")
 	field(PINI, "YES")
 	field(DESC, "aggregator sample size bytes")
+	field(SCAN, "5 second")
 }
 
 # append existing record
