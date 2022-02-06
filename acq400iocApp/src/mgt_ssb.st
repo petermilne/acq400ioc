@@ -59,21 +59,25 @@ ss mgt_ssb {
 			if (macValueGet("verbose")){
 				verbose = macValueGet("verbose")[0] - '0';
 			}
-			for (site = 0; site <= 6; ++site){
-				snprintf(pvname, sizeof(pvname), "%s:%d:NCHAN", uut, site);
-				pvAssign(nchan[site], pvname);
-				snprintf(pvname, sizeof(pvname), "%s:%d:data32", uut, site);
-				pvAssign(data32[site], pvname);
+			pvGet(s0_sitelist);
+			for (site = '1'; site <= '6'; ++site){
+				if (strchr(s0_sitelist, site)){
+					snprintf(pvname, sizeof(pvname), "%s:%d:NCHAN", uut, site);
+					pvAssign(nchan[site-'0'], pvname);
+					snprintf(pvname, sizeof(pvname), "%s:%d:data32", uut, site);
+					pvAssign(data32[site-'0'], pvname);
+				}
 			}
 		} state wait_change
 	}
 	state wait_change {
 		when (spad_len != spad_len0 || strcmp(comms_sitelist, comms_sitelist0) != 0 ){
-			for (site = 0; site <= 6; ++site){
-				pvGet(nchan[site]);
-				pvGet(data32[site]);
+			for (site = '1'; site <= '6'; ++site){
+				if (strchr(s0_sitelist, site)){
+					pvGet(nchan[site-'0']);
+					pvGet(data32[site-'0']);
+				}
 			}
-			pvGet(s0_sitelist);
 			mgt_ssb = calculate_ssb(comms_sitelist, s0_sitelist, nchan, data32, spad_len);
 			pvPut(comms_sitelist);
 			pvPut(mgt_ssb);
