@@ -86,7 +86,7 @@ load_mgt400() {
 	load_mgt400_fifo_stat $cprams
 	let port="4220+$site"
 	create_asyn_channel ${sport} 127.0.0.1:${port}
-	echo "seq mgt_ssb \"uut=${HOST},site=${site},ch=${abc}\"" >>/tmp/st_post.cmd
+	echo "seq mgt_ssb \"uut=${HOST},site=${site},ch=${abc},verbose=${MGT_SSB_VERBOSE:-0}\"" >>/tmp/st_post.cmd
 }
 #tr '[:upper:]' '[:lower:]'
 
