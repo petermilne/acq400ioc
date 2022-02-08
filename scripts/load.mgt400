@@ -111,8 +111,9 @@ done
 
 dblr '"db/acq2106_mgtports.db","UUT='${HOST}',MGTPORTS='${MGTPORTS}'"'
 
+# SFP1 at 4291
 for port in 1 2 3 4; do
-		create_asyn_channel SSFP${port} 127.0.0.1:428${port}
+		create_asyn_channel SSFP${port} 127.0.0.1:429${port}
 		dblr '"db/sfp.db", "UUT='${HOST}',PORT='${port}',SPORT=SSFP'${port}'"'
 done
 
