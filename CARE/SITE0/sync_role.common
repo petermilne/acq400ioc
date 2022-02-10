@@ -151,7 +151,7 @@ if [ "${MOD:0:7}" = "acq2106" ]; then
     set_slave=set_slave_acq2106
     set_common_master=set_common_master_acq2106
 # Si5326 minimum output rate. 2M works for slave XO hardware
-    FMIN=200000
+    FMIN=10000
     is_acq2106=1
 else
     set_slave=set_slave_acq1001

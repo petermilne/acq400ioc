@@ -2,7 +2,7 @@ record(longout, "${UUT}:0:SIG:CLK_MB:SET") {
 	field(DTYP, "Soft Channel")
 	field(DESC, "MB CLK setpoint")
 	field(EGU,  "Hz")
-	field(LOPR, "1000000")
+	field(LOPR, "10000")
 	field(HOPR, "100000000")	
 	field(FLNK, "${UUT}:0:SIG:CLK_MB:w")
 }
@@ -22,7 +22,7 @@ record(calcout, "${UUT}:0:SIG:CLK_MB:w") {
 	field(INPC, "${UUT}:0:SIG:CLK_MB:FIN")	 # USER OVERRIDE	
 	field(INPE, "${UUT}:0:SIG:ZCLK_SRC")
 	field(INPF, "${UUT}:SYS:CLK:FPMUX")	
-	field(INPJ, "1000000")			# J: FIN VALID
+	field(INPJ, "10000")			# J: FIN VALID
 	field(INPK, "32768000")			# K: XCLK
 	field(INPL, "33333000")			# L: ZCLK
 	field(CALC, "A")
