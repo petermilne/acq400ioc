@@ -3,6 +3,23 @@
 # set.site 0 sync_role fpmaster|rpmaster|master|solo|slave FS FIN [opts] 
 
 
+case "$1" in
+"") 
+	if [ -e /dev/shm/role ]; then
+        cat /dev/shm/role
+    else
+        echo "role not set"
+    fi
+    exit 0;;
+help)
+    echo "USAGE sync_role {fpmaster|rpmaster|master|slave|solo} [CLKHZ] [FIN]"
+    echo "modifiers [CLK|TRG:SENSE=falling|rising] [CLK|TRG:DX=d0|d1]"
+    echo "modifiers [TRG=int|ext]"
+    echo "modifiers [CLKDIV=div]"
+    exit 0;;
+esac
+
+
 TRG=
 TRG_SENSE=rising
 CLK_SENSE=rising
@@ -266,8 +283,6 @@ config_distributor_sites() {
 ROLE=$P1
 eval $(egu2int FS=${P2:-$FS_DEF} FIN=${P3:-$FIN_DEF})
 
-role_set=0
-
 D_TRG='d0'
 
 if [ "${MOD:0:7}" = "acq1014" ]; then
@@ -300,13 +315,12 @@ if [ "${MOD:0:7}" = "acq1014" ]; then
     	fin=$FIN_CLKSTAR; [ "x$P3" != "x" ] && fin=$FIN
     	/usr/local/bin/acq1014_select_clk_src ext $FS $fin;;	
 	*)
-		role_set=-1;;	
+		echo "ERROR: role $1 not valid"; exit 1;;
 	esac
-	if [ $role_set -ne -1 ]; then
-    	# Set the trigger dependent on role or TRG= override on command line
-    	# Assume post mode. TRG_DX is ignored for ACQ1014
-    	/usr/local/bin/acq1014_select_trg_src $TRG post $TRG_SENSE
-	fi    
+
+    # Set the trigger dependent on role or TRG= override on command line
+    # Assume post mode. TRG_DX is ignored for ACQ1014
+    /usr/local/bin/acq1014_select_trg_src $TRG post $TRG_SENSE    
 else		
 	case $ROLE in
 	fpmaster)
@@ -341,31 +355,12 @@ else
 	    $set_slave
 	    is_48x && set_48x_override $FS slave;;	    
 	*)
-		role_set=-1;;
+		echo "ERROR: role $1 not valid"; exit 1;;
 	esac
 fi
 
-if [ $role_set -eq 0 ]; then
-	[ -x /etc/acq400/0/on_sync_role ] && /etc/acq400/0/on_sync_role
+[ -x /etc/acq400/0/on_sync_role ] && /etc/acq400/0/on_sync_role
 # Configure distributor (XO) after AI.
-	config_distributor_sites $D_TRG
-	echo $CMDLINE > /dev/shm/role
-	exit 0
-else
-	case $ROLE in
-	"")
-	    if [ -e /dev/shm/role ]; then
-	        cat /dev/shm/role
-	    else
-	        echo "role not set"
-	    fi;;		
-	help)
-	    echo "USAGE sync_role {fpmaster|rpmaster|master|slave|solo} [CLKHZ] [FIN]"
-	    echo "modifiers [CLK|TRG:SENSE=falling|rising] [CLK|TRG:DX=d0|d1]"
-	    echo "modifiers [TRG=int|ext]"
-	    echo "modifiers [CLKDIV=div]";;
-	*)
-	    echo "ERROR: role $1 not valid"; exit 1;;
-	esac		
-fi
+config_distributor_sites $D_TRG
+echo $CMDLINE > /dev/shm/role
 exit 0
