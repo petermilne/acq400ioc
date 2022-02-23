@@ -10,9 +10,7 @@ string comms_sitelist;	assign comms_sitelist 	to "{uut}:{ch}:AGGREGATOR:SITES"; 
 string s0_sitelist;	assign s0_sitelist	to "{uut}:0:AGGREGATOR:SITES";	     monitor s0_sitelist;
 int mgt_ssb;		assign mgt_ssb		to "{uut}:{ch}:AGGREGATOR:SSB";
 
-int nchan[7];		assign nchan to {};	// index from 1
-int data32[7];		assign data32 to {};	// index from 1
-
+int ssb[7];		assign ssb to {};	// index from 1
 
 #define PNAME		"mgt_ssb "
 
@@ -27,7 +25,7 @@ int isdigit(int c) {
 	return c >= '0' && c <= '9';
 }
 	
-int calculate_ssb(string _comms_sitelist, string _s0_sitelist, int* _nchan, int* _data32, int _spad_len, int _verbose) {
+int calculate_ssb(string _comms_sitelist, string _s0_sitelist, int* _ssb, int _spad_len, int _verbose) {
 	int ic;
 	int ssb = _spad_len * 4;
 	
@@ -44,8 +42,7 @@ int calculate_ssb(string _comms_sitelist, string _s0_sitelist, int* _nchan, int*
 		}
 		if (isdigit(_comms_sitelist[ic])){
 			int site = _comms_sitelist[ic] - '0';
-			if (_verbose) printf("isdigit s:%d nchan:%d data32:%d\n", site, _nchan[site], _data32[site]);
-			int site_bytes = _nchan[site] * (_data32[site]? 4: 2); 
+			int site_bytes = _ssb[site];			
 			ssb += site_bytes;
 			if (_verbose) printf("calculate_ssb %s site:%d site_bytes:%d ssb:%d\n", 
 					_comms_sitelist, site, site_bytes, ssb);
@@ -75,12 +72,9 @@ ss mgt_ssb {
 			for (site = '1'; site <= '6'; ++site){
 				int isite = site-'0';
 				if (strchr(s0_sitelist, site)){
-					snprintf(pvname, sizeof(pvname), "%s:%d:NCHAN", uut, isite);
+					snprintf(pvname, sizeof(pvname), "%s:%d:SSB", uut, isite);
 					if (verbose) printf("pvAssign \"%s\"\n", pvname);
-					pvAssign(nchan[isite], pvname);
-					snprintf(pvname, sizeof(pvname), "%s:%d:data32", uut, isite);
-					if (verbose) printf("pvAssign \"%s\"\n", pvname);
-					pvAssign(data32[isite], pvname);
+					pvAssign(ssb[isite], pvname);
 				}
 			}			
 		} state wait_change
@@ -91,17 +85,16 @@ ss mgt_ssb {
 			for (site = '1'; site <= '6'; ++site){
 				int isite = site-'0';
 				if (strchr(s0_sitelist, site)){
-					if (verbose) printf("pvGet nchan, data32: %d\n", isite);
-					pvGet(nchan[isite]);
-					pvGet(data32[isite]);
-					if (verbose) printf("pvGet nchan, data32: %d %d %d\n", isite, nchan[isite], data32[isite]);
-					if (nchan[isite] == 0){
-						if (verbose) printf("WARNING: kludge alert, hardcoding NCHAN");
-						nchan[isite] = 32;
+					if (verbose) printf("pvGet ssb: %d\n", isite);
+					pvGet(ssb[isite]);
+					
+					if (verbose) printf("pvGet s:%d ssb:%d\n", isite, ssb[isite]);
+					if (ssb[isite] == 0){
+						printf("WARNING: s:%d ZERO ssb\n", isite);
 					}
 				}
 			}
-			mgt_ssb = calculate_ssb(comms_sitelist, s0_sitelist, nchan, data32, spad_len, verbose);
+			mgt_ssb = calculate_ssb(comms_sitelist, s0_sitelist, ssb, spad_len, verbose);
 			if (verbose) printf("put comms_sitelist \"%s\"\n", comms_sitelist);
 			pvPut(comms_sitelist);
 			pvPut(mgt_ssb);

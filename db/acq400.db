@@ -22,6 +22,12 @@ record (longin, "${UUT}:${SITE}:NCHAN") {
 	field(PINI, "YES")	
 }
 
+record (longin, "${UUT}:${SITE}:SSB") {
+	field(DTYP, "Soft Channel")
+	field(VAL, "${SSB}")
+	field(PINI, "YES")	
+}
+
 record (stringin, "${UUT}:${SITE}:SERIAL") {
 	field(DTYP, "Soft Channel")
 	field(VAL, "${SERIAL}")
