@@ -10,6 +10,8 @@ string comms_sitelist;	assign comms_sitelist 	to "{uut}:{ch}:AGGREGATOR:SITES"; 
 string s0_sitelist;	assign s0_sitelist	to "{uut}:0:AGGREGATOR:SITES";	     monitor s0_sitelist;
 int mgt_ssb;		assign mgt_ssb		to "{uut}:{ch}:AGGREGATOR:SSB";
 
+string sitelist;	assign sitelist		to "{uut}:SITELIST";
+
 int ssb[7];		assign ssb to {};	// index from 1
 
 #define PNAME		"mgt_ssb "
@@ -51,6 +53,14 @@ int calculate_ssb(string _comms_sitelist, string _s0_sitelist, int* _ssb, int _s
 
 	return ssb;
 }
+
+int isInSitelist(string _sitelist, char _site) {
+	char ssel[4];
+	ssel[0] = _site;
+	ssel[1] = '=';
+	ssel[2] = '\0';
+	return strstr(_sitelist, ssel) != NULL;
+}
 }%
 
 char* uut;
@@ -64,14 +74,15 @@ ss mgt_ssb {
 			if (macValueGet("verbose")){
 				verbose = macValueGet("verbose")[0] - '0';
 			}
+			pvGet(sitelist);
 		} state wait_s0
 	}
 	
 	state wait_s0 {
-		when(strlen(s0_sitelist)){
+		when(strlen(sitelist)){
 			for (site = '1'; site <= '6'; ++site){
 				int isite = site-'0';
-				if (strchr(s0_sitelist, site)){
+				if (isInSitelist(sitelist, site)){
 					snprintf(pvname, sizeof(pvname), "%s:%d:SSB", uut, isite);
 					if (verbose) printf("pvAssign \"%s\"\n", pvname);
 					pvAssign(ssb[isite], pvname);
