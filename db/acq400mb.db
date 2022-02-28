@@ -8,6 +8,12 @@ record(longin, "${UUT}:0:DISTRIBUTOR") {
 record(stringin, "${UUT}:0:DISTRIBUTOR:SITES") {
 	field(DTYP,  "stream")
 	field(INP,   "@acq400mb.proto getDistributorSites ${SPORT}")
+	field(SCAN,  "I/O Intr")
+}
+
+record(longin, "${UUT}:0:DISTRIBUTOR:S1") {
+	field(DTYP,  "stream")
+	field(INP,   "@acq400mb.proto getDistributorS1 ${SPORT2}")
 	field(SCAN,  "I/O Intr")		
 }
 
@@ -57,6 +63,12 @@ record(stringin, "${UUT}:0:AGGREGATOR:SITES") {
 	field(DTYP,  "stream")
 	field(INP,   "@acq400mb.proto getAggregatorSites ${SPORT2}")
 	field(SCAN,  "I/O Intr")		
+}
+
+record(longin, "${UUT}:0:AGGREGATOR:S1") {
+	field(DTYP,  "stream")
+	field(INP,   "@acq400mb.proto getAggregatorS1 ${SPORT2}")
+	field(SCAN,  "I/O Intr")
 }
 
 record(bi, "${UUT}:0:AGGREGATOR:ON") {
