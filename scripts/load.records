@@ -187,6 +187,16 @@ make_AI_TR_records() {
 	FIRST_AI_TR_RECORDS=0	
 }
 
+
+eval $(cat /dev/acq400.0.knobs/aggregator)
+SITES=$(echo $sites | tr , \  )
+
+if [ "x$SITES" != "xnone" ]; then
+    for s in $SITES; do
+    	FIRST_SITE=$s
+        break
+    done
+fi
 make_AI_TR() {
 	kctrl=/dev/acq400/data/.control
 	if [ -e $kctrl ]; then
@@ -214,9 +224,9 @@ make_AI_TR() {
 
 	eval $(cat /dev/acq400.0.knobs/aggregator)
 	sites=$(echo $sites | tr , \  )
-	if [ "x$sites" = "xnone" ]; then
+	if [ "x$SITES" = "xnone" ]; then
 		return
-	elif [ "x$sites" != "x" ]; then
+	elif [ "x$SITES" != "x" ]; then
 		let i1=0
 		for site in $sites
 		do
@@ -1275,7 +1285,6 @@ do
 	ACQ400=/dev/acq400.$site
 	if [ -e $ACQ400 ]; then
 		if [ ! -L $ACQ400 ]; then
-			[ $FIRST_SITE -eq -1 ] && FIRST_SITE=$site
 			load_400 $site $ACQ400
 		fi
 		load_mod_present $site 1
