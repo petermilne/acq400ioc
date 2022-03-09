@@ -264,8 +264,7 @@ fpmaster|rpmaster|master|solo|slave)
     $set_common_master
     /usr/local/CARE/acq2106+WR.init ${FIN_DEF}
     /usr/local/CARE/route-WR-FP    1>&2
-    set_local_clock $FS;;       
-
+    set_local_clock $FS
 	[ -x /etc/acq400/0/on_sync_role ] && /etc/acq400/0/on_sync_role
 # Configure distributor (XO) after AI.
 	config_distributor_sites $D_TRG
