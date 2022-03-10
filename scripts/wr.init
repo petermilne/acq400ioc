@@ -25,10 +25,13 @@ create_asyn_channel S11 127.0.0.1:4231
 CPRAMS="UUT=${HOST},SITE=11,SIG=WR,SPORT=S11"
 dblr '"db/wr11.db","'${CPRAMS}'"'
 
-is_tiga || \
-	echo "seq wrClkMon \"uut=${HOST},verbose=${WR_CLK_VERBOSE:-0}\"" >>/tmp/st_post.cmd
+is_tiga || echo >> /tmp/st_post.cmd \
+	"seq wrClkMon \"uut=${HOST},verbose=${WR_CLK_VERBOSE:-0}\""
 
-echo "seq wrs_coldboot_pwr_handshake \"uut=${HOST},verbose=${WR_CLK_VERBOSE:-0}\"" >>/tmp/st_post.cmd
+WR_COLDBOOT_PWR_HANDSHAKE=${WR_COLDBOOT_PWR_HANDSHAKE=:-1}
+
+[ $WR_COLDBOOT_PWR_HANDSHAKE -eq 1 ] && echo >>/tmp/st_post.cmd \
+	 "seq wrs_coldboot_pwr_handshake \"uut=${HOST},verbose=${WR_CLK_VERBOSE:-0}\""
 
 
 
