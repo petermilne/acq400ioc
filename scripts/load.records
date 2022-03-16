@@ -366,7 +366,7 @@ load_400_statics() { (
 	nc=$(cat ${ek}/NCHAN)
 	serial=$(cat ${ek}/SERIAL)
 	role=$(cat ${ek}/module_role)
-	d32=$(cat ${ek}/data32)
+	d32=$(cat /dev/acq400.${site}.knobs/data32)
 	
 	if [ "$(isDIO $mt)" = "yes" ]; then
 		ssb=$((4*nc/32))
