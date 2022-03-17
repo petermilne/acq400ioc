@@ -1204,8 +1204,8 @@ load_mb_stats()
 
 
 load_system() {
-	ip0=$(/usr/local/epics/scripts/ifconfig_eth0)
-	ip1=$(/usr/local/epics/scripts/ifconfig_eth0 eth1)
+	[ -e /sys/class/net/eth0 ] && ip0=$(/usr/local/epics/scripts/ifconfig_eth0)
+	[ -e /sys/class/net/eth1 ] && ip1=$(/usr/local/epics/scripts/ifconfig_eth0 eth1)
 	if [ "x$ip0" != "x" ]; then
 		ipx=$ip0
 	elif [ "x$ip1" != "x" ]; then
