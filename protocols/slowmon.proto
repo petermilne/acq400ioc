@@ -16,3 +16,18 @@ getDNA {
 	out "dna";
 	in "%d";
 }
+
+setSlowmonFs {
+	out slowmon_fs "%d";
+	in;
+}
+
+setSlowmonFin {
+	out slowmon_fin "%d";
+	in;
+}
+
+getSyncRole {
+	out sync_role;
+	in "%s"
+}
