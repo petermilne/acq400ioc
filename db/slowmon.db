@@ -18,7 +18,7 @@ record(longout, "${UUT}:0:SLOWMON:FS") {
 	field(LOPR, "1")
 	field(HOPR, "64")
 	field(EGU,  "Hz")
-	field(FLNK, "${UUT}:NACC:c")
+	field(FLNK, "${UUT}:0:SLOWMON:NACC")
 }
 	
 record(longout, "${UUT}:0:SLOWMON:FIN") {
@@ -28,6 +28,15 @@ record(longout, "${UUT}:0:SLOWMON:FIN") {
 	field(LOPR, "1")
 	field(HOPR, "64")
 	field(EGU,  "Hz")
+	field(FLNK, "${UUT}:0:SLOWMON:NACC")
+}
+
+record(calc, "${UUT}:0:SLOWMON:NACC") {
+	field(DESC, "Software Accumulate")
+	field(INPA, "${UUT}:0:SLOWMON:FS")
+	field(INPB, "${UUT}:0:SLOWMON:FIN")
+	field(CALC, "B/A")
+	field(FLNK, "${UUT}:NACC:c")
 }
 	
 record(longout, "${UUT}:0:NACC:NACC") {
@@ -52,18 +61,13 @@ record(longout, "${UUT}:0:NACC:SHR") {
 	field(HOPR, "16")
 }
 	
-record(mbbo, "${UUT}:0:NACC:PRES") {
+record(longout, "${UUT}:0:NACC:PRES") {
 	field(DTYP, "Soft Channel")
-	field(DESC, "NACC filter PREScale value")
-	field(NOBT, "3")
-	field(ZRST,   "1")
-	field(ONST,   "2")
-	field(TWST,   "4")
-	field(THST,   "8")
-	field(FRST,  "16")
-	field(FVST,  "32")
-	field(SXST,  "64")
-	field(SVST, "128")
+	field(DESC, "NACC filter PREScale value **2")
+	field(VAL,  "1")
+	field(PINI, "YES")
+	field(LOPR, "1")
+	field(HOPR, "128")
 }
 
 record(calcout, "${UUT}:NACC:c") {
