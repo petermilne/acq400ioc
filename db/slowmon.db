@@ -11,11 +11,6 @@ record(bo, "${UUT}:NACC:DNA") {
 	field(PINI, "YES")	
 }
 
-record(stringin, "${UUT}:0:SYNC_ROLE") {
-	field(DTYP, "stream")
-	field(OUT,  "@slowmon.proto getSyncRole S0")
-	field(PINI, "YES")
-}
 record(longout, "${UUT}:0:SLOWMON:FS") {
 	field(DTYP, "stream")
 	field(DESC, "SLOWMON output sample rate")

@@ -26,8 +26,3 @@ setSlowmonFin {
 	out slowmon_fin "%d";
 	in;
 }
-
-getSyncRole {
-	out sync_role;
-	in "%s"
-}
