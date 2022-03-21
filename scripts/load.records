@@ -632,7 +632,15 @@ load_400() {
 		fi
 		dblr '"db/has_rgm.db","'${mprams},HAS_RGM=$has_rgm'"'
 		echo "seq rtm_buffer_mon \"uut=${HOST},verbose=${RTM_BUFFER_MON_VERBOSE:-0}\""
-		create_asyn_channel S${site}M 127.0.0.1:$((4220+${site}))	
+		create_asyn_channel S${site}M 127.0.0.1:$((4220+${site}))
+
+		if [ "$is_adc" != "no" ]; then
+			if [ "$(hasNACC_BYPASS $model)" == "yes" ]; then
+				create_asyn_channel SS0 127.0.0.1:4220
+				dblr '"db/slowmon.db","'$mprams',SPORT=SS0"'
+				echo # seq slowmon @@todo
+			fi
+		fi
 	fi	
 	if [ "${is_adc}" != "no" ]; then		
 		HPRAMS="${cprams},size=$HSIZE,type=LONG,fname=HG.${site}"

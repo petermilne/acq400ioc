@@ -1,0 +1,72 @@
+# SLOWMON : slow rate monitoring
+
+
+record(bo, "${UUT}:NACC:DNA") {
+	field(DTYP, "stream")
+	field(DESC,  "Direct not Accumulate")
+	field(OUT,  "@slowmon.proto setDNA ${SPORT}")
+	field(ZNAM, "ACC")
+	field(ONAM, "DIR")
+	field(VAL,  "1")
+	field(PINI, "YES")	
+}
+record(longout, "${UUT}:0:SLOWMON:FSO") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "SLOWMON output sample rate")
+	field(LOPR, "1")
+	field(HOPR, "64")
+	field(EGU,  "Hz")
+	field(FLNK, "${UUT}:NACC:c")
+}
+	
+record(longout, "${UUT}:0:SLOWMON:FSI") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "SLOWMON input sample rate from HW")
+	field(LOPR, "1")
+	field(HOPR, "64")
+	field(EGU,  "Hz")
+}
+	
+record(longout, "${UUT}:0:NACC:NACC") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "NACC filter N value")
+	field(LOPR, "1")
+	field(HOPR, "256")
+}
+
+record(longout, "${UUT}:0:NACC:START") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "NACC filter Start for non**2")
+	field(LOPR, "0")
+	field(HOPR, "255")
+}
+
+record(longout, "${UUT}:0:NACC:SHR") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "NACC scaling >> N")
+	field(LOPR, "0")
+	field(HOPR, "16")
+}
+	
+record(mbbo, "${UUT}:0:NACC:PRES") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "NACC filter PREScale value")
+	field(NOBT, "3")
+	field(ZRST,   "1")
+	field(ONST,   "2")
+	field(TWST,   "4")
+	field(THST,   "8")
+	field(FRST,  "16")
+	field(FVST,  "32")
+	field(SXST,  "64")
+	field(SVST, "128")
+}
+
+record(calcout, "${UUT}:NACC:c") {
+	field(DTYP, "stream")
+	field(INPA, "${UUT}:0:NACC:NACC")
+	field(INPB, "${UUT}:0:NACC:START")
+	field(INPC, "${UUT}:0:NACC:SHR")
+	field(INPD, "${UUT}:0:NACC:PRES")
+	field(OUT,  "@slowmon.proto setNACC ${SPORT}")
+}

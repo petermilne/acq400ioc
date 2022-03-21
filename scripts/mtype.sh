@@ -100,3 +100,10 @@ isACQ43x() {
 	*) echo "no";;
 	esac
 }
+
+hasNACC_BYPASS() {
+	case $1 in
+	$MT_ACQ423|$MT_ACQ424) echo "yes";;
+	*) echo "no";;
+	esac
+}
