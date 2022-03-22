@@ -24,7 +24,7 @@ int nacc_pres_lim;assign nacc_pres_lim 	to "{uut}:0:NACC:PRES.HOPR";
 int getfs(char* _sync_role) {
 	int _fs;
 	char mult = '\0';
-	if (sscanf(_sync_role, "%*s %d%c", &_fs, &mult) > 1){
+	if (sscanf(_sync_role, "%*s %d%c", &_fs, &mult) >= 1){
 		switch (mult){
 		case 'M':
 			return _fs*1000000;
@@ -34,7 +34,7 @@ int getfs(char* _sync_role) {
 			return _fs;
 		}
 	}
-	return 0;
+	return 66666;
 }
 
 }%
@@ -55,7 +55,10 @@ ss slowmon_rate_adjust {
 				verbose = macValueGet("verbose")[0] - '0';
 			}
 			pvGet(nacc_pres_lim);
-			macValueGet(sync_role);
+			pvGet(sync_role);
+			if (macValueGet("verbose")){
+				printf("sync_role \"%s\"\n", sync_role);
+			}
 			fs = getfs(sync_role);
 			if (fs == 0){
 				printf("ERROR: fs==0 sync_role:%s\n", sync_role);
@@ -65,8 +68,15 @@ ss slowmon_rate_adjust {
 	} 
 	
 	state make_change {
+		entry {
+			if (verbose){
+				printf("make_change\n");
+			}
+		}
 		when() {
-			if (fs > nacc_pres_lim * NACC_LIM * SLOWMON_FIN_MAX){
+			if (slowmon_fs == 0){
+				nacc_nacc = nacc_pres = nacc_shr = slowmon_fin = 0;
+			}else if (fs > nacc_pres_lim * NACC_LIM * SLOWMON_FIN_MAX){
 				printf("ERRROR: FS %d is too fast for available decimation: %d\n", fs, nacc_pres_lim * NACC_LIM * SLOWMON_FIN_MAX);
 				nacc_pres = nacc_pres_lim;
 				nacc_nacc = NACC_LIM;
@@ -108,7 +118,13 @@ ss slowmon_rate_adjust {
 		} state wait_change
 	}
 	state wait_change {
+		entry {
+			if (verbose){
+				printf("wait_change\n");
+			}
+		}
 		when(slowmon_fs != slowmon_fs0 || strcmp(sync_role, sync_role0)) {
+			strcpy(sync_role0, sync_role);
 			fs = getfs(sync_role);
 			slowmon_fs0 = slowmon_fs;
 		} state make_change
