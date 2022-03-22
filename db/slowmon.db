@@ -31,7 +31,13 @@ record(longout, "${UUT}:0:SLOWMON:FIN") {
 	field(FLNK, "${UUT}:0:SLOWMON:NACC")
 }
 
+record(longin, "${UUT}:0:SLOWMON:FIN:ACT") {
+	field(DTYP, "Soft Channel")	
+	field(DESC, "SLOWMON FIN actual")
+}
+
 record(calc, "${UUT}:0:SLOWMON:NACC") {
+	field(DTYP, "Soft Channel")
 	field(DESC, "Software Accumulate")
 	field(INPA, "${UUT}:0:SLOWMON:FS")
 	field(INPB, "${UUT}:0:SLOWMON:FIN")

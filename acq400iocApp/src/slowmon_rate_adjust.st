@@ -8,7 +8,8 @@ option +r;
 string sync_role; assign sync_role 	to "{uut}:SYS:SYNC_ROLE";  monitor sync_role;
 
 int slowmon_fs;   assign slowmon_fs 	to "{uut}:0:SLOWMON:FS"; monitor slowmon_fs;
-int slowmon_fin;  assign slowmon_fin 	to "{uut}:0:SLOWMON:FIN"; 
+int slowmon_fin;  assign slowmon_fin 	to "{uut}:0:SLOWMON:FIN";
+int slowmon_fin_act;  assign slowmon_fin_act 	to "{uut}:0:SLOWMON:FIN:ACT"; 
 
 int nacc_nacc; 	  assign nacc_nacc 	to "{uut}:0:NACC:NACC";
 int nacc_start;	  assign nacc_start 	to "{uut}:0:NACC:START";
@@ -109,7 +110,9 @@ ss slowmon_rate_adjust {
 			}
 			for (nacc_shr = 0; 1<<nacc_shr < nacc_nacc; nacc_shr++){
 				;
-			}			
+			}
+			slowmon_fin_act = fs/(nacc_pres * nacc_nacc);
+			pvPut(slowmon_fin_act);
 			pvPut(nacc_shr);
 			pvPut(nacc_pres);
 			pvPut(nacc_nacc);
