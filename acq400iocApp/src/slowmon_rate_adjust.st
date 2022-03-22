@@ -116,6 +116,10 @@ ss slowmon_rate_adjust {
 			pvPut(nacc_shr);
 			pvPut(nacc_pres);
 			pvPut(nacc_nacc);
+			if (slowmon_fs > slowmon_fin){
+				slowmon_fs = slowmon_fin;
+				pvPut(slowmon_fs);
+			}
 			pvPut(slowmon_fin);
 			
 		} state wait_change

@@ -34,6 +34,7 @@ record(longout, "${UUT}:0:SLOWMON:FIN") {
 record(longin, "${UUT}:0:SLOWMON:FIN:ACT") {
 	field(DTYP, "Soft Channel")	
 	field(DESC, "SLOWMON FIN actual")
+	field(EGU,  "Hz")
 }
 
 record(calc, "${UUT}:0:SLOWMON:NACC") {
