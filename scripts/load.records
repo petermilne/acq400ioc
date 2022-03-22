@@ -637,8 +637,13 @@ load_400() {
 		if [ "$is_adc" != "no" ]; then
 			if [ "$(hasNACC_BYPASS $model)" == "yes" ]; then
 				create_asyn_channel SS0 127.0.0.1:4220
-				dblr '"db/slowmon.db","'$mprams',SPORT=SS0"'
-				echo # seq slowmon @@todo
+				if [ "$is_adc" = "sar" ]; then
+					presmax=128
+				else
+					presmax=1
+				fi
+				dblr '"db/slowmon.db","'$mprams',PRESMAX='${presmax}',SPORT=SS0"'
+				echo "seq slowmon_rate_adjust \"uut=${HOST},verbose=${SLOWMON_VERBOSE:-0}\""
 			fi
 		fi
 	fi	

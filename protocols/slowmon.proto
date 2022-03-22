@@ -18,11 +18,11 @@ getDNA {
 }
 
 setSlowmonFs {
-	out slowmon_fs "%d";
+	out "slowmon_fs %d";
 	in;
 }
 
 setSlowmonFin {
-	out slowmon_fin "%d";
+	out "slowmon_fin %d";
 	in;
 }

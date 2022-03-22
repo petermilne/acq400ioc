@@ -67,7 +67,7 @@ record(longout, "${UUT}:0:NACC:PRES") {
 	field(VAL,  "1")
 	field(PINI, "YES")
 	field(LOPR, "1")
-	field(HOPR, "128")
+	field(HOPR, "${PRESMAX}")
 }
 
 record(calcout, "${UUT}:NACC:c") {
