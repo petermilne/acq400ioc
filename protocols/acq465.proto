@@ -5,3 +5,9 @@ acq465_fil_def {
 	out "acq465_filter_default %d";	
 	in;
 }
+
+acq465_fil {
+	out "acq465_filter %d";	
+	in;
+}
+
