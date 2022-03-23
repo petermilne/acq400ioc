@@ -1,0 +1,21 @@
+record(mbbo, "${UUT}:${SITE}:ACQ465:FILTER:DEFAULT") {
+	field(DTYP, "stream")
+	field(OUT,  "@acq465.proto acq465_fil_def ${SPORT}")
+	field(NOBT, "2")
+	field(ZRST, "WB")
+	field(ONST, "S6")
+	field(TWST, "S3")
+	field(THST, "S3R")
+	field(PINI, "YES")
+}
+
+record(mbbo, "${UUT}:${SITE}:ACQ465:FILTER") {
+	field(DTYP, "stream")
+	field(OUT,  "@acq465.proto acq465_fil ${SPORT}")
+	field(NOBT, "2")
+	field(ZRST, "WB")
+	field(ONST, "S6")
+	field(TWST, "S3")
+	field(THST, "S3R")
+	field(PINI, "YES")
+}
