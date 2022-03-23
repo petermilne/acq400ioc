@@ -19,3 +19,35 @@ record(mbbo, "${UUT}:${SITE}:ACQ465:FILTER") {
 	field(THST, "S3R")
 	field(PINI, "YES")
 }
+
+record(bi, "${UUT}:${SITE}:ACQ465:READALL") {
+	field(DTYP, "stream")
+	field(INP,  "@acq465.proto acq465_readall ${SPORT}")
+	field(SCAN, "2 second")
+	field(FLNK, "${UUT}:${SITE}:ACQ465:LOCK")
+}
+record(aai, "${UUT}:${SITE}:ACQ465:LOCK") {
+	field(DTYP, "stream")
+	field(DESC, "ADC lock status per chip")
+	field(INP,  "@acq465.proto acq465_get_lock ${SPORT}")
+	field(NELM, "8")
+	field(FTVL, "UCHAR")
+	field(FLNK, "${UUT}:${SITE}:ACQ465:ERROR")
+}
+
+record(aai, "${UUT}:${SITE}:ACQ465:ERROR") {
+	field(DTYP, "stream")
+	field(DESC, "ADC lock status per chip")
+	field(INP,  "@acq465.proto acq465_get_error ${SPORT}")
+	field(NELM, "8")
+	field(FTVL, "USHORT")
+	field(FLNK, "${UUT}:${SITE}:ACQ465:OVERVOLTAGE")
+}
+
+record(aai, "${UUT}:${SITE}:ACQ465:OVERVOLTAGE") {
+	field(DTYP, "stream")
+	field(DESC, "ADC lock status per chip")
+	field(INP,  "@acq465.proto acq465_get_overvoltage ${SPORT}")
+	field(NELM, "32")
+	field(FTVL, "UCHAR")
+}

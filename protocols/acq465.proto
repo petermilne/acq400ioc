@@ -11,3 +11,24 @@ acq465_fil {
 	in;
 }
 
+acq465_readall {
+	out "acq465_readall";
+	in "%d";
+}
+# lock. 1 is good
+# 15=0001 15=0001 15=0001 15=0001 15=0001 15=0001 15=0001 15=0001
+acq465_get_lock {
+	out "acq465_status";
+	separator=" "; in "%x";
+}
+
+acq465_get_error {
+	out "acq465_error";
+	separator=" "; in "%x";
+}
+
+acq465_get_overvoltage {
+	out "acq465_overvoltage";
+	separator=" "; in "%d";
+}
+
