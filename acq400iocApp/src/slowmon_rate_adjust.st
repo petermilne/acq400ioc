@@ -84,13 +84,13 @@ ss slowmon_rate_adjust {
 				slowmon_fin = SLOWMON_FIN_MAX;
 			}else{
 				/* first, minimize software oversampling */ 
-				for (slowmon_fin = SLOWMON_FIN_MAX;
-						slowmon_fin>slowmon_fs && fs < nacc_pres_lim * NACC_LIM * slowmon_fin;
-						slowmon_fin >>= 1){
-					if (verbose){
-						printf("slowmon_fin %d   fs %d < %d\n", slowmon_fin, fs, nacc_pres_lim * NACC_LIM * slowmon_fin);
-					}
+				slowmon_fin = fs / (nacc_pres_lim * NACC_LIM);
+				if (slowmon_fin > SLOWMON_FIN_MAX){
+					slowmon_fin = SLOWMON_FIN_MAX;
+				}else if (slowmon_fin < slowmon_fs){
+					slowmon_fin = slowmon_fs;
 				}
+				
 				/* next, minimize prescale */
 				for (nacc_pres  = nacc_pres_lim; 
 				     nacc_pres>1 && fs < nacc_pres * NACC_LIM * slowmon_fin;
