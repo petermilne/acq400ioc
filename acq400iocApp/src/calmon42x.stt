@@ -10,7 +10,7 @@
 program calmon42x
 option +r;
 
-int adc_cal_mode; assign adc_cal_mode to "{uut}:1:ADC_CAL";
+int adc_cal_mode; assign adc_cal_mode to "{uut}:{site}:ADC_CAL";
 monitor adc_cal_mode;
 int adc_cal_mode0;
 
@@ -43,6 +43,7 @@ int scale;
 %%extern void* acq400_openDoc(const char* docfile, int* nchan);
 %%extern int acq400_getChannel(void *prv, int ch, const char* sw, float* eslo, float* eoff, int nocal);
 %%extern int acq400_isData32(void* prv);
+%%extern int acq400_isCalibrated(void* prv);
 %{
 static char* getKey(int gain) 
 { 
@@ -57,8 +58,7 @@ static char* getKey(int gain)
 ss calmon {
 	state init {
 		when() {
-			printf("calmon R1000 site:%s\n", site);			
-			pvGet(adc_cal_mode); adc_cal_mode0 = adc_cal_mode;
+			printf("calmon42x R1000 site:%s\n", site);
 			pvGet(has_ch_gains);
 			uut = macValueGet("uut"); 
 			if (macValueGet("site") != 0){
@@ -66,6 +66,8 @@ ss calmon {
 			}
 			sprintf(fname, "/dev/sites/%s/caldef.xml",  site);			
 			doc = acq400_openDoc(fname, &nchan);
+			adc_cal_mode = adc_cal_mode0 = acq400_isCalibrated(doc);
+			pvPut(adc_cal_mode);
 		} state init2
 	}
 	state init2 {
@@ -160,3 +162,39 @@ ss calmon {
 		} state make_change
 	}
 }
+
+
+
+ss calmon_on_delay {
+	state init {
+		entry {
+			printf("calmon_on_delay %s entry\n", site);
+		}
+		when(delay(3) && (adc_cal_mode == 2)){
+			adc_cal_mode = 0;
+			pvPut(adc_cal_mode);
+			printf("calmon_on_delay %s init toggle OFF\n", site);
+		} state go_again
+
+		when(delay(3) && (adc_cal_mode != 2)){
+
+		} state calmon_on_delay_done
+	}
+
+	state go_again {
+		when(delay(1)){
+			adc_cal_mode = 2;
+			pvPut(adc_cal_mode);
+			printf("calmon_on_delay %s go_again\n", site);
+		} state calmon_on_delay_done
+	}
+	state calmon_on_delay_done {
+		entry {
+			printf("calmon_on_delay %s calmon_on_delay_done\n", site);
+		}
+		when(0) {
+
+		} state calmon_on_delay_done
+	}
+}
+
