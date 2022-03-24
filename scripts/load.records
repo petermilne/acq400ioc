@@ -884,6 +884,8 @@ load_mb_base() {
 			acq2106b=$(cat /sys/module/acq420fmc/parameters/is_acq2106B)
 			dblr '"db/acq2106clk.db","UUT='${HOST}',acq2106b='${acq2106b}',SPORT=S0C"';;
 
+	z7io*)
+			dblr '"db/hwmonvolts_mtca-rtm-2.db","UUT='${HOST}'"';;
 	kmcu*)
 			dblr '"db/hwmonvolts_mtca-rtm-2.db","UUT='${HOST}'"';;
 	*)
