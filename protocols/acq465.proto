@@ -32,3 +32,8 @@ acq465_get_overvoltage {
 	separator=" "; in "%d";
 }
 
+acq465_get_heartbeat {
+	out "acq465_heartbeat";
+	separator=" "; in "%u";
+}
+

@@ -3,6 +3,39 @@ record(bi, "${UUT}:${SITE}:ACQ465:READALL") {
 	field(DTYP, "stream")
 	field(INP,  "@acq465.proto acq465_readall ${SPORT}")
 	field(SCAN, "2 second")
+	field(FLNK, "${UUT}:${SITE}:ACQ465:HEARTBEAT")
+}
+
+record(aai, "${UUT}:${SITE}:ACQ465:HEARTBEAT" ) {
+ 	field(DTYP, "stream")
+ 	field(DESC, "ADC is running if this changes")
+ 	field(INP,  "@acq465.proto acq465_get_heartbeat ${SPORT}")
+ 	field(NELM, "8")
+ 	field(FTVL, "UCHAR")
+ 	field(FLNK, "${UUT}:${SITE}:ACQ465:HEARTBEAT:c")
+)
+
+record(longin, "${UUT}:${SITE}:ACQ465:HEARTBEAT:W") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "ADC lock status per chip summary")
+	
+}
+
+record(aSub, "${UUT}:${SITE}:ACQ465:HEARTBEAT:c") {
+	field(SNAM, "boolarray2u32")
+	
+	field(FTA,  "UCHAR")
+	field(NOA,  "8")
+	field(INPA, "${UUT}:${SITE}:ACQ465:HEARTBEAT")
+	
+	field(FTB,  "UCHAR")
+	field(NOB,  "1")
+	field(INPB, "127")
+	
+	field(FTVA, "LONG")
+	field(NOVA, "1")
+	field(OUTA, "${UUT}:${SITE}:ACQ465:HEARTBEAT:W PP" )	
+
 	field(FLNK, "${UUT}:${SITE}:ACQ465:LOCK")
 }
 record(aai, "${UUT}:${SITE}:ACQ465:LOCK") {
@@ -11,6 +44,26 @@ record(aai, "${UUT}:${SITE}:ACQ465:LOCK") {
 	field(INP,  "@acq465.proto acq465_get_lock ${SPORT}")
 	field(NELM, "8")
 	field(FTVL, "UCHAR")
+	field(FLNK, "${UUT}:${SITE}:ACQ465:LOCK:c")
+}
+
+record(longin, "${UUT}:${SITE}:ACQ465:LOCK:W") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "ADC lock status per chip summary")
+	
+}
+
+record(aSub, "${UUT}:${SITE}:ACQ465:LOCK:c") {
+	field(SNAM, "boolarray2u32")
+	
+	field(FTA,  "UCHAR")
+	field(NOA,  "8")
+	field(INPA, "${UUT}:${SITE}:ACQ465:LOCK")
+	
+	field(FTVA, "LONG")
+	field(NOVA, "1")
+	field(OUTA, "${UUT}:${SITE}:ACQ465:LOCK:W PP" )	
+
 	field(FLNK, "${UUT}:${SITE}:ACQ465:ERROR")
 }
 
@@ -19,9 +72,29 @@ record(aai, "${UUT}:${SITE}:ACQ465:ERROR") {
 	field(DESC, "ADC lock status per chip")
 	field(INP,  "@acq465.proto acq465_get_error ${SPORT}")
 	field(NELM, "8")
-	field(FTVL, "USHORT")
+	field(FTVL, "UCHAR")
+	field(FLNK, "${UUT}:${SITE}:ACQ465:ERROR:c")
+}
+
+record(longin, "${UUT}:${SITE}:ACQ465:ERROR:W") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "ADC error status per chip summary")	
+}
+
+record(aSub, "${UUT}:${SITE}:ACQ465:ERROR:c") {
+	field(SNAM, "boolarray2u32")
+	
+	field(FTA,  "UCHAR")
+	field(NOA,  "8")
+	field(INPA, "${UUT}:${SITE}:ACQ465:ERROR")
+	
+	field(FTVA, "LONG")
+	field(NOVA, "1")
+	field(OUTA, "${UUT}:${SITE}:ACQ465:ERROR:W PP" )
+	
 	field(FLNK, "${UUT}:${SITE}:ACQ465:OVERVOLTAGE")
 }
+
 
 record(aai, "${UUT}:${SITE}:ACQ465:OVERVOLTAGE") {
 	field(DTYP, "stream")
@@ -29,4 +102,23 @@ record(aai, "${UUT}:${SITE}:ACQ465:OVERVOLTAGE") {
 	field(INP,  "@acq465.proto acq465_get_overvoltage ${SPORT}")
 	field(NELM, "32")
 	field(FTVL, "UCHAR")
+	field(FLNK, "${UUT}:${SITE}:ACQ465:OVERVOLTAGE:c")
 }
+
+record(longin, "${UUT}:${SITE}:ACQ465:OVERVOLTAGE:W") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "ADC error status per chip summary")	
+}
+
+record(aSub, "${UUT}:${SITE}:ACQ465:OVERVOLTAGE:c") {
+	field(SNAM, "boolarray2u32")
+	
+	field(FTA,  "UCHAR")
+	field(NOA,  "32")
+	field(INPA, "${UUT}:${SITE}:ACQ465:OVERVOLTAGE")
+	
+	field(FTVA, "LONG")
+	field(NOVA, "1")
+	field(OUTA, "${UUT}:${SITE}:ACQ465:OVERVOLTAGE:W PP" )	
+}
+

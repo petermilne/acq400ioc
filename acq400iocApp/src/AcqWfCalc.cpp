@@ -254,7 +254,7 @@ long volts_to_raw(aSubRecord *prec) {
 		raw[ii] = static_cast<T>(yy);
 
 		if (::verbose && ii < 5){
-			printf("volts_to_raw [%d] %.2f -> %ld  # aslo %e aoff %e\n", ii, volts[ii], raw[ii], aslo, aoff);
+			printf("volts_to_raw [%d] %.2f -> %ld  # aslo %e aoff %e\n", ii, volts[ii], (long)raw[ii], aslo, aoff);
 		}
 	}
 	/* ideally set NORD in OUTPUT to NORD in input .. */
@@ -296,6 +296,34 @@ long cart2pol(aSubRecord *prec) {
 	return 0;
 }
 
+
+/* ARGS:  T: UCHAR
+ * Convert array of uchar to single long bitmask, TRUE if each value > threshold
+ * INPA: Array of bool
+ * INPB: Threshold (default = 0)
+ * VALA: LONG outputs.
+ */
+long boolarray2u32(aSubRecord* prec)
+{
+	unsigned char* bools = (unsigned char*)(prec->a);
+	unsigned *compact = (unsigned*)prec->vala;
+	int len = prec->noa;
+	unsigned char threshold = 0;
+	if (prec->nob == 1){
+		threshold = *(unsigned char*)prec->b;
+	}
+
+
+	unsigned cw = 0;
+
+	for (int ii = 0; ii < len; ++ii){
+		if (bools[ii] > threshold){
+			cw |= 1<<ii;
+		}
+	}
+	*compact = cw;
+	return 0;
+}
 
 long timebase(aSubRecord *prec) {
 	long pre = *(long*)prec->a;
@@ -497,6 +525,7 @@ static registryFunctionRef my_asub_Ref[] = {
        {"cart2pol", (REGISTRYFUNCTION) cart2pol<short>},
        {"cart2pol_LONG", (REGISTRYFUNCTION) cart2pol<long>},
        {"cart2pol_SHORT", (REGISTRYFUNCTION) cart2pol<short>},
+       {"boolarray2u32", (REGISTRYFUNCTION) boolarray2u32},
        {"timebase", (REGISTRYFUNCTION) timebase},
        {"spectrum", (REGISTRYFUNCTION) spectrum<short, MAXS>},
        {"spectrum_LONG", (REGISTRYFUNCTION) spectrum<long, MAXL>},
