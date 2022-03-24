@@ -118,5 +118,33 @@ record(aSub, "${UUT}:${SITE}:ACQ465:OVERVOLTAGE:c") {
 	field(FTVA, "LONG")
 	field(NOVA, "1")
 	field(OUTA, "${UUT}:${SITE}:ACQ465:OVERVOLTAGE:W PP" )	
+
+	field(FLNK, "${UUT}:${SITE}:ACQ465:FILTER_SETTLED")
+}
+
+record(aai, "${UUT}:${SITE}:ACQ465:FILTER_SETTLED") {
+	field(DTYP, "stream")
+	field(DESC, "fiter status per channel, NZ=datalockup")
+	field(INP,  "@acq465.proto acq465_get_filter_settled ${SPORT}")
+	field(NELM, "32")
+	field(FTVL, "UCHAR")
+	field(FLNK, "${UUT}:${SITE}:ACQ465:FILTER_SETTLED:c")
+}
+
+record(longin, "${UUT}:${SITE}:ACQ465:FILTER_SETTLED:W") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "filter status per channel")
+}
+
+record(aSub, "${UUT}:${SITE}:ACQ465:FILTER_SETTLED:c") {
+	field(SNAM, "boolarray2u32")
+
+	field(FTA,  "UCHAR")
+	field(NOA,  "32")
+	field(INPA, "${UUT}:${SITE}:ACQ465:FILTER_SETTLED")
+
+	field(FTVA, "LONG")
+	field(NOVA, "1")
+	field(OUTA, "${UUT}:${SITE}:ACQ465:FILTER_SETTLED:W PP" )
 }
 
