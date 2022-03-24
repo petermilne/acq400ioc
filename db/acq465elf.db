@@ -13,12 +13,11 @@ record(aai, "${UUT}:${SITE}:ACQ465:HEARTBEAT" ) {
  	field(NELM, "8")
  	field(FTVL, "UCHAR")
  	field(FLNK, "${UUT}:${SITE}:ACQ465:HEARTBEAT:c")
-)
+}
 
 record(longin, "${UUT}:${SITE}:ACQ465:HEARTBEAT:W") {
 	field(DTYP, "Soft Channel")
-	field(DESC, "ADC lock status per chip summary")
-	
+	field(DESC, "ADC lock status per chip summary")	
 }
 
 record(aSub, "${UUT}:${SITE}:ACQ465:HEARTBEAT:c") {
@@ -50,7 +49,6 @@ record(aai, "${UUT}:${SITE}:ACQ465:LOCK") {
 record(longin, "${UUT}:${SITE}:ACQ465:LOCK:W") {
 	field(DTYP, "Soft Channel")
 	field(DESC, "ADC lock status per chip summary")
-	
 }
 
 record(aSub, "${UUT}:${SITE}:ACQ465:LOCK:c") {
