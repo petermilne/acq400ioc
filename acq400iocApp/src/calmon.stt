@@ -177,3 +177,38 @@ ss calmon {
 		} state make_change
 	}
 }
+
+
+
+ss calmon_on_delay {
+	state init {
+		entry {
+			printf("calmon_on_delay %s entry\n", site);
+		}		
+		when(delay(3) && (adc_cal_mode == 2)){
+			adc_cal_mode = 0;
+			pvPut(adc_cal_mode);
+			printf("calmon_on_delay %s init toggle OFF\n", site);
+		} state go_again
+		
+		when(delay(3) && (adc_cal_mode != 2)){
+			
+		} state calmon_on_delay_done	
+	}
+	
+	state go_again {
+		when(delay(1)){
+			adc_cal_mode = 2;
+			pvPut(adc_cal_mode);
+			printf("calmon_on_delay %s go_again\n", site);
+		} state calmon_on_delay_done
+	}
+	state calmon_on_delay_done {
+		entry {
+			printf("calmon_on_delay %s calmon_on_delay_done\n", site);
+		}
+		when(0) {
+			
+		} state calmon_on_delay_done
+	}
+}
