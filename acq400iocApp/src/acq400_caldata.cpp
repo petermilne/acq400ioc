@@ -30,6 +30,7 @@
 
 extern "C" {
 	void* acq400_openDoc(const char* docfile, int* nchan);
+	int acq400_isCalibrated(void* prv);
 	int acq400_getChannel(void *prv, int ch, const char* sw, float* eslo, float* eoff, int nocal);
 	int acq400_isData32(void* prv);
 };
@@ -102,6 +103,31 @@ static int _acq400_getChannel(XMLNode *range, int ch, float* eslo, float* eoff, 
 	if (!nominal) RETNULL;
 	return set_values(nominal, eslo, eoff);
 	return 0;
+}
+
+#define RETERRNULL(node2, node1, key) \
+	if (((node2) = (node1)->FirstChildElement(key)) == 0){\
+		printf("acq400_openDoc() ERROR:%d\n", __LINE__); \
+		return 0;\
+	}
+
+int acq400_isCalibrated(void *prv)
+/** return 0: default (no cal file), 1: cal file with range defaults but uncalibrated  2: calibrated */
+{
+	if (prv == 0){
+		return 0;
+	}
+	XMLDocument* doc = static_cast<XMLDocument*>(prv);
+	XMLNode* node;
+	RETERRNULL(node, doc, "ACQ");
+	RETERRNULL(node, node, "AcqCalibration");
+	RETERRNULL(node, node, "Data");
+	RETERRNULL(node, node, "Range");
+	if (node->FirstChildElement("Calibrated")){
+		return 2;
+	}else{
+		return 1;
+	}
 }
 int acq400_isData32(void* prv)
 {

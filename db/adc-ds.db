@@ -16,5 +16,6 @@ record (mbbo, "${UUT}:${SITE}:ADC_CAL") {
         field(ZRST, "default")
         field(ONST, "caldef")
         field(TWST, "calibrated")
-        field(VAL,  "2")
+	field(VAL,  "0")
+	field(PINI, "YES")
 }
