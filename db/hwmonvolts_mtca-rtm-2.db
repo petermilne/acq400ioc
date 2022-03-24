@@ -39,6 +39,8 @@ record(ai, "${UUT}:SYS:2V5P_REF") {
         field(PREC, "2")         
 }
 
+alias("${UUT}:SYS:2V5P_REF", "${UUT}:SYS:VADJ")
+
 
 record(ai, "${UUT}:SYS:VAP") {
         field(DTYP, "dsSysfsAi")
