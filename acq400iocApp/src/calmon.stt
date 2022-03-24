@@ -15,7 +15,7 @@ int hi_res_mode; assign hi_res_mode to "{uut}:1:ADC_MODE";
 monitor hi_res_mode;
 int hi_res_mode0;
 
-int adc_cal_mode; assign adc_cal_mode to "{uut}:1:ADC_CAL";
+int adc_cal_mode; assign adc_cal_mode to "{uut}:{site}:ADC_CAL";
 monitor adc_cal_mode;
 int adc_cal_mode0;
 
