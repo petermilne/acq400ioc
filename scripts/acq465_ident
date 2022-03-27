@@ -1,0 +1,20 @@
+#!/bin/sh
+
+if [ "x$1" = "x" ]; then
+	SITE=${SITE:-1}
+	sites=$SITE
+else
+	sites="$*"
+fi
+
+HN=$(hostname)
+
+offset=-80
+
+for site in $sites; do
+	for ch in $(seq 1 32); do
+		chname=$(printf %02d $ch)
+		caput $HN:$site:ACQ465:OFFSET:$chname $offset
+		offset=$((offset+5))		
+	done
+done
