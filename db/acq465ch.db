@@ -1,6 +1,6 @@
 # acq465 per channel PV's : OFFSET, GAIN.
 
-record(ao, "${SITE}:ACQ465:OFFSET:${CH}") {
+record(ao, "${UUT}:${SITE}:ACQ465:OFFSET:${CH}") {
 	field(DTYP, "stream")
 	field(OUT,  "@acq465.proto acq465_set_offset(${CH}) ${SPORT}")
 	field(SCAN, "Passive")
@@ -17,7 +17,7 @@ record(ao, "${SITE}:ACQ465:OFFSET:${CH}") {
 	field(PINI, "YES")
 }
 
-record(ao, "${SITE}:ACQ465:GAIN:${CH}") {
+record(ao, "${UUT}:${SITE}:ACQ465:GAIN:${CH}") {
 	field(DTYP, "stream")
 	field(OUT,  "@acq465.proto acq465_set_gain(${CH}) ${SPORT}")
 	field(SCAN, "Passive")
