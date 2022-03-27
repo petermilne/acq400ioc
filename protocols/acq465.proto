@@ -42,3 +42,13 @@ acq465_get_filter_settled {
 	separator=" "; in "%u";
 }
 
+acq465_set_gain {
+	out "acq465_gain \$1 %d";
+	in;
+}
+
+acq465_set_offset {
+	out "acq465_offset \$1 %d";
+	in;
+}
+
