@@ -472,8 +472,12 @@ load_400() {
 			chname=$(printf "%02d" $ch)
 			dblr '"db/acq465ch.db","'${cprams},CH=${chname}'"'
 		done
-		if [ ${site} -eq $FIRST_SITE ]; then 	    
-			echo "[ -e  /var/www/d-tacq/rc-user-complete ] && set.site ${site} acq465_adc.init" >/etc/acq400/0/on_sync_role
+		if [ ${site} -eq $FIRST_SITE ]; then
+		    if [ -e /mnt/local/sysconfig/on_sync_role ]; then
+                ln -s /mnt/local/sysconfig/on_sync_role /etc/acq400/0/on_sync_role
+            else
+                echo "[ -e  /var/www/d-tacq/rc-user-complete ] && set.site ${site} acq465_adc.init" >/etc/acq400/0/on_sync_role
+            fi
 			chmod a+rx /etc/acq400/0/on_sync_role
 			dblr '"db/acq465elfM.db","'${cprams}'"'
 		fi;;
