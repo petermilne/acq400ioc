@@ -103,7 +103,7 @@ isACQ43x() {
 
 hasNACC_BYPASS() {
 	case $1 in
-	$MT_ACQ423|$MT_ACQ424) echo "yes";;
+	$MT_ACQ423|$MT_ACQ424|$MT_ACQ425|$MT_ACQ435) echo "yes";;
 	*) echo "no";;
 	esac
 }
