@@ -27,7 +27,7 @@ for site in $(echo $sites | tr , \  ); do
 		echo dbLoadRecords\(\"db/judgementWin.db\",\"${PRAMS},NSAM=${nsam},SITE=${site},CH=${CH},IX=${ix}\"\)
 		ix=$((ix+1))
 	done
-	echo dbLoadRecords\(\"db/judgementWin.db\",\"${PRAMS},NSAM=${nsam},SITE=${site},CH=ALL,IX=${NCHAN}\"\)
+	echo dbLoadRecords\(\"db/judgementWinM.db\",\"${PRAMS},NSAM=${nsam},SITE=${site},CH=ALL,IX=${NCHAN}\"\)
 	echo >>/tmp/st_post.cmd "seq judge_win_clr_all \"uut=${HOST},site=${site},nchan=${nchan},wmin=2,wmax=${nsam},priority=0\""
 done
 

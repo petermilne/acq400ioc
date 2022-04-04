@@ -1,0 +1,7 @@
+#!/bin/sh
+
+HN=$(hostname)
+PV=${1:-${HN}:1:JDG:MU:01:V.VALC}
+TIMEOUT=${TIMEOUT:-10}
+
+timeout $TIMEOUT camonitor $PV | wc -l | awk -v TO=${TIMEOUT} '{ print $1/TO" Hz" }'

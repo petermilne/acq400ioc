@@ -1,6 +1,8 @@
+# judgementWin.db : CH01 .. CH32
 record(longout, "${UUT}:${SITE}:JDG:${CH}:WIN:L")
 {
-	field(DTYP, "Soft Channel")	
+	field(DTYP, "asynInt32")
+	field(OUT,  "@asyn($(PORT),$(IX),$(TIMEOUT))WINL")	
 	field(DRVH, "${NSAM}")
 	field(DRVL,  "2")
 	field(HOPR, "${NSAM}")
@@ -11,7 +13,8 @@ record(longout, "${UUT}:${SITE}:JDG:${CH}:WIN:L")
 
 record(longout, "${UUT}:${SITE}:JDG:${CH}:WIN:R")
 {
-	field(DTYP, "Soft Channel")
+	field(DTYP, "asynInt32")
+	field(OUT,  "@asyn($(PORT),$(IX),$(TIMEOUT))WINR")
 	field(DRVH, "${NSAM}")
 	field(DRVL,  "2")	
 	field(HOPR, "${NSAM}")
@@ -20,13 +23,7 @@ record(longout, "${UUT}:${SITE}:JDG:${CH}:WIN:R")
 	field(PINI,  "YES")	
 }
 
-record(bo, "${UUT}:${SITE}:JDG:RESET:WIN")
-{
-	field(DESC, "Write here to init L/R")
-	field(DTYP, "Soft Channel")
-}
-
-# uncomment this section if you want the JDG WIN L/R to control the stats as well
+# JDG WIN L/R to control the stats as well
 
 record(aSub, "${UUT}:${SITE}:AI:WF:${CH}:V") {	
 	field(FTL,  "LONG")
