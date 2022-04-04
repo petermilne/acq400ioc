@@ -8,9 +8,13 @@ record(longout, "${UUT}:${SITE}:JDG:${CH}:WIN:L")
 	field(LOPR,  "2")	
 	field(VAL,   "2")
 	field(PINI,  "YES")
+	field(FLNK,  "${UUT}:${SITE}:AI:${WF}:W1 PP")
 }
 
-
+record(longout, "${UUT}:${SITE}:AI:${WF}:W1") {
+	field(DOL,  "${UUT}:${SITE}:JDG:${CH}:WIN:L")
+	field(OMSL, "closed_loop")
+}
 
 record(longout, "${UUT}:${SITE}:JDG:${CH}:WIN:R")
 {
@@ -20,8 +24,15 @@ record(longout, "${UUT}:${SITE}:JDG:${CH}:WIN:R")
 	field(HOPR, "${NSAM}")
 	field(LOPR,  "2")
 	field(VAL,   "${NSAM}")
-	field(PINI,  "YES")	
+	field(PINI,  "YES")
+	field(FLNK,  "${UUT}:${SITE}:AI:${WF}:W1 PP")	
 }
+
+record(longout, "${UUT}:${SITE}:AI:${WF}:W2") {
+	field(DOL,  "${UUT}:${SITE}:JDG:${CH}:WIN:R")
+	field(OMSL, "closed_loop")
+}
+
 
 record(bo, "${UUT}:${SITE}:JDG:RESET:WIN")
 {
