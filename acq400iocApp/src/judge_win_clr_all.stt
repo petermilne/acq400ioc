@@ -28,13 +28,18 @@ int ch;
 int verbose;
 
 
-
+/* seq judge_win_clr_all "uut=z7io_011,site=1,nchan=32,wmin=2,wmax=4096,priority=0" */
 
 int reset; assign reset to "{uut}:{site}:JDG:RESET:WIN";	monitor reset;
+int all_win_r; assign all_win_r to "{uut}:{site}:JDG:ALL:WIN:R"; monitor all_win_r;
+int all_win_l; assign all_win_l to "{uut}:{site}:JDG:ALL:WIN:L"; monitor all_win_l;
 
 %{
 #include <stdlib.h>
 }%
+
+int all_win_r0;
+int all_win_l0;
 
 ss judge_win_clr_all {
 	state init{
@@ -64,6 +69,8 @@ ss judge_win_clr_all {
 				snprintf(pvname, sizeof(pvname), "%s:%s:JDG:%02d:WIN:R", uut, site, ch);
 				pvAssign(winr[ch], pvname);
 			}
+			pvGet(all_win_r); all_win_r0 = all_win_r;
+			pvGet(all_win_l); all_win_l0 = all_win_l;
 		}
 		when() {
 
@@ -72,7 +79,17 @@ ss judge_win_clr_all {
 	state wait_action {
 		when(reset){
 			reset = 0; pvPut(reset);
+			all_win_r0 = all_win_r = wmax; pvPut(all_win_r);
+			all_win_l0 = all_win_l = wmin; pvPut(all_win_l);
 		} state commit
+		
+		when(all_win_r != all_win_r0){
+			all_win_r0 = all_win_r;
+		} state commit_r
+		
+		when(all_win_l != all_win_l0){
+			all_win_l0 = all_win_l;
+		} state commit_l		
 	}
 	
 	state commit {
@@ -86,4 +103,25 @@ ss judge_win_clr_all {
 		
 		} state wait_action
 	}
+	
+	state commit_r {
+		entry { 
+			for (ch = 1; ch <= nchan; ++ch){				
+				winr[ch] = all_win_r; pvPut(winr[ch]);
+			}						
+		}
+		when() {
+			
+		} state wait_action
+	}
+	state commit_l {
+		entry { 
+			for (ch = 1; ch <= nchan; ++ch){				
+				winl[ch] = all_win_l; pvPut(winl[ch]);
+			}						
+		}
+		when() {
+			
+		} state wait_action
+	}	
 }

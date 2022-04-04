@@ -36,6 +36,9 @@ using namespace std;
 #include "Buffer.h"
 #include "ES.h"
 
+
+#define ADDR_WIN_ALL_CALLBACKS_DIDNAEWORK 1
+
 static const char *driverName="acq400JudgementAsynPortDriver";
 
 void task_runner(void *drvPvt)
@@ -510,6 +513,9 @@ class acq400JudgementImpl : public acq400Judgement {
 		if (value > nsam) 	value = nsam;
 
 		if (addr == ADDR_WIN_ALL){
+#ifdef ADDR_WIN_ALL_CALLBACKS_DIDNAEWORK
+			;
+#else
 			for (int ic = 0; ic < nchan; ++ic){
 				winx[ic] = value;
 				printf("setIntegerParam(%d, %d, %d)\n", ic, p_winx, value);
@@ -522,6 +528,8 @@ class acq400JudgementImpl : public acq400Judgement {
 				//callParamCallbacks(ic, ic);
 				//callParamCallbacks(ic, p_winx);	         // callParamCallbacks(ic, p_winx) seems backwards, but matches setIntegerParam
 			}
+			callParamCallbacks(ADDR_WIN_ALL);
+#endif
 		}else{
 			//printf("handle_window_limit_change addr:%d p_winx:%d value:%d\n", addr, p_winx, value);
 			winx[addr] = value;

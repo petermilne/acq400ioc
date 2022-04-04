@@ -1,7 +1,6 @@
 record(longout, "${UUT}:${SITE}:JDG:${CH}:WIN:L")
 {
-	field(DTYP, "asynInt32")
-	field(OUT,  "@asyn($(PORT),$(IX),$(TIMEOUT))WINL")
+	field(DTYP, "Soft Channel")	
 	field(DRVH, "${NSAM}")
 	field(DRVL,  "2")
 	field(HOPR, "${NSAM}")
@@ -12,8 +11,7 @@ record(longout, "${UUT}:${SITE}:JDG:${CH}:WIN:L")
 
 record(longout, "${UUT}:${SITE}:JDG:${CH}:WIN:R")
 {
-	field(DTYP, "asynInt32")
-	field(OUT,  "@asyn($(PORT),$(IX),$(TIMEOUT))WINR")
+	field(DTYP, "Soft Channel")
 	field(DRVH, "${NSAM}")
 	field(DRVL,  "2")	
 	field(HOPR, "${NSAM}")
