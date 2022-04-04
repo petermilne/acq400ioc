@@ -30,11 +30,11 @@ record(bo, "${UUT}:${SITE}:JDG:RESET:WIN")
 
 # uncomment this section if you want the JDG WIN L/R to control the stats as well
 
-#record(aSub, "${UUT}:${SITE}:AI:WF:${CH}:V") {	
-#	field(FTL,  "LONG")
-#	field(NOL,  "1")
-#	field(INPL, "${UUT}:${SITE}:JDG:${CH}:WIN:L")
-#	field(FTM,  "LONG")
-#	field(NOM,  "1")
-#	field(INPM, "${UUT}:${SITE}:JDG:${CH}:WIN:R")	
-#}
+record(aSub, "${UUT}:${SITE}:AI:WF:${CH}:V") {	
+	field(FTL,  "LONG")
+	field(NOL,  "1")
+	field(INPL, "${UUT}:${SITE}:JDG:${CH}:WIN:L")
+	field(FTM,  "LONG")
+	field(NOM,  "1")
+	field(INPM, "${UUT}:${SITE}:JDG:${CH}:WIN:R")	
+}
