@@ -3,9 +3,11 @@
 nsam=${SIZE:-1024}
 BURSTS_PER_BUFFER=${BURSTS_PER_BUFFER:-1}
 NCHAN=$(get.site 0 NCHAN)
-echo acq400JudgementConfigure\("J1", ${NCHAN}, ${nsam}, 4, ${BURSTS_PER_BUFFER}\)
+WSZ=4
+MAXCODE=8388608
+echo acq400JudgementConfigure\("J1", ${NCHAN}, ${nsam}, ${WSZ}, ${BURSTS_PER_BUFFER}\)
 PRAMS="UUT=${HOST},PORT=J1,ADDR=0,TIMEOUT=0,NCHAN=${NCHAN},NCHAN1=$((NCHAN+1))"
-echo dbLoadRecords\(\"db/judgementCommon.db\",\"${PRAMS}\"\)
+echo dbLoadRecords\(\"db/judgementCommon.db\",\"${PRAMS},MAXCODE=${MAXCODE}\"\)
 echo dbLoadRecords\(\"db/asynRecord.db\",\"P=${HOST}:,R=asyn:J1,PORT=J1,ADDR=0,OMAX=80,IMAX=80,TB3=0,TIB0=0\"\)
 echo dbLoadRecords\(\"db/asynRecord.db\",\"P=${HOST}:,R=asyn:J1,PORT=J1,ADDR=3,OMAX=80,IMAX=80,TB3=0,TIB0=0\"\)
 
@@ -22,7 +24,7 @@ for site in $(echo $sites | tr , \  ); do
 		echo dbLoadRecords\(\"db/judgementWin.db\",\"${PRAMS},NSAM=${nsam},SITE=${site},CH=${CH},IX=${ix}\"\)		
 		ix=$((ix+1))
 	done
-	echo dbLoadRecords\(\"db/judgementWin.db\",\"${PRAMS},NSAM=${nsam},SITE=${site},CH=ALL,IX=${NCHAN}\"\)
+	echo dbLoadRecords\(\"db/judgementWinM.db\",\"${PRAMS},NSAM=${nsam},SITE=${site},CH=ALL,IX=${NCHAN}\"\)
 	echo >>/tmp/st_post.cmd "seq judge_win_clr_all \"uut=${HOST},site=${site},nchan=${nchan},wmin=2,wmax=${nsam},priority=0\""
 done
 

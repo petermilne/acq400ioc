@@ -7,6 +7,41 @@ record(longin, "${UUT}:JDG:BN")
 	field(TSE,  "-2")
 }
 
+
+record(mbbo, "${UUT}:JDG:MASK_PCT")
+{
+	field(DTYP, "Soft Channel")
+	field(DESC, "Mask from data +/-%FS")
+	field(NOBT, "4")
+	field(ZRST, "DISABLE")
+	field(ONST, "20%")
+	field(TWST, "10%")
+	field(THST, "5%")
+	field(FRST, "2%")
+	field(FVST, "1%")
+	field(SXST, "0.5%")
+	field(SVST, "0.2%")
+	field(EIST, "0.1%")
+	field(ZRVL, "1000")
+	field(ONVL, "200" )
+	field(TWVL, "100" )
+	field(THVL, "50"  )
+	field(FRVL, "20"  )
+	field(FVVL, "10"  )
+	field(SXVL, "5"   )
+	field(SVVL, "2"   )
+	field(EIVL, "1"   )
+	field(FLNK, "${UUT}:JDG:MASK_PCT:c")
+}
+
+record calcout("${UUT}:JDG:MASK_PCT:c")
+{
+	field(INPA, "${UUT}:JDG:MASK_PCT")
+	field(INPB, "${MAXCODE}")
+	field(CALC, "B*A/1000")
+	field(DTYP, "asynInt32")
+	field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))MAKE_MASK_FROM_DATA")
+}
 record(longout, "${UUT}:JDG:MASK_FROM_DATA")
 {
 	field(PINI, "0")
