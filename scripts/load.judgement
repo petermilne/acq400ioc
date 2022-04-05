@@ -12,7 +12,7 @@ WSZ=2
 MAXCODE=32768
 echo acq400JudgementConfigure\("J1", ${NCHAN}, ${nsam}, ${WSZ}, ${BURSTS_PER_BUFFER}, ${NDMA}\)
 PRAMS="UUT=${HOST},PORT=J1,ADDR=0,TIMEOUT=0,NCHAN=${NCHAN},NCHAN1=$((NCHAN+1))"
-echo dbLoadRecords\(\"db/judgementCommon.db\",\"${PRAMS},MAXCODE=${MAXCODE}\"\)
+echo dbLoadRecords\(\"db/judgementCommon.db\",\"${PRAMS},MAXCODE=${MAXCODE},MM1=$((MAXCODE-1))\"\)
 echo dbLoadRecords\(\"db/asynRecord.db\",\"P=${HOST}:,R=asyn:J1,PORT=J1,ADDR=0,OMAX=80,IMAX=80,TB3=0,TIB0=0\"\)
 echo dbLoadRecords\(\"db/asynRecord.db\",\"P=${HOST}:,R=asyn:J1,PORT=J1,ADDR=3,OMAX=80,IMAX=80,TB3=0,TIB0=0\"\)
 

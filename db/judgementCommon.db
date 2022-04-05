@@ -34,14 +34,24 @@ record(mbbo, "${UUT}:JDG:MASK_PCT")
 	field(FLNK, "${UUT}:JDG:MASK_PCT:c")
 }
 
-record (calcout, "${UUT}:JDG:MASK_PCT:c")
+record (calc, "${UUT}:JDG:MASK_PCT:c")
 {
-	field(INPA, "${UUT}:JDG:MASK_PCT")
+	field(INPA, "${UUT}:JDG:MASK_PCT.RVAL")
 	field(INPB, "${MAXCODE}")
 	field(CALC, "B*A/1000")
+	field(FLNK, "${UUT}:JDG:MASK_FROM_DATA:w PP")	
+}
+
+record(longout, "${UUT}:JDG:MASK_FROM_DATA:w")
+{
 	field(DTYP, "asynInt32")
 	field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))MAKE_MASK_FROM_DATA")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:JDG:MASK_PCT:c")
+	field(DRVL, "0")
+	field(DRVH, "${MM1}")
 }
+
 record(longout, "${UUT}:JDG:MASK_FROM_DATA")
 {
 	field(PINI, "0")
