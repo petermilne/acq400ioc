@@ -366,6 +366,77 @@ short& RawBuffer<short, 2>::element(int is, int ic, short& val) {
 }
 
 
+/** concrete class does the data handling, but NO judgement for speed. */
+template <class ETYPE>
+class acq400JudgementNJ : public acq400Judgement {
+
+	ETYPE* RAW;
+
+	static const asynParamType AATYPE;
+	const unsigned ndma;			/* 1 or 2 */
+
+	bool calculate(ETYPE* raw)
+	{
+		for (int isam = 0; isam < nsam; ++isam){
+			for (int ic = 0; ic < nchan; ++ic){
+				int ib = isam*nchan+ic;
+				ETYPE xx = isam > FIRST_SAM? raw[ib]: 0;        // keep the ES out of the output data..
+
+				RAW[ic*nsam+isam] = xx;			 	// for plotting
+			}
+		}
+		for (int ic = 0; ic < nchan; ic++){
+			doDataUpdateCallbacks(ic);
+		}
+		return false;
+	}
+protected:
+	void doMaskUpdateCallbacks(int ic){
+		;
+	}
+	void doDataUpdateCallbacks(int ic){
+		assert(0);
+	}
+public:
+	acq400JudgementNJ(const char* portName, int _nchan, int _nsam, int _bursts_per_buffer, unsigned _ndma) :
+		acq400Judgement(portName, _nchan, _nsam, _bursts_per_buffer),
+		ndma(_ndma)
+	{
+		createParam(PS_RAW, AATYPE,    	&P_RAW);
+		RAW    = new ETYPE[nsam*nchan];
+
+		fprintf(stderr, "acq400JudgementNJ() : DEMUX but NO JUDGEMENT\n");
+	}
+	virtual void handle_burst(int vbn, int offset)
+	{
+		ETYPE* raw = (ETYPE*)Buffer::the_buffers[ib]->getBase()+offset;
+		handle_es((unsigned*)raw);
+
+
+		updateTimeStamp(offset);
+		setIntegerParam(P_SAMPLE_COUNT, sample_count);
+		setIntegerParam(P_CLOCK_COUNT,  clock_count[1]);
+		/** @@todo: not sure how to merge EPICS and SAMPLING timestamps.. go pure EPICS */
+		setIntegerParam(P_BURST_COUNT, burst_count);
+
+		calculate(raw);
+	}
+};
+
+template<>
+void acq400JudgementNJ<epicsInt16>::doDataUpdateCallbacks(int ic)
+{
+	doCallbacksInt16Array(&RAW[ic*nsam], nsam, P_RAW, ic);
+}
+
+template<>
+void acq400JudgementNJ<epicsInt32>::doDataUpdateCallbacks(int ic)
+{
+	doCallbacksInt32Array(&RAW[ic*nsam], nsam, P_RAW, ic);
+}
+template<> const asynParamType acq400JudgementNJ<epicsInt16>::AATYPE = asynParamInt16Array;
+template<> const asynParamType acq400JudgementNJ<epicsInt32>::AATYPE = asynParamInt32Array;
+
 /** Concrete Judgement class specialised by data type */
 template <class ETYPE>
 class acq400JudgementImpl : public acq400Judgement {
@@ -646,8 +717,6 @@ public:
 			setIntegerParam(m32, P_RESULT_MASK32, FAIL_MASK32[m32]);
 			callParamCallbacks(m32);
 		}
-
-
 	}
 	/** Called when asyn clients call pasynInt32->write(). */
 	virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value)
@@ -788,12 +857,22 @@ int acq400Judgement::factory(const char *portName, int nchan, int maxPoints, uns
 		fprintf(stderr, "%s ERROR: 2D support NOT implemented\n", __FUNCTION__);
 		exit(1);
 	}
+	int judgementNJ = ::getenv_default("acq400JudgementNJ", 0);
+
 	switch(data_size){
 	case sizeof(short):
-		new acq400JudgementImpl<epicsInt16> (portName, nchan, maxPoints, bursts_per_buffer, ndma);
+		if (judgementNJ){
+			new acq400JudgementNJ<epicsInt16> (portName, nchan, maxPoints, bursts_per_buffer, ndma);
+		}else{
+			new acq400JudgementImpl<epicsInt16> (portName, nchan, maxPoints, bursts_per_buffer, ndma);
+		}
 		return(asynSuccess);
 	case sizeof(long):
-		new acq400JudgementImpl<epicsInt32> (portName, nchan, maxPoints, bursts_per_buffer, ndma);
+		if (judgementNJ){
+			new acq400JudgementNJ<epicsInt32> (portName, nchan, maxPoints, bursts_per_buffer, ndma);
+		}else{
+			new acq400JudgementImpl<epicsInt32> (portName, nchan, maxPoints, bursts_per_buffer, ndma);
+		}
 		return(asynSuccess);
 	default:
 		fprintf(stderr, "ERROR: %s data_size %u NOT supported must be %u or %u\n",

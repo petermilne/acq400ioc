@@ -55,7 +55,7 @@ public:
 		const char *portName, int nchan, int maxPoints, unsigned data_size, int bursts_per_buffer, unsigned ndma);
 	static int verbose;
 	virtual void task();
-	virtual void fill_request_task(void) = 0;
+	virtual void fill_request_task(void) {};
 	virtual asynStatus updateTimeStamp(int offset);
 
 protected:
