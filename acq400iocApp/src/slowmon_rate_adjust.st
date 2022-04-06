@@ -6,6 +6,7 @@ program slowmon_rate_adjust
 option +r;
 
 string sync_role; assign sync_role 	to "{uut}:SYS:SYNC_ROLE";  monitor sync_role;
+int intclk_hz;	  assign intclk_hz	to "{uut}:{s1}:INTCLK_HZ"; monitor intclk_hz;
 
 int slowmon_fs;   assign slowmon_fs 	to "{uut}:0:SLOWMON:FS"; monitor slowmon_fs;
 int slowmon_fin;  assign slowmon_fin 	to "{uut}:0:SLOWMON:FIN";
@@ -22,10 +23,24 @@ int nacc_pres_lim;assign nacc_pres_lim 	to "{uut}:0:NACC:PRES.HOPR";
 
 
 %{
-int getfs(char* _sync_role) {
+void write_internal_role(int _intclk_hz)
+{
+	FILE* fp = fopen("/dev/shm/role", "w");
+	if (fp == 0){
+		perror("/dev/shm/role");
+	}else{
+		fprintf(fp, "internal %d", _intclk_hz);
+		fclose(fp);
+	}
+}
+int getfs(char* _sync_role, int _intclk_hz) {
 	int _fs;
 	char mult = '\0';
-	if (sscanf(_sync_role, "%*s %d%c", &_fs, &mult) >= 1){
+	
+	if (strcmp(_sync_role, "role not set") == 0 || strstr(_sync_role, "internal")){
+		write_internal_role(_intclk_hz);
+		return _intclk_hz;
+	}else if (sscanf(_sync_role, "%*s %d%c", &_fs, &mult) >= 1){
 		switch (mult){
 		case 'M':
 			return _fs*1000000;
@@ -34,8 +49,9 @@ int getfs(char* _sync_role) {
 		default:
 			return _fs;
 		}
-	}
-	return 66666;
+	}else{
+		return 66666;	
+	}	
 }
 
 }%
@@ -57,10 +73,11 @@ ss slowmon_rate_adjust {
 			}
 			pvGet(nacc_pres_lim);
 			pvGet(sync_role);
+			pvGet(intclk_hz);
 			if (macValueGet("verbose")){
 				printf("sync_role \"%s\"\n", sync_role);
 			}
-			fs = getfs(sync_role);
+			fs = getfs(sync_role, intclk_hz);
 			if (fs == 0){
 				printf("ERROR: fs==0 sync_role:%s\n", sync_role);
 				fs=100000;
@@ -132,7 +149,7 @@ ss slowmon_rate_adjust {
 		}
 		when(slowmon_fs != slowmon_fs0 || strcmp(sync_role, sync_role0)) {
 			strcpy(sync_role0, sync_role);
-			fs = getfs(sync_role);
+			fs = getfs(sync_role, intclk_hz);
 			slowmon_fs0 = slowmon_fs;
 		} state make_change
 		

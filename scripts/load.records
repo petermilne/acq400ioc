@@ -651,7 +651,8 @@ load_400() {
 					presmax=1
 				fi
 				dblr '"db/slowmon.db","'$mprams',PRESMAX='${presmax}',SPORT=SS0"'
-				echo "seq slowmon_rate_adjust \"uut=${HOST},verbose=${SLOWMON_VERBOSE:-0}\""
+				s1=$(get.site 0 sites | tr , \ | awk '{ print $1 }')
+				echo "seq slowmon_rate_adjust \"uut=${HOST},s1=${s1},verbose=${SLOWMON_VERBOSE:-0}\""
 			fi
 		fi
 	fi	
