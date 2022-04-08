@@ -650,7 +650,7 @@ load_400() {
 				else
 					presmax=1
 				fi
-				dblr '"db/slowmon.db","'$mprams',PRESMAX='${presmax}',SPORT=SS0"'
+				dblr '"db/slowmon.db","'$mprams',PRESMAX='${presmax}'"'
 				s1=1				
 				[ -e /etc/acq400/0/sites ] && s1=$(cat /etc/acq400/0/sites | tr , \ | awk '{ print $1 }')
 				echo "seq slowmon_rate_adjust \"uut=${HOST},s1=${s1},verbose=${SLOWMON_VERBOSE:-0}\""
