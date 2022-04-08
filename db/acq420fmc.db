@@ -123,14 +123,6 @@ record(stringin, "${UUT}:${SITE}:stats") {
 	field(INP, "@/dev/acq400.${SITE}.knobs/stats")
 }
 
-record(bo, "${UUT}:${SITE}:data32") {
-	field(DTYP, "boAcqHost")
-	field(OUT,  "@/dev/acq400.${SITE}.knobs/data32")
-	field(PINI, "YES")
-	field(DESC, "select 32 bit data packing")
-	field(ZNAM, "0")
-	field(ONAM, "1")
-}
 
 record(mbbo, "${UUT}:${SITE}:SIG:clk_counter_src")
 {
