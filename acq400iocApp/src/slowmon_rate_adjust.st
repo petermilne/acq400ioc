@@ -19,8 +19,8 @@ int nacc_pres;	  assign nacc_pres 	to "{uut}:0:NACC:PRES";
 int nacc_pres_lim;assign nacc_pres_lim 	to "{uut}:0:NACC:PRES.HOPR";
 
 #define NACC_LIM	256
-#define SLOWMON_FIN_MAX 64
 
+int SLOWMON_FIN_MAX; assign SLOWMON_FIN_MAX to "{uut}:0:SLOWMON:FIN.DRVH";
 
 %{
 void write_internal_role(int _intclk_hz)
@@ -74,6 +74,7 @@ ss slowmon_rate_adjust {
 			pvGet(nacc_pres_lim);
 			pvGet(sync_role);
 			pvGet(intclk_hz);
+			pvGet(SLOWMON_FIN_MAX);
 			if (macValueGet("verbose")){
 				printf("sync_role \"%s\"\n", sync_role);
 			}

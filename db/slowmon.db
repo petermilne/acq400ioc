@@ -15,8 +15,8 @@ record(longout, "${UUT}:0:SLOWMON:FS") {
 	field(DTYP, "stream")
 	field(DESC, "SLOWMON output sample rate")
 	field(OUT,  "@slowmon.proto setSlowmonFs S0")
-	field(LOPR, "1")
-	field(HOPR, "64")
+	field(DRVL, "1")
+	field(DRVH, "64")
 	field(EGU,  "Hz")
 	field(FLNK, "${UUT}:0:SLOWMON:NACC")
 }
@@ -25,8 +25,8 @@ record(longout, "${UUT}:0:SLOWMON:FIN") {
 	field(DTYP, "stream")
 	field(DESC, "SLOWMON input sample rate from HW")
 	field(OUT,  "@slowmon.proto setSlowmonFin S0")
-	field(LOPR, "1")
-	field(HOPR, "80")
+	field(DRVL, "1")
+	field(DRVH, "${FIN_MAX}")
 	field(EGU,  "Hz")
 	field(FLNK, "${UUT}:0:SLOWMON:NACC")
 }
@@ -56,23 +56,23 @@ record(calc, "${UUT}:0:SLOWMON:FS:ACT") {
 record(longout, "${UUT}:0:NACC:NACC") {
 	field(DTYP, "Soft Channel")
 	field(DESC, "NACC filter N value")
-	field(LOPR, "1")
-	field(HOPR, "256")
+	field(DRVL, "1")
+	field(DRVH, "256")
 	field(FLNK, "${UUT}:NACC:c")
 }
 
 record(longout, "${UUT}:0:NACC:START") {
 	field(DTYP, "Soft Channel")
 	field(DESC, "NACC filter Start for non**2")
-	field(LOPR, "0")
-	field(HOPR, "255")
+	field(DRVL, "0")
+	field(DRVH, "255")
 }
 
 record(longout, "${UUT}:0:NACC:SHR") {
 	field(DTYP, "Soft Channel")
 	field(DESC, "NACC scaling >> N")
-	field(LOPR, "0")
-	field(HOPR, "16")
+	field(DRVL, "0")
+	field(DRVH, "16")
 }
 	
 record(longout, "${UUT}:0:NACC:PRES") {
@@ -80,8 +80,8 @@ record(longout, "${UUT}:0:NACC:PRES") {
 	field(DESC, "NACC filter PREScale value **2")
 	field(VAL,  "1")
 	field(PINI, "YES")
-	field(LOPR, "1")
-	field(HOPR, "${PRESMAX}")
+	field(DRVL, "1")
+	field(DRVH, "${PRESMAX}")
 }
 
 record(calcout, "${UUT}:NACC:c") {
