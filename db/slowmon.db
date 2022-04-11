@@ -41,7 +41,15 @@ record(calc, "${UUT}:0:SLOWMON:NACC") {
 	field(DESC, "Software Accumulate")
 	field(INPA, "${UUT}:0:SLOWMON:FS")
 	field(INPB, "${UUT}:0:SLOWMON:FIN")
-	field(CALC, "B/A")
+	field(CALC, "floor(B/A)")
+	field(FLNK, "${UUT}:0:SLOWMON:FS:ACT")
+}
+
+record(calc, "${UUT}:0:SLOWMON:FS:ACT") {
+	field(DESC, "Software FS, Actual")
+	field(INPA, "${UUT}:0:SLOWMON:FIN:ACT")
+	field(INPB, "${UUT}:0:SLOWMON:NACC")
+	field(CALC, "floor(A/B)")
 	field(FLNK, "${UUT}:NACC:c")
 }
 	
