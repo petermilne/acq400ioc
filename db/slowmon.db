@@ -26,7 +26,7 @@ record(longout, "${UUT}:0:SLOWMON:FIN") {
 	field(DESC, "SLOWMON input sample rate from HW")
 	field(OUT,  "@slowmon.proto setSlowmonFin S0")
 	field(LOPR, "1")
-	field(HOPR, "64")
+	field(HOPR, "80")
 	field(EGU,  "Hz")
 	field(FLNK, "${UUT}:0:SLOWMON:NACC")
 }
