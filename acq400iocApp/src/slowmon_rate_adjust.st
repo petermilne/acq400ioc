@@ -16,7 +16,7 @@ int nacc_nacc; 	  assign nacc_nacc 	to "{uut}:0:NACC:NACC";
 int nacc_start;	  assign nacc_start 	to "{uut}:0:NACC:START";
 int nacc_shr;	  assign nacc_shr 	to "{uut}:0:NACC:SHR";
 int nacc_pres;	  assign nacc_pres 	to "{uut}:0:NACC:PRES";
-int nacc_pres_lim;assign nacc_pres_lim 	to "{uut}:0:NACC:PRES.HOPR";
+int NACC_PRES_LIM;assign NACC_PRES_LIM 	to "{uut}:0:NACC:PRES.DRVH";
 
 #define NACC_LIM	256
 
@@ -71,7 +71,7 @@ ss slowmon_rate_adjust {
 			if (macValueGet("verbose")){
 				verbose = macValueGet("verbose")[0] - '0';
 			}
-			pvGet(nacc_pres_lim);
+			pvGet(NACC_PRES_LIM);
 			pvGet(sync_role);
 			pvGet(intclk_hz);
 			pvGet(SLOWMON_FIN_MAX);
@@ -95,14 +95,14 @@ ss slowmon_rate_adjust {
 		when() {
 			if (slowmon_fs == 0){
 				nacc_nacc = nacc_pres = nacc_shr = slowmon_fin = 0;
-			}else if (fs > nacc_pres_lim * NACC_LIM * SLOWMON_FIN_MAX){
-				printf("ERRROR: FS %d is too fast for available decimation: %d\n", fs, nacc_pres_lim * NACC_LIM * SLOWMON_FIN_MAX);
-				nacc_pres = nacc_pres_lim;
+			}else if (fs > NACC_PRES_LIM * NACC_LIM * SLOWMON_FIN_MAX){
+				printf("ERRROR: FS %d is too fast for available decimation: %d\n", fs, NACC_PRES_LIM * NACC_LIM * SLOWMON_FIN_MAX);
+				nacc_pres = NACC_PRES_LIM;
 				nacc_nacc = NACC_LIM;
 				slowmon_fin = SLOWMON_FIN_MAX;
 			}else{
 				/* first, minimize software oversampling */ 
-				slowmon_fin = fs / (nacc_pres_lim * NACC_LIM);
+				slowmon_fin = fs / (NACC_PRES_LIM * NACC_LIM);
 				if (slowmon_fin > SLOWMON_FIN_MAX){
 					slowmon_fin = SLOWMON_FIN_MAX;
 				}else if (slowmon_fin < slowmon_fs){
@@ -110,7 +110,7 @@ ss slowmon_rate_adjust {
 				}
 				
 				/* next, minimize prescale */
-				for (nacc_pres  = nacc_pres_lim; 
+				for (nacc_pres  = NACC_PRES_LIM; 
 				     nacc_pres>1 && fs < nacc_pres * NACC_LIM * slowmon_fin;
 				     nacc_pres >>= 1){
 					if (verbose){
