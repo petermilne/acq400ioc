@@ -87,8 +87,8 @@ record(longout, "${UUT}:0:NACC:PRES") {
 record(calcout, "${UUT}:NACC:c") {
 	field(DTYP, "stream")
 	field(INPA, "${UUT}:0:NACC:NACC")
-	field(INPB, "${UUT}:0:NACC:START")
-	field(INPC, "${UUT}:0:NACC:SHR")
+	field(INPB, "${UUT}:0:NACC:SHR")
+	field(INPC, "${UUT}:0:NACC:START")	
 	field(INPD, "${UUT}:0:NACC:PRES")
 	field(OUT,  "@slowmon.proto setNACC ${SPORT}")
 }
