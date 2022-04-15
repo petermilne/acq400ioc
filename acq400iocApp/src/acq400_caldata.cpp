@@ -32,6 +32,7 @@ extern "C" {
 	void* acq400_openDoc(const char* docfile, int* nchan);
 	int acq400_isCalibrated(void* prv);
 	int acq400_getChannel(void *prv, int ch, const char* sw, float* eslo, float* eoff, int nocal);
+	int acq400_getChannelByNearestGain(void *prv, int ch, const char* sw_start, int gain, float* eslo, float* eoff, int nocal);
 	int acq400_isData32(void* prv);
 };
 
@@ -166,5 +167,49 @@ int acq400_getChannel(void *prv, int ch, const char* sw, float* eslo, float* eof
 		}
 	}
 	printf("ERROR: range \"%s\" not found\n", sw);
+	return -1;
+}
+
+int acq400_getChannelByNearestGain(void *prv, int ch, const char* sw_start, int gain, float* eslo, float* eoff, int nocal)
+/* returns >0 on success, finds nearest lower gain and returns scaled eslo */
+{
+	XMLDocument* doc = static_cast<XMLDocument*>(prv);
+
+	XMLNode* node;
+
+	RETERRNULL(node, doc, "ACQ");
+	RETERRNULL(node, node, "AcqCalibration");
+	RETERRNULL(node, node, "Data");
+	XMLNode *best_range = 0;
+	int gmin = 9999999;
+	XMLError rc;
+
+	for (XMLNode *range = node->FirstChildElement("Range"); range;
+			range = range->NextSibling()){
+
+		const char* findkey =range->ToElement()->Attribute("sw");
+		if (strncmp(findkey, sw_start, strlen(sw_start)) == 0){
+			int gx;
+			rc =  range->ToElement()->QueryIntAttribute("gain", &gx);
+			if (rc != XML_SUCCESS){
+				printf("ERROR: gain attribute not found\n");
+				return -1;
+			}
+			if (gx <= gain && gx < gmin){
+				gmin = gx;
+				best_range = range;
+			}
+		}
+	}
+
+	if (best_range){
+		if(_acq400_getChannel(best_range, ch, eslo, eoff, nocal)){
+			if (gmin != gain){
+				*eslo /= (gain/gmin);
+			}
+			return 1;
+		}
+	}
+	printf("ERROR: compatible gain range \"%d\" not found\n", gain);
 	return -1;
 }
