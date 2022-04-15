@@ -19,6 +19,7 @@ help)
     exit 0;;
 esac
 
+echo busy > /dev/shm/role
 
 TRG=
 TRG_SENSE=rising
