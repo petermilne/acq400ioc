@@ -63,3 +63,77 @@ record(bo, "${UUT}:0:COUNTER_LATCH") {
 	field(ONAM, "1")
 	field(PINI, "YES")
 }
+
+record(mbbo, "${UUT}:SYS:SYNC_ROLE:SET:ROLE" ) {
+	field(DTYP, "Soft Channel")
+	field(NOBT, "3")
+	field(ZRST, "solo")
+	field(ONST, "slave")
+	field(TWST, "master")
+	field(THST, "fpmaster")
+	field(FRST, "rpmaster")
+	field(VAL,  "0")
+	field(PINI, "YES")
+}
+
+record(mbbo, "${UUT}:SYS:SYNC_ROLE:SET:FS" ) {
+	field(DTYP, "Soft Channel")
+	field(NOBT, "4")	
+	field(ZRST, "1")
+	field(ONST, "2")
+	field(TWST, "5")
+	field(THST, "10")
+	field(FRST, "20")
+	field(FVST, "50")
+	field(SXST, "100")
+	field(SVST, "200")
+	field(EIST, "500")
+	field(VAL,  "4")
+	field(PINI, "YES")
+}
+
+record(mbbo, "${UUT}:SYS:SYNC_ROLE:SET:FM" ) {
+	field(DTYP, "Soft Channel")
+	field(NOBT, "1")
+	field(ZRST, "k")
+	field(ONST, "M")
+	field(VAL,  "0")
+	field(PINI, "YES")
+}
+
+record(mbbo, "${UUT}:SYS:SYNC_ROLE:SET:FIN" ) {
+	field(DTYP, "Soft Channel")
+	field(NOBT, "4")	
+	field(ZRST, "1")
+	field(ONST, "2")
+	field(TWST, "5")
+	field(THST, "10")
+	field(FRST, "20")
+	field(FVST, "50")
+	field(SXST, "100")
+	field(SVST, "200")
+	field(EIST, "500")
+	field(VAL,  "4")
+	field(PINI, "YES")	
+}
+
+record(mbbo, "${UUT}:SYS:SYNC_ROLE:SET:MODIFIER" ) {
+	field(DTYP, "Soft Channel")
+	field(NOBT, "2")
+	field(ZRST, "")
+	field(ONST, "EXT TRG")
+	field(TWST, "EXT CLK")
+	field(VAL,  "0")
+	field(PINI, "YES")
+}
+
+
+record(bo, "${UUT}:SYS:SYNC_ROLE:SET"){
+	field(DTYP, "Soft Channel")
+	field(ZNAM, "-")
+	field(ONAM, "COMMIT")
+}
+
+
+
+
