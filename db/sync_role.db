@@ -113,7 +113,7 @@ record(mbbo, "${UUT}:SYS:SYNC_ROLE:SET:FIN" ) {
 	field(SXST, "100")
 	field(SVST, "200")
 	field(EIST, "500")
-	field(VAL,  "1")
+	field(VAL,  "0")
 	field(PINI, "YES")	
 }
 
