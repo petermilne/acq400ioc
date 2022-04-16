@@ -11,16 +11,23 @@ int tune; 	 	assign tune to 	"{uut}:11:Si5326:TUNEPHASE:BUSY"; 	monitor tune;
 int tune_ok; 	assign tune_ok to  "{uut}:11:Si5326:TUNEPHASE:OK"; 	monitor tune_ok;
 
 int pps_los;	assign pps_los to "{uut}:0:WR:PPS:LOS";
-int force_training; assign force_training to "{uut}:0:SIG:CLK:TRAIN_REQ";
+int force_training; assign force_training to "";
 int verbose;
 
 int pps_active_missing_seconds;
+int has_480;
 
 ss wrClkMon {
 	state init {
 		when() {
 			if (macValueGet("verbose")){
 				verbose = macValueGet("verbose")[0] - '0';
+			}
+			if (macValueGet("has_480")){
+				has_480 = macValueGet("has_480")[0] - '0';
+				if (has_480){
+					pvAssign(force_training, "{uut}:0:SIG:CLK:TRAIN_REQ");	
+				}
 			}
 			if (verbose) printf("init=>wait_pps\n");
 		} state wait_pps
@@ -48,7 +55,9 @@ ss wrClkMon {
 	state tuning {
 		entry {
 			pps_los = 0; pvPut(pps_los);	// TUNEPHASE:OK:r down, safe to clear pps_los
-			force_training = 1; pvPut(force_training);
+			if (has_480){
+				force_training = 1; pvPut(force_training);
+			}
 		}
 
 		when(pps_los){			
