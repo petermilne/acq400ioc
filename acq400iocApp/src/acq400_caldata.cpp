@@ -26,15 +26,21 @@
 /* ------------------------------------------------------------------------- */
 
 #include <stdio.h>
+#include <assert.h>
+#include "acq-util.h"
 #include "tinyxml2.h"
 
 extern "C" {
 	void* acq400_openDoc(const char* docfile, int* nchan);
 	int acq400_isCalibrated(void* prv);
 	int acq400_getChannel(void *prv, int ch, const char* sw, float* eslo, float* eoff, int nocal);
-	int acq400_getChannelByNearestGain(void *prv, int ch, const char* sw_start, int gain, float* eslo, float* eoff, int nocal);
+	int acq400_getChannelByNearestGain(void *prv, int ch, const char* sw, int gain, float* eslo, float* eoff, int nocal);
 	int acq400_isData32(void* prv);
 };
+
+static int verbose = ::getenv_default("CALDATA_VERBOSE", 0);
+
+#define VPRINTF if (verbose) printf
 
 using namespace tinyxml2;
 
@@ -148,68 +154,64 @@ int acq400_isData32(void* prv)
 		return 0;
 	}
 }
-int acq400_getChannel(void *prv, int ch, const char* sw, float* eslo, float* eoff, int nocal)
-/* returns >0 on success */
+
+int _acq400_getChannelTop(void *prv, int ch, const char* sw, float* eslo, float* eoff, int nocal, XMLNode **range=0)
 {
 	XMLDocument* doc = static_cast<XMLDocument*>(prv);
 
 	XMLNode* node;
 
+	VPRINTF("%s ch:%d sw:%s 01\n", __FUNCTION__, ch, sw);
+
 	RETERRNULL(node, doc, "ACQ");
 	RETERRNULL(node, node, "AcqCalibration");
 	RETERRNULL(node, node, "Data");
-	for (XMLNode *range = node->FirstChildElement("Range"); range;
-			range = range->NextSibling()){
-		const char* findkey =range->ToElement()->Attribute("sw");
+	for (XMLNode *_range = node->FirstChildElement("Range"); _range;
+			_range = _range->NextSibling()){
+		const char* findkey = _range->ToElement()->Attribute("sw");
 		int nosw = sw==0 || findkey==0 || strcmp(findkey, "default")==0;
 		if (nosw || strcmp(sw, findkey) == 0){
-			return _acq400_getChannel(range, ch, eslo, eoff, nocal);
+			if (range){
+				*range = _range;
+			}
+			VPRINTF("%s ch:%d sw:%s 44\n", __FUNCTION__, ch, sw);
+			return _acq400_getChannel(_range, ch, eslo, eoff, nocal);
 		}
 	}
 	printf("ERROR: range \"%s\" not found\n", sw);
 	return -1;
 }
+int acq400_getChannel(void *prv, int ch, const char* sw, float* eslo, float* eoff, int nocal)
+/* returns >0 on success */
+{
+	return _acq400_getChannelTop(prv, ch, sw, eslo, eoff, nocal);
+}
 
-int acq400_getChannelByNearestGain(void *prv, int ch, const char* sw_start, int gain, float* eslo, float* eoff, int nocal)
+int acq400_getChannelByNearestGain(void *prv, int ch, const char* sw, int gain, float* eslo, float* eoff, int nocal)
 /* returns >0 on success, finds nearest lower gain and returns scaled eslo */
 {
-	XMLDocument* doc = static_cast<XMLDocument*>(prv);
+	XMLNode* range;
 
-	XMLNode* node;
+	VPRINTF("%s ch:%d sw:%s gain:%d\n", __FUNCTION__, ch, sw, gain);
+	assert(gain);
 
-	RETERRNULL(node, doc, "ACQ");
-	RETERRNULL(node, node, "AcqCalibration");
-	RETERRNULL(node, node, "Data");
-	XMLNode *best_range = 0;
-	int gmin = 9999999;
-	XMLError rc;
+	if (_acq400_getChannelTop(prv, ch, sw, eslo, eoff, nocal, &range) == -1){
+		VPRINTF("%s ch:%d _acq400_getChannelTop FAIL\n", __FUNCTION__, ch);
+		return -1;
+	}
+	int gx;
+	assert(range);
 
-	for (XMLNode *range = node->FirstChildElement("Range"); range;
-			range = range->NextSibling()){
-
-		const char* findkey =range->ToElement()->Attribute("sw");
-		if (strncmp(findkey, sw_start, strlen(sw_start)) == 0){
-			int gx;
-			rc =  range->ToElement()->QueryIntAttribute("gain", &gx);
-			if (rc != XML_SUCCESS){
-				printf("ERROR: gain attribute not found\n");
-				return -1;
-			}
-			if (gx <= gain && gx < gmin){
-				gmin = gx;
-				best_range = range;
-			}
-		}
+	XMLError rc = range->ToElement()->QueryIntAttribute("gain", &gx);
+	if (rc != XML_SUCCESS){
+		printf("ERROR: gain attribute not found\n");
+		return -1;
 	}
 
-	if (best_range){
-		if(_acq400_getChannel(best_range, ch, eslo, eoff, nocal)){
-			if (gmin != gain){
-				*eslo /= (gain/gmin);
-			}
-			return 1;
-		}
+	VPRINTF("%s: %.5g gx:%d\n", __FUNCTION__, *eslo, gx);
+	if (gx != gain){
+		*eslo /= (gain/gx);
+		VPRINTF("%s: %.5g adjusted\n", __FUNCTION__, *eslo);
 	}
-	printf("ERROR: compatible gain range \"%d\" not found\n", gain);
-	return -1;
+	return 1;
 }

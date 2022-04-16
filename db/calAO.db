@@ -22,6 +22,8 @@ record(waveform, "${UUT}:${SITE}:AO:CAL:EOFF") {
 record (bo, "${UUT}:${SITE}:HAS_CH_GAINS") {
 	field(DTYP, "Soft Channel")
 	field(VAL,  "${CHG}")
+	field(ZNAM, "0")
+	field(ONAM, "1")	
 }
 
 record (mbbo, "${UUT}:${SITE}:DAC_CAL") {
