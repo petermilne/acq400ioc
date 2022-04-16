@@ -1191,7 +1191,7 @@ load_mb_sync() {
 	echo 1>&2 "HAS_ACQ43X $HAS_ACQ43X"
 	ACQ43X_SET_SAMPLE_RATE=${ACQ43X_SET_SAMPLE_RATE:-0}
 	
-	if [ $HAS_ACQ43X -ne 0 ] && [ $ACQ43X_SET_SAMPLE_RATE -ge 0 ]; then
+	if [ $HAS_ACQ43X -ne 0 ] && [ $ACQ43X_SET_SAMPLE_RATE -ge 0 ] && [ $HAS_WR -eq 0 ]; then
 			case $MB_MODEL in
 			acq2106*)
 				(
