@@ -137,6 +137,9 @@ ss calmon {
                                                 
 						ext_eslo[ch] = eslo[ch];
 						ext_eoff[ch] = eoff[ch];
+						if (has_ch_gains && ch == 1){
+							ext_eslo[0] = ext_eoff[0] = 1+gains[1];
+						}						
 					}else{
 						printf("ERROR return from acq400_getChannel()\n");
 					}

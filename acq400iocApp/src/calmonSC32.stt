@@ -7,7 +7,7 @@
 // acq1001_064:1:AI:TW:01:V
 // acq1001_064:1:AI:WF:01:V
 
-program calmon
+program calmonSC32
 option +r;
 
 // nb : always site 1. That's a consequence of Master/Slave
@@ -31,8 +31,8 @@ int has_ch_gains;	assign has_ch_gains to "{uut}:{site}:HAS_CH_GAINS";
 int gain_changes;	assign gain_changes to "";
 int gain_changes0;
 
-int gains[33];		assign gains to {};	/* "${UUT}:${SITE}:GAIN:${CH}" */
-
+int gains[33];		assign gains to {};	/* acq2106_132:5:SC32:G12:17 composite actual gain */
+int gain1_ord[33];	assign gain1_ord to {};	/* acq2106_132:5:SC32:G1:17 first PGA selector */	
 int data32;		assign data32 to "{uut}:{site}:data32";
 
 char* doc;
@@ -48,8 +48,11 @@ int scale;
 
 int adc_cal_stash;
 
+int verbose = 0;
+
+
 %%extern void* acq400_openDoc(const char* docfile, int* nchan);
-%%extern int acq400_getChannel(void *prv, int ch, const char* sw, float* eslo, float* eoff, int nocal);
+%%extern int acq400_getChannelByNearestGain(void *prv, int ch, const char* sw, int gain, float* eslo, float* eoff, int nocal);
 %%extern int acq400_isData32(void* prv);
 %%extern int acq400_isCalibrated(void* prv);
 %{
@@ -77,6 +80,10 @@ ss calmon {
 			if (macValueGet("site") != 0){
 				site = macValueGet("site");
 			}
+			if (macValueGet("verbose")){
+				verbose = macValueGet("verbose")[0] - '0';
+			}
+			
 			sprintf(fname, "/dev/sites/%s/caldef.xml",  site);			
 			doc = acq400_openDoc(fname, &nchan);
 			adc_cal_mode = adc_cal_mode0 = acq400_isCalibrated(doc);
@@ -93,15 +100,19 @@ ss calmon {
 				snprintf(pvname, 80, "%s:%s:AI:CH:%02d", uut, site, ch);						
 				snprintf(pvfield, 100, "%s.%s", pvname, "ESLO");
 				pvAssign(eslo[ch], pvfield);
-				if (ch==1) printf("assign %s\n",pvfield);
+				if (ch==1) printf("calmonSC32 assign %s\n",pvfield);
 				
 				snprintf(pvfield, 100, "%s.%s", pvname, "EOFF");
 				pvAssign(eoff[ch], pvfield);
-				if (ch==1) printf("assign %s\n",pvfield);
+				if (ch==1) printf("calmonSC32assign %s\n",pvfield);
 				
 				if (has_ch_gains){
-					snprintf(pvname, 80, "%s:%s:GAIN:%02d", uut, site, ch);
+					snprintf(pvname, 80, "%s:%s:SC32:G12:%02d", uut, site, ch);
+					if (ch==1) printf("calmonSC32 assign %s\n", pvname);
 					pvAssign(gains[ch], pvname);
+					snprintf(pvname, 80, "%s:%s:SC32:G1:%02d", uut, site, ch);
+					if (ch==1) printf("calmonSC32 assign %s\n", pvname);
+					pvAssign(gain1_ord[ch], pvname);					
 				}
 			}
 			if (has_ch_gains){
@@ -119,6 +130,9 @@ ss calmon {
 	}
 	
 	state make_change {
+		entry {
+			printf("calmonSC32  %s make_change entry\n", site);
+		}		
 		when() {
 			pvGet(adc_cal_mode);
 			if (adc_cal_mode != 0){
@@ -135,9 +149,20 @@ ss calmon {
 				for (ch = 1; ch <= nchan; ++ch){
 					if (has_ch_gains){
 						pvGet(gains[ch]);
-					}		
-					if (acq400_getChannel(doc, ch, getKey(hi_res_mode, gains[ch]), 
-								&eslo[ch], &eoff[ch], adc_cal_mode==1) == 1){
+						pvGet(gain1_ord[ch]);
+						if (gains[ch] == 0){
+							printf("calmonSC32 ERROR: ch:%d gain==0 g1_ord:%d\n", ch, gain1_ord[ch]);
+							continue;
+						}
+					}
+					if (ch==1){
+						printf("calmonSC32 site:%s ch:%2d has_ch_gains:%d gain %d\n", 
+							site, ch, has_ch_gains, gains[ch]);
+					}					
+					if (acq400_getChannelByNearestGain(doc, ch, 
+							getKey(hi_res_mode, gain1_ord[ch]), 
+							gains[ch], 
+							&eslo[ch], &eoff[ch], adc_cal_mode==1) == 1){
 						if (ch==1){
 							printf("site:%s ch:%2d eslo:%.6e eoff:%.6e\n", 
 										site, ch, eslo[ch], eoff[ch]);
@@ -150,9 +175,9 @@ ss calmon {
                                                 
                                                 ext_eslo[ch] = eslo[ch];
                                                 ext_eoff[ch] = eoff[ch];
-						if (has_ch_gains && ch == 1){
-							ext_eslo[0] = ext_eoff[0] = 1+gains[1];
-						}						                                                
+                                                if (has_ch_gains && ch == 1){
+                                                	ext_eslo[0] = ext_eoff[0] = gains[1];
+                                                }
 					}else{
 						printf("ERROR return from acq400_getChannel()\n");
 					}
