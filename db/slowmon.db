@@ -42,14 +42,17 @@ record(calc, "${UUT}:0:SLOWMON:NACC") {
 	field(INPA, "${UUT}:0:SLOWMON:FS")
 	field(INPB, "${UUT}:0:SLOWMON:FIN")
 	field(CALC, "floor(B/A)")
-	field(FLNK, "${UUT}:0:SLOWMON:FS:ACT")
+	field(FLNK, "${UUT}:0:SLOWMON:NACC:DUTY")
 }
 
-record(calc, "${UUT}:0:SLOWMON:FS:ACT") {
+record(calc, "${UUT}:0:SLOWMON:NACC:DUTY") {
 	field(DESC, "Software FS, Actual")
 	field(INPA, "${UUT}:0:SLOWMON:FIN:ACT")
-	field(INPB, "${UUT}:0:SLOWMON:NACC")
-	field(CALC, "floor(A/B)")
+	field(INPB, "${UUT}:0:SLOWMON:FS")
+	field(INPC, "${UUT}:0:SLOWMON:NACC")
+	field(CALC, "100*B*C/A")
+	field(EGU,  "%")
+	field(PREC, "2")
 	field(FLNK, "${UUT}:NACC:c")
 }
 	
