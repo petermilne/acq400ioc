@@ -11,11 +11,20 @@ record(longout, "${UUT}:${SITE}:JDG:${CH}:WIN:L")
 	field(FLNK,  "${UUT}:${SITE}:JDG:${CH}:WIN:L:c")
 }
 
+record(longout, "${UUT}:${SITE}:JDG:${CH}:WIN:MIN")
+{
+	field(DTYP, "Soft Channel")
+	field(DRVH, "${NSAM}")
+	field(DRVL,  "1")
+	field(PINI,  "YES")
+}
+
 record(calc, "${UUT}:${SITE}:JDG:${CH}:WIN:L:c")
 {
 	field(INPA, "${UUT}:${SITE}:JDG:${CH}:WIN:L")
 	field(INPB, "${UUT}:${SITE}:JDG:${CH}:WIN:R:w")
-	field(CALC, "A<B? A: B-1")
+	field(INPC, "${UUT}:${SITE}:JDG:${CH}:WIN:MIN")
+	field(CALC, "A<=(B-C)? A: B-C")
 	field(FLNK, "${UUT}:${SITE}:JDG:${CH}:WIN:L:w PP")
 }
 
@@ -62,7 +71,8 @@ record(calc, "${UUT}:${SITE}:JDG:${CH}:WIN:R:c")
 {
 	field(INPA, "${UUT}:${SITE}:JDG:${CH}:WIN:R")
 	field(INPB, "${UUT}:${SITE}:JDG:${CH}:WIN:L:w")
-	field(CALC, "A>B? A: B+1")
+	field(INPC, "${UUT}:${SITE}:JDG:${CH}:WIN:MIN")
+	field(CALC, "A>=B+C? A: B+C")
 	field(FLNK, "${UUT}:${SITE}:JDG:${CH}:WIN:R:w PP")
 }
 
