@@ -1,26 +1,94 @@
 # judgementWin.db : CH01 .. CH32
 record(longout, "${UUT}:${SITE}:JDG:${CH}:WIN:L")
 {
-	field(DTYP, "asynInt32")
-	field(OUT,  "@asyn($(PORT),$(IX),$(TIMEOUT))WINL")	
+	field(DTYP, "Soft Channel")
 	field(DRVH, "${NSAM}")
 	field(DRVL,  "2")
 	field(HOPR, "${NSAM}")
 	field(LOPR,  "2")	
 	field(VAL,   "2")
 	field(PINI,  "YES")
+	field(FLNK,  "${UUT}:${SITE}:JDG:${CH}:WIN:L:c")
 }
+
+record(calc, "${UUT}:${SITE}:JDG:${CH}:WIN:L:c")
+{
+	field(INPA, "${UUT}:${SITE}:JDG:${CH}:WIN:L")
+	field(INPB, "${UUT}:${SITE}:JDG:${CH}:WIN:R:w")
+	field(CALC, "A<B? A: B-1")
+	field(FLNK, "${UUT}:${SITE}:JDG:${CH}:WIN:L:w PP")
+}
+
+record(longout, "${UUT}:${SITE}:JDG:${CH}:WIN:L:w")
+{
+	field(DTYP, "asynInt32")
+	field(OUT,  "@asyn($(PORT),$(IX),$(TIMEOUT))WINL")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:${SITE}:JDG:${CH}:WIN:L:c")
+	field(DRVH, "${NSAM}")
+	field(DRVL,  "2")
+	field(HOPR, "${NSAM}")
+	field(LOPR,  "2")	
+	field(VAL,   "2")
+	field(PINI,  "YES")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:JDG:${CH}:WIN:L:s.PACT")
+	field(FLNK, "${UUT}:${SITE}:JDG:${CH}:WIN:L:s")
+}
+
+record(longout, "${UUT}:${SITE}:JDG:${CH}:WIN:L:s")
+{
+	field(DTYP, "Soft Channel")
+	field(DOL,  "${UUT}:${SITE}:JDG:${CH}:WIN:L:w NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:${SITE}:JDG:${CH}:WIN:L PP")	
+}
+
+
 
 record(longout, "${UUT}:${SITE}:JDG:${CH}:WIN:R")
 {
-	field(DTYP, "asynInt32")
-	field(OUT,  "@asyn($(PORT),$(IX),$(TIMEOUT))WINR")
+	field(DTYP, "Soft Channel")
 	field(DRVH, "${NSAM}")
 	field(DRVL,  "2")	
 	field(HOPR, "${NSAM}")
 	field(LOPR,  "2")
 	field(VAL,   "${NSAM}")
-	field(PINI,  "YES")	
+	field(PINI,  "YES")
+	field(FLNK,  "${UUT}:${SITE}:JDG:${CH}:WIN:R:c")
+}
+
+record(calc, "${UUT}:${SITE}:JDG:${CH}:WIN:R:c")
+{
+	field(INPA, "${UUT}:${SITE}:JDG:${CH}:WIN:R")
+	field(INPB, "${UUT}:${SITE}:JDG:${CH}:WIN:L:w")
+	field(CALC, "A>B? A: B+1")
+	field(FLNK, "${UUT}:${SITE}:JDG:${CH}:WIN:R:w PP")
+}
+
+record(longout, "${UUT}:${SITE}:JDG:${CH}:WIN:R:w")
+{
+	field(DTYP, "asynInt32")
+	field(OUT,  "@asyn($(PORT),$(IX),$(TIMEOUT))WINR")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:${SITE}:JDG:${CH}:WIN:R:c")	
+	field(DRVH, "${NSAM}")
+	field(DRVL,  "2")	
+	field(HOPR, "${NSAM}")
+	field(LOPR,  "2")
+	field(VAL,   "${NSAM}")
+	field(PINI,  "YES")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:JDG:${CH}:WIN:R:s.PACT")
+	field(FLNK, "${UUT}:${SITE}:JDG:${CH}:WIN:R:s")	
+}
+
+record(longout, "${UUT}:${SITE}:JDG:${CH}:WIN:R:s")
+{
+	field(DTYP, "Soft Channel")
+	field(DOL,  "${UUT}:${SITE}:JDG:${CH}:WIN:R:w NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:${SITE}:JDG:${CH}:WIN:R PP")	
 }
 
 # JDG WIN L/R to control the stats as well
