@@ -12,7 +12,7 @@ case "$1" in
     fi
     exit 0;;
 help)
-    echo "USAGE sync_role {fpmaster|rpmaster|master|slave|solo} [CLKHZ] [FIN]"
+    echo "USAGE sync_role {fpmaster|rpmaster|master|slave|slavemb|solo} [CLKHZ] [FIN]"
     echo "modifiers [CLK|TRG:SENSE=falling|rising] [CLK|TRG:DX=d0|d1]"
     echo "modifiers [TRG=int|ext]"
     echo "modifiers [CLKDIV=div]"
@@ -354,7 +354,16 @@ else
 	    set_common
 	    set_out_slave
 	    $set_slave
-	    is_48x && set_48x_override $FS slave;;	    
+	    is_48x && set_48x_override $FS slave;;
+	slavemb)
+	    set_common
+	    set_out_slave
+	    $set_slave 0
+	    set.site 0 SIG:ZCLK_SRC CLK.d0
+	    set.site 0 SYS:CLK:FPMUX ZCLK
+	    set.site 0 SIG:CLK_MB:FIN $FIN
+	    $set_mb	$FS
+	    set.site 0 SIG:SRC:CLK:1 MCLK;;
 	*)
 		echo "ERROR: role $1 not valid"; exit 1;;
 	esac
