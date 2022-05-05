@@ -19,6 +19,7 @@ record(longout, "${UUT}:${SITE}:JDG:${CH}:WIN:MIN")
 	field(PINI,  "YES")
 }
 
+
 record(calc, "${UUT}:${SITE}:JDG:${CH}:WIN:L:c")
 {
 	field(INPA, "${UUT}:${SITE}:JDG:${CH}:WIN:L")
@@ -111,3 +112,53 @@ record(aSub, "${UUT}:${SITE}:AI:WF:${CH}:V") {
 	field(NOM,  "1")
 	field(INPM, "${UUT}:${SITE}:JDG:${CH}:WIN:R")	
 }
+
+# STEP: step the window L or R by WIN:MIN samples
+
+record(bo, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:L")
+{
+	field(DTYP, "Soft Channel")
+	field(FLNK, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:L:b")
+}
+record(calcout, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:L:b")
+{
+	field(INPA, "${UUT}:${SITE}:JDG:${CH}:WIN:MIN")
+	field(INPB, "${UUT}:${SITE}:JDG:${CH}:WIN:L")
+	field(CALC, "B-A")
+	field(OUT,  "${UUT}:${SITE}:JDG:${CH}:WIN:L PP")
+	field(FLNK, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:L:c")
+}
+
+record(calcout, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:L:c")
+{
+	field(INPA, "${UUT}:${SITE}:JDG:${CH}:WIN:MIN")
+	field(INPB, "${UUT}:${SITE}:JDG:${CH}:WIN:L")
+	field(CALC, "B+A")
+	field(OUT, "${UUT}:${SITE}:JDG:${CH}:WIN:R PP")
+}
+
+record(bo, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:R")
+{
+	field(DTYP, "Soft Channel")
+	field(FLNK, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:R:b")
+}
+
+record(calcout, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:R:b")
+{
+	field(INPA, "${UUT}:${SITE}:JDG:${CH}:WIN:MIN")
+	field(INPB, "${UUT}:${SITE}:JDG:${CH}:WIN:R")
+	field(CALC, "B+A")
+	field(OUT,  "${UUT}:${SITE}:JDG:${CH}:WIN:R PP")
+	field(FLNK, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:R:c")
+}
+
+record(calcout, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:R:c")
+{
+	field(INPA, "${UUT}:${SITE}:JDG:${CH}:WIN:MIN")
+	field(INPB, "${UUT}:${SITE}:JDG:${CH}:WIN:R")
+	field(CALC, "B-A")
+	field(OUT, "${UUT}:${SITE}:JDG:${CH}:WIN:L PP")
+}
+
+
+
