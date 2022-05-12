@@ -976,7 +976,7 @@ load_mb_sites() {
 		kmcu*)
 			;;
 		z7io*)
-			;;
+		    dblr '"db/z7io_mb.db","UUT='${HOST}',SPORT=S0"';;
 		acq2106*)
 			thst="ZCLK"
 			[ $(isRevA $MB_MODEL) -ne 0 ] && thst=""
