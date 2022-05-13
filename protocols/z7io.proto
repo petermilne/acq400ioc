@@ -2,6 +2,6 @@ Terminator = LF;
 ExtraInput = Ignore;
 
 acq400_z7io_trg_sel {
-	out "acq400_z7io_trg_sel --route=%{OFF|FP|RP|FPM}";
+	out "acq400_z7io_trg_sel --route=%{OFF|FP|BP|FP2BP}";
 	in "";
 }

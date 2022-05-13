@@ -4,6 +4,6 @@ record(mbbo, "${UUT}:0:SIG:SRC:TRG:0") {
 	field(NOBT, "2")
 	field(ZRST, "OFF")
 	field(ONST, "FP")
-	field(TWST, "RP")
-	field(THST, "FPM")
+	field(TWST, "BP")
+	field(THST, "FP2BP")
 }
