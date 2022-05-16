@@ -113,16 +113,17 @@ record(aSub, "${UUT}:${SITE}:AI:WF:${CH}:V") {
 	field(INPM, "${UUT}:${SITE}:JDG:${CH}:WIN:R")	
 }
 
-# STEP: step the window L or R by WIN:MIN samples
+# STEP: step the window L or R by 1 sample
 
 record(bo, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:L")
 {
 	field(DTYP, "Soft Channel")
+	field(DESC, "step the window L by 1 sample")
 	field(FLNK, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:L:b")
 }
 record(calcout, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:L:b")
 {
-	field(INPA, "${UUT}:${SITE}:JDG:${CH}:WIN:MIN")
+	field(INPA, "1")
 	field(INPB, "${UUT}:${SITE}:JDG:${CH}:WIN:L")
 	field(CALC, "B-A")
 	field(OUT,  "${UUT}:${SITE}:JDG:${CH}:WIN:L PP")
@@ -131,7 +132,7 @@ record(calcout, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:L:b")
 
 record(calcout, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:L:c")
 {
-	field(INPA, "${UUT}:${SITE}:JDG:${CH}:WIN:MIN")
+	field(INPA, "1")
 	field(INPB, "${UUT}:${SITE}:JDG:${CH}:WIN:L")
 	field(CALC, "B+A")
 	field(OUT, "${UUT}:${SITE}:JDG:${CH}:WIN:R PP")
@@ -140,12 +141,13 @@ record(calcout, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:L:c")
 record(bo, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:R")
 {
 	field(DTYP, "Soft Channel")
+	field(DESC, "step the window R by 1 sample")
 	field(FLNK, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:R:b")
 }
 
 record(calcout, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:R:b")
 {
-	field(INPA, "${UUT}:${SITE}:JDG:${CH}:WIN:MIN")
+	field(INPA, "1")
 	field(INPB, "${UUT}:${SITE}:JDG:${CH}:WIN:R")
 	field(CALC, "B+A")
 	field(OUT,  "${UUT}:${SITE}:JDG:${CH}:WIN:R PP")
@@ -153,6 +155,55 @@ record(calcout, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:R:b")
 }
 
 record(calcout, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:R:c")
+{
+	field(INPA, "1")
+	field(INPB, "${UUT}:${SITE}:JDG:${CH}:WIN:R")
+	field(CALC, "B-A")
+	field(OUT, "${UUT}:${SITE}:JDG:${CH}:WIN:L PP")
+}
+
+# STRIDE: stride the window L or R by WIN:MIN samples
+
+record(bo, "${UUT}:${SITE}:JDG:${CH}:WIN:STRIDE:L")
+{
+	field(DTYP, "Soft Channel")
+	field(DESC, "stride the window L by 1 interval")
+	field(FLNK, "${UUT}:${SITE}:JDG:${CH}:WIN:STRIDE:L:b")
+}
+record(calcout, "${UUT}:${SITE}:JDG:${CH}:WIN:STRIDE:L:b")
+{
+	field(INPA, "${UUT}:${SITE}:JDG:${CH}:WIN:MIN")
+	field(INPB, "${UUT}:${SITE}:JDG:${CH}:WIN:L")
+	field(CALC, "B-A")
+	field(OUT,  "${UUT}:${SITE}:JDG:${CH}:WIN:L PP")
+	field(FLNK, "${UUT}:${SITE}:JDG:${CH}:WIN:STRIDE:L:c")
+}
+
+record(calcout, "${UUT}:${SITE}:JDG:${CH}:WIN:STRIDE:L:c")
+{
+	field(INPA, "${UUT}:${SITE}:JDG:${CH}:WIN:MIN")
+	field(INPB, "${UUT}:${SITE}:JDG:${CH}:WIN:L")
+	field(CALC, "B+A")
+	field(OUT, "${UUT}:${SITE}:JDG:${CH}:WIN:R PP")
+}
+
+record(bo, "${UUT}:${SITE}:JDG:${CH}:WIN:STRIDE:R")
+{
+	field(DTYP, "Soft Channel")
+	field(DESC, "stride the window R by 1 interval")
+	field(FLNK, "${UUT}:${SITE}:JDG:${CH}:WIN:STRIDE:R:b")
+}
+
+record(calcout, "${UUT}:${SITE}:JDG:${CH}:WIN:STRIDE:R:b")
+{
+	field(INPA, "${UUT}:${SITE}:JDG:${CH}:WIN:MIN")
+	field(INPB, "${UUT}:${SITE}:JDG:${CH}:WIN:R")
+	field(CALC, "B+A")
+	field(OUT,  "${UUT}:${SITE}:JDG:${CH}:WIN:R PP")
+	field(FLNK, "${UUT}:${SITE}:JDG:${CH}:WIN:STRIDE:R:c")
+}
+
+record(calcout, "${UUT}:${SITE}:JDG:${CH}:WIN:STRIDE:R:c")
 {
 	field(INPA, "${UUT}:${SITE}:JDG:${CH}:WIN:MIN")
 	field(INPB, "${UUT}:${SITE}:JDG:${CH}:WIN:R")
