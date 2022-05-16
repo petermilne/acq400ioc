@@ -5,5 +5,10 @@ record(mbbo, "${UUT}:0:SIG:SRC:TRG:0") {
 	field(ZRST, "OFF")
 	field(ONST, "FP")
 	field(TWST, "BP")
-	field(THST, "FP2BP")
+	field(THST, "${THST}")
+	
+	field(ZRVL, "0")
+	field(ONVL, "1")
+	field(TWVL, "2")
+	field(THVL, "${THVL}")
 }
