@@ -123,7 +123,7 @@ record(bo, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:L")
 }
 record(calcout, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:L:b")
 {
-	field(INPA, "1")
+	field(INPA, "5")
 	field(INPB, "${UUT}:${SITE}:JDG:${CH}:WIN:L")
 	field(CALC, "B-A")
 	field(OUT,  "${UUT}:${SITE}:JDG:${CH}:WIN:L PP")
@@ -147,7 +147,7 @@ record(bo, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:R")
 
 record(calcout, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:R:b")
 {
-	field(INPA, "1")
+	field(INPA, "5")
 	field(INPB, "${UUT}:${SITE}:JDG:${CH}:WIN:R")
 	field(CALC, "B+A")
 	field(OUT,  "${UUT}:${SITE}:JDG:${CH}:WIN:R PP")
