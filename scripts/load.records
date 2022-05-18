@@ -950,6 +950,7 @@ isRevA() {
 load_mb_sites() {
 	KB=$1
 	NS=$2
+	hudp=${3:-0}
 	echo 1>&2 "load.records:load_mb_sites $1 $2 $3"
 	CPRAMS="UUT=${HOST},SITE=0"
 	(
@@ -970,6 +971,11 @@ load_mb_sites() {
 		done
 	)
 
+    if [ $hudp -ne 0 ]; then
+        dist3=HUDP
+    else
+        dist3=CPU
+    fi
 	dblr '"db/acq400mb.db","UUT='${HOST}',SPORT=S0,SPORT2=S0A"'
 	
 	case $MB_MODEL in
@@ -1283,8 +1289,10 @@ load_mb() {
 	
 	load_mb_base $ns $mt
 	load_mb_stats
+	
+	hudp=0;	grep -q UDP /tmp/fpga_status  && hudp=1
 	if [ -e $KB ]; then
-		load_mb_sites $KB $ns $mt
+		load_mb_sites $KB $ns $mt $hudp
 		if [ -e /dev/acq400.0.knobs/sync_out_clk ]; then
 			load_mb_sync $KB
 		fi
@@ -1295,6 +1303,10 @@ load_mb() {
 	if [[ -e /dev/acq400.12.knobs || -e /dev/acq400.13.knobs ]]; then
 		source /usr/local/epics/scripts/load.mgt400
 		echo "seq mgtStopOnLinkDown \"uut=${HOST}\"" >>/tmp/st_post.cmd
+	fi
+	if [[ -e /dev/acq400.10.knobs && $hudp -eq 1 ]]; then
+	    create_asyn_channel S10 127.0.0.1:4230	
+	    dblr '"db/hudp.db","'${CPARAMS},SPORT=S10'"'
 	fi
 	if [ "x$SHOTBUSY_OK" = "xy" ] && [ -e /dev/gpio/LED/ACT_G ]; then
 		echo "seq shotBusy \"uut=${HOST},verbose=${SHOT_BUSY_VERBOSE:-0}\"" >>/tmp/st_post.cmd

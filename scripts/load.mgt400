@@ -95,17 +95,24 @@ load_mgt400() {
 
 MGTPORTS=0
 
-for SITE in 11 12 13 10 9; do
+for SITE in 13 12 11 10; do
 	case $SITE in
 	13) id=A;;
 	12) id=B;;
 	11) id=C;;
-	10) id=C;;	
-	9)  id=D;;	
+	10) id=D;;
 	esac
-	if [ -e /dev/acq400.$SITE.knobs ]; then
-		MGTPORTS=$(($MGTPORTS+1))
-		load_mgt400 $SITE $id
+	if [ -e /dev/acq400.$SITE.knobs ] && [ -e /dev/acq400.$SITE.knobs/module_type ]; then
+	    mt=$(cat /dev/acq400.$SITE.knobs/module_type)
+	    case ${mt} in
+	    90)
+		    MGTPORTS=$(($MGTPORTS+1))
+		    load_mgt400 $SITE $id;;
+		97)
+		    echo "mtype 97 HUDP detected site $SITE";;
+		*)
+		    echo "site $SITE unknown mtype ${mt}";;
+		esac 
 	fi
 done
 

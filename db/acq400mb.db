@@ -25,7 +25,7 @@ record(mbbi, "${UUT}:0:DISTRIBUTOR:COMMS") {
 	field(ZRST,  "CPU")
 	field(ONST,  "COMMSB")
 	field(TWST,  "COMMSA")
-	field(THST,  "CPU")
+	field(THST,  "${dist3}")
 }
 record(longin, "${UUT}:0:DISTRIBUTOR:PAD") {
 	field(DTYP,  "stream")
