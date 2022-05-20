@@ -47,7 +47,7 @@ getDistributorS1{
 }
 
 getDistributorComms{
-	in "reg=0x%*08x sites=%*s comms=%{9|B|A} pad=%*d";
+	in "reg=0x%*08x sites=%*s comms=%{9|B|A|U} pad=%*d";
 }
 
 getDistributorPad{
