@@ -950,7 +950,7 @@ isRevA() {
 load_mb_sites() {
 	KB=$1
 	NS=$2
-	hudp=${3:-0}
+	
 	echo 1>&2 "load.records:load_mb_sites $1 $2 $3"
 	CPRAMS="UUT=${HOST},SITE=0"
 	(
@@ -976,7 +976,7 @@ load_mb_sites() {
     else
         dist3=CPU
     fi
-	dblr '"db/acq400mb.db","UUT='${HOST}',SPORT=S0,SPORT2=S0A"'
+	dblr '"db/acq400mb.db","UUT='${HOST},dist3=${dist3}',SPORT=S0,SPORT2=S0A"'
 	
 	case $MB_MODEL in
 		kmcu*)
@@ -1305,8 +1305,9 @@ load_mb() {
 		echo "seq mgtStopOnLinkDown \"uut=${HOST}\"" >>/tmp/st_post.cmd
 	fi
 	if [[ -e /dev/acq400.10.knobs && $hudp -eq 1 ]]; then
-	    create_asyn_channel S10 127.0.0.1:4230	
-	    dblr '"db/hudp.db","'${CPARAMS},SPORT=S10'"'
+	    create_asyn_channel S10 127.0.0.1:4230
+	    PRAMS="UUT=${HOST},SITE=10"	
+	    dblr '"db/hudp.db","'${PRAMS},SPORT=S10'"'
 	fi
 	if [ "x$SHOTBUSY_OK" = "xy" ] && [ -e /dev/gpio/LED/ACT_G ]; then
 		echo "seq shotBusy \"uut=${HOST},verbose=${SHOT_BUSY_VERBOSE:-0}\"" >>/tmp/st_post.cmd
