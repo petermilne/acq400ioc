@@ -5,3 +5,20 @@ record(stringin, "${UUT}:10:HUDP:IP") {
 	field(SCAN,  "5 second")
 	field(PINI,  "YES")
 }
+
+record(stringin, "${UUT}:10:HUDP:DST_IP") {
+	field(DTYP,  "stream")
+	field(INP,   "@hudp.proto getDstIp ${SPORT}")
+#	field(SCAN,  "I/O Intr")
+	field(SCAN,  "5 second")
+	field(PINI,  "YES")
+}
+
+record(longin, "${UUT}:10:HUDP:DST_PORT") {
+	field(DTYP,  "stream")
+	field(INP,   "@hudp.proto getDstPort ${SPORT}")
+#	field(SCAN,  "I/O Intr")
+	field(SCAN,  "5 second")
+	field(PINI,  "YES")
+}
+

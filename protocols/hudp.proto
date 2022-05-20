@@ -1,0 +1,18 @@
+Terminator = LF;
+ExtraInput = Ignore;
+
+
+getIp {
+	out "ip";
+	in "%s";
+}
+
+getDstIp {
+	out "dst_ip";
+	in "%s";
+}
+
+getDstPort {
+	out "dst_port";
+	in "%d";
+}
