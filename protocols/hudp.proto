@@ -36,3 +36,8 @@ getCtrl {
 	out "ctrl";
 	in "%d";
 }
+
+setCtrl {
+	out "ctrl %d";
+	in "";
+}
