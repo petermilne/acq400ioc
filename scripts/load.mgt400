@@ -109,9 +109,9 @@ for SITE in 13 12 11 10; do
 		    MGTPORTS=$(($MGTPORTS+1))
 		    load_mgt400 $SITE $id;;
 		97)
-		    echo "mtype 97 HUDP detected site $SITE";;
+		    echo 1>&2 "mtype 97 HUDP detected site $SITE";;
 		*)
-		    echo "site $SITE unknown mtype ${mt}";;
+		    echo 1>&2 "site $SITE unknown mtype ${mt}";;
 		esac 
 	fi
 done
