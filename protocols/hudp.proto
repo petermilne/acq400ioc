@@ -16,3 +16,23 @@ getDstPort {
 	out "dst_port";
 	in "%d";
 }
+
+getTxPktSz {
+	out "tx_pkt_sz";
+	in "%d";
+}
+
+getRxSrcIp {
+	out "rx_src_ip";
+	in "%s";
+}
+
+getRxPort {
+	out "rx_port";
+	in "%d";
+}
+
+getCtrl {
+	out "ctrl";
+	in "%d";
+}

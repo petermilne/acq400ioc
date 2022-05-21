@@ -6,7 +6,7 @@ record(stringin, "${UUT}:10:HUDP:IP") {
 	field(PINI,  "YES")
 }
 
-record(stringin, "${UUT}:10:HUDP:DST_IP") {
+record(stringin, "${UUT}:10:HUDP:TX:DST_IP") {
 	field(DTYP,  "stream")
 	field(INP,   "@hudp.proto getDstIp ${SPORT}")
 #	field(SCAN,  "I/O Intr")
@@ -14,7 +14,7 @@ record(stringin, "${UUT}:10:HUDP:DST_IP") {
 	field(PINI,  "YES")
 }
 
-record(longin, "${UUT}:10:HUDP:DST_PORT") {
+record(longin, "${UUT}:10:HUDP:TX:DST_PORT") {
 	field(DTYP,  "stream")
 	field(INP,   "@hudp.proto getDstPort ${SPORT}")
 #	field(SCAN,  "I/O Intr")
@@ -22,3 +22,48 @@ record(longin, "${UUT}:10:HUDP:DST_PORT") {
 	field(PINI,  "YES")
 }
 
+record(longin, "${UUT}:10:HUDP:TX:PKT_SZ") {
+	field(DTYP,  "stream")
+	field(INP,   "@hudp.proto getTxPktSz ${SPORT}")
+#	field(SCAN,  "I/O Intr")
+	field(SCAN,  "5 second")
+	field(PINI,  "YES")
+}
+
+record(stringin, "${UUT}:10:HUDP:RX:SRC_IP") {
+	field(DTYP,  "stream")
+	field(INP,   "@hudp.proto getRxSrcIp ${SPORT}")
+#	field(SCAN,  "I/O Intr")
+	field(SCAN,  "5 second")
+	field(PINI,  "YES")
+}
+
+record(longin, "${UUT}:10:HUDP:RX:PORT") {
+	field(DTYP,  "stream")
+	field(INP,   "@hudp.proto getRxPort ${SPORT}")
+#	field(SCAN,  "I/O Intr")
+	field(SCAN,  "5 second")
+	field(PINI,  "YES")
+}
+
+record(longin, "${UUT}:10:HUDP:CTRL") {
+	field(DTYP,  "stream")
+	field(INP,   "@hudp.proto getCtrl ${SPORT}")
+#	field(SCAN,  "I/O Intr")
+	field(SCAN,  "2 second")
+	field(PINI,  "YES")
+	field(FLNK,  "${UUT}:10:HUDP:RX:ENABLED")
+}
+
+record(calc, "${UUT}:10:HUDP:RX:ENABLED") {
+	field(INPA, "${UUT}:10:HUDP:RX:SRC_IP")
+	field(INPB, "${UUT}:10:HUDP:CTRL")
+	field(CALC, "A!=0 && B==1")
+	field(FLNK, "${UUT}:10:HUDP:TX:ENABLED")
+}
+
+record(calc, "${UUT}:10:HUDP:TX:ENABLED") {
+	field(INPA, "${UUT}:10:HUDP:TX:DEST_IP")
+	field(INPB, "${UUT}:10:HUDP:CTRL")
+	field(CALC, "A!=0 && B==1")	
+}
