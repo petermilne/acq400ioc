@@ -58,12 +58,15 @@ record(longin, "${UUT}:10:HUDP:CTRL") {
 record(calc, "${UUT}:10:HUDP:RX:ENABLED") {
 	field(INPA, "${UUT}:10:HUDP:RX:SRC_IP")
 	field(INPB, "${UUT}:10:HUDP:CTRL")
-	field(CALC, "A!=0 && B==1")
+	field(INPC, "${UUT}:10:HUDP:IP")
+	field(INPD, "${UUT}:10:HUDP:RX:PORT")
+	field(CALC, "A!=0 && B==1 && C!=0 && D!=0")
 	field(FLNK, "${UUT}:10:HUDP:TX:ENABLED PP")
 }
 
 record(calc, "${UUT}:10:HUDP:TX:ENABLED") {
 	field(INPA, "${UUT}:10:HUDP:TX:DST_IP")
 	field(INPB, "${UUT}:10:HUDP:CTRL")
-	field(CALC, "A!=0 && B==1")	
+	field(INPC, "${UUT}:10:HUDP:IP")
+	field(CALC, "A!=0 && B==1 && C!=0")	
 }
