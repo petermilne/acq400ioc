@@ -32,12 +32,24 @@ getRxPort {
 	in "%d";
 }
 
-getCtrl {
+
+
+setCtrlEnum {
+	out "ctrl %{0|9|1}";
+	in "";
+}
+
+getCtrlEnum {
+	out "ctrl";
+	in "%{0|9|1}";
+}
+
+getCtrlRaw {
 	out "ctrl";
 	in "%d";
 }
 
-setCtrl {
+setCtrlRaw {
 	out "ctrl %d";
 	in "";
 }
