@@ -57,6 +57,7 @@ ss hudpResetOnStop {
 	}
 	state resetOnStop {
 		entry {
+			if (verbose) printf("hudpResetOnStop RESET\n");
 			ctrl = 1 /*CTRL_RESET*/; pvPut(ctrl);
 		}
 		when(delay(2)) {
@@ -66,6 +67,7 @@ ss hudpResetOnStop {
 	
 	state clearReset {
 		entry {
+			if (verbose) printf("hudpResetOnStop ON\n");
 			ctrl = 2 /*CTRL_ON*/; pvPut(ctrl);
 		}
 		when(){
