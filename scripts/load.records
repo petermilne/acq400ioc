@@ -1310,6 +1310,7 @@ load_mb() {
 	    PRAMS="UUT=${HOST},SITE=10"	
 	    dblr '"db/counter.db","'${PRAMS},CTRMAX=2147483648,DT=1,DTC=1,lname=HUDP_RX_PKT,pname=rx_pkt_count'"'
 	    dblr '"db/counter.db","'${PRAMS},CTRMAX=2147483648,DT=1,DTC=1,lname=HUDP_TX_PKT,pname=tx_pkt_count'"'
+	    dblr '"db/counter.db","'${PRAMS},CTRMAX=1048576,DT=1,DTC=1,lname=HUDP_DISCO,pname=disco_count'"'
 	    dblr '"db/hudp.db","'${PRAMS},SPORT=S10'"'
 	    echo "seq hudpResetOnStop \"uut=${HOST},verbose=${HUDP_VERBOSE:-0}\"" >>/tmp/st_post.cmd
 	fi
