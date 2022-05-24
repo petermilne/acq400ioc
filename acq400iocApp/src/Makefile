@@ -58,6 +58,7 @@ acq400ioc_DBD += wrs_coldboot_pwr_handshake.dbd
 acq400ioc_DBD += rtm_buffer_mon.dbd
 acq400ioc_DBD += mgt_ssb.dbd
 acq400ioc_DBD += slowmon_rate_adjust.dbd
+acq400ioc_DBD += hudpResetOnStop.dbd
 
 # Add all the support libraries needed by this IOC
 acq400ioc_LIBS += acq2ioc
@@ -106,6 +107,7 @@ acq400ioc_SRCS += wrs_coldboot_pwr_handshake.st
 acq400ioc_SRCS += rtm_buffer_mon.st
 acq400ioc_SRCS += mgt_ssb.st
 acq400ioc_SRCS += slowmon_rate_adjust.st
+acq400ioc_SRCS += hudpResetOnStop.st
 
 # Build the main IOC entry point on workstation OSs.
 acq400ioc_SRCS_DEFAULT += acq400iocMain.cpp \

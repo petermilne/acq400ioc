@@ -1311,6 +1311,7 @@ load_mb() {
 	    dblr '"db/counter.db","'${PRAMS},CTRMAX=2147483648,DT=1,DTC=1,lname=HUDP_RX_PKT,pname=rx_pkt_count'"'
 	    dblr '"db/counter.db","'${PRAMS},CTRMAX=2147483648,DT=1,DTC=1,lname=HUDP_TX_PKT,pname=tx_pkt_count'"'
 	    dblr '"db/hudp.db","'${PRAMS},SPORT=S10'"'
+	    echo "seq hudpResetOnStop \"uut=${HOST},verbose=${HUDP_VERBOSE:-0}\"" >>/tmp/st_post.cmd
 	fi
 	if [ "x$SHOTBUSY_OK" = "xy" ] && [ -e /dev/gpio/LED/ACT_G ]; then
 		echo "seq shotBusy \"uut=${HOST},verbose=${SHOT_BUSY_VERBOSE:-0}\"" >>/tmp/st_post.cmd
