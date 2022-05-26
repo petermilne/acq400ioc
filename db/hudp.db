@@ -90,6 +90,70 @@ record(mbbo, "${UUT}:10:HUDP:CONTROL:s") {
 }
 
 
+record(bo, "${UUT}:10:HUDP:DISCO") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "Enable Discontinuity Tester")
+	field(ZNAM, "OFF")
+	field(ONAM, "ON")
+	field(FLNK, "${UUT}:10:HUDP:DISCO:w PP")
+}
+
+record(bo, "${UUT}:10:HUDP:DISCO:w"){
+	field(DTYP, "stream")
+	field(OUT,  "@hudp.proto setDiscoEn ${SPORT}")	
+	field(DISV, "1")
+	field(SDIS, "${UUT}:10:HUDP:DISCO:s.PACT")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:10:HUDP:DISCO PP")
+	field(FLNK, "${UUT}:10:HUDP:DISCO:IDX PP")
+}
+
+record(bi, "${UUT}:10:HUDP:DISCO:r"){
+	field(DTYP, "stream")
+	field(INP,  "@hudp.proto getDiscoEn ${SPORT}")	
+	field(SCAN, "2 second")
+	field(FLNK, "${UUT}:10:HUDP:DISCO:s")
+}
+
+record(bo, "${UUT}:10:HUDP:DISCO:s") {
+	field(DTYP, "Soft Channel")
+	field(DOL, "${UUT}:10:HUDP:DISCO:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT, "${UUT}:10:HUDP:DISCO PP")
+}
+
+record(longout, "${UUT}:10:HUDP:DISCO:IDX") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "Enable Discontinuity Tester")
+	field(DRVL, "0")
+	field(DRVH, "250")
+	field(FLNK, "${UUT}:10:HUDP:DISCO:IDX:w PP")
+}
+
+record(longout, "${UUT}:10:HUDP:DISCO:IDX:w"){
+	field(DTYP, "stream")
+	field(OUT,  "@hudp.proto setDiscoIdx ${SPORT}")	
+	field(DISV, "1")
+	field(SDIS, "${UUT}:10:HUDP:DISCO:IDX:s.PACT")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:10:HUDP:DISCO:IDX PP")
+	field(FLNK, "${UUT}:10:HUDP:DISCO:IDX:IDX PP")
+}
+
+record(longin, "${UUT}:10:HUDP:DISCO:IDX:r"){
+	field(DTYP, "stream")
+	field(INP,  "@hudp.proto getDiscoIdx ${SPORT}")	
+	field(SCAN, "2 second")
+	field(FLNK, "${UUT}:10:HUDP:DISCO:IDX:s")
+}
+
+record(longout, "${UUT}:10:HUDP:DISCO:IDX:s") {
+	field(DTYP, "Soft Channel")
+	field(DOL, "${UUT}:10:HUDP:DISCO:IDX:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT, "${UUT}:10:HUDP:DISCO:IDX PP")
+}
+
 record(longin, "${UUT}:10:HUDP:CTRL") {
 	field(DTYP,  "stream")
 	field(INP,   "@hudp.proto getCtrlRaw ${SPORT}")

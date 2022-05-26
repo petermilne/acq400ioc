@@ -53,3 +53,24 @@ setCtrlRaw {
 	out "ctrl %d";
 	in "";
 }
+
+
+getDiscoEn {
+	out "disco_en";
+	in "%d";
+}
+
+setDiscoEn {
+	out "disco_en %d";
+	in "";
+}
+
+getDiscoIdx {
+	out "disco_idx";
+	in "%d";
+}
+
+setDiscoIdx {
+	out "disco_idx %d";
+	in "";
+}
