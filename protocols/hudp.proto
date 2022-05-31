@@ -35,7 +35,7 @@ getRxPort {
 
 
 setCtrlEnum {
-	out "ctrl %{0|9|1}";
+	out "tx_ctrl %{0|9|1}";
 	in "";
 }
 
