@@ -322,9 +322,9 @@ record(mbbi, "${UUT}:LIVE:MODE") {
 	field(SCAN, "1 second")
 	field(PINI, "YES")
 	field(NOBT,  "2")	
-    field(ZRST, "off")
-    field(ONST, "free-run")
-    field(TWST, "pre-post")	
+	field(ZRST, "off")
+	field(ONST, "free-run")
+	field(TWST, "pre-post")	
 }
 
 record(longin, "${UUT}:0:SSB") {
