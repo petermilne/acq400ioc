@@ -5,6 +5,7 @@ SIZE=${SIZE:-4096}
 TYPE=${TYPE:-SHORT}
 CB_QSIZE=${CB_QSIZE:-2000}
 PVD_TABLE_SIZE=${PVD_TABLE_SIZE:-1024}
+RTM_BUFFER_MON=${RTM_BUFFER_MON:-n}
 FNAME=AI
 
 HSIZE=256
@@ -47,6 +48,16 @@ source ./scripts/mtype.sh
 source ./scripts/record_support.sh
 source /tmp/u-boot_env
 MB_MODEL=$(basename ${devicetree_image%*.dtb})
+
+ssb=$(cat /etc/acq400/0/ssb)
+
+case $MB_MODEL in
+acq2106*)
+    ;;
+*)
+    RTM_BUFFER_MON=y;;
+esac
+
 
 HAS_WR=0; [ -e /etc/acq400/0/wr_tai_cur ] && HAS_WR=1
 
@@ -211,11 +222,11 @@ make_AI_TR() {
 	
 	if [ $NSAMPLES -eq 100000 ]; then
 		if [ $ssb -gt 128 ]; then
-			echo '# memory conservation NSAMPLES=100000 $ssb gt 128 halve it'
 			NSAMPLES=$(($NSAMPLES/2))
-			if [ $ssb -gt 192 ]; then
-				echo '# memory conservation NSAMPLES=100000 $ssb gt 192 halve it'
+			echo "# memory conservation $ssb gt 128, NSAMPLES halved to $NSAMPLES"
+			if [ $ssb -ge 192 ]; then
 				NSAMPLES=$(($NSAMPLES/2))
+				echo "# memory conservation $ssb ge 192, NSAMPLES halved to $NSAMPLES"
 			fi
 			echo "# NSAMPLES=$NSAMPLES"
 		fi
@@ -639,7 +650,9 @@ load_400() {
 			fi
 		fi
 		dblr '"db/has_rgm.db","'${mprams},HAS_RGM=$has_rgm'"'
-		echo "seq rtm_buffer_mon \"uut=${HOST},verbose=${RTM_BUFFER_MON_VERBOSE:-0}\""
+
+		[ "x$RTM_BUFFER_MON" = "xy" ] && 
+		    echo "seq rtm_buffer_mon \"uut=${HOST},verbose=${RTM_BUFFER_MON_VERBOSE:-0}\""
 		create_asyn_channel S${site}M 127.0.0.1:$((4220+${site}))
 
 		if [ "$is_adc" != "no" ]; then

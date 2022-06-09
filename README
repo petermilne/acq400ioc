@@ -172,3 +172,9 @@ export CB_QSIZE=4000
 
 # Z7IO: enable FP2BP (backplane master). ONLY ONE box in create should do this.
 #export Z7IO_FP2BP_EN=y
+
+
+# automated bufferlen comp for RTM. breaks 192ch, so make it an option
+#export RTM_BUFFER_MON=y
+
+
