@@ -389,7 +389,16 @@ load_400_statics() { (
 	dblr '"db/acq400.db","'${cprams},${dba}'"'		
 ) }
 
-
+load_acq494() {
+    site=$1
+    cprams=$2
+    
+    echo "# load_acq494 $site $cprams"
+    ctpr="${cprams},CTRMAX=$CTR31,DT=1,DTC=1"
+    for ch in 1 2 3 4; do
+        dblr '"db/counter.db","'${ctpr},lname=TDC_CH${ch}_EVT,pname=scount_evt_ch${ch}'"'
+    done
+} 
 
 load_400() {
 	site=$1
@@ -533,6 +542,8 @@ load_400() {
 				dblr '"db/acq480fmc50R.db","'${mprams},CH=:${ch},RAW=_${ic}'"'
 		done
 		[ $t50r -ne 0 ] && dblr '"db/acq480fmc50R.db","'${mprams},CH=,RAW='"';;
+	$MT_ACQ494)
+	    load_acq494 ${site} "${cprams}";;
 	$MT_AO420|$MT_AO424|$MT_AO428|$MT_AO4220)
 	    create_asyn_channel S${site}A 127.0.0.1:$((4220+${site}))
 	    has_rgm=1		

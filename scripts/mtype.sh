@@ -34,6 +34,7 @@ MT_AO428=6A
 MT_DIO482=6B
 MT_WER_CELF=70
 MT_DIO482TD_PG=7B
+MT_ACQ494=B
 
 
 nameFromMT() {
@@ -70,6 +71,7 @@ nameFromMT() {
 	$MT_WER_CELF)   echo "wer-celf";;
 	$MT_AO428)		echo "ao428elf";;
 	$MT_DIO482TD_PG) echo "dio482td_pg";;
+	$MT_ACQ494)    echo "acq494fmc";;
 	# no default	
 	esac					
 }
