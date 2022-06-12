@@ -1,0 +1,16 @@
+#!/bin/sh
+SICONF=si5326_31M25-10M.txt
+
+load.si5326 $SICONF
+
+eval $(get.site 0 aggregator)
+if [ "x$sites" = "xnone" ]; then
+	logger -t $PNAME "WARNING: no sites in aggregator set"
+	exit 1
+fi
+
+for site in $(echo $sites | tr , \  )
+do
+	logger -t $PNAME "acq480_init_clk enable site $site"
+	set.site 0 SYS:CLK:OE_CLK1_ELF${site} 1
+done
