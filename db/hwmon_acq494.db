@@ -1,0 +1,17 @@
+
+record(ai, "${UUT}:SYS:${SITE}:1V8P") {
+	field(DTYP, "dsSysfsAi")   
+	field(INP, "@/dev/hwmon/${HMB}/in1")
+	
+	field(DESC, "Digital 1.8V Rail")       
+# 1/1000                                
+	field(ASLO, "0.001")     
+	field(LINR, "LINEAR")           
+	field(EGU,  "V")         
+	field(PINI, "YES")   	
+	field(HOPR, "2")              
+	field(LOPR, "0")              
+	field(LOW,  "1.7")
+	field(HIGH, "1.9")            
+	field(PREC, "2")
+}

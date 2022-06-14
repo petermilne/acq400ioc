@@ -1,0 +1,13 @@
+Terminator = LF;
+ExtraInput = Ignore;
+
+# T50R_[1-4] or T50R (global) value 0 or 1
+setT50R {
+	out "T50R\$1 %d";
+	in;
+}
+
+getT50R {
+	out "T50R\$1";
+	in "%d";
+}
