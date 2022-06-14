@@ -151,6 +151,22 @@ record(calcout, "${UUT}:0:COUNTER_LATCH:c") {
 	field(INPB, "${UUT}:${SITE}:WR:PPS:ACTIVE") 	
 }
 
+record(bi, "${UUT}:${SITE}:WR:TIME_VALID") {
+	field(DTYP, "stream")
+	field(INP,  "@signal.proto getInt(wr_time_valid) ${SPORT}")
+	field(SCAN, "1 second")
+	field(ZNAM, "0")
+	field(ONAM, "1")
+}
+
+record(bi, "${UUT}:${SITE}:WR:LINK_UP") {
+	field(DTYP, "stream")
+	field(INP,  "@signal.proto getInt(wr_link_up) ${SPORT}")
+	field(SCAN, "1 second")
+	field(ZNAM, "0")
+	field(ONAM, "1")
+}
+
 
 
 

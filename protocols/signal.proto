@@ -24,6 +24,11 @@ getSigSense {
 	in "\$1=%*d,%*d,%d";
 }
 
+getInt {
+	out "\$1";
+	in "%d";
+}
+
 #ngets=0 nputs=0 axi64=0,0,0
 
 getNGETS {
