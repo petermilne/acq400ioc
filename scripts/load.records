@@ -10,6 +10,7 @@ FNAME=AI
 
 HSIZE=256
 
+# DO NOT USE CTR32, EPICS longs are signed!0
 CTR32=4294967296
 CTR31=2147483648
 CTR28=268435456
@@ -397,6 +398,7 @@ load_acq494() {
     ctpr="${cprams},CTRMAX=$CTR31,DT=1,DTC=1"
     for ch in 1 2 3 4; do
         dblr '"db/counter.db","'${ctpr},lname=TDC_CH${ch}_EVT,pname=scount_evt_ch${ch}'"'
+        dblr '"db/acq494fmc.db","'${cprams},CH=${ch},RAW=${ch}'"' 
         dblr '"db/acq494fmc50R.db","'${cprams},CH=:${ch},RAW=_${ch}'"' 
     done
 } 

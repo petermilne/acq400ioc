@@ -11,3 +11,13 @@ getT50R {
 	out "T50R\$1";
 	in "%d";
 }
+
+setMask {
+	out "scount_evt_ch\$1 %d";
+	in;
+}
+
+getMask {
+	out "scount_evt_ch\$1";
+	in "%d";
+}

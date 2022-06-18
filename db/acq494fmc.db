@@ -1,0 +1,31 @@
+record(bo, "${UUT}:${SITE}:ACQ494:MASK:${CH}") {
+	field(DTYP, "Soft Channel")
+	field(ZNAM, "0")
+	field(ONAM, "1")
+	field(FLNK, "${UUT}:${SITE}:ACQ494:MASK:${CH}:w PP")
+}
+
+record(bo, "${UUT}:${SITE}:ACQ494:MASK:${CH}:w") {
+	field(DTYP, "stream")
+	field(OUT,  "@acq494.proto setMask(${RAW}) ${SPORT}")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:${SITE}:ACQ494:MASK:${CH}")	
+	field(DISV, "1")
+	
+	field(SDIS, "${UUT}:${SITE}:ACQ494:MASK:${CH}:r.PACT")
+}
+
+record(bi, "${UUT}:${SITE}:ACQ494:MASK:${CH}:r") {
+	field(DTYP, "stream")
+	field(INP,  "@acq494.proto getMask(${RAW}) ${SPORT}")
+	field(SCAN, "10 second")
+	field(PINI, "YES")
+	field(FLNK, "${UUT}:${SITE}:ACQ494:MASK:${CH}:s")
+}
+
+record(bo, "${UUT}:${SITE}:ACQ494:MASK:${CH}:s") {
+	field(DTYP, "Soft Channel")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:${SITE}:ACQ494:MASK:${CH}:r NPP")
+	field(OUT,  "${UUT}:${SITE}:ACQ494:MASK:${CH} PP")	
+}
