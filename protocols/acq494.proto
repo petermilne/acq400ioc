@@ -13,11 +13,11 @@ getT50R {
 }
 
 setMask {
-	out "scount_evt_ch\$1 %d";
+	out "tdc_disable_ch\$1 %d";
 	in;
 }
 
 getMask {
-	out "scount_evt_ch\$1";
+	out "tdc_disable_ch\$1";
 	in "%d";
 }
