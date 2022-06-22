@@ -869,15 +869,17 @@ load_dio482pg() {
     fi
 	dblr '"db/dio482pg.db","'${cprams},hastrg=${hastrg},S0=S0WR'"'
 	[ "$self" != "" ] && dblr '"db/dio482pg_self.db","'${cprams},$self,S0=S0WR'"'
-	
+
 	if [ $do_count -le 5 ]; then
-		dblr '"db/dio482pg_leds.db","'${cprams}'"' 
-		set.site $site num_pg $do_count
+		dblr '"db/dio482pg_leds.db","'${cprams}'"'
+		set.site $site num_pg $do_count 
 		for dx in $(seq $do_count); do		
 			echo "seq pg4_flasher \"uut=${HOST},site=${site},dox=${dx}\""		
-			dblr '"db/dio482pg_do4.db","'${cprams},UX=$dx,IX=$(($dx-1))'"'
 		done
 	fi
+	for dx in $(seq $do_count); do
+		dblr '"db/dio482pg_do4.db","'${cprams},UX=$dx,IX=$(($dx-1))'"'
+	done
 	sprams="${cprams},SIG=WR,S0=S0WR,CTRMAX=0,DT=1,DTC=1"
 	dblr '"db/_counter.db","'${sprams},lname=TS'"'
 	dblr '"db/_counter.db","'${sprams},lname=WRTT'"'
