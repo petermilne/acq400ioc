@@ -134,7 +134,7 @@ make_epics_knobs() {
 		make_caput $PV ${pv1#*:} $site -n
 	done	
 	
-	for PV in $(egrep -e GPG -e DO:[1-8] $RLP)
+	for PV in $(egrep -e GPG -e DO:[1-9] $RLP)
 	do
 		pv1=${PV#*:}
 		site=${pv1%%:*}
