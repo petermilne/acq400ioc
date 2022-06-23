@@ -1,0 +1,13 @@
+SITE=${SITE:-4}
+for dx in $(seq 1 32); do
+	echo SITE:$SITE $dx
+	set.site $SITE DO:$dx 1
+	sleep 2
+	set.site $SITE DO:$dx 0
+done
+
+
+for dx in $(seq 1 32); do
+	set.site $SITE DO:$dx P
+done
+
