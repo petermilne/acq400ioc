@@ -32,5 +32,9 @@ record(bo, "${UUT}:${SITE}:ACQ494:T50R${CH}:s") {
 
 record(bo, "${UUT}:${SITE}:ACQ494:HIT_ENA${CH}") {
 	field(DTYP, "stream")
-	field(OUT,  "@acq494.proto setHIT_ENA(${CH}) ${SPORT}")
+	field(OUT,  "@acq494.proto setHIT_ENA(${RAW}) ${SPORT}")
+	field(PINI, "YES")
+	field(VAL,  "1")
+	field(ZNAM, "0")
+	field(ONAM, "1")
 }
