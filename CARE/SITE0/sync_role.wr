@@ -1,6 +1,6 @@
 #!/bin/sh
 # sync_role.wr
-# set.site 0 sync_role fpmaster|rpmaster|master|solo|slave FS FIN [opts] 
+# set.site 0 sync_role fpmaster|rpmaster|master|solo|slave FS [FMB] [opts] 
 
 #set -x 
 
@@ -13,7 +13,7 @@ case "$1" in
     fi
     exit 0;;
 help)
-    echo "USAGE sync_role {fpmaster|rpmaster|master|slave|solo} [CLKHZ] [FIN]"
+    echo "USAGE sync_role {wr|whiterabbit|fpmaster|rpmaster|master|slave|solo} [CLKHZ] [FIN]"
     echo "modifiers [CLK|TRG:SENSE=falling|rising] [CLK|TRG:DX=d0|d1]"
     echo "modifiers [TRG=int|ext]"
     echo "modifiers [CLKDIV=div]"
@@ -32,6 +32,10 @@ P1=
 P2=
 P3=
 	
+	
+# always with WR:
+FIN_DEF=31M25
+
 set.site 1 CLK=1 2>&1 > /dev/null
 
 let px=1
@@ -69,27 +73,6 @@ for k in $*; do
 done
 
 
-
-set_mbclk() {
-    let fs=$1
-    if [ $fs -lt $FIN ]; then
-    # ensure a valid fs, ignore any user CLKDIV
-        CLKDIV=$(($FIN/$fs)) 
-    fi
-    set.site 1 CLKDIV $CLKDIV
-}
-
-
-set_mb=set_mbclk
-
-
-set_acq43x_sample_rate() { 
-    echo 1>&2 set_acq43x_sample_rate stub
-}
-
-if [ -e /etc/acq400/1/ACQ43X_SAMPLE_RATE ]; then    
-    set_mb=set_acq43x_sample_rate
-fi
 
 sync_trg_to_clk() {
 	[ -e /etc/acq400/1/sync_trg_to_clk ] && \
@@ -185,7 +168,6 @@ pv_read_lock() {
 }
 
 set_local_clock() {	 
-    $set_mb $1
     pv_read_lock CLK 1
     set.site 1 "clk=1,${CLK_DX:-d1},${CLK_SENSE}"
     pv_read_lock CLK 0
@@ -193,18 +175,6 @@ set_local_clock() {
     set.site 1 "trg=1,${TRG_DX:-d1},${TRG_SENSE}"
     pv_read_lock TRG 0
 }
-
-set_master() {
-    pv_read_lock CLK 1
-    set.site 1 "clk=1,${CLK_DX:-d1},${CLK_SENSE}"
-    pv_read_lock CLK 0
-    pv_read_lock TRG 1
-    set.site 1 "trg=1,${TRG_DX:-d0},${TRG_SENSE}"
-    pv_read_lock TRG 0
-#    set.site 0 SIG:CLK_MB:FIN $2
-    $set_mb $1
-}
-
 
 config_distributor_sites() {
 	distributor_sites=$(get.site 0 distributor | awk '{ print $2 }' | awk -F= '{ print $2 }' | sed "s/,/ /g")
@@ -219,56 +189,89 @@ config_distributor_sites() {
 	done
 }
 
-# execution here... FIN must match a valid load file eg 20M
+# execution here... FMB must match a valid load file eg 20M
 
-if is_ds; then
-	FS_DEF=40000
-elif is_tiga; then
-	FIN_DEF=10M
-	FS_DEF=200000
-else
-	FIN_DEF=40M
-	FS_DEF=200000; is_48x && FS_DEF=20000000
-fi
+in_the_plan() {
+    PLANS="$(for file in /etc/si5326.d/si5326_31M25*txt; do fs=${file#*_31M25-}; echo ${fs%*.txt}; done)";
+    for pl in $PLANS; do
+        if [ "$1" = "$pl" ]; then
+            echo $pl
+            return
+        fi
+    done
+    echo $FMB_DEF
+}
 
-eval $(egu2int FS=${P2:-$FS_DEF})
-ROLE=$P1
-
-if is_ds; then    
+if is_ds; then 
+    FS_DEF=40000 
+    FS=${P2:-$FS_DEF}  
     set.site 1 ACQ43X_SAMPLE_RATE 0
     case $FS in
     10000)
-    	FIN_DEF=5M12; hrmode=1;;
+    	FMB_DEF=5M12; hrmode=1;;
     20000)
-    	FIN_DEF=10M24; hrmode=1;;    	
+    	FMB_DEF=10M24; hrmode=1;;    	
     40000)
-    	FIN_DEF=20M48; hrmode=1;; 
+    	FMB_DEF=20M48; hrmode=1;; 
     80000)
-    	FIN_DEF=20M48; hrmode=0;; 
+    	FMB_DEF=20M48; hrmode=0;; 
     128000)
-    	FIN_DEF=32M768; hrmode=0;;
+    	FMB_DEF=32M768; hrmode=0;;
     *)
     	echo "ERROR: SR options 10k 20k 40k 80k 128k"; exit 1
     esac
-    set.site 1  hi_res_mode $hrmode	
+    set.site 1  hi_res_mode $hrmode
+else
+    CLKDIV=unknown
+    if is_tiga; then
+	    FMB_DEF=10M
+	    FS_DEF=200000
+	    FS=${P2:-$FS_DEF}
+	    if [ "$FS" = "$FMB_DEF" ]; then
+	        CLKDIV=1
+	    fi	    
+    else
+        FMB_DEF=40M
+        FS_DEF=200000; is_48x && FS_DEF=20M
+        FS=${P2:-$FS_DEF}
+        if [ "$FS" = "$FMB_DEF" ]; then
+            CLKDIV=1
+        else
+	        plan=$(in_the_plan $FS)
+	        if [ "$plan" != "$FMB_DEF" ]; then
+	            FMB_DEF=$plan
+	            CLKDIV=1
+	        fi
+	    fi
+	fi
+    
+    if [ "$CLKDIV" = "unknown" ]; then	
+	    eval $(egu2int FS=${P2:-$FS_DEF})
+	    eval $(egu2int FMB=${FMB_DEF})	
+	    CLKDIV=$(($FMB/$FS))
+    fi
 fi
+
+
+ROLE=$P1
+
 eval $(egu2int FIN=${FIN_DEF})
 
 D_TRG='d0'
 
 case $ROLE in
-fpmaster|rpmaster|master|solo|slave)
+wr|whiterabbit|fpmaster|rpmaster|master|solo|slave)
+    set_local_clock
     set_common
     set_out
     D_TRG='d1'
     $set_common_master
-    /usr/local/CARE/acq2106+WR.init ${FIN_DEF}
+    /usr/local/CARE/acq2106+WR.init ${FMB_DEF} ${CLKDIV}
     /usr/local/CARE/route-WR-FP    1>&2
-    set_local_clock $FS
 	[ -x /etc/acq400/0/on_sync_role ] && /etc/acq400/0/on_sync_role
 # Configure distributor (XO) after AI.
 	config_distributor_sites $D_TRG
-	echo "$CMDLINE ;# FIN=$FIN FIN_DEF=$FIN_DEF" > /dev/shm/role;;
+	echo "$CMDLINE ;# FIN=$FIN FMB_DEF=$FMB_DEF FIN_DEF=$FIN_DEF" > /dev/shm/role;;
 *)
     echo "ERROR: role $1 not valid"; exit 1;;
 esac	
