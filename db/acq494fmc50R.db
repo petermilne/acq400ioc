@@ -29,3 +29,8 @@ record(bo, "${UUT}:${SITE}:ACQ494:T50R${CH}:s") {
 	field(DOL,  "${UUT}:${SITE}:ACQ494:T50R${CH}:r NPP")
 	field(OUT,  "${UUT}:${SITE}:ACQ494:T50R${CH} PP")	
 }
+
+record(bo, "${UUT}:${SITE}:ACQ494:HIT_ENA${CH}") {
+	field(DTYP, "stream")
+	field(OUT,  "@acq494.proto setHIT_ENA(${CH}) ${SPORT}")
+}

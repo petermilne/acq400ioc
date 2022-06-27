@@ -29,3 +29,24 @@ record(bo, "${UUT}:${SITE}:ACQ494:MASK:${CH}:s") {
 	field(DOL,  "${UUT}:${SITE}:ACQ494:MASK:${CH}:r NPP")
 	field(OUT,  "${UUT}:${SITE}:ACQ494:MASK:${CH} PP")	
 }
+
+record(mbbo, "${UUT}:${SITE}:ACQ494:CHANNEL_COMBINE") {
+	field(DTYP, "stream")
+	field(OUT,  "@acq494.proto setCHANNEL_COMBINE(${RAW}) ${SPORT}")
+	field(NOBT, "2")
+	field(PINI, "YES")
+	field(ZRST, "NORMAL")
+	field(ONST, "PULSE_SPACE")
+	field(TWST, "PULSE_WIDTH")
+	field(THST, "")
+}
+
+record(mbbo, "${UUT}:${SITE}:ACQ494:HI_RES") {
+	field(DTYP, "stream")
+	field(OUT,  "@acq494.proto setHI_RES(${RAW}) ${SPORT}")
+	field(PINI, "YES")
+	field(ZRST, "x1")
+	field(ONST, "x2")
+	field(TWST, "x4")
+	field(THST, "")
+}

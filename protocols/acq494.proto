@@ -21,3 +21,33 @@ getMask {
 	out "tdc_disable_ch\$1";
 	in "%d";
 }
+
+setHIT_ENA {
+	out "gpx2_hit_ena\$1 %d";
+	in;
+}
+
+getHIT_ENA {
+	out "gpx2_hit_ena\$1";
+	in "%d";
+}
+
+setCHANNEL_COMBINE {
+	out "gpx2_channel_combine %d";
+	in;
+}
+
+getCHANNEL_COMBINE {
+	out "gpx2_channel_combine";
+	in "%d";
+}
+setHI_RES {
+	out "gpx2_hi_res %d";
+	in;
+}
+
+getHI_RES {
+	out "gpx2_hi_res";
+	in "%d";
+}
+
