@@ -112,7 +112,7 @@ ss sc32_gain_mux {
 	}
 	
 	state startup_delay {
-		when(delay(2)){
+		when(delay(10)){
 			
 		} state commit
 	}
