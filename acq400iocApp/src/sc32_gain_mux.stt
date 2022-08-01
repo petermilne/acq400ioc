@@ -146,11 +146,11 @@ ss sc32_gain_mux {
 				muxes[strobe] = muxvals[strobe][0]<<12 | muxvals[strobe][1]<<8 | 
 						        muxvals[strobe][2]<<4  | muxvals[strobe][3]<<0;
 				printf("strobe:%d muxes %04x\n", strobe, muxes[strobe]);
-				pvPut(muxes[strobe]);		
+				pvPut(muxes[strobe], SYNC);
 			}
 			for (ch = 1; ch <= nchan; ++ch){
 				G12[ch] = gains[0][G1[ch]] * gains[1][G2[ch]];
-				pvPut(G12[ch]);			
+				pvPut(G12[ch]);
 			}
 			commit = 0; pvPut(commit);
 			printf("sc_gain_mux commit:%s => wait_change\n", site);
