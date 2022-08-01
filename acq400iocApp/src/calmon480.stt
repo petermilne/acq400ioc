@@ -10,10 +10,7 @@
 program calmon480
 option +r;
 
-// nb : always site 1. That's a consequence of Master/Slave
-
-
-int adc_cal_mode; assign adc_cal_mode to "{uut}:1:ADC_CAL";
+int adc_cal_mode; assign adc_cal_mode to "{uut}:{site}:ADC_CAL";
 monitor adc_cal_mode;
 int adc_cal_mode0;
 
@@ -39,9 +36,10 @@ int ch;
 int nchan;
 char pvname[80];
 char pvfield[100];
+
 %%extern void* acq400_openDoc(const char* docfile, int* nchan);
 %%extern int acq400_getChannel(void *prv, int ch, const char* sw, float* eslo, float* eoff, int nocal);
-
+%%extern int acq400_isCalibrated(void* prv);
 %{
 /* #include <math.h> */
 double pow(double x, double y);
@@ -55,17 +53,21 @@ float voltsFromDb(int db)
 ss calmon {
 	state init {
 		when() {
-			printf("calmon R1000 site:%s\n", site);			
+			printf("calmon480 R1000 site:%s\n", site);
 			pvGet(adc_cal_mode); adc_cal_mode0 = adc_cal_mode;
-			pvGet(has_ch_gains);
+			//pvGet(has_ch_gains);
 			uut = macValueGet("uut"); 
 			if (macValueGet("site") != 0){
 				site = macValueGet("site");
 			}
 			sprintf(fname, "/dev/sites/%s/caldef.xml",  site);			
 			doc = acq400_openDoc(fname, &nchan);
+			adc_cal_mode = adc_cal_mode0 = acq400_isCalibrated(doc);
+			printf("calmon48 site:%s isCalibrated:%d\n", site, adc_cal_mode);
+			pvPut(adc_cal_mode);
 		} state init2
 	}
+
 	state init2 {
 		when(doc == 0) {
 			printf("ERROR failed to read caldef.xml\n");
@@ -92,9 +94,9 @@ ss calmon {
 				pvAssign(gain_changes, pvname);			
 				pvMonitor(gain_changes);
 			}
-		} state make_change		
+		} state make_change
 	}
-	
+
 	state error {	
 		when(delay(1000)) {
 		
@@ -147,5 +149,5 @@ ss calmon {
 				gain_changes0 = gain_changes;
 			}		 			
 		} state make_change
-	}
+	}	
 }
