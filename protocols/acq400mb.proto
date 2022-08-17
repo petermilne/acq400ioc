@@ -30,7 +30,7 @@ getAggregatorS1 {
 }
 
 getAggregatorEn {	
-	in "reg=0x%*x sites=%s threshold=%*d DATA_MOVER_EN=%{off|on}";
+	in "reg=0x%*x sites=%*s threshold=%*d DATA_MOVER_EN=%{off|on}";
 }
 
 getDistributor {

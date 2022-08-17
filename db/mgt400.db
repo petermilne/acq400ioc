@@ -51,6 +51,8 @@ record(bi, "${UUT}:${chan}:AGGREGATOR:ON") {
 	field(DTYP,  "stream")
 	field(INP,   "@mgt400.proto getAggregatorEn ${SPORT}")
 	field(SCAN,  "I/O Intr")
+	field(ZNAM, "0")
+	field(ONAM, "1")
 }
 
 record(bi, "${UUT}:${chan}:AGGREGATOR:SPAD:EN:r") {
@@ -58,6 +60,8 @@ record(bi, "${UUT}:${chan}:AGGREGATOR:SPAD:EN:r") {
 	field(INP,   "@mgt400.proto getSpadEn ${SPORT}")
 	field(SCAN,  "5 second")
 	field(FLNK,  "${UUT}:${chan}:AGGREGATOR:SPAD:LEN")
+	field(ZNAM, "0")
+	field(ONAM, "1")
 }
 
 record(calc, "${UUT}:${chan}:AGGREGATOR:SPAD:LEN") {
