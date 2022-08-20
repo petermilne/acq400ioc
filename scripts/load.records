@@ -1116,8 +1116,12 @@ load_mb_sync() {
 			fi;;
 		SYNC)
 			case $MB_MODEL in
-            acq2106*)		
-				lsb_x ${lp0},NOBT=3 EXT HDMI INT01M WRPPS MCLK GPG0;;
+            acq2106*)
+		        if [ $HAS_WR -eq 1 ]; then
+			        lsb_x ${lp0},NOBT=1 WRPPS nc
+			    else
+			        lsb_x ${lp0},NOBT=3 EXT HDMI INT01M WRPPS MBCLK GPG0
+			    fi;;
 			*)
 				lsb_x ${lp0},NOBT=3 EXT HDMI INT01M PPS MCLK GPG0;;
 			esac
@@ -1129,7 +1133,11 @@ load_mb_sync() {
 		CLK)
 			case $MB_MODEL in
 			acq2106*)
-				lsb_x ${lp1},NOBT=2 MCLK HDMI GPG1 COMM_B;;
+			    if [ $HAS_WR -eq 1 ]; then
+				    lsb_x ${lp1},NOBT=1 MCLK nc
+				else
+				    lsb_x ${lp1},NOBT=2 MCLK HDMI GPG1 COMM_B
+				fi;;
 			*)
 				lsb_x ${lp1},NOBT=2 MCLK HDMI GPG1;;
 			esac;;
@@ -1146,7 +1154,16 @@ load_mb_sync() {
 				esac
 			fi;;				
 		SYNC)
-			lsb_x ${lp1},NOBT=3 EXT HDMI INT01M WRPPS MBCLK GPG1;;
+			case $MB_MODEL in
+            acq2106*)
+		        if [ $HAS_WR -eq 1 ]; then
+			        lsb_x ${lp1},NOBT=1 WRPPS nc
+			    else
+			        lsb_x ${lp1},NOBT=3 EXT HDMI INT01M WRPPS MBCLK GPG1
+			    fi;;
+			*)
+				lsb_x ${lp0},NOBT=3 EXT HDMI INT01M PPS MCLK GPG1;;
+			esac;;
 		*) 		
 			echo ERROR undefined FUN;;
 		esac
