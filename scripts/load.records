@@ -1120,7 +1120,7 @@ load_mb_sync() {
 		        if [ $HAS_WR -eq 1 ]; then
 			        lsb_x ${lp0},NOBT=1 WRPPS nc
 			    else
-			        lsb_x ${lp0},NOBT=3 EXT HDMI INT01M WRPPS MBCLK GPG0
+			        lsb_x ${lp0},NOBT=3 EXT HDMI INT01M nc MBCLK GPG0
 			    fi;;
 			*)
 				lsb_x ${lp0},NOBT=3 EXT HDMI INT01M PPS MCLK GPG0;;
@@ -1159,7 +1159,7 @@ load_mb_sync() {
 		        if [ $HAS_WR -eq 1 ]; then
 			        lsb_x ${lp1},NOBT=1 WRPPS nc
 			    else
-			        lsb_x ${lp1},NOBT=3 EXT HDMI INT01M WRPPS MBCLK GPG1
+			        lsb_x ${lp1},NOBT=3 EXT HDMI INT01M nc MBCLK GPG1
 			    fi;;
 			*)
 				lsb_x ${lp0},NOBT=3 EXT HDMI INT01M PPS MCLK GPG1;;
