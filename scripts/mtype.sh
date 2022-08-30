@@ -33,6 +33,7 @@ MT_RAD_CELF=69
 MT_AO428=6A
 MT_DIO482=6B
 MT_WER_CELF=70
+MT_DIO482TD=7A
 MT_DIO482TD_PG=7B
 MT_ACQ494=B
 
@@ -70,6 +71,7 @@ nameFromMT() {
 	$MT_RAD_CELF)	echo "rad-celf";;
 	$MT_WER_CELF)   echo "wer-celf";;
 	$MT_AO428)		echo "ao428elf";;
+	$MT_DIO482TD)   echo "dio482td";;
 	$MT_DIO482TD_PG) echo "dio482td_pg";;
 	$MT_ACQ494)    echo "acq494fmc";;
 	# no default	
@@ -84,14 +86,14 @@ case $(nameFromMT $1) in
 }
 hasOutput() {
 	case $1 in
-	$MT_DIO432|$MT_DIO432P|$MT_DIO482TD_PG|$MT_DIO482|$MT_AO420|$MT_AO4220|$MT_AO424|$MT_AO428|$MT_ACQ436) echo "yes";;
+	$MT_DIO432|$MT_DIO432P|$MT_DIO482TD|$MT_DIO482TD_PG|$MT_DIO482|$MT_AO420|$MT_AO4220|$MT_AO424|$MT_AO428|$MT_ACQ436) echo "yes";;
 	*) echo "no";;
 	esac
 }
 
 isDIO() {
 	case $1 in
-	$MT_DIO432|$MT_DIO432P|$MT_DIO482TD_PG|$MT_DIO482) echo "yes";;
+	$MT_DIO432|$MT_DIO432P|$MT_DIO482TD|$MT_DIO482TD_PG|$MT_DIO482) echo "yes";;
 	*) echo "no";;
 	esac
 }

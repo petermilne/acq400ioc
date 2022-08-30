@@ -554,7 +554,7 @@ load_400() {
 		echo >>/tmp/st_post.cmd "seq calmonAO \"uut=${HOST},site=${site}\""	
 		let LO=66000000;;
 #	@@todo : different flavour of calmon for SAR ADC needed	
-	$MT_DIO432|$MT_DIO432P|$MT_DIO482|$MT_DIO482TD_PG)
+	$MT_DIO432|$MT_DIO432P|$MT_DIO482|$MT_DIO482TD|$MT_DIO482TD_PG)
 	# probably should be common to all @@todo
 	    if [ -e /dev/acq400.$site.knobs/gpg_enable ]; then
 	    	case $model in
