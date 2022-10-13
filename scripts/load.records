@@ -502,7 +502,8 @@ load_400() {
                 echo "[ -e  /var/www/d-tacq/rc-user-complete ] && set.site ${site} acq465_adc.init" >/etc/acq400/0/on_sync_role
             fi
 			chmod a+rx /etc/acq400/0/on_sync_role
-			dblr '"db/acq465elfM.db","'${cprams}'"'
+			ACQ465_FILTER=$(cat /etc/acq400/$site/acq465_filter_default)
+			dblr '"db/acq465elfM.db","'${cprams},acq465_filter=$ACQ465_FILTER'"'
 		fi;;
 	$MT_ACQ480)		
 		let ACQ480_COUNT=$ACQ480_COUNT+1
