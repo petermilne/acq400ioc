@@ -28,6 +28,12 @@ else
 	echo "WARNING: file /mnt/local/sysconfig/epics.sh missing"
 fi
 
+ACQ400IOC=/usr/local/bin/acq400ioc
+if [ -e /mnt/local/acq400ioc ]; then
+	ACQ400IOC=/mnt/local/acq400ioc
+	echo use patch IOC $ACQ400IOC
+fi
+
 source /tmp/u-boot_env
 HOST=${IOC_HOST:-$(hostname)}
 MB_MODEL=$(basename ${devicetree_image%*.dtb})
@@ -100,7 +106,7 @@ bump()
 start_ioc() {
 	/usr/local/bin/procServ \
 		-c ${ETOP} -p $PIDF -L $LOG 2222 \
-		/bin/nice -n $NICE /usr/local/bin/acq400ioc ${STCMD}
+		/bin/nice -n $NICE ${ACQ400IOC} ${STCMD}
 	while [ ! -r $PIDF ]; do
 		usleep 10000
 	done
