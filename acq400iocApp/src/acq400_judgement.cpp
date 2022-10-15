@@ -152,7 +152,7 @@ bool acq400Judgement::onCalculate(bool fail)
 				break;
 			}
 		}
-		if (verbose > 1){
+		if (verbose > 2){
 			printf("%s doDataUpdateCallbacks(%d)\n", __FUNCTION__, ic);
 		}
 		doDataUpdateCallbacks(ic);
@@ -441,11 +441,11 @@ template<> const asynParamType acq400JudgementNJ<epicsInt32>::AATYPE = asynParam
 /** Concrete Judgement class specialised by data type */
 template <class ETYPE>
 class acq400JudgementImpl : public acq400Judgement {
-	ETYPE* RAW_MU;	/* raw [sample][chan] Mask Upper */
-	ETYPE* RAW_ML;	/* raw [sample][chan] Mask Lower */
+	ETYPE* RAW_MU;	/* raw [sample][chan] Mask Upper precompensated by FIRST_SAM */
+	ETYPE* RAW_ML;	/* raw [sample][chan] Mask Lower precompensated by FIRST_SAM */
 	ETYPE* CHN_MU;	/* chn [chan][sample] Mask Upper */
 	ETYPE* CHN_ML;	/* chn [chan][sample] Mask Lower */
-	ETYPE* RAW;
+	ETYPE* RAW;     /* raw [sample][chan], raw[0] is the ES. */
 
 	static const ETYPE MAXVAL;
 	static const ETYPE MINVAL;
@@ -640,8 +640,8 @@ class acq400JudgementImpl : public acq400Judgement {
 	virtual void fill_request_task() {
 		for (int isam = 0; isam < nsam-FIRST_SAM; ++isam){
 			for (int ic = 0; ic < nchan; ++ic){
-				CHN_MU[ic*nsam+isam] = isam<WINL[ic] || isam>WINR[ic] ? 0: RAW_MU[(isam+FIRST_SAM)*nchan+ic];
-				CHN_ML[ic*nsam+isam] = isam<WINL[ic] || isam>WINR[ic] ? 0: RAW_ML[(isam+FIRST_SAM)*nchan+ic];
+				CHN_MU[ic*nsam+isam] = isam<WINL[ic] || isam>WINR[ic] ? 0: RAW_MU[isam*nchan+ic];
+				CHN_ML[ic*nsam+isam] = isam<WINL[ic] || isam>WINR[ic] ? 0: RAW_ML[isam*nchan+ic];
 			}
 		}
 
