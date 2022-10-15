@@ -130,9 +130,15 @@ record(longin, "${UUT}:JDG:CHX:BURST_COUNT")
 	field(DTYP, "asynInt32")
 	field(INP,  "@asyn($(PORT),0,$(TIMEOUT))BURST_COUNT")
 	field(SCAN, "I/O Intr")
-	field(TSE,  "-2")	
+	field(TSE,  "-2")
 }
 
+record(longin, "${UUT}:JDG:CHX:BURST:rc") {
+	field(SCAN, "1 second")
+# body of this Raw Count record provided by device-specific code
+	field(INP,  "${UUT}:JDG:CHX:BURST_COUNT")
+	field(FLNK, "${UUT}:JDG:CHX:BURST:ACTIVE")
+}
 
 record(waveform, "${UUT}:JDG:CHX:FAIL:ALL")
 {
