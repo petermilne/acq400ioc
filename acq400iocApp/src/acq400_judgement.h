@@ -42,8 +42,6 @@ enum UPDATE {
 	UPDATE_ALWAYS
 };
 
-#define FIRST_SAM	2
-
 class acq400Judgement: public asynPortDriver {
 public:
 	virtual asynStatus readInt8Array(asynUser *pasynUser, epicsInt8 *value,
@@ -54,6 +52,7 @@ public:
 	static int factory(
 		const char *portName, int nchan, int maxPoints, unsigned data_size, int bursts_per_buffer, unsigned ndma);
 	static int verbose;
+	static const int FIRST_SAM;
 	virtual void task();
 	virtual void fill_request_task(void) {};
 	virtual asynStatus updateTimeStamp(int offset);

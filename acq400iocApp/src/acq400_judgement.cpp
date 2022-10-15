@@ -102,8 +102,8 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam, in
 	WINR = new epicsInt16[nchan];
 
 	for (int ic = 0; ic < nchan; ++ic){
-		WINL[ic] = FIRST_SAM;
-		WINR[ic] = nsam-1;
+		WINL[ic] = 0;
+		WINR[ic] = nsam-FIRST_SAM-1;
 	}
 
 	/* Create the thread that computes the waveforms in the background */
@@ -293,6 +293,7 @@ asynStatus acq400Judgement::readInt16Array(asynUser *pasynUser, epicsInt16 *valu
 	return status;
 }
 
+const int acq400Judgement::FIRST_SAM = ::getenv_default("acq400_Judgement_FIRST_SAM", 1); //possibly skip ES and friends
 
 template <class ETYPE>
 class Boxcar {
@@ -302,7 +303,7 @@ class Boxcar {
 	const int nbox;
 	int* sums;
 public:
-	Boxcar(ETYPE* _base, int _nchan, int _nsam, int _nbox, int i0):
+	Boxcar(ETYPE* _base, int _nchan, int _nsam, int _nbox):
 		base(_base),
 		nchan(_nchan),
 		nsam(_nsam),
@@ -311,7 +312,7 @@ public:
 		sums = new int[nchan];
 		for (int ic = 0; ic < nchan; ++ic){
 			sums[ic] = 0;
-			for (int isam = i0; isam < i0+nbox; ++isam){
+			for (int isam = 0; isam < nbox; ++isam){
 				sums[ic] += base[isam*nchan+ic];
 			}
 		}
@@ -377,10 +378,10 @@ class acq400JudgementNJ : public acq400Judgement {
 
 	bool calculate(ETYPE* raw)
 	{
-		for (int isam = 0; isam < nsam; ++isam){
+		for (int isam = 0; isam < nsam-FIRST_SAM; ++isam){
 			for (int ic = 0; ic < nchan; ++ic){
-				int ib = isam*nchan+ic;
-				ETYPE xx = isam > FIRST_SAM? raw[ib]: 0;        // keep the ES out of the output data..
+				int ib = (isam+FIRST_SAM)*nchan+ic;
+				ETYPE xx = raw[ib];        // keep the ES out of the output data..
 
 				RAW[ic*nsam+isam] = xx;			 	// for plotting
 			}
@@ -528,9 +529,9 @@ class acq400JudgementImpl : public acq400Judgement {
 			printf("ERROR P_MASK_BOXCAR %d\n", P_MASK_BOXCAR);
 		}
 
-		Boxcar<ETYPE> boxcar(raw, nchan, nsam, nbox, FIRST_SAM);
+		Boxcar<ETYPE> boxcar(raw+FIRST_SAM*nchan, nchan, nsam-FIRST_SAM, nbox);
 
-		for (int isam = FIRST_SAM; isam < nsam; ++isam){
+		for (int isam = 0; isam < nsam-FIRST_SAM; ++isam){
 			for (int ic = 0; ic < nchan; ++ic){
 				int ib = isam*nchan+ic;
 				ETYPE xx = boxcar(isam, ic);
@@ -622,10 +623,10 @@ class acq400JudgementImpl : public acq400Judgement {
 
 		if (function == P_MU){
 			memcpy(&CHN_MU[addr*nsam], value, nsam*sizeof(ETYPE));
-			fill_mask_chan(RAW_MU, addr, value);
+			fill_mask_chan(RAW_MU+FIRST_SAM*nchan, addr, value);
 		}else if (function == P_ML){
 			memcpy(&CHN_ML[addr*nsam], value, nsam*sizeof(ETYPE));
-			fill_mask_chan(RAW_ML, addr, value);
+			fill_mask_chan(RAW_ML+FIRST_SAM*nchan, addr, value);
 		}
 
 		return(status);
@@ -637,10 +638,10 @@ class acq400JudgementImpl : public acq400Judgement {
 		assert(0);
 	}
 	virtual void fill_request_task() {
-		for (int isam = 0; isam < nsam; ++isam){
+		for (int isam = 0; isam < nsam-FIRST_SAM; ++isam){
 			for (int ic = 0; ic < nchan; ++ic){
-				CHN_MU[ic*nsam+isam] = isam<WINL[ic] || isam>WINR[ic] ? 0: RAW_MU[isam*nchan+ic];
-				CHN_ML[ic*nsam+isam] = isam<WINL[ic] || isam>WINR[ic] ? 0: RAW_ML[isam*nchan+ic];
+				CHN_MU[ic*nsam+isam] = isam<WINL[ic] || isam>WINR[ic] ? 0: RAW_MU[(isam+FIRST_SAM)*nchan+ic];
+				CHN_ML[ic*nsam+isam] = isam<WINL[ic] || isam>WINR[ic] ? 0: RAW_ML[(isam+FIRST_SAM)*nchan+ic];
 			}
 		}
 
@@ -672,10 +673,10 @@ public:
 		memset(FAIL_MASK32, 0, fail_mask_len*sizeof(epicsInt32));
 		bool fail = false;
 
-		for (int isam = 0; isam < nsam; ++isam){
+		for (int isam = 0; isam < nsam-FIRST_SAM; ++isam){
 			for (int ic = 0; ic < nchan; ++ic){
-				int ib = isam*nchan+ic;
-				ETYPE xx = isam > FIRST_SAM? raw[ib]: 0;        // keep the ES out of the output data..
+				int ib = (isam+FIRST_SAM)*nchan+ic;
+				ETYPE xx = raw[ib];        			// keep the ES out of the output data..
 
 				RAW[ic*nsam+isam] = xx;			 	// for plotting
 
@@ -695,8 +696,11 @@ public:
 	virtual void handle_burst(int vbn, int offset)
 	{
 		ETYPE* raw = (ETYPE*)Buffer::the_buffers[ib]->getBase()+offset;
-		handle_es((unsigned*)raw);
+		bool esok = handle_es((unsigned*)raw) == 0;
 
+		if (!esok){
+			return;
+		}
 
 		updateTimeStamp(offset);
 		setIntegerParam(P_SAMPLE_COUNT, sample_count);
@@ -710,8 +714,8 @@ public:
 		setIntegerParam(P_OK, !fail);
 		setIntegerParam(P_BN, vbn);
 		callParamCallbacks();
-		if (verbose > 1){
-			printf("%s vbn:%3d off:%d fail:%d\n", __FUNCTION__, vbn, offset, fail);
+		if (!esok || verbose > 1){
+			printf("%s %s FIRST_SAM:%d vbn:%3d off:%d fail:%d\n", __FUNCTION__, esok? "ESOK": "ES NF", FIRST_SAM, vbn, offset, fail);
 		}
 		for(int m32 = 0; m32 < fail_mask_len; ++m32){
 			setIntegerParam(m32, P_RESULT_MASK32, FAIL_MASK32[m32]);
