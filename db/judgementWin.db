@@ -3,10 +3,10 @@ record(longout, "${UUT}:${SITE}:JDG:${CH}:WIN:L")
 {
 	field(DTYP, "Soft Channel")
 	field(DRVH, "${NSAM}")
-	field(DRVL,  "2")
+	field(DRVL,  "0")
 	field(HOPR, "${NSAM}")
-	field(LOPR,  "2")	
-	field(VAL,   "2")
+	field(LOPR,  "0")	
+	field(VAL,   "0")
 	field(PINI,  "YES")
 	field(FLNK,  "${UUT}:${SITE}:JDG:${CH}:WIN:L:c")
 }
