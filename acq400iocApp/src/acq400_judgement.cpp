@@ -808,7 +808,7 @@ template<> const epicsInt32 acq400JudgementImpl<epicsInt32>::MAXLIM = 0x7ffffef0
 template<> const epicsInt32 acq400JudgementImpl<epicsInt32>::MINLIM = 0x80000010;
 
 template<> const int acq400JudgementImpl<epicsInt16>::SCALE = 1;
-template<> const int acq400JudgementImpl<epicsInt32>::SCALE = 256*256;   // scale 32 bit number to 16 bit code step.
+template<> const int acq400JudgementImpl<epicsInt32>::SCALE = 256;   // scale 32 bit number to 24 bit code step.
 
 template<class T> int acq400JudgementImpl<T>::verbose = ::getenv_default("acq400JudgementImpl_VERBOSE", 0);
 
