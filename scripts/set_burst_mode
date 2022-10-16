@@ -1,0 +1,39 @@
+#!/bin/sh
+# set_burst_mode TLEN=128 BPB=1 SAMPLE_DELTA_NS=1e8
+
+if [ $# -eq 0 ]; then
+	if [ -e /dev/shm/set_burst_mode ]; then
+		cat /dev/shm/set_burst_mode
+		exit 0
+	else
+		echo "set_burst_mode not set"
+		exit 1
+	fi
+fi
+
+TLEN=${1:-128}   # transient length
+BPB=${2:-1}      # bursts per buffer. if burst rate swamps system
+SDN=${3:-0}  # SAMPLE DELTA NS
+
+
+eval $(get.site 0 aggregator)
+s1=${sites%,*}
+
+set.site $s1 rgm=3,0,1		# MUST be peered
+
+ssb=$(get.site 0 ssb)
+blen=$((TLEN*ssb*BPB))
+set.site $s1 es_enable=1
+set.site $s1 RTM_TRANSLEN=$((TLEN-1))
+sleep 0.5
+set.site 0 bufferlen $blen
+
+if [ $SDN -eq 0 ]; then
+	SDN=$(get.site 0 sync_role | awk '{print 1e9/$2}')
+fi
+caput $(hostname):JDG:SAMPLE_DELTA_NS $SDN
+
+echo "set bufferlen $blen recorded $(get.site 0 bufferlen) SDN $SDN"
+echo "set_burst_mode $TLEN $BPB $SDN" >/dev/shm/set_burst_mode
+exit 0
+
