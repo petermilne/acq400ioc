@@ -699,6 +699,8 @@ public:
 		bool esok = handle_es((unsigned*)raw) == 0;
 
 		if (!esok){
+			esok = handle_es((unsigned*)(raw+nchan));
+			printf("ERROR %s es not at offset0, %s\n", __FUNCTION__, esok? "ES found at +1": "ES NOT FOUND");
 			return;
 		}
 
@@ -714,7 +716,7 @@ public:
 		setIntegerParam(P_OK, !fail);
 		setIntegerParam(P_BN, vbn);
 		callParamCallbacks();
-		if (!esok || verbose > 1){
+		if (verbose > 1){
 			printf("%s %s FIRST_SAM:%d vbn:%3d off:%d fail:%d\n", __FUNCTION__, esok? "ESOK": "ES NF", FIRST_SAM, vbn, offset, fail);
 		}
 		for(int m32 = 0; m32 < fail_mask_len; ++m32){

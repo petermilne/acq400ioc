@@ -106,10 +106,8 @@ WF_ACQ_HOST_WINDOW_PER_CHANNEL=y
 append to /mnt/local/sysconfig/epics.sh
 export SIZE=1024
 
+# single script handles data16 and data32..
 export IOC_PREINIT=./scripts/load.judgement
-# for 32 bit (24 bit ADC) :
-export IOC_PREINIT=./scripts/load.judgement32
-
 
 # adjustment for off by one error in some personalities eg ACQ424
 export RTM_TRANSLEN_ADJ=2

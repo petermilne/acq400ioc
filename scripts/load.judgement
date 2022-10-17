@@ -8,8 +8,19 @@ NDMA=1
 if [ $NAXI -eq 2 ]; then
 	NDMA=2
 fi
-WSZ=2
-MAXCODE=32768
+eval $(get.site 0 aggregator)
+S1=${sites%,*}
+if [ $(get.site $S1 data32) -eq 1 ]; then
+echo '# judgement data32'
+    WSZ=4
+    MAXCODE=8388608
+    CHDB=judgementChInt32.db
+else
+    echo '# judgement data16'
+    WSZ=2
+    MAXCODE=32768
+    CHDB=judgementCh.db
+fi
 echo acq400JudgementConfigure\("J1", ${NCHAN}, ${nsam}, ${WSZ}, ${BURSTS_PER_BUFFER}, ${NDMA}\)
 PRAMS="UUT=${HOST},PORT=J1,ADDR=0,TIMEOUT=0,NCHAN=${NCHAN},NCHAN1=$((NCHAN+1))"
 echo dbLoadRecords\(\"db/judgementCommon.db\",\"${PRAMS},MAXCODE=${MAXCODE},MM1=$((MAXCODE-1))\"\)
@@ -24,13 +35,15 @@ for site in $(echo $sites | tr , \  ); do
 	nchan=$(get.site $site NCHAN)
 	for ch in $(seq 1 ${nchan}); do		
 		CH=$(printf "%02d" $ch)		
-		echo dbLoadRecords\(\"db/judgementCh.db\",\"${PRAMS},FN=MU,PROKEY=MASK_UPPER,NSAM=${nsam},SITE=${site},CH=${CH},IX=${ix}\"\)
-		echo dbLoadRecords\(\"db/judgementCh.db\",\"${PRAMS},FN=ML,PROKEY=MASK_LOWER,NSAM=${nsam},SITE=${site},CH=${CH},IX=${ix}\"\)
-		echo dbLoadRecords\(\"db/judgementWin.db\",\"${PRAMS},NSAM=${nsam},SITE=${site},CH=${CH},IX=${ix}\"\)
+		echo dbLoadRecords\(\"db/${CHDB}\",\"${PRAMS},FN=MU,PROKEY=MASK_UPPER,NSAM=${nsam},SITE=${site},CH=${CH},IX=${ix}\"\)
+		echo dbLoadRecords\(\"db/${CHDB}\",\"${PRAMS},FN=ML,PROKEY=MASK_LOWER,NSAM=${nsam},SITE=${site},CH=${CH},IX=${ix}\"\)
+		echo dbLoadRecords\(\"db/judgementWin.db\",\"${PRAMS},NSAM=${nsam},NSAM2=$((nsam-4)),SITE=${site},CH=${CH},IX=${ix}\"\)
 		ix=$((ix+1))
 	done
-	echo dbLoadRecords\(\"db/judgementWinM.db\",\"${PRAMS},NSAM=${nsam},SITE=${site},CH=ALL,IX=${NCHAN}\"\)
+	echo dbLoadRecords\(\"db/judgementWinM.db\",\"${PRAMS},NSAM=${nsam},NSAM2=$((nsam-4)),SITE=${site},CH=ALL,IX=${NCHAN}\"\)
 	echo >>/tmp/st_post.cmd "seq judge_win_clr_all \"uut=${HOST},site=${site},nchan=${nchan},wmin=2,wmax=${nsam},priority=0\""
 done
 
-
+# "${UUT}:JDG:CHX:BURST_COUNT"
+cprams="UUT=${HOST},SITE=JDG,SIG=CHX,CTRMAX=999999,DTC=1"
+dblr '"db/_counter.db","'${cprams},lname=BURST'"'
