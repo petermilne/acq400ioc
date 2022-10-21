@@ -87,3 +87,40 @@ record(ao, "${UUT}:0:PCOMP") {
 	field(DRVH, "100")
 }
 
+record(stringin, "${UUT}:0:HAS_MGT") {
+	field(DTYP,  "stream")
+	field(INP,   "@acq400mb.proto getString(has_mgt) ${SPORT}")
+	field(PINI,  "YES")
+}
+
+record(stringin, "${UUT}:0:HAS_HUDP") {
+	field(DTYP,  "stream")
+	field(INP,   "@acq400mb.proto getString(has_hudp) ${SPORT}")
+	field(PINI,  "YES")
+}
+
+record(stringin, "${UUT}:0:HAS_MGTDRAM") {
+	field(DTYP,  "stream")
+	field(INP,   "@acq400mb.proto getString(has_mgtdram) ${SPORT}")
+	field(PINI,  "YES")
+}
+
+record(stringin, "${UUT}:0:HAS_DSP") {
+	field(DTYP,  "stream")
+	field(INP,   "@acq400mb.proto getString(has_dsp) ${SPORT}")
+	field(PINI,  "YES")
+}
+
+record(stringin, "${UUT}:0:HAS_WR") {
+	field(DTYP,  "stream")
+	field(INP,   "@acq400mb.proto getString(has_wr) ${SPORT}")
+	field(PINI,  "YES")
+}
+
+record(stringin, "${UUT}:0:IS_TIGA") {
+	field(DTYP,  "stream")
+	field(INP,   "@acq400mb.proto getString(is_tiga) ${SPORT}")
+	field(PINI,  "YES")
+}
+
+

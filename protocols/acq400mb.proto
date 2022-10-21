@@ -62,3 +62,13 @@ setDistributorSites {
 	out "distributor sites=%s";
 	in;
 }
+
+getHasMgt {
+	out "has_mgt";
+	in "%10c";
+}
+
+getString {
+	out "\$1";
+	in "%10c";
+}
