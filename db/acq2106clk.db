@@ -102,12 +102,18 @@ record (bi, "${UUT}:SYS:CLK:C1B") {
 	field(DTYP, "biAcqHost")
 	field(INP,  "@/dev/gpio/CLK/C1B")
 	field(SCAN, "1 second")
+        field(DESC, "Si5326 CLKIN1 Invalid")
+        field(ONAM, "FAULT")
+        field(ZNAM, "OK")
 }
 
 record (bi, "${UUT}:SYS:CLK:C2B") {
 	field(DTYP, "biAcqHost")
 	field(INP,  "@/dev/gpio/CLK/C2B")
 	field(SCAN, "1 second")
+	field(DESC, "Si5326 CLKIN2 Invalid")
+	field(ONAM, "FAULT")
+	field(ZNAM, "OK")
 }
 
 record (bi, "${UUT}:SYS:CLK:Si570_OE") {
