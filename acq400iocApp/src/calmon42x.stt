@@ -44,16 +44,6 @@ int scale;
 %%extern int acq400_getChannel(void *prv, int ch, const char* sw, float* eslo, float* eoff, int nocal);
 %%extern int acq400_isData32(void* prv);
 %%extern int acq400_isCalibrated(void* prv);
-%{
-static char* getKey(int gain) 
-{ 
-	static char key[8];
-	
-	snprintf(key, 8, "%d", gain);
-	
-	return key; 
-}
-}%
 
 ss calmon {
 	state init {
@@ -89,6 +79,7 @@ ss calmon {
 				if (has_ch_gains){
 					snprintf(pvname, 80, "%s:%s:GAIN:%02d.RVAL", uut, site, ch);
 					pvAssign(gains[ch], pvname);
+					pvGet(gains[ch], SYNC);
 				}
 			}
 			if (has_ch_gains){
@@ -120,11 +111,27 @@ ss calmon {
 				}
 				
 				for (ch = 1; ch <= nchan; ++ch){
+					char skey[2] = {};
 					if (has_ch_gains){
-						pvGet(gains[ch]);
-					}		
-					if (acq400_getChannel(doc, ch, getKey(gains[ch]), 
-								&eslo[ch], &eoff[ch], adc_cal_mode==1) == 1){
+						int rc = pvGet(gains[ch], SYNC);
+						if (rc != pvStatOK){
+							printf("WARNING: pvGet() ch:%d not OK %d\n", ch, rc);
+							rc = pvGet(gains[ch], SYNC);
+							if (rc != pvStatOK){
+								printf("ERROR: pvGet() ch:%d not OK %d\n", ch, rc);
+							}else{
+								printf("NOTE: pvGet() ch:%d OK on retry value %d\n", ch, gains[ch]);
+							}
+						}
+					}
+					if (gains[ch] < 0 || gains[ch] > 9){
+						printf("ERROR: gain out of range %d\n", gains[ch]);
+					}
+					if (gains[ch] == 0){
+						printf("ERROR: ch:%d gain set to zero, this is bad\n", ch);
+					}
+					skey[0] = gains[ch]+'0';
+					if (acq400_getChannel(doc, ch, skey, &eslo[ch], &eoff[ch], adc_cal_mode==1) == 1){
 						if (ch==1){
 							printf("site:%s g:%d ch:%2d eslo:%.6e eoff:%.6e\n", 
 										site, gains[ch], ch, eslo[ch], eoff[ch]);
@@ -141,7 +148,7 @@ ss calmon {
 							ext_eslo[0] = ext_eoff[0] = 1+gains[1];
 						}						
 					}else{
-						printf("ERROR return from acq400_getChannel()\n");
+						printf("ERROR calmon42x site:%s ch:%d key:%s return from acq400_getChannel()\n", site, ch, skey);
 					}
 				}
 				pvPut(ext_eslo);
