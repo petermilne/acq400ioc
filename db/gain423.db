@@ -13,7 +13,7 @@ record (mbbo, "${UUT}:${SITE}:GAIN:${CH}")	{
 	field(THVL, "1")
 	field(FLNK, "${UUT}:${SITE}:GAIN:${CH}:w PP")
 	field(PINI, "YES")
-	field(RVAL, "0")
+	field(VAL, "0")
 }
 
 record (mbbo, "${UUT}:${SITE}:GAIN:${CH}:w")	{

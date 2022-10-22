@@ -178,7 +178,7 @@ int _acq400_getChannelTop(void *prv, int ch, const char* sw, float* eslo, float*
 			return _acq400_getChannel(_range, ch, eslo, eoff, nocal);
 		}
 	}
-	printf("ERROR: range \"%s\" not found\n", sw);
+	printf("ERROR: ch:%d range \"%s\" not found\n", ch, sw);
 	return -1;
 }
 int acq400_getChannel(void *prv, int ch, const char* sw, float* eslo, float* eoff, int nocal)

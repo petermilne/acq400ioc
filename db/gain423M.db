@@ -11,6 +11,7 @@ record (mbbo, "${UUT}:${SITE}:GAIN:${CH}") {
 	field(ONVL, "2")
 	field(TWVL, "4")
 	field(THVL, "1")
+	field(VAL,  "0")
 	field(FLNK, "${UUT}:${SITE}:GAIN:fan1")    	
 }
 
