@@ -79,7 +79,7 @@ ss calmon {
 				if (has_ch_gains){
 					snprintf(pvname, 80, "%s:%s:GAIN:%02d.RVAL", uut, site, ch);
 					pvAssign(gains[ch], pvname);
-					pvGet(gains[ch], SYNC);
+					//pvGet(gains[ch]);
 				}
 			}
 			if (has_ch_gains){
