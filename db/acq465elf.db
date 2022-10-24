@@ -4,6 +4,16 @@ record(bi, "${UUT}:${SITE}:ACQ465:READALL") {
 	field(INP,  "@acq465.proto acq465_readall ${SPORT}")
 	field(SCAN, "2 second")
 	field(FLNK, "${UUT}:${SITE}:ACQ465:HEARTBEAT")
+	field(SDIS, "${UUT}:0:ACQ465:POLL")
+	field(DISV, "0")
+}
+
+record(bo, "${UUT}:0:ACQ465:POLL") {
+	field(DTYP, "Soft Channel")
+	field(ZNAM, "NOPOLL")
+	field(ONAM, "POLL")
+	field(VAL,  "1")
+	field(PINI, "YES")
 }
 
 record(aai, "${UUT}:${SITE}:ACQ465:HEARTBEAT" ) {
