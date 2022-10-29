@@ -3,6 +3,20 @@
 UUT=${UUT:-$(hostname)}
 ABO=${ABO:-0}
 TRG=${TRG:-1}
+NOWAIT=${NOWAIT:-0}
+
+wait_state() {
+	wstate=$1
+	state=$(caget -t ${UUT}:MODE:TRANS_ACT:STATE)
+	echo $state
+	while [ "$state" != "$wstate" ]; do
+		usleep 100000
+		state=$(caget -t ${UUT}:MODE:TRANS_ACT:STATE)
+		echo $state
+	done
+}
+
+
 
 if [ -z $1 ]; then
 	echo zapper $(caget "${UUT}:1:SHOT") TRG:$TRG ABO:$ABO
@@ -15,24 +29,14 @@ if [ -z $1 ]; then
 	set.site 1 trg=1,1,1
 	caput "${UUT}:MODE:TRANSIENT:SET_ARM"		1
 
-	state=$(caget -t ${UUT}:MODE:TRANS_ACT:STATE)
-	echo $state
-	while [ "$state" != "ARM" ]; do
-		usleep 100000
-		state=$(caget -t ${UUT}:MODE:TRANS_ACT:STATE)
-		echo $state
-	done
+	[ $NOWAIT -ge 1 ] || wait_state ARM
 
 	[ $TRG -eq 1 ] && soft_trigger
 
 	[ $ABO -eq 1 ] && caput "${UUT}:MODE:TRANSIENT:SET_ABORT" 1
 
+	[ $NOWAIT -ge 2 ] || wait_state IDLE
 
-	while [ "$state" != "IDLE" ]; do
-		usleep 100000
-		state=$(caget -t ${UUT}:MODE:TRANS_ACT:STATE)
-		echo $state
-	done
 	echo "$state $(caget ${UUT}:MODE:TRANS_ACT:POST)"
 else
 	echo supervisor loop $0 ${1}
