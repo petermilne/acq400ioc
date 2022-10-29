@@ -232,6 +232,7 @@ record(fanout, "${UUT}:MODE:TRANS_ACT:STATE_f") {
 record(calcout, "${UUT}:MODE:TRANS_ACT:STATE_fix") {
 	field(INPA, "${UUT}:MODE:TRANS_ACT:STATE")
 	field(CALC, "A < 0 || A > 5")
+	field(OOPT, "Transition To Non-zero")
 	field(DOPT, "Use OCAL")
 	field(OCAL, "0")
 	field(OUT,  "${UUT}:MODE:TRANS_ACT:STATE PP")
