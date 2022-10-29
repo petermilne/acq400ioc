@@ -134,9 +134,10 @@ record(calcout, "${UUT}:MODE:TRANSIENT:SET_ARM:clr") {
 	field(INPA,  "${UUT}:MODE:TRANSIENT:SET_ARM")
 	field(INPB,  "${UUT}:MODE:TRANS_ACT:STATE")
 	field(CALC, "A && B!=0")
-	field(OOPT, "Transition To Non-zero")
+	#field(OOPT, "Transition To Non-zero")
+	field(OOPT, "Every Time")
 	field(DOPT, "Use OCAL")
-	field(OCAL, "!VAL")
+	field(OCAL, "0")
 	field(OUT,  "${UUT}:MODE:TRANSIENT:SET_ARM PP")
 	field(FLNK, "${UUT}:MODE:TRANSIENT:SET_ABORT:set")
 }
