@@ -109,23 +109,36 @@ record(bo, "${UUT}:MODE:TRANSIENT:SET_ARM") {
 	field(FLNK, "${UUT}:MODE:TRANSIENT:SET_ARM:set")	
 
 	field(SDIS, "${UUT}:MODE:CONTINUOUS")
-	field(DISV, "1")
-	field(HIGH, "0.1")
-
+	field(DISV, "1")	
 }
 
 record(calcout, "${UUT}:MODE:TRANSIENT:SET_ARM:set") {
+	field(DESC, "SET on demand && IDLE")
 	field(INPA,  "${UUT}:MODE:TRANSIENT:SET_ARM")
-	field(CALC, "A")
+	field(INPB,  "${UUT}:MODE:TRANS_ACT:STATE")
+	field(CALC, "A && B==0")
 	field(OOPT, "Transition To Non-zero")
 	field(DOPT, "Use CALC")
 	field(OUT,  "${UUT}:MODE:TRANSIENT:SET_ARM:w PP")
 }
 
+
 record(bo, "${UUT}:MODE:TRANSIENT:SET_ARM:w") {
 	field(DTYP, "stream")
 	field(OUT,  "@mb.proto setArm ${SPORT}")
 	field(FLNK, "${UUT}:1:DT PP")
+}
+
+record(calcout, "${UUT}:MODE:TRANSIENT:SET_ARM:clr") {
+	field(DESC, "CLR on demand && !IDLE")
+	field(INPA,  "${UUT}:MODE:TRANSIENT:SET_ARM")
+	field(INPB,  "${UUT}:MODE:TRANS_ACT:STATE")
+	field(CALC, "A && B!=0")
+	field(OOPT, "Transition To Non-zero")
+	field(DOPT, "Use OCAL")
+	field(OCAL, "!VAL")
+	field(OUT,  "${UUT}:MODE:TRANSIENT:SET_ARM PP")
+	field(FLNK, "${UUT}:MODE:TRANSIENT:SET_ABORT:set")
 }
 
 
@@ -134,22 +147,29 @@ record(bo, "${UUT}:MODE:TRANSIENT:SET_ABORT") {
 	field(DESC, "abort transient capture")
 	field(VAL,  "0")
 	field(PINI, "YES")	
-	field(FLNK,  "${UUT}:MODE:TRANSIENT:SET_ABORT:set")
-	field(HIGH, "0.1")
+	field(FLNK,  "${UUT}:MODE:TRANSIENT:SET_ABORT:set")	
 }
 
 record(calcout, "${UUT}:MODE:TRANSIENT:SET_ABORT:set") {
 	field(INPA,  "${UUT}:MODE:TRANSIENT:SET_ABORT")
-	field(CALC, "A")
+	field(INPB,  "${UUT}:MODE:TRANSIENT:SET_ARM")
+	field(CALC, "A && !B")
 	field(OOPT, "Transition To Non-zero")
 	field(DOPT, "Use CALC")
 	field(OUT,  "${UUT}:MODE:TRANSIENT:SET_ABORT:w PP")
 }
 
-
 record(bo, "${UUT}:MODE:TRANSIENT:SET_ABORT:w") {
 	field(DTYP, "stream")
-	field(OUT,  "@mb.proto setAbort ${SPORT}")	
+	field(OUT,  "@mb.proto setAbort ${SPORT}")
+	field(FLNK, "${UUT}:MODE:TRANSIENT:SET_ABORT:clr")
+}
+
+record(calcout, "${UUT}:MODE:TRANSIENT:SET_ABORT:clr") {
+	field(OOPT, "Every Time")
+	field(DOPT, "Use OCAL")
+	field(OCAL, "0")
+	field(OUT,  "${UUT}:MODE:TRANSIENT:SET_ABORT PP")
 }
 
 record(bo, "${UUT}:SIG:SOFT_TRIGGER") {
@@ -197,7 +217,24 @@ record(mbbi, "${UUT}:MODE:TRANS_ACT:STATE") {
 	field(FVST, "CLEANUP")
 	field(INP,  "@transient.proto read_state ${SPORTT}")
 	field(SCAN, "I/O Intr")		
-	field(FLNK, "${UUT}:MODE:TRANS_ACT:STATE_NOT_IDLE")
+	field(FLNK, "${UUT}:MODE:TRANS_ACT:STATE_f")
+}
+
+
+
+record(fanout, "${UUT}:MODE:TRANS_ACT:STATE_f") {
+	field(SELM, "All")
+	field(LNK1, "${UUT}:MODE:TRANS_ACT:STATE_NOT_IDLE")
+	field(LNK2, "${UUT}:MODE:TRANSIENT:SET_ARM:clr")
+	field(LNK3, "${UUT}:MODE:TRANS_ACT:STATE_fix")
+}
+
+record(calcout, "${UUT}:MODE:TRANS_ACT:STATE_fix") {
+	field(INPA, "${UUT}:MODE:TRANS_ACT:STATE")
+	field(CALC, "A < 0 || A > 5")
+	field(DOPT, "Use OCAL")
+	field(OCAL, "0")
+	field(OUT,  "${UUT}:MODE:TRANS_ACT:STATE PP")
 }
 
 record(calc, "${UUT}:MODE:TRANS_ACT:STATE_NOT_IDLE") {
