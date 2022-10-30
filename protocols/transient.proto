@@ -4,15 +4,15 @@ ExtraInput = Ignore;
 #4 5000 50000 86016 19
 #state pre post elapsed demux
 
-read_state 	{ in "STX=%d %*d %*d %*d %*d"; }
+read_state 	{ in "STX %d %*d %*d %*d %*d"; }
 
-read_pre 	{ in "STX=%*d %d %*d %*d %*d"; }
+read_pre 	{ in "STX %*d %d %*d %*d %*d"; }
 
-read_post 	{ in "STX=%*d %*d %d %*d %*d"; }
+read_post 	{ in "STX %*d %*d %d %*d %*d"; }
 
-read_elapsed 	{ in "STX=%*d %*d %*d %d %*d"; }
+read_elapsed 	{ in "STX %*d %*d %*d %d %*d"; }
 
-read_demux 	{ in "STX=%*d %*d %*d %*d %d"; }
+read_demux 	{ in "STX %*d %*d %*d %*d %d"; }
 
 read_error	{ in "ERROR %s"; }
 
