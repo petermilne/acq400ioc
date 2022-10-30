@@ -227,16 +227,6 @@ record(fanout, "${UUT}:MODE:TRANS_ACT:STATE_f") {
 	field(SELM, "All")
 	field(LNK1, "${UUT}:MODE:TRANS_ACT:STATE_NOT_IDLE")
 	field(LNK2, "${UUT}:MODE:TRANSIENT:SET_ARM:clr")
-	field(LNK3, "${UUT}:MODE:TRANS_ACT:STATE_fix")
-}
-
-record(calcout, "${UUT}:MODE:TRANS_ACT:STATE_fix") {
-	field(INPA, "${UUT}:MODE:TRANS_ACT:STATE")
-	field(CALC, "A < 0 || A > 5")
-	field(OOPT, "Transition To Non-zero")
-	field(DOPT, "Use OCAL")
-	field(OCAL, "0")
-	field(OUT,  "${UUT}:MODE:TRANS_ACT:STATE PP")
 }
 
 record(calc, "${UUT}:MODE:TRANS_ACT:STATE_NOT_IDLE") {
