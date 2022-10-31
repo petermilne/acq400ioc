@@ -19,6 +19,9 @@ wait_state() {
 
 
 if [ -z $1 ]; then
+
+	wait_state IDLE
+
 	echo zapper $(caget "${UUT}:1:SHOT") TRG:$TRG ABO:$ABO
 
 	caput "${UUT}:MODE:TRANSIENT:PRE" 		0
@@ -28,6 +31,7 @@ if [ -z $1 ]; then
 	# disable AUTO_SOFT_TRIGGER, but select soft trigger source
 	set.site 1 trg=1,1,1
 	caput "${UUT}:MODE:TRANSIENT:SET_ARM"		1
+	caget "${UUT}:MODE:TRANSIENT:SET_ARM"
 
 	[ $NOWAIT -ge $((TRG+1)) ] || wait_state ARM
 
