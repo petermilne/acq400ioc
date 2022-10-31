@@ -268,12 +268,9 @@ record(longin, "${UUT}:MODE:TRANS_ACT:RAW:DSZ") {
 	field(FLNK, "${UUT}:MODE:TRANS_ACT:RAW:DATA_VALID")
 }
 
-record(bo, "${UUT}:MODE:TRANS_ACT:RAW:DATA_VALID") {
-	field(DTYP, "Soft Channel")
-	field(DOL,  "${UUT}:MODE:TRANS_ACT:RAW:DSZ")
-	field(OMSL, "closed_loop")
-	field(ZNAM, "false")
-	field(ONAM, "true")
+record(calc, "${UUT}:MODE:TRANS_ACT:RAW:DATA_VALID") {
+	field(INPA, "${UUT}:MODE:TRANS_ACT:RAW:DSZ")
+	field(CALC, "A != 0")
 }
 
 
@@ -285,12 +282,9 @@ record(longin, "${UUT}:MODE:TRANS_ACT:CH:DSZ") {
 	field(FLNK, "${UUT}:MODE:TRANS_ACT:CH:DATA_VALID")
 }
 
-record(bo, "${UUT}:MODE:TRANS_ACT:CH:DATA_VALID") {
-	field(DTYP, "Soft Channel")
-	field(DOL,  "${UUT}:MODE:TRANS_ACT:CH:DSZ")
-	field(OMSL, "closed_loop")
-	field(ZNAM, "false")
-	field(ONAM, "true")
+record(calc, "${UUT}:MODE:TRANS_ACT:CH:DATA_VALID") {
+	field(INPA, "${UUT}:MODE:TRANS_ACT:CH:DSZ")
+	field(CALC, "A != 0")
 }
 
 record (longin, "${UUT}:SHOT_COMPLETE") {
