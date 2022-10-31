@@ -27,10 +27,9 @@ if [ -z $1 ]; then
 	caput "${UUT}:MODE:TRANSIENT"		 	1
 	# disable AUTO_SOFT_TRIGGER, but select soft trigger source
 	set.site 1 trg=1,1,1
-
 	caput "${UUT}:MODE:TRANSIENT:SET_ARM"		1
 
-	[ $NOWAIT -ge 1 ] || wait_state ARM
+	[ $NOWAIT -ge $((TRG+1)) ] || wait_state ARM
 
 	[ $TRG -eq 1 ] && soft_trigger
 
@@ -43,6 +42,6 @@ else
 	echo supervisor loop $0 ${1}
 	for s in $(seq $1); do
 		TRG=1 $0
-		ABO=1 $0
+		ABO=1 TRG=0 $0
 	done
 fi
