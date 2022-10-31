@@ -22,5 +22,8 @@ findEventStatus { in "findEvent=%d,%*d,%*d"; }
 findEventCurBuf { in "findEvent=%*d,%d,%*d"; }
 findEventTotBuf { in "findEvent=%*d,%*d,%d"; }
 
+getRawDataSize { in "DATA_SIZE=%d,%*d"; }
+getChDataSize  { in "DATA_SIZE=%*d,%d"; }
+
 
 mdsPutCh	{ in "mdsPutCh %d"; }
