@@ -108,7 +108,7 @@ ss pg_trg_deb {
 			if (trg_dx == TRGIN(site)){
 				message = "TRGIN";
 				bypass_debounce = 0;
-			}else if (trg_dx0 == 0){
+			}else if (trg_dx == 0){
 				if (trg_d0_src == TRG_D0_WRTT0){
 					message = "d0+WRTT0";
 					bypass_debounce = 1;
@@ -116,7 +116,7 @@ ss pg_trg_deb {
 					message = "d0";
 					bypass_debounce = 0;
 				}
-			}else if (trg_dx0 == 1){
+			}else if (trg_dx == 1){
 				if (trg_d1_src == TRG_D1_WRTT1){
 					message = "d1+WRTT1";
 					bypass_debounce = 1;
