@@ -419,6 +419,7 @@ load_400() {
 	# since driver B2.457, module_type printed in hex
 	model=$(cat /dev/acq400.${site}.knobs/module_type)
 	name=$(nameFromMT $model)
+	esite="/etc/acq400/$site"
 	has_output=$(hasOutput $model)
 	has_rgm=0
 	will_load_dio482pg=0
@@ -428,9 +429,7 @@ load_400() {
 	LO=100000000
 	maxhz=1000000	
 		
-	if [ -e /etc/acq400/$site/MAX_KHZ ]; then
-		let maxhz="$(cat /etc/acq400/$site/MAX_KHZ) * 1000"
-	fi
+	[ -e $esite/MAX_KHZ ] && let maxhz="$(cat $esite/MAX_KHZ) * 1000"
 	
 	load_400_statics $site $model
 	create_asyn_channel S${site} 127.0.0.1:$((4220+${site}))
@@ -578,6 +577,8 @@ load_400() {
 	    else
 			name=$(cat /dev/acq400.$site.knobs/module_name)
 			[ "$model" = "$MT_DIO482" ] && [ "$SUPPORT_COS" != "" ] && ./scripts/load.dio482 $HOST $site
+			[ "$model" = "$MT_DIO422" ]  && [ $((0x$(cat ${esite}/module_variant)&0x7f)) -eq 1 ] \
+			    && ./scripts/load.qen ${HOST} ${site} ${model}
 			[ -e ./scripts/load.$name ] && ./scripts/load.$name $HOST $site
 		fi;;		
 	$MT_DIOB)		
