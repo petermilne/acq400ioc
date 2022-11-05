@@ -9,7 +9,13 @@ clr_qen_count {
 	in;
 }
 
+di4_mon {
+	out "di4_mon";
+	in "%x";
+}
+
+
 read_qen_count {
 	out "qen_count";
-	in "%d";
+	in "%x";
 }

@@ -3,8 +3,14 @@
 
 record(longin, "${UUT}:${SITE}:QEN:COUNT") {
 	field(DTYP, "stream")
-	field(SCAN, ".2 second")
+	field(SCAN, ".1 second")
 	field(INP,  "@qen.proto read_qen_count ${SPORT}")
+	field(FLNK, "${UUT}:${SITE}:QEN:DI4")
+}
+
+record(longin, "${UUT}:${SITE}:QEN:DI4") {
+	field(DTYP, "stream)
+	field(INP,  "@qen.proto di4_mon ${SPORT}")
 }
 
 record(bo, "${UUT}:${SITE}:QEN:CLR") {
