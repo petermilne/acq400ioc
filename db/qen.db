@@ -9,7 +9,7 @@ record(longin, "${UUT}:${SITE}:QEN:COUNT") {
 }
 
 record(longin, "${UUT}:${SITE}:QEN:DI4") {
-	field(DTYP, "stream)
+	field(DTYP, "stream")
 	field(INP,  "@qen.proto di4_mon ${SPORT}")
 }
 

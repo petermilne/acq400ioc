@@ -17,5 +17,5 @@ di4_mon {
 
 read_qen_count {
 	out "qen_count";
-	in "%x";
+	in "%u";
 }
