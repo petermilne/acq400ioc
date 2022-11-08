@@ -750,16 +750,17 @@ load_400() {
         will_load_dio482pg=0
     elif [ "$has_output" = "yes" ] && [ "$AWG_DONE" = "n" ]; then
         dist_s1=$(get.site 0 dist_s1)
-        dprams="UUT=${HOST},SITE=${dist_s1},SPORT=S${dist_s1}"
-        
-        dblr '"db/xo.db","'${dprams}'"'
-        eval $(get.site 0 distributor)
-        dblr '"db/awg.db","'${dprams},dsites=\'${sites}\''"'
-        echo "seq select_awg_distributor \"${dprams},verbose=1\""   
-        load_rgm "${dprams},onst=nc,twst=nc"        
-        sprams="${dprams},CTRMAX=$CTR28,DT=1,DTC=1"
-        dblr '"db/_counter.db","'${sprams},SIG=AWG,lname=REPS'"'
-        echo "dbpf ${HOST}:${site}:SIG:clk_counter_src d$((${site}+1))" >> /tmp/st_post.cmd
+        if [ $dist_s1 -ne 0 ]; then
+            dprams="UUT=${HOST},SITE=${dist_s1},SPORT=S${dist_s1}"
+            dblr '"db/xo.db","'${dprams}'"'
+            eval $(get.site 0 distributor)
+            dblr '"db/awg.db","'${dprams},dsites=\'${sites}\''"'
+            echo "seq select_awg_distributor \"${dprams},verbose=1\""
+            load_rgm "${dprams},onst=nc,twst=nc"
+            sprams="${dprams},CTRMAX=$CTR28,DT=1,DTC=1"
+            dblr '"db/_counter.db","'${sprams},SIG=AWG,lname=REPS'"'
+            echo "dbpf ${HOST}:${site}:SIG:clk_counter_src d$((${site}+1))" >> /tmp/st_post.cmd
+        fi
         AWG_DONE=y
     fi
     
