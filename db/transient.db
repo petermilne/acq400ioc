@@ -24,7 +24,7 @@ record(bo, "${UUT}:MODE:CONTINUOUS:w") {
 
 record(mbbi, "${UUT}:MODE:CONTINUOUS:STATE") {
 	field(DTYP, "stream")
-	field(INP,  "@mb.proto getCState ${SPORT}")
+	field(INP,  "@mb.proto getCState(${UUT}:MODE:CONTINUOUS:SC) ${SPORT}")
 	field(SCAN, ".2 second")
 #	field(SDIS, "${UUT}:MODE:CONTINUOUS")
 #	field(DISV, "0")
@@ -36,6 +36,13 @@ record(mbbi, "${UUT}:MODE:CONTINUOUS:STATE") {
 	field(FRST, "POST_PROCESS")
 	field(FVST, "CLEANUP")
 }
+
+record(longin, "${UUT}:MODE:CONTINUOUS:SC") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "samples streamed so far")
+}
+
+
 record(stringin, "${UUT}:MODE:CONTINUOUS:STATUS") {
 	field(DTYP, "stream")
 	field(INP,  "@continuous.proto getContinuousStatus ${NPORT}")

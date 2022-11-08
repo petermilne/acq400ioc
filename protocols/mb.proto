@@ -67,7 +67,7 @@ setAbort {
 
 getCState {
 	out "cstate";
-	in "%d %*d %*d %*d %*d";
+	in "STX %d %*d %*d %(\$1)d %*d";
 }
 
 setReboot {
