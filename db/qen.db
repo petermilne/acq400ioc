@@ -17,3 +17,14 @@ record(bo, "${UUT}:${SITE}:QEN:CLR") {
 	field(DTYP, "stream")
 	field(OUT, "@qen.proto clr_qen_count ${SPORT}")
 }
+
+record(int64in, "${UUT}:${SITE}:QEN:COUNT64") {
+	field(DTYP, "Soft Channel")
+	field(VAL,  "8000000000")
+	field(PINI,  "YES")
+}
+
+record(int64in, "${UUT}:${SITE}:QEN:COUNT64:T") {
+	field(DTYP, "asynInt64In")
+	field(INP,  "@asyn(100,200,300) ${SPORT}")
+}
