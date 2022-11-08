@@ -577,8 +577,10 @@ load_400() {
 	    else
 			name=$(cat /dev/acq400.$site.knobs/module_name)
 			[ "$model" = "$MT_DIO482" ] && [ "$SUPPORT_COS" != "" ] && ./scripts/load.dio482 $HOST $site
-			[ "$model" = "$MT_DIO422" ]  && [ $((0x$(cat ${esite}/module_variant)&0x7f)) -eq 1 ] \
-			    && ./scripts/load.qen ${HOST} ${site} ${model}
+			if [ "$model" = "$MT_DIO422" ]  && [ $((0x$(cat ${esite}/module_variant)&0x7f)) -eq 1 ]; then
+			    ./scripts/load.qen ${HOST} ${site} ${model}
+			    has_output="no"
+			fi
 			[ -e ./scripts/load.$name ] && ./scripts/load.$name $HOST $site
 		fi;;		
 	$MT_DIOB)		
