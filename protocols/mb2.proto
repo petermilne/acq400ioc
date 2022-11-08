@@ -1,0 +1,10 @@
+Terminator = LF;
+ExtraInput = Ignore;
+ReplyTimeout = 200;
+
+
+getCState {
+	out "cstate";
+	in "STX %d %*d %*d %(\$1)d %*d";
+}
+
