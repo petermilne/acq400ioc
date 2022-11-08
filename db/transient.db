@@ -386,7 +386,7 @@ record(longout, "${UUT}:LIVE:POST") {
 record(mbbi, "${UUT}:LIVE:MODE") {
 	field(DTYP,  "stream")
 	field(INP,  "@mb.proto get_live_mode ${SPORT}")
-	field(SCAN, "1 second")
+	field(SCAN, "5 second")
 	field(PINI, "YES")
 	field(NOBT,  "2")	
 	field(ZRST, "off")
