@@ -263,7 +263,7 @@ record(longin, "${UUT}:MODE:TRANS_ACT:TOTSAM") {
 record(longin, "${UUT}:MODE:TRANS_ACT:RAW:DSZ") {
 	field(DTYP, "stream")
 	field(DESC, "RAW datasize (bytes)")
-	field(INP,  "@transient.proto getChDataSize ${SPORTT}")
+	field(INP,  "@transient.proto getRawDataSize ${SPORTT}")
 	field(SCAN, "I/O Intr")
 	field(FLNK, "${UUT}:MODE:TRANS_ACT:RAW:DATA_VALID")
 }
@@ -277,7 +277,7 @@ record(calc, "${UUT}:MODE:TRANS_ACT:RAW:DATA_VALID") {
 record(longin, "${UUT}:MODE:TRANS_ACT:CH:DSZ") {
 	field(DTYP, "stream")
 	field(DESC, "CHannel datasize (bytes)")
-	field(INP,  "@transient.proto getRawDataSize ${SPORTT}")
+	field(INP,  "@transient.proto getChDataSize ${SPORTT}")
 	field(SCAN, "I/O Intr")
 	field(FLNK, "${UUT}:MODE:TRANS_ACT:CH:DATA_VALID")
 }
