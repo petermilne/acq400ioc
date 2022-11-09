@@ -36,6 +36,8 @@ record(longout, "${UUT}:${SITE}:AI:WF:W2") {
 
 record(bo, "${UUT}:${SITE}:JDG:RESET:WIN")
 {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
 	field(DESC, "Write here to init L/R")
 	field(DTYP, "Soft Channel")
 }

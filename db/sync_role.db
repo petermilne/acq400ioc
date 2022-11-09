@@ -55,6 +55,7 @@ record(calcout, "${UUT}:0:COUNTER_LATCH:c") {
 
 
 record(bo, "${UUT}:0:COUNTER_LATCH") {
+	field(DESC, "$placeholder")
 	field(DTYP, "stream")	
 	field(DOL,  "${UUT}:0:COUNTER_LATCH:c")
 	field(OMSL, "closed_loop")
@@ -140,6 +141,7 @@ record(mbbo, "${UUT}:SYS:SYNC_ROLE:SET:MODIFIER" ) {
 
 
 record(bo, "${UUT}:SYS:SYNC_ROLE:SET"){
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")
 	field(ZNAM, "-")
 	field(ONAM, "COMMIT")

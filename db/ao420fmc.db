@@ -36,6 +36,9 @@ record(bo, "${UUT}:${SITE}:AO:REF"){
 }
 
 record(bo, "${UUT}:${SITE}:AO:REF:w"){
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "dsSysfsBo")
 	field(OUT, "@/dev/acq400.${SITE}.knobs/dac_range_REF")
 	field(DISV, "1")
@@ -45,6 +48,9 @@ record(bo, "${UUT}:${SITE}:AO:REF:w"){
 }
 
 record(bi, "${UUT}:${SITE}:AO:REF:r") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "dsSysfsBi")
 	field(INP, "@/dev/acq400.${SITE}.knobs/dac_range_REF")
 	field(SCAN, "5 second")
@@ -52,6 +58,9 @@ record(bi, "${UUT}:${SITE}:AO:REF:r") {
 }
 
 record(bo, "${UUT}:${SITE}:AO:REF:s") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")
 	field(DOL,  "${UUT}:${SITE}:AO:REF:r NPP")
 	field(OMSL, "closed_loop")

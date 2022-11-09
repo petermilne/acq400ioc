@@ -2,6 +2,9 @@
 # placeholder .. this will be overwritten
 # eg alias("PVNAME","ALIASNAME")
 record(bo, "${UUT}:NOALIASES") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")
 }
 

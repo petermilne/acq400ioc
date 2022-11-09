@@ -1,6 +1,9 @@
 
 
 record (bi, "${UUT}:${SITE}:RUN") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "Run site")
 	field(DTYP, "biAcqHost")
 	field(INP, "@/dev/acq400.${SITE}.knobs/run")
 	field(SCAN, "1 second")

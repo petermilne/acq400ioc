@@ -2,6 +2,7 @@
 
 
 record (bo, "${UUT}:${SITE}:ADC_MODE") {
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")
 	field(ZNAM, "HS_256")
 	field(ONAM, "HR_512")	
@@ -9,6 +10,7 @@ record (bo, "${UUT}:${SITE}:ADC_MODE") {
 }
 
 record (bo, "${UUT}:${SITE}:ADC_MODE:w") {
+	field(DESC, "$placeholder")
 	field(DTYP, "stream")	
 	field(ZNAM, "HS_256")
 	field(ONAM, "HR_512")
@@ -20,6 +22,7 @@ record (bo, "${UUT}:${SITE}:ADC_MODE:w") {
 }
 
 record(bi, "${UUT}:${SITE}:ADC_MODE:r") {
+	field(DESC, "$placeholder")
 	field(DTYP, "stream")	
 	field(ZNAM, "HS_256")
 	field(ONAM, "HR_512")	
@@ -30,6 +33,7 @@ record(bi, "${UUT}:${SITE}:ADC_MODE:r") {
 }
 
 record(bo, "${UUT}:${SITE}:ADC_MODE:s") {
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")
 	field(OMSL, "closed_loop")
 	field(ZNAM, "HS_256")
@@ -126,6 +130,9 @@ record (longout, "${UUT}:${SITE}:clkdiv:e") {
 }
 
 record(bo, "${UUT}:${SITE}:simulate") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "Site simulate")
 	field(DTYP, "boAcqHost")
 	field(OUT, "@/dev/acq400.${SITE}.knobs/simulate")
 }

@@ -1,6 +1,9 @@
 # clkstatus.db : simple site 1 clk indicators
 
 record(bo, "${UUT}:${SITE}:${FNAM}:s") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(FLNK, "${UUT}:${SITE}:CLK_IS_INTERNAL")
 }
 

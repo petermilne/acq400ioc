@@ -5,6 +5,7 @@ record (longout, "${UUT}:${SITE}:ADC_MODE") {
 }
 
 record (bo, "${UUT}:${SITE}:HAS_CH_GAINS") {
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")
 	field(VAL,  "${CHG}")
 	field(ZNAM, "0")

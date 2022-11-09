@@ -6,6 +6,9 @@ record (stringin, "${UUT}:SYS:CLK:CONFIG") {
 }
 
 record (bo, "${UUT}:SYS:CLK:BYPASS" ) {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "Clock bypass")
 	field(DTYP, "Soft Channel")
 	field(PINI, "YES")
 	field(VAL,  "0")
@@ -13,6 +16,9 @@ record (bo, "${UUT}:SYS:CLK:BYPASS" ) {
 }
 
 record (bo, "${UUT}:SYS:CLK:BYPASS:w" ){
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "stream")
 	field(OUT,  "@acq2106clk.proto setSi5326Bypass ${SPORT}")
 	field(OMSL, "closed_loop")
@@ -21,12 +27,18 @@ record (bo, "${UUT}:SYS:CLK:BYPASS:w" ){
 	field(DISV, "1")
 }
 record (bi, "${UUT}:SYS:CLK:BYPASS:r" ) {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "stream")
 	field(INP,  "@acq2106clk.proto getSi5326bypass ${SPORT}")
 	field(SCAN, "1 second")
 	field(FLNK, "${UUT}:SYS:CLK:BYPASS:s")
 }
 record (bo, "${UUT}:SYS:CLK:BYPASS:s" ) {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")
 	field(OMSL, "closed_loop")
 	field(DOL,  "${UUT}:SYS:CLK:BYPASS:r NPP")
@@ -37,6 +49,9 @@ record(longout, "${UUT}:0:SIG:CLK_MB:SET") {
 	field(DISV, "1")
 }
 record (bo, "${UUT}:SYS:CLK:OE_CLK1_ELF1") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "boAcqHost")	
 	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ELF1")
 	field(PINI, "YES")
@@ -44,6 +59,9 @@ record (bo, "${UUT}:SYS:CLK:OE_CLK1_ELF1") {
 }
 
 record (bo, "${UUT}:SYS:CLK:OE_CLK1_ELF2") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "boAcqHost")	
 	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ELF2")
 	field(PINI, "YES")
@@ -51,6 +69,9 @@ record (bo, "${UUT}:SYS:CLK:OE_CLK1_ELF2") {
 }
 
 record (bo, "${UUT}:SYS:CLK:OE_CLK1_ELF3") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "boAcqHost")	
 	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ELF3")
 	field(PINI, "YES")
@@ -58,6 +79,9 @@ record (bo, "${UUT}:SYS:CLK:OE_CLK1_ELF3") {
 }
 
 record (bo, "${UUT}:SYS:CLK:OE_CLK1_ELF4") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "boAcqHost")	
 	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ELF4")
 	field(PINI, "YES")
@@ -65,6 +89,9 @@ record (bo, "${UUT}:SYS:CLK:OE_CLK1_ELF4") {
 }
 
 record (bo, "${UUT}:SYS:CLK:OE_CLK1_ELF5") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "boAcqHost")	
 	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ELF5")
 	field(PINI, "YES")
@@ -72,6 +99,9 @@ record (bo, "${UUT}:SYS:CLK:OE_CLK1_ELF5") {
 }
 
 record (bo, "${UUT}:SYS:CLK:OE_CLK1_ELF6") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "boAcqHost")	
 	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ELF6")
 	field(PINI, "YES")
@@ -79,6 +109,9 @@ record (bo, "${UUT}:SYS:CLK:OE_CLK1_ELF6") {
 }
 
 record (bo, "${UUT}:SYS:CLK:OE_CLK1_ZYNQ") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "boAcqHost")	
 	field(OUT, "@/dev/gpio/CLK/OE_CLK1_ZYNQ")
 	field(PINI, "YES")
@@ -86,6 +119,9 @@ record (bo, "${UUT}:SYS:CLK:OE_CLK1_ZYNQ") {
 }
 
 record (bi, "${UUT}:SYS:CLK:lol") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "biAcqHost")
 	field(INP,  "@/dev/gpio/CLK/LOL")
 	field(SCAN, "1 second")
@@ -117,12 +153,18 @@ record (bi, "${UUT}:SYS:CLK:C2B") {
 }
 
 record (bi, "${UUT}:SYS:CLK:Si570_OE") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "biAcqHost")
 	field(INP,  "@/dev/gpio/CLK/Si570_OE")
 	field(SCAN, "10 second")
 }
 
 record (bi, "${UUT}:SYS:CLK:Si5326:PLAN_EN:t") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")
 	field(SCAN, "1 second")
 	field(FLNK, "${UUT}:SYS:CLK:Si5326:PLAN_EN")
@@ -181,6 +223,9 @@ record (calc, "${UUT}:0:SIG:FP:GPIO:OE:c") {
 	field(FLNK, "${UUT}:0:SIG:FP:GPIO:OE")	
 }
 record (bo, "${UUT}:0:SIG:FP:GPIO:OE") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "boAcqHost")
 	field(OUT, "@/dev/gpio/FP_IO_DIR_OUT")
 	field(OMSL, "closed_loop")
@@ -197,6 +242,9 @@ record (calc, "${UUT}:0:SIG:FP:SYNC:OE:c") {
 	field(FLNK, "${UUT}:0:SIG:FP:SYNC:OE")	
 }
 record (bo, "${UUT}:0:SIG:FP:SYNC:OE") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "boAcqHost")
 	field(OUT, "@/dev/gpio/FP_SYNC_DIR_OUT")
 	field(OMSL, "closed_loop")

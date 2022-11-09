@@ -2,6 +2,7 @@
 # UUT, SITE, SPORT, CH
 
 record(bo, "${UUT}:${SITE}:ACQ480:INVERT:${CH}") {
+	field(DESC, "$placeholder")
 	field(DTYP, "stream")
 	field(OUT,  "@acq480.proto setInvert(${CH}) ${SPORT}")
 	field(ZNAM, "REG")
@@ -88,6 +89,7 @@ record(mbbo, "${UUT}:${SITE}:ACQ480:HPF:${CH}") {
 }
 
 record(bo, "${UUT}:${SITE}:ACQ480:LFNS:${CH}") {
+	field(DESC, "$placeholder")
 	field(DTYP, "stream")
 	field(OUT,  "@acq480.proto setLFNS(${CH}) ${SPORT}")
 	field(ZNAM, "OFF")
@@ -97,6 +99,7 @@ record(bo, "${UUT}:${SITE}:ACQ480:LFNS:${CH}") {
 }
 
 record(bo, "${UUT}:${SITE}:ACQ480:LFNS:ALL") {
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")	
 	field(ZNAM, "OFF")
 	field(ONAM, "ON")

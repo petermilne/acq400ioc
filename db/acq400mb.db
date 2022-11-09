@@ -35,6 +35,7 @@ record(longin, "${UUT}:0:DISTRIBUTOR:PAD") {
 }
 
 record(bi, "${UUT}:0:DISTRIBUTOR:ON") {
+	field(DESC, "$placeholder")
 	field(DTYP,  "stream")
 	field(INP,   "@acq400mb.proto getDistributorEn ${SPORT}")
 	field(SCAN,  "I/O Intr")
@@ -72,6 +73,7 @@ record(longin, "${UUT}:0:AGGREGATOR:S1") {
 }
 
 record(bi, "${UUT}:0:AGGREGATOR:ON") {
+	field(DESC, "$placeholder")
 	field(DTYP,  "stream")
 	field(INP,   "@acq400mb.proto getAggregatorEn ${SPORT2}")
 	field(SCAN,  "I/O Intr")

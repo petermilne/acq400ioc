@@ -19,6 +19,9 @@ record (calcout, "${UUT}:${SITE}:AWG:BURSTMODE") {
 	field(FLNK, "${UUT}:${SITE}:AWG:BURSTMODE:w PP")
 }
 record(bo, "${UUT}:${SITE}:AWG:BURSTMODE:w") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")
 #	field(DTYP, "stream")
 #	field(OUT, "@cpdac.proto setBurstMode ${SPORT}")
@@ -143,6 +146,9 @@ record(stringin, "${UUT}:${SITE}:AWG:SITES:r") {
 }
 
 record(bo, "${UUT}:${SITE}:AWG:SITES:s") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")
 	field(DOL,  "${UUT}:${SITE}:AWG:SITES:r NPP")
 	field(OMSL, "closed_loop")
@@ -158,6 +164,7 @@ record(stringout, "${UUT}:${SITE}:AWG:SITES:w") {
 }
 
 record(bo, "${UUT}:${SITE}:AWG:DIST") {
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")
 	field(ZNAM, "DC")
 	field(ONAM, "AWG")

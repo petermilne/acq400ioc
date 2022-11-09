@@ -71,12 +71,16 @@ record(mbbo, "${UUT}:${SITE}:RGM:DX:s") {
 } 	
 
 record(bo, "${UUT}:${SITE}:RGM:DX:w") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")	
 	field(FLNK, "${UUT}:${SITE}:_rgm PP")
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:RGM:DX:s.PACT")
 }
 record(bo, "${UUT}:${SITE}:RGM:SENSE") {
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")
 	field(ZNAM, "falling")
 	field(ONAM, "rising")
@@ -85,18 +89,27 @@ record(bo, "${UUT}:${SITE}:RGM:SENSE") {
 }
 
 record(bi, "${UUT}:${SITE}:RGM:SENSE:r") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "stream")
 	field(INP,  "@signal.proto getSigSense(rgm) ${SPORT}")
 	field(SCAN, "I/O Intr")	
 	field(FLNK, "${UUT}:${SITE}:RGM:SENSE:s")
 }
 record(bo, "${UUT}:${SITE}:RGM:SENSE:s") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")
 	field(DOL,  "${UUT}:${SITE}:RGM:SENSE:r NPP")
 	field(OMSL, "closed_loop")
 	field(OUT,  "${UUT}:${SITE}:RGM:SENSE PP")
 }
 record(bo, "${UUT}:${SITE}:RGM:SENSE:w") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")	
 	field(FLNK, "${UUT}:${SITE}:_rgm PP")
 	field(DISV, "1")
@@ -158,6 +171,9 @@ record(calcout, "${UUT}:${SITE}:RTM_TRANSLEN:ONCHANGE") {
 
 record(bo, "${UUT}:0:OPTIMISE_BUFFERLEN")
 {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "stream")
 	field(OUT,  "@mb.proto store_optimise_bufferlen(${UUT}:0:SSB) S0")
 }
@@ -201,6 +217,7 @@ record(longout, "${UUT}:${SITE}:RTM_TRANSLENp:s") {
 
 
 record(bo, "${UUT}:${SITE}:ES_ENABLE") {
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")
 	field(ONAM, "1")
 	field(ZNAM, "0")
@@ -211,6 +228,7 @@ record(bo, "${UUT}:${SITE}:ES_ENABLE") {
 }
 
 record(bo, "${UUT}:${SITE}:ES_ENABLE:w") {
+	field(DESC, "$placeholder")
 	field(DTYP, "stream")
 	field(OUT,  "@ai.proto setEsEnable ${SPORT}")
 	field(ONAM, "1")
@@ -223,6 +241,7 @@ record(bo, "${UUT}:${SITE}:ES_ENABLE:w") {
 }
 
 record(bi, "${UUT}:${SITE}:ES_ENABLE:r") {
+	field(DESC, "$placeholder")
 	field(DTYP, "stream")
 	field(ONAM, "1")
 	field(ZNAM, "0")
@@ -232,6 +251,7 @@ record(bi, "${UUT}:${SITE}:ES_ENABLE:r") {
 }
 
 record(bo, "${UUT}:${SITE}:ES_ENABLE:s") {
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")
 	field(ONAM, "1")
 	field(ZNAM, "0")

@@ -48,6 +48,7 @@ record(stringin, "${UUT}:${chan}:AGGREGATOR:SITES") {
 }
 
 record(bi, "${UUT}:${chan}:AGGREGATOR:ON") {
+	field(DESC, "$placeholder")
 	field(DTYP,  "stream")
 	field(INP,   "@mgt400.proto getAggregatorEn ${SPORT}")
 	field(SCAN,  "I/O Intr")
@@ -56,6 +57,7 @@ record(bi, "${UUT}:${chan}:AGGREGATOR:ON") {
 }
 
 record(bi, "${UUT}:${chan}:AGGREGATOR:SPAD:EN:r") {
+	field(DESC, "$placeholder")
 	field(DTYP,  "stream")
 	field(INP,   "@mgt400.proto getSpadEn ${SPORT}")
 	field(SCAN,  "5 second")
@@ -75,6 +77,9 @@ record(longin, "${UUT}:${chan}:AGGREGATOR:SSB") {
 }
 
 record (bo, "${UUT}:MGT:SFP:${chan}:CLRSTATS") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "boAcqHost")	
 	field(OUT,  "@/dev/acq400.${chan}.knobs/clear_stats")
 	field(HIGH, "1")

@@ -12,6 +12,8 @@ record(longout, "${UUT}:${SITE}:V2F:FREQ_OFFSET") {
 
 
 record(bo, "${UUT}:${SITE}:V2F:HIGH_FREQ") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
 	field(DTYP, "stream")
 	field(OUT,  "@v2f.proto setHF ${SPORT}")
 	field(DESC, "1 selects 10MHz range")

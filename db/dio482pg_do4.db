@@ -22,6 +22,9 @@ record(calcout, "${UUT}:${SITE}:DO:${UX}:c")
 }
 
 record(bo, "${UUT}:${SITE}:DO:${UX}:d") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "stream")
 	field(OUT,  "@dio432.proto setPGDO_DIR_BIT(${IX}) ${SPORT}")	
 	field(DOL,  "${UUT}:${SITE}:DO:${UX}:c")
@@ -30,6 +33,9 @@ record(bo, "${UUT}:${SITE}:DO:${UX}:d") {
 
 
 record(bo, "${UUT}:${SITE}:DO:${UX}:w") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "stream")
 	field(OUT,  "@dio432.proto setPGDO_BIT(${IX}) ${SPORT}")	
 }

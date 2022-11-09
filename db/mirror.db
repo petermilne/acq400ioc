@@ -7,6 +7,9 @@ record(stringout, "${UUT}:MIRROR_HOST")
 
 record(bo, "${UUT}:MIRROR_EN")
 {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")
 	field(VAL,  "0")
 	field(PINI, "YES")

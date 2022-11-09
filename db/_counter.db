@@ -4,6 +4,9 @@ record(longin, "${UUT}:${SITE}:${SIG}:${lname}:rc") {
 }
 
 record(bo, "${UUT}:${SITE}:${SIG}:${lname}:RESET") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "Reset")
 	field(DTYP, "Soft Channel")
 }
 
@@ -42,6 +45,8 @@ record(calc, "${UUT}:${SITE}:${SIG}:${lname}:COUNT") {
 }
 
 record(bo, "${UUT}:${SITE}:${SIG}:${lname}:clr" ) {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
 	field(DESC, "Clears RESET")
 	field(DTYP, "Soft Channel")
 	field(OUT,  "${UUT}:${SITE}:${SIG}:${lname}:RESET")
