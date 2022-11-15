@@ -2,7 +2,7 @@
 # UUT, SITE, SPORT, CH
 
 record(bo, "${UUT}:${SITE}:ACQ480:INVERT:${CH}") {
-	field(DESC, "$placeholder")
+	field(DESC, "${CH} INP Invert")
 	field(DTYP, "stream")
 	field(OUT,  "@acq480.proto setInvert(${CH}) ${SPORT}")
 	field(ZNAM, "REG")
@@ -89,7 +89,7 @@ record(mbbo, "${UUT}:${SITE}:ACQ480:HPF:${CH}") {
 }
 
 record(bo, "${UUT}:${SITE}:ACQ480:LFNS:${CH}") {
-	field(DESC, "$placeholder")
+	field(DESC, "${CH} LFNS filter")
 	field(DTYP, "stream")
 	field(OUT,  "@acq480.proto setLFNS(${CH}) ${SPORT}")
 	field(ZNAM, "OFF")
@@ -99,7 +99,7 @@ record(bo, "${UUT}:${SITE}:ACQ480:LFNS:${CH}") {
 }
 
 record(bo, "${UUT}:${SITE}:ACQ480:LFNS:ALL") {
-	field(DESC, "$placeholder")
+	field(DESC, "ALL LFNS filter")
 	field(DTYP, "Soft Channel")	
 	field(ZNAM, "OFF")
 	field(ONAM, "ON")
@@ -109,9 +109,9 @@ record(bo, "${UUT}:${SITE}:ACQ480:LFNS:ALL") {
 }
 
 record(dfanout, "${UUT}:${SITE}:ACQ480:LFNS:ALL:df") {
-	field(OMSL,    "closed_loop")
-	field(DOL,     "${UUT}:${SITE}:ACQ480:LFNS:ALL")
-	field(SELM,    "All")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:${SITE}:ACQ480:LFNS:ALL")
+	field(SELM, "All")
 	
 	field(OUTA, "${UUT}:${SITE}:ACQ480:LFNS:01 PP")
 	field(OUTB, "${UUT}:${SITE}:ACQ480:LFNS:02 PP")

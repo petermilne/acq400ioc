@@ -1,5 +1,5 @@
 record (bi, "${UUT}:SIG:SYNC_BUS:${fun}:D${dx}") {
-	field(DESC, "$placeholder")
+	field(DESC, "show bus state")
 	field(DTYP, "biAcqHost")
 	field(SCAN, ".2 second")
 	field(INP, "@/dev/gpio/${fun}/d${dx}")

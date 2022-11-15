@@ -133,7 +133,7 @@ record(bi, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DET")
 {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "Cable Detected")
 	field(FLNK, "${UUT}:ACQ1014:GRAND_MASTER")
 }
 

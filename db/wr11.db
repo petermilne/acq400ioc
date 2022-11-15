@@ -17,7 +17,7 @@ record(stringin, "${UUT}:${SITE}:Si5326:TUNEPHASE:STATE")
 
 record(bi, "${UUT}:${SITE}:Si5326:TUNEPHASE:OK:r")
 {
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "stream")
 	field(INP,  "@wr.proto getSi5326TP_OK ${SPORT}")
 	field(SCAN, "I/O Intr")
@@ -40,7 +40,7 @@ record(calc, "${UUT}:${SITE}:Si5326:TUNEPHASE:OK")
 
 record(bi, "${UUT}:${SITE}:Si5326:TUNEPHASE:BUSY")
 {
-	field(DESC, "$placeholder")
+	field(DESC, "Tune Phase Busy")
 	field(DTYP, "stream")
 	field(INP,  "@wr.proto getSi5326TP_BUSY ${SPORT}")
 	field(SCAN, "I/O Intr")
@@ -68,14 +68,14 @@ record(bo, "${UUT}:${SITE}:Si5326:TUNEPHASE")
 {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "Enable Tune Phase")
 	field(DTYP, "stream")
 	field(OUT,  "@wr.proto setSi5326TP ${SPORT}")
 }
 
 record(bo, "${UUT}:${SITE}:WRTD_TXI")
 {
-	field(DESC, "$placeholder")
+	field(DESC, "Set WRTD_TXImmediate")
 	field(DTYP, "stream")
 	field(OUT,  "@wr.proto set_wrtd_txi ${SPORT}")
 	field(ZNAM, "1")
@@ -89,7 +89,7 @@ record(stringout, "${UUT}:${SITE}:WRTD_TXI_ID")
 }
 
 record(bo, "${UUT}:${SITE}:SFP_TX_DISABLE") {
-	field(DESC, "$placeholder")
+	field(DESC, "disable SFP")
 	field(DTYP, "Soft Channel")
 	field(ONAM, "1")
 	field(ZNAM, "0")
@@ -100,7 +100,7 @@ record(bo, "${UUT}:${SITE}:SFP_TX_DISABLE") {
 record(bo, "${UUT}:${SITE}:SFP_TX_DISABLE:w") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "stream")
 	field(OUT,  "@wr.proto setSfpTxDisable ${SPORT}")	
 	field(DISV, "1")
@@ -112,7 +112,7 @@ record(bo, "${UUT}:${SITE}:SFP_TX_DISABLE:w") {
 record(bi, "${UUT}:${SITE}:SFP_TX_DISABLE:r") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "stream")
 	field(INP,  "@wr.proto getSfpTxDisable ${SPORT}")
 	field(SCAN, "5 second")
@@ -122,7 +122,7 @@ record(bi, "${UUT}:${SITE}:SFP_TX_DISABLE:r") {
 record(bo, "${UUT}:${SITE}:SFP_TX_DISABLE:s") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "Soft Channel")
 	field(DOL,  "${UUT}:${SITE}:SFP_TX_DISABLE:r NPP")
 	field(OMSL, "closed_loop")

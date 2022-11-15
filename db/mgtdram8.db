@@ -49,7 +49,7 @@ record(longout, "${UUT}:MODE:BLT:BUFFERS:w") {
 record(bo, "${UUT}:MODE:BLT:SET_ARM") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "set ARM")
 	field(DTYP, "Soft Channel")	
 	field(DISV, "1")
 	field(SDIS, "${UUT}:MODE:BLT:SET_ARM")
@@ -58,7 +58,7 @@ record(bo, "${UUT}:MODE:BLT:SET_ARM") {
 record(bo, "${UUT}:MODE:BLT:SET_ARM:w") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "stream")
 	field(OUT,  "@mgtdram8.proto set_mgt_arm ${SRUN}")	
 }

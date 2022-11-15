@@ -1,7 +1,7 @@
 record (bo, "${UUT}:0:SIG:SYNC_BUS_OUT:${FUN}") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "Soft Channel")	
 	field(FLNK, "${UUT}:0:SIG:SYNC_BUS_OUT:${FUN}:w PP")	
 	field(PINI, "YES")
@@ -10,7 +10,7 @@ record (bo, "${UUT}:0:SIG:SYNC_BUS_OUT:${FUN}") {
 record (bo, "${UUT}:0:SIG:SYNC_BUS_OUT:${FUN}:w") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "boAcqHost")	
 	field(OUT,  "@/dev/acq400.0.knobs/sync_out_${fun}")	
 	field(PINI, "YES")	
@@ -23,7 +23,7 @@ record (bo, "${UUT}:0:SIG:SYNC_BUS_OUT:${FUN}:w") {
 record (bi, "${UUT}:0:SIG:SYNC_BUS_OUT:${FUN}:r") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "biAcqHost")
 	field(INP,  "@/dev/acq400.0.knobs/sync_out_${fun}")
 	field(SCAN, "1 second")
@@ -34,7 +34,7 @@ record (bi, "${UUT}:0:SIG:SYNC_BUS_OUT:${FUN}:r") {
 record (bo, "${UUT}:0:SIG:SYNC_BUS_OUT:${FUN}:s") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP,  "Soft Channel")	
 	field(OMSL,  "closed_loop")
 	field(DOL,   "${UUT}:0:SIG:SYNC_BUS_OUT:${FUN}:r NPP")

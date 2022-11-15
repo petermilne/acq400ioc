@@ -65,7 +65,7 @@ record (calcout, "${UUT}:SYS:CLK:zclk") {
 record (bo, "${UUT}:SYS:CLK:_FP_CLK_OE") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "Front Panel Clock Output En")
 	field(DTYP, "boAcqHost")
 	field(OUT, "@/dev/gpio/CLK/FP_CLK_OE")
 	
@@ -74,7 +74,7 @@ record (bo, "${UUT}:SYS:CLK:_FP_CLK_OE") {
 record (bo, "${UUT}:SYS:CLK:_FP_OE") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "boAcqHost")
 	field(OUT, "@/dev/gpio/CLK/FP_OE")
 	field(OMSL, "closed_loop")
@@ -85,7 +85,7 @@ record (bo, "${UUT}:SYS:CLK:_FP_OE") {
 record (bo, "${UUT}:SYS:CLK:_OSC_X_CLK_OE") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "OSC X Clock Output En")
 	field(DTYP, "boAcqHost")
 	field(OUT, "@/dev/gpio/CLK/OSC_X_CLK_OE")
 		
@@ -94,7 +94,7 @@ record (bo, "${UUT}:SYS:CLK:_OSC_X_CLK_OE") {
 record (bo, "${UUT}:SYS:CLK:_OSC_X_OE") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "boAcqHost")
 	field(OUT, "@/dev/gpio/CLK/OSC_X_OE")
 	field(OMSL, "closed_loop")
@@ -104,7 +104,7 @@ record (bo, "${UUT}:SYS:CLK:_OSC_X_OE") {
 record (bo, "${UUT}:SYS:CLK:_ZCLK_OE") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, " ")
 	field(DTYP, "boAcqHost")
 	field(OUT, "@/dev/gpio/CLK/ZCLK_OE")	
 }

@@ -6,7 +6,7 @@
 record(bi, "${UUT}:SYS:INTMON:trig") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "triggers INTMON")
 	field(DTYP, "stream")
 	field(INP,  "@intmon.proto trig ${SPORT}")
 	field(SCAN, "$(dt) second")

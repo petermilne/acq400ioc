@@ -101,7 +101,7 @@ record(bo, "${UUT}:10:HUDP:DISCO") {
 record(bo, "${UUT}:10:HUDP:DISCO:w"){
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "stream")
 	field(OUT,  "@hudp.proto setDiscoEn ${SPORT}")	
 	field(DISV, "1")
@@ -114,7 +114,7 @@ record(bo, "${UUT}:10:HUDP:DISCO:w"){
 record(bi, "${UUT}:10:HUDP:DISCO:r"){
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "stream")
 	field(INP,  "@hudp.proto getDiscoEn ${SPORT}")	
 	field(SCAN, "2 second")
@@ -124,7 +124,7 @@ record(bi, "${UUT}:10:HUDP:DISCO:r"){
 record(bo, "${UUT}:10:HUDP:DISCO:s") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "Soft Channel")
 	field(DOL, "${UUT}:10:HUDP:DISCO:r NPP")
 	field(OMSL, "closed_loop")

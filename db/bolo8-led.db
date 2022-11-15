@@ -1,7 +1,7 @@
 record (bo, "${HS}:B8:${LED}") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "BOLO8 Indicator LED")
 	field(DTYP, "boAcqHost")	
 	field(OUT, "@${KNOB}")
 	field(DISV, "1")

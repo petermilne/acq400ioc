@@ -1,7 +1,7 @@
 record(bo, "${UUT}:${SITE}:SIG:${lname}:RESET") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "reset count")
 	field(DTYP, "Soft Channel")
 }
 

@@ -23,7 +23,7 @@ record(stringin, "${UUT}:${SITE}:WR:TAI_DATE") {
 record(bi, "${UUT}:${SITE}:WR:TRG:r") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "stream")
 	field(INP,  "@signal.proto getSig(wr_trg_src) ${SPORT}")
 	field(SCAN, "1 second")
@@ -33,7 +33,7 @@ record(bi, "${UUT}:${SITE}:WR:TRG:r") {
 record(bo, "${UUT}:${SITE}:WR:TRG:s") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "Soft Channel")
 	field(DOL,  "${UUT}:${SITE}:WR:TRG:r NPP")
 	field(OMSL, "closed_loop")
@@ -43,7 +43,7 @@ record(bo, "${UUT}:${SITE}:WR:TRG:s") {
 record(bo, "${UUT}:${SITE}:WR:TRG:w") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "Soft Channel")	
 	field(FLNK, "${UUT}:${SITE}:WR:TRG:ww PP")
 }
@@ -75,14 +75,14 @@ record(mbbo, "${UUT}:${SITE}:WR:TRG:DX:s") {
 record(bo, "${UUT}:${SITE}:WR:TRG:DX:w") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "Soft Channel")	
 	field(FLNK, "${UUT}:${SITE}:WR:TRG:ww PP")
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:WR:TRG:DX:s.PACT")
 }
 record(bo, "${UUT}:${SITE}:WR:TRG:SENSE") {
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "Soft Channel")
 	field(ZNAM, "falling")
 	field(ONAM, "rising")
@@ -92,7 +92,7 @@ record(bo, "${UUT}:${SITE}:WR:TRG:SENSE") {
 record(bi, "${UUT}:${SITE}:WR:TRG:SENSE:r") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "stream")
 	field(INP,  "@signal.proto getSigSense(wr_trg_src) ${SPORT}")
 	field(SCAN, "I/O Intr")	
@@ -101,7 +101,7 @@ record(bi, "${UUT}:${SITE}:WR:TRG:SENSE:r") {
 record(bo, "${UUT}:${SITE}:WR:TRG:SENSE:s") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "Soft Channel")
 	field(DOL,  "${UUT}:${SITE}:WR:TRG:SENSE:r NPP")
 	field(OMSL, "closed_loop")
@@ -110,7 +110,7 @@ record(bo, "${UUT}:${SITE}:WR:TRG:SENSE:s") {
 record(bo, "${UUT}:${SITE}:WR:TRG:SENSE:w") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "Soft Channel")	
 	field(FLNK, "${UUT}:${SITE}:WR:TRG:ww PP")
 	field(DISV, "1")
@@ -153,7 +153,7 @@ record(longin, "${UUT}:${SITE}:WR:PPS:LOS") {
 record (bo, "${UUT}:SYS:LED:CLK") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "PPS Clock LED")
 	field(DOL, "${UUT}:${SITE}:WR:PPS:ACTIVE")
 }
 
@@ -178,7 +178,7 @@ record(calcout, "${UUT}:0:COUNTER_LATCH:c") {
 }
 
 record(bi, "${UUT}:${SITE}:WR:TIME_VALID") {
-	field(DESC, "$placeholder")
+	field(DESC, "WR Time Valid")
 	field(DTYP, "stream")
 	field(INP,  "@signal.proto getInt(wr_time_valid) ${SPORT}")
 	field(SCAN, "1 second")
@@ -187,7 +187,7 @@ record(bi, "${UUT}:${SITE}:WR:TIME_VALID") {
 }
 
 record(bi, "${UUT}:${SITE}:WR:LINK_UP") {
-	field(DESC, "$placeholder")
+	field(DESC, "WR Link Up")
 	field(DTYP, "stream")
 	field(INP,  "@signal.proto getInt(wr_link_up) ${SPORT}")
 	field(SCAN, "1 second")

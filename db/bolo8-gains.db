@@ -37,7 +37,7 @@ record (calcout, "${HS}:B8:GAIN:${CH}:_c1"){
 record(bo, "${HS}:B8:GAIN:${CH}:_0") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
         field(DTYP, "boAcqHost")
         field(OUT, "@${KNOB}A0")
         field(SCAN, "Passive")
@@ -48,7 +48,7 @@ record(bo, "${HS}:B8:GAIN:${CH}:_0") {
 record(bo, "${HS}:B8:GAIN:${CH}:_1") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
         field(DTYP, "boAcqHost")
         field(OUT, "@${KNOB}A1")
         field(SCAN, "Passive")

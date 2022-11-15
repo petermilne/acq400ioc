@@ -2,7 +2,7 @@
 record(bi, "${UUT}:${SITE}:ACQ465:READALL") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "reads all regs")
 	field(DTYP, "stream")
 	field(INP,  "@acq465.proto acq465_readall ${SPORT}")
 	field(SCAN, "2 second")

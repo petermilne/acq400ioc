@@ -1,5 +1,5 @@
 record(bo, "${UUT}:${SITE}:ACQ494:T50R${CH}") {
-	field(DESC, "$placeholder")
+	field(DESC, "${CH} 50R termination")
 	field(DTYP, "Soft Channel")
 	field(ZNAM, "0")
 	field(ONAM, "1")
@@ -9,7 +9,7 @@ record(bo, "${UUT}:${SITE}:ACQ494:T50R${CH}") {
 record(bo, "${UUT}:${SITE}:ACQ494:T50R${CH}:w") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "stream")
 	field(OUT,  "@acq494.proto setT50R(${RAW}) ${SPORT}")
 	field(OMSL, "closed_loop")
@@ -22,7 +22,7 @@ record(bo, "${UUT}:${SITE}:ACQ494:T50R${CH}:w") {
 record(bi, "${UUT}:${SITE}:ACQ494:T50R${CH}:r") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "stream")
 	field(INP,  "@acq494.proto getT50R(${RAW}) ${SPORT}")
 	field(SCAN, "10 second")
@@ -33,7 +33,7 @@ record(bi, "${UUT}:${SITE}:ACQ494:T50R${CH}:r") {
 record(bo, "${UUT}:${SITE}:ACQ494:T50R${CH}:s") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "Soft Channel")
 	field(OMSL, "closed_loop")
 	field(DOL,  "${UUT}:${SITE}:ACQ494:T50R${CH}:r NPP")
@@ -41,7 +41,7 @@ record(bo, "${UUT}:${SITE}:ACQ494:T50R${CH}:s") {
 }
 
 record(bo, "${UUT}:${SITE}:ACQ494:HIT_ENA${CH}") {
-	field(DESC, "$placeholder")
+	field(DESC, "HIT ENable")
 	field(DTYP, "stream")
 	field(OUT,  "@acq494.proto setHIT_ENA(${RAW}) ${SPORT}")
 	field(PINI, "YES")

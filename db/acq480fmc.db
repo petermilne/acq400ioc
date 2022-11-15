@@ -3,7 +3,7 @@
 
 
 record(bi, "${UUT}:${SITE}:ACQ480:JC:PRESENT") {
-	field(DESC, "$placeholder")
+	field(DESC, "Jitter Cleaner Present")
 	field(DTYP, "Soft Channel")
 	field(VAL,  "${JCP}")
 	field(PINI, "YES")
@@ -18,7 +18,7 @@ record(longin, "${UUT}:${SITE}:ACQ480:FPGA:DECIM") {
 }
 
 record(bi, "${UUT}:${SITE}:ACQ480:HAS_50R") {
-	field(DESC, "$placeholder")
+	field(DESC, "50R term present")
 	field(DTYP, "Soft Channel")
 	field(VAL,  "${T50R}")
 	field(PINI, "YES")
@@ -26,7 +26,7 @@ record(bi, "${UUT}:${SITE}:ACQ480:HAS_50R") {
 	field(ONAM, "1")
 }
 record(bi, "${UUT}:${SITE}:ACQ480:JC:LOS") {
-	field(DESC, "$placeholder")
+	field(DESC, "Jitter Cleaner Loss of Signal")
 	field(DTYP, "stream")
 	field(SCAN, "1 second")
 	field(INP,  "@acq480.proto getJC(LOS) ${SPORT}")
@@ -37,7 +37,7 @@ record(bi, "${UUT}:${SITE}:ACQ480:JC:LOS") {
 }
 
 record(bi, "${UUT}:${SITE}:ACQ480:JC:LOL") {
-	field(DESC, "$placeholder")
+	field(DESC, "Jitter Cleaner Loss of Lock")
 	field(DTYP, "stream")
 	field(SCAN, "1 second")
 	field(INP,  "@acq480.proto getJC(LOL) ${SPORT}")
@@ -86,7 +86,7 @@ record(longin, "${UUT}:${SITE}:ACQ480:LINK:LOTI:na") {
 }
 
 record(bo, "${UUT}:${SITE}:SIG:CLK:TRAIN_BSY") {
-	field(DESC, "$placeholder")
+	field(DESC, "Training Busy")
 	field(DTYP, "Soft Channel")
 	field(ZNAM, "0")
 	field(ONAM, "1")

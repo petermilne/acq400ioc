@@ -9,7 +9,7 @@ record(bo, "${UUT}:MIRROR_EN")
 {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "enable mirror")
 	field(DTYP, "Soft Channel")
 	field(VAL,  "0")
 	field(PINI, "YES")

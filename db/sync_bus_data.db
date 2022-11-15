@@ -1,7 +1,7 @@
 record (bi, "${UUT}:0:SIG:SYNC_BUS:IN:SYNC") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "biAcqHost")
 	field(INP,  "@/dev/acq400.0.knobs/sync_in_sync")
 	field(SCAN, "1 second")
@@ -11,7 +11,7 @@ record (bi, "${UUT}:0:SIG:SYNC_BUS:IN:SYNC") {
 record (bi, "${UUT}:0:SIG:SYNC_BUS:IN:TRG") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "biAcqHost")
 	field(INP,  "@/dev/acq400.0.knobs/sync_in_trg")
 	field(FLNK, "${UUT}:0:SIG:SYNC_BUS:IN:GPIO")
@@ -21,7 +21,7 @@ record (bi, "${UUT}:0:SIG:SYNC_BUS:IN:TRG") {
 record (bi, "${UUT}:0:SIG:SYNC_BUS:IN:GPIO") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "biAcqHost")
 	field(INP,  "@/dev/acq400.0.knobs/sync_in_gpio")
 	field(FLNK, "${UUT}:0:SIG:SYNC_BUS:IN:CLK")
@@ -31,14 +31,14 @@ record (bi, "${UUT}:0:SIG:SYNC_BUS:IN:GPIO") {
 record (bi, "${UUT}:0:SIG:SYNC_BUS:IN:CLK") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "biAcqHost")
 	field(INP,  "@/dev/acq400.0.knobs/sync_in_clk")	
 	field(PINI, "YES")	
 }
 
 record (bi, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DET") {
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "biAcqHost")
 	field(INP,  "@/etc/acq400/0/sync_out_cable_det")
 	field(SCAN, "1 second")
@@ -48,7 +48,7 @@ record (bi, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DET") {
 }
 
 record (bi, "${UUT}:0:SIG:SYNC_BUS:OUT:DRVEN") {
-	field(DESC, "$placeholder")
+	field(DESC, "")
  	field(DTYP, "biAcqHost")
  	field(INP, "@/dev/acq400.0.knobs/mod_en")
 	field(SCAN, "5 second")

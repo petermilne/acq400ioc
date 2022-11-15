@@ -1,7 +1,7 @@
 record (bi, "${UUT}:MOD:${site}:GOOD") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "Site Ok")
+	field(DESC, "Site Good")
 	field(DTYP, "biAcqHost")
 	field(INP, "@/dev/gpio/LED/FMC${site}_G")
 	field(PINI, "YES")

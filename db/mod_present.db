@@ -1,5 +1,5 @@
 record(bi, "${UUT}:${SITE}:IS_PRESENT") {
-	field(DESC, "$placeholder")
+	field(DESC, "module present")
 	field(DTYP, "Soft Channel")
 	field(VAL,  "${PRESENT}")
 	field(PINI, "YES")

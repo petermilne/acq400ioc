@@ -1,7 +1,7 @@
 record (bo, "${UUT}:SYS:LED:TRG") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "Led trigger")
+	field(DESC, "Led TRiGger")
 	field(DTYP, "boAcqHost")
 	field(SCAN, "1 second")
 	field(OMSL, "closed_loop")	
@@ -12,7 +12,7 @@ record (bo, "${UUT}:SYS:LED:TRG") {
 record (bo, "${UUT}:SYS:LED:CLK") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "Led CLock")
+	field(DESC, "Led CLocK")
 	field(DTYP, "boAcqHost")
 	field(SCAN, "1 second")
 	field(OMSL, "closed_loop")	

@@ -2,7 +2,7 @@
 	# gpg_enable		
 
 record (bo, "${UUT}:${SITE}:GPG:ENABLE")	{
-	field(DESC, "$placeholder")
+	field(DESC, "Enable GPG")
 	field(DTYP, "Soft Channel")
 	field(ZNAM, "disabled")
 	field(ONAM, "enabled")

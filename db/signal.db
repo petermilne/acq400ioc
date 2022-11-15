@@ -1,6 +1,6 @@
 
 record(bo, "${UUT}:${SITE}:${FNAM}") {
-	field(DESC, "$placeholder")
+	field(DESC, "enable ${FNAM}")
 	field(DTYP, "Soft Channel")	
 	field(ZNAM, "${ZNAM}")
 	field(ONAM, "${ONAM}")
@@ -19,7 +19,7 @@ record(bo, "${UUT}:${SITE}:${FNAM}") {
 record(bi, "${UUT}:${SITE}:${FNAM}:r") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "stream")
 	field(INP,  "@signal.proto getSig(${FN}) ${SPORT}")
 	field(SCAN, "1 second")
@@ -29,7 +29,7 @@ record(bi, "${UUT}:${SITE}:${FNAM}:r") {
 record(bo, "${UUT}:${SITE}:${FNAM}:s") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "Soft Channel")
 	field(DOL,  "${UUT}:${SITE}:${FNAM}:r NPP")
 	field(OMSL, "closed_loop")
@@ -39,7 +39,7 @@ record(bo, "${UUT}:${SITE}:${FNAM}:s") {
 record(bo, "${UUT}:${SITE}:${FNAM}:w") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "Soft Channel")	
 	field(FLNK, "${UUT}:${SITE}:_${FN} PP")
 	field(DISV, "1")
@@ -78,14 +78,14 @@ record(mbbo, "${UUT}:${SITE}:${FNAM}:DX:s") {
 record(bo, "${UUT}:${SITE}:${FNAM}:DX:w") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "Soft Channel")	
 	field(FLNK, "${UUT}:${SITE}:_${FN} PP")
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:${FNAM}:DX:s.PACT")
 }
 record(bo, "${UUT}:${SITE}:${FNAM}:SENSE") {
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "Soft Channel")
 	field(ZNAM, "falling")
 	field(ONAM, "rising")
@@ -95,7 +95,7 @@ record(bo, "${UUT}:${SITE}:${FNAM}:SENSE") {
 record(bi, "${UUT}:${SITE}:${FNAM}:SENSE:r") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "stream")
 	field(INP,  "@signal.proto getSigSense(${FN}) ${SPORT}")
 	field(SCAN, "I/O Intr")	
@@ -104,7 +104,7 @@ record(bi, "${UUT}:${SITE}:${FNAM}:SENSE:r") {
 record(bo, "${UUT}:${SITE}:${FNAM}:SENSE:s") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "Soft Channel")
 	field(DOL,  "${UUT}:${SITE}:${FNAM}:SENSE:r NPP")
 	field(OMSL, "closed_loop")
@@ -113,7 +113,7 @@ record(bo, "${UUT}:${SITE}:${FNAM}:SENSE:s") {
 record(bo, "${UUT}:${SITE}:${FNAM}:SENSE:w") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "Soft Channel")	
 	field(FLNK, "${UUT}:${SITE}:_${FN} PP")
 	field(DISV, "1")

@@ -1,7 +1,7 @@
 record (bo, "${UUT}:SYS:LED:TRG") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "LED TRiGger")
 	field(DTYP, "boAcqHost")
 	field(SCAN, "1 second")
 	field(OMSL, "closed_loop")	
@@ -50,7 +50,7 @@ record (fanout, "${UUT}:SYS:LED:CLK:f")
 record (bo, "${UUT}:SYS:LED:CLK_R") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "CLK Red")
 	field(DTYP, "boAcqHost")
 	field(OUT, "@/dev/gpio/LED/CLK_R")
 	field(FLNK, "${UUT}:SYS:LED:CLK_A")
@@ -86,21 +86,21 @@ record(calc, "${UUT}:SYS:LED:CLK_RR")
 # can still declare a fault by writing to FAULT directly.
 
 record (calc, "${UUT}:SYS:LED:CLK:FAULT") {
-    field(INPA, "0")
-    field(CALC, "A")
-    field(FLNK, "${UUT}:SYS:LED:CLK:FAULT:w")
+    	field(INPA, "0")
+    	field(CALC, "A")
+    	field(FLNK, "${UUT}:SYS:LED:CLK:FAULT:w")
 }
 record (bo, "${UUT}:SYS:LED:CLK:FAULT:w") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
-    field(DTYP, "boAcqHost")        
-    field(OMSL, "closed_loop")      
-    field(DOL, "${UUT}:SYS:CLK:TRG:FAULT")
-    field(OUT, "@/dev/gpio/LED/CLK_R")      
+	field(DESC, "")
+	field(DTYP, "boAcqHost")        
+	field(OMSL, "closed_loop")      
+	field(DOL, "${UUT}:SYS:CLK:TRG:FAULT")
+	field(OUT, "@/dev/gpio/LED/CLK_R")      
 }
 record (bo, "${UUT}:SYS:LED:ACT_G") {
-	field(DESC, "$placeholder")
+	field(DESC, "ACTive Green")
 	field(DTYP, "boAcqHost")
 	field(OUT, "@/dev/gpio/LED/ACT_G")
 	field(ZNAM, "OFF")
@@ -108,7 +108,7 @@ record (bo, "${UUT}:SYS:LED:ACT_G") {
 	field(FLNK, "${UUT}:SYS:LED:ACT_A")
 }
 record (bo, "${UUT}:SYS:LED:ACT_R") {
-	field(DESC, "$placeholder")
+	field(DESC, "ACTive Red")
 	field(DTYP, "boAcqHost")
 	field(OUT, "@/dev/gpio/LED/ACT_R")
 	field(ZNAM, "OFF")
@@ -143,7 +143,7 @@ record(calc, "${UUT}:SYS:LED:ACT_RR")
 }
 
 record (bi, "${UUT}:SYS:LED:ACT_G:r") {
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "biAcqHost")
 	field(INP, "@/dev/gpio/LED/ACT_G")
 	field(ZNAM, "OFF")
@@ -151,7 +151,7 @@ record (bi, "${UUT}:SYS:LED:ACT_G:r") {
 }
 
 record (bi, "${UUT}:SYS:LED:ACT_R:r") {
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "biAcqHost")
 	field(INP, "@/dev/gpio/LED/ACT_R")
 	field(ZNAM, "OFF")

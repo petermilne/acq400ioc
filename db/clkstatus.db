@@ -3,7 +3,7 @@
 record(bo, "${UUT}:${SITE}:${FNAM}:s") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(FLNK, "${UUT}:${SITE}:CLK_IS_INTERNAL")
 }
 

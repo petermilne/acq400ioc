@@ -76,7 +76,7 @@ record(calcout, "${UUT}:MODE:TRANSIENT:set") {
 record(bo, "${UUT}:MODE:TRANSIENT:TRANSIENT:w") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "stream")
 	field(OUT,  "@mb.proto setTransient(${UUT}:MODE:TRANSIENT) ${SPORT}")
 }
@@ -144,7 +144,7 @@ record(calcout, "${UUT}:MODE:TRANSIENT:SET_ARM:set") {
 record(bo, "${UUT}:MODE:TRANSIENT:SET_ARM:w") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "stream")
 	field(OUT,  "@mb.proto setArm ${SPORT}")
 	field(FLNK, "${UUT}:1:DT PP")
@@ -186,7 +186,7 @@ record(calcout, "${UUT}:MODE:TRANSIENT:SET_ABORT:set") {
 record(bo, "${UUT}:MODE:TRANSIENT:SET_ABORT:w") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "")
 	field(DTYP, "stream")
 	field(OUT,  "@mb.proto setAbort ${SPORT}")
 	field(FLNK, "${UUT}:MODE:TRANSIENT:SET_ABORT:clr")

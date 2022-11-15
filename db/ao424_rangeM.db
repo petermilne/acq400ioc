@@ -24,7 +24,7 @@ record (longout, "${UUT}:${SITE}:INITRAW:ALL") {
 record(bo, "${UUT}:${SITE}:RANGE:COMMIT") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "COMMIT settings")
 	field(DTYP, "stream")
 	field(OUT,  "@ao424.proto setCommit ${SPORT}")
 	# save it for the end ..
@@ -41,7 +41,7 @@ record(bo, "${UUT}:${SITE}:RANGE:COMMIT") {
 record(bi, "${UUT}:${SITE}:ODDS") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "ODD channels only")
 	field(DTYP,  "stream")
 	field(INP,   "@ao424.proto getOdds ${SPORT}")
 	field(SCAN,  "1 second")

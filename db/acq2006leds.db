@@ -1,7 +1,7 @@
 record (bo, "${UUT}:SYS:LED:TRG") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "LED TRiGger")
 	field(DTYP, "boAcqHost")
 	field(SCAN, "1 second")
 	field(OMSL, "closed_loop")	
@@ -23,7 +23,7 @@ record (bo, "${UUT}:SYS:LED:CLK") {
 record (bo, "${UUT}:SYS:LED:CLK_R") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "CLK Red")
 	field(DTYP, "boAcqHost")
 	field(OUT, "@/dev/gpio/LED/CLK_R")
 }
@@ -31,7 +31,7 @@ record (bo, "${UUT}:SYS:LED:CLK_R") {
 record (bo, "${UUT}:SYS:LED:ACT_G") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "ACTive Green")
 	field(DTYP, "boAcqHost")
 	field(OUT, "@/dev/gpio/LED/ACT_G")
 }
@@ -39,7 +39,7 @@ record (bo, "${UUT}:SYS:LED:ACT_G") {
 record (bo, "${UUT}:SYS:LED:ACT_R") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
-	field(DESC, "$placeholder")
+	field(DESC, "ACTive Red")
 	field(DTYP, "boAcqHost")
 	field(OUT, "@/dev/gpio/LED/ACT_R")
 }
