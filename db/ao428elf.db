@@ -52,6 +52,9 @@ record(ai, "${UUT}:SYS:2:TEMP") {
 }
 
 record(bo, "${UUT}:${SITE}:SET_AUTOZERO") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "stream")
 	field(OUT,  "@xo.proto setAZ ${SPORT}")
 	field(PINI, "NO")

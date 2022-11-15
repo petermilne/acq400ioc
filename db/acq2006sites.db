@@ -1,10 +1,16 @@
 record (bi, "${UUT}:MOD:${site}:GOOD") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "Site Ok")
 	field(DTYP, "biAcqHost")
 	field(INP, "@/dev/gpio/LED/FMC${site}_G")
 	field(PINI, "YES")
 }
 
 record (bi, "${UUT}:MOD:${site}:FAIL") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "Site Fail")
 	field(DTYP, "Soft Channel")
 #	field(DTYP, "biAcqHost")
 #	field(INP, "@/dev/gpio/LED/FMC${site}_R")
@@ -12,6 +18,9 @@ record (bi, "${UUT}:MOD:${site}:FAIL") {
 }
 
 record (bo, "${UUT}:MOD:${site}:WARN") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "Site Warn")
 	field(DTYP, "boAcqHost")
 	field(OUT, "@/dev/gpio/LED/FMC${site}_R")
 }

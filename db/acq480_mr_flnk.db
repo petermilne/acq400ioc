@@ -1,4 +1,7 @@
 record(bo, "${UUT}:${SITEM1}:ACQ480:MR:EN") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(FLNK, "${UUT}:${SITE}:ACQ480:MR:EN")
 }
 record(mbbo, "${UUT}:${SITEM1}:ACQ480:MR:EVSEL:1") {
@@ -12,6 +15,9 @@ record(mbbo, "${UUT}:${SITEM1}:ACQ480:MR:10DEC") {
 }
 
 record(bo, "${UUT}:${SITE}:ACQ480:MR:EN") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(OMSL, "closed_loop")
 	field(DOL, "${UUT}:${SITEM1}:ACQ480:MR:EN")
 }

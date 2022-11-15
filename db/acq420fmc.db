@@ -114,6 +114,9 @@ record (longout, "${UUT}:${SITE}:clkdiv:ir") {
 }
 
 record(bo, "${UUT}:${SITE}:simulate") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "Simulate site")
 	field(DTYP, "boAcqHost")
 	field(OUT, "@/dev/acq400.${SITE}.knobs/simulate")
 }

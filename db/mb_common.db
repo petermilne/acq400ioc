@@ -94,6 +94,7 @@ record(calcout, "${UUT}:0:QS:BUSY") {
 }
 
 record(bo, "${UUT}:0:QS:XOFF") {
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")
 	field(VAL, "0")
 	field(PINI, "YES")

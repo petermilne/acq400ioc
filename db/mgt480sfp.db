@@ -1,4 +1,7 @@
 record (bi, "${UUT}:MGT:SFP:${CH}:PRESENT") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "biAcqHost")	
 	field(INP,  "@/dev/gpio/MGT482/SFP${CH}/PRESENT")
 	field(SCAN, "1 second")
@@ -6,6 +9,9 @@ record (bi, "${UUT}:MGT:SFP:${CH}:PRESENT") {
 }
 
 record (bi, "${UUT}:MGT:SFP:${CH}:LOS") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "biAcqHost")	
 	field(INP,  "@/dev/gpio/MGT482/SFP${CH}/LOS")
 	field(DISV, "0")

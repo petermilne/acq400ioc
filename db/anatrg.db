@@ -117,11 +117,17 @@ record(longout, "${UUT}:${SITE}:ANATRG:GROUP:N") {
 }
 
 record(bo, "${UUT}:${SITE}:ANATRG:RESET") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "stream")
 	field(OUT,  "@anatrg.proto setATD_Reset ${S14}")
 }
 
 record(bo, "${UUT}:${SITE}:ANATRG:SPAD") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "stream")
 	field(OUT,  "@anatrg.proto setAnaTrgSpad ${S14}")
 }

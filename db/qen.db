@@ -14,6 +14,9 @@ record(longin, "${UUT}:${SITE}:QEN:DI4") {
 }
 
 record(bo, "${UUT}:${SITE}:QEN:CLR") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "stream")
 	field(OUT, "@qen.proto clr_qen_count ${SPORT}")
 }

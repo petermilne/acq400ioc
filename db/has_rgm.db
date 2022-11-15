@@ -1,4 +1,5 @@
 record(bi, "${UUT}:${SITE}:HAS_RGM") {
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")
 	field(VAL,  "${HAS_RGM}")
 	field(PINI, "YES")

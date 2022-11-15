@@ -16,6 +16,7 @@ record (calc, "${UUT}:SYS:HB") {
 }
 
 record (bo, "${UUT}:IOC_READY") {
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")
 	field(VAL,  "0")
 	field(PINI, "YES")
@@ -55,6 +56,9 @@ record (stringin, "IP:${ipaddrbis}") {
 }
 
 record (bo, "${UUT}:NOALIASES") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")
 }
 

@@ -1,11 +1,15 @@
 # common file for delta-sigma adc
 
 record (bo, "${UUT}:${SITE}:ADC_MODE") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
         field(DTYP, "Soft Channel")
         field(VAL,  "0")  
 }
 
 record (bo, "${UUT}:${SITE}:HAS_CH_GAINS") {
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")
 	field(VAL,  "${CHG}")
 	field(ZNAM, "0")

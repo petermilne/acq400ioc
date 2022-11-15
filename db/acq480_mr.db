@@ -1,4 +1,7 @@
 record(bo, "${UUT}:${SITE}:ACQ480:MR:EN") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	 field(DTYP, "stream")
 	 field(OUT,  "@acq480.proto set_MR_EN ${SPORT}")
 }

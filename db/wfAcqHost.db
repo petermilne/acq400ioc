@@ -22,6 +22,9 @@ record(fanout, "${UUT}:${SITE}:AI:WF:${cid}:fan") {
 # duplicate section .. use ${WF} from now ...
 
 record(bo, "${UUT}:${SITE}:AI:${WF}:${cid}:OVER") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")
 	field(OMSL, "closed_loop")
 	field(DOL, "${UUT}:${SITE}:AI:${WF}:${cid}:V.VALB")

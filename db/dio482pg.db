@@ -1,6 +1,7 @@
 
 
 record(bo, "${UUT}:${SITE}:TRGOUT") {
+	field(DESC, "$placeholder")
 	field(DTYP, "stream")
 	field(OUT,  "@dio432.proto set_trgout_PG4 ${SPORT}")	
 	field(ONAM, "PGIDX")
@@ -10,6 +11,7 @@ record(bo, "${UUT}:${SITE}:TRGOUT") {
 }
 
 record(bo, "${UUT}:${SITE}:HAS_TRGIN"){
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")
 	field(VAL,  "${hastrg}")
 	field(PINI, "YES")
@@ -39,6 +41,7 @@ record(mbbo, "${UUT}:${SITE}:TRG:DX") {
 
 
 record(bo, "${UUT}:${SITE}:BYPASS_TRG_DEBOUNCE") {
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")
 	field(ZNAM, "OFF")
 	field(ONAM, "ON")
@@ -46,6 +49,9 @@ record(bo, "${UUT}:${SITE}:BYPASS_TRG_DEBOUNCE") {
 }
 
 record(bo, "${UUT}:${SITE}:BYPASS_TRG_DEBOUNCE:w") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "stream")
 	field(OUT,  "@wr.proto setBypassTrgDeb ${SPORT}")
 	field(DISV, "1")
@@ -57,6 +63,9 @@ record(bo, "${UUT}:${SITE}:BYPASS_TRG_DEBOUNCE:w") {
 
 
 record(bi, "${UUT}:${SITE}:BYPASS_TRG_DEBOUNCE:r") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "stream")
 	field(INP, "@wr.proto getBypassTrgDeb ${SPORT}")
 	field(SCAN, "2 second")
@@ -65,6 +74,9 @@ record(bi, "${UUT}:${SITE}:BYPASS_TRG_DEBOUNCE:r") {
 
 
 record(bo, "${UUT}:${SITE}:BYPASS_TRG_DEBOUNCE:s") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")
 	field(OMSL, "closed_loop")
 	field(DOL,  "${UUT}:${SITE}:BYPASS_TRG_DEBOUNCE:r NPP")

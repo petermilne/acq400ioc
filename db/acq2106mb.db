@@ -34,6 +34,7 @@ record(calcout, "${UUT}:0:SIG:CLK_MB:w") {
 }
 
 record(bi, "${UUT}:0:SIG:CLK_MB:READY") {
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")
 	field(VAL,  "0")
 	field(PINI, "YES")

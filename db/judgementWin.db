@@ -117,6 +117,8 @@ record(aSub, "${UUT}:${SITE}:AI:WF:${CH}:V") {
 
 record(bo, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:L")
 {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
 	field(DTYP, "Soft Channel")
 	field(DESC, "step the window L by 1 sample")
 	field(FLNK, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:L:b")
@@ -140,6 +142,8 @@ record(calcout, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:L:c")
 
 record(bo, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:R")
 {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
 	field(DTYP, "Soft Channel")
 	field(DESC, "step the window R by 1 sample")
 	field(FLNK, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:R:b")
@@ -166,6 +170,8 @@ record(calcout, "${UUT}:${SITE}:JDG:${CH}:WIN:STEP:R:c")
 
 record(bo, "${UUT}:${SITE}:JDG:${CH}:WIN:STRIDE:L")
 {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
 	field(DTYP, "Soft Channel")
 	field(DESC, "stride the window L by 1 interval")
 	field(FLNK, "${UUT}:${SITE}:JDG:${CH}:WIN:STRIDE:L:b")
@@ -189,6 +195,8 @@ record(calcout, "${UUT}:${SITE}:JDG:${CH}:WIN:STRIDE:L:c")
 
 record(bo, "${UUT}:${SITE}:JDG:${CH}:WIN:STRIDE:R")
 {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
 	field(DTYP, "Soft Channel")
 	field(DESC, "stride the window R by 1 interval")
 	field(FLNK, "${UUT}:${SITE}:JDG:${CH}:WIN:STRIDE:R:b")

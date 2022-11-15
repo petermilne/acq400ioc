@@ -1,9 +1,15 @@
 record(bo, "${UUT}:${SITE}:${lname}") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")
 	field(FLNK, "${UUT}:${SITE}:${lname}:w PP")
 }
 
 record(bo, "${UUT}:${SITE}:${lname}:w") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "boAcqHost")
 	field(OUT,  "@${pname}")
 	field(OMSL, "closed_loop")
@@ -13,6 +19,9 @@ record(bo, "${UUT}:${SITE}:${lname}:w") {
 }
 
 record(bi, "${UUT}:${SITE}:${lname}:r") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "biAcqHost")
 	field(INP,  "@${pname}")
 	field(SCAN, ".5 second")
@@ -21,6 +30,9 @@ record(bi, "${UUT}:${SITE}:${lname}:r") {
 }
 
 record(bo, "${UUT}:${SITE}:${lname}:s") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "Soft Channel")
 	field(OMSL, "closed_loop")
 	field(DOL,  "${UUT}:${SITE}:${lname}:r NPP")

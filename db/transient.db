@@ -55,6 +55,8 @@ record(stringin, "${UUT}:MODE:CONTINUOUS:STATUS") {
 	field(DISV, "0")
 }
 record(bo, "${UUT}:MODE:TRANSIENT") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
 	field(DTYP, "Soft Channel")
 	field(DESC, "enable transient")
 	field(VAL,  "0")
@@ -72,6 +74,9 @@ record(calcout, "${UUT}:MODE:TRANSIENT:set") {
 }
 
 record(bo, "${UUT}:MODE:TRANSIENT:TRANSIENT:w") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "stream")
 	field(OUT,  "@mb.proto setTransient(${UUT}:MODE:TRANSIENT) ${SPORT}")
 }
@@ -113,6 +118,8 @@ record(longout, "${UUT}:MODE:TRANSIENT:SOFT_TRIGGER") {
 }
 
 record(bo, "${UUT}:MODE:TRANSIENT:SET_ARM") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
 	field(DTYP, "Soft Channel")
 	field(DESC, "start transient capture")
 	field(VAL,  "0")
@@ -135,6 +142,9 @@ record(calcout, "${UUT}:MODE:TRANSIENT:SET_ARM:set") {
 
 
 record(bo, "${UUT}:MODE:TRANSIENT:SET_ARM:w") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "stream")
 	field(OUT,  "@mb.proto setArm ${SPORT}")
 	field(FLNK, "${UUT}:1:DT PP")
@@ -155,6 +165,8 @@ record(calcout, "${UUT}:MODE:TRANSIENT:SET_ARM:clr") {
 
 
 record(bo, "${UUT}:MODE:TRANSIENT:SET_ABORT") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
 	field(DTYP, "Soft Channel")
 	field(DESC, "abort transient capture")
 	field(VAL,  "0")
@@ -172,6 +184,9 @@ record(calcout, "${UUT}:MODE:TRANSIENT:SET_ABORT:set") {
 }
 
 record(bo, "${UUT}:MODE:TRANSIENT:SET_ABORT:w") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
 	field(DTYP, "stream")
 	field(OUT,  "@mb.proto setAbort ${SPORT}")
 	field(FLNK, "${UUT}:MODE:TRANSIENT:SET_ABORT:clr")
@@ -185,6 +200,8 @@ record(calcout, "${UUT}:MODE:TRANSIENT:SET_ABORT:clr") {
 }
 
 record(bo, "${UUT}:SIG:SOFT_TRIGGER") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
 	field(DTYP, "Soft Channel")
 	field(DESC, "set soft trigger")
 	field(VAL,  "0")
@@ -211,6 +228,8 @@ record(longout, "${UUT}:SIG:SOFT_TRIGGER:w") {
 }
 
 record(bo, "${UUT}:SIG:SOFT_TRIGGER:clr" ) {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
 	field(DESC, "Clears SOFT_TRIGGER")
 	field(DTYP, "Soft Channel")
 	field(OUT,  "${UUT}:SIG:SOFT_TRIGGER")
