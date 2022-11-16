@@ -13,6 +13,18 @@ record(longin, "${UUT}:${SITE}:QEN:DI4") {
 	field(INP,  "@qen.proto di4_mon ${SPORT}")
 }
 
+record(longin, "${UUT}:${SITE}:QEN:ZCOUNT") {
+	field(DTYP, "stream")
+	field(SCAN, ".2 second")
+	field(INP,  "@qen.proto read_z_count ${SPORT}")
+	field(FLNK, "${UUT}:${SITE}:QEN:ECOUNT")
+}
+
+record(longin, "${UUT}:${SITE}:QEN:ECOUNT") {
+	field(DTYP, "stream")
+	field(INP,  "@qen.proto read_e_count ${SPORT}")
+}
+
 record(bo, "${UUT}:${SITE}:QEN:CLR") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")

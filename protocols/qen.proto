@@ -17,5 +17,14 @@ di4_mon {
 
 read_qen_count {
 	out "qen_count";
-	in "%u";
+	in "%d";
+}
+
+read_z_count {
+	out "zcount";
+	in "%d";
+}
+read_e_count {
+	out "ecount";
+	in "%d";
 }
