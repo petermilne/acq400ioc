@@ -16,4 +16,7 @@ mprams="UUT=${HOST},SITE=${SITE},SPORT=SQEN${SITE}"
 dblr '"db/qen.db","'${mprams}'"'
 create_asyn_channel SQEN${SITE} 127.0.0.1:422${SITE}
 
-
+trprams=${mprams},SCAN="2 second"
+for pvprams in FUN=ABS_TRG,fun=abs_trg_count; do
+	dblr '"db/qen_tr.db","'${mprams},${trprams},${pvprams}'"'
+done

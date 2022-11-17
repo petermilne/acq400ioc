@@ -28,3 +28,14 @@ read_e_count {
 	out "ecount";
 	in "%d";
 }
+
+
+get_tr {
+	out "\$1";
+	in "%d";
+}
+
+set_tr {
+	out "\$1 %d";
+	in;
+}
