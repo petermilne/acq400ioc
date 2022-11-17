@@ -19,7 +19,7 @@ UMAX=DRVL=0,DRVH=2147483647
 NMAX=DRVL=0,DRVH=0
 
 trprams=${mprams},SCAN="2 second"
-for pvprams in
+for pvprams in \
             FUN=INDEX_HOME,fun=index_home,${SMAX} \ 
             FUN=ABS_TRG,fun=abs_trg_count,${SMAX} \
             FUN=PRD_TRG,fun=prd_trg_count,${SMAX} \
@@ -35,7 +35,7 @@ for enprams in \
     FUN=PB,fun=phaseB_en \
     FUN=ABS_TRG,fun=abs_trg_en \
     FUN=PRD_TRG,fun=prd_trg_en \
-    FUN=INDEX_HOME,fun=index_home_en \
+    FUN=INDEX_HOME,fun=index_home_en
 do
     dblr '"db/qen_en.db","'${trprams},${enprams}'"'
 done
