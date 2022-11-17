@@ -40,6 +40,6 @@ record(int64in, "${UUT}:${SITE}:QEN:COUNT64") {
 }
 
 record(int64in, "${UUT}:${SITE}:QEN:COUNT64:T") {
-	field(DTYP, "asynInt64In")
+	field(DTYP, "asynInt64")
 	field(INP,  "@asyn(100,200,300) ${SPORT}")
 }
