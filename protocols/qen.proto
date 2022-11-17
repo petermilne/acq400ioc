@@ -39,3 +39,13 @@ set_tr {
 	out "\$1 %d";
 	in;
 }
+
+get_en {
+	out "\$1";
+	in "%d";
+}
+
+set_en {
+	out "\$1 %d";
+	in;
+}

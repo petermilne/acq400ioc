@@ -1,0 +1,36 @@
+# generalised <diamond> pattern for qen enables
+# ${UUT} ${SITE}
+# ${FUN} : epics function name
+# ${fun} : knob name
+# ${SCAN}: scan instruction, eg "2 second"
+
+record(bo, "${UUT}:${SITE}:QEN:${FUN}:EN") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "QEN ${FUN} Enable")
+	field(ZNAM, "OFF")
+	field(ONAM, "ON")
+	field(FLNK, "${UUT}:${SITE}:QEN:${FUN}:EN:w PP")
+}
+
+record(bo, "${UUT}:${SITE}:QEN:${FUN}:EN:w"){
+	field(DTYP, "stream")
+	field(OUT,  "@qen.proto set_en(${fun}) ${SPORT}")	
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:QEN:${FUN}:EN:s.PACT")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:${SITE}:QEN:${FUN}:EN PP")
+}
+
+record(bi, "${UUT}:${SITE}:QEN:${FUN}:EN:r"){
+	field(DTYP, "stream")
+	field(INP,  "@qen.proto get_en(${fun}) ${SPORT}")	
+	field(SCAN, "${SCAN}")
+	field(FLNK, "${UUT}:${SITE}:QEN:${FUN}:EN:s")
+}
+
+record(bo, "${UUT}:${SITE}:QEN:${FUN}:EN:s") {
+	field(DTYP, "Soft Channel")
+	field(DOL, "${UUT}:${SITE}:QEN:${FUN}:EN:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT, "${UUT}:${SITE}:QEN:${FUN}:EN PP")
+}

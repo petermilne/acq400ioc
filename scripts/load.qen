@@ -24,5 +24,16 @@ for pvprams in FUN=ABS_TRG,fun=abs_trg_count,${SMAX} \
                FUN=PRD_TRG_TOTAL,fun=pos_prd_count,${NMAX},SCAN=".2 second" \
                FUN=PRD_TRG_HYST,fun=prd_hyst_count,${SMAX}
 do
-	dblr '"db/qen_tr.db","'${mprams},${trprams},${pvprams}'"'
+	dblr '"db/qen_tr.db","'${trprams},${pvprams}'"'
 done
+
+for enprams in \
+    FUN=ZC,fun=Zcount_en \
+    FUN=PA,fun=phaseA_en \
+    FUN=PB,fun=phaseB_en \
+    FUN=ABS_TRG,fun=abs_trg_en \
+    FUN=PRD_TRG,fun=prd_trg_en
+do
+    dblr '"db/qen_en.db","'${trprams},${enprams}'"'
+done
+          

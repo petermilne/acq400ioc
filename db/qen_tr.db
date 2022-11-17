@@ -18,8 +18,7 @@ record(longout, "${UUT}:${SITE}:QEN:${FUN}:w"){
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:QEN:${FUN}:s.PACT")
 	field(OMSL, "closed_loop")
-	field(DOL,  "${UUT}:${SITE}:QEN:${FUN} PP")
-	field(FLNK, "${UUT}:${SITE}:QEN:${FUN}:IDX PP")
+	field(DOL,  "${UUT}:${SITE}:QEN:${FUN} PP")	
 }
 
 record(longin, "${UUT}:${SITE}:QEN:${FUN}:r"){
