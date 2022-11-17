@@ -20,7 +20,7 @@ NMAX=DRVL=0,DRVH=0
 
 trprams=${mprams},SCAN="2 second"
 for pvprams in \
-            FUN=INDEX_HOME,fun=index_home,${SMAX} \ 
+            FUN=INDEX_HOME,fun=index_home,${SMAX} \
             FUN=ABS_TRG,fun=abs_trg_count,${SMAX} \
             FUN=PRD_TRG,fun=prd_trg_count,${SMAX} \
             FUN=PRD_TRG_ACT,fun=pos_prd_count,${NMAX},SCAN=".2 second" \
