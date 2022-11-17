@@ -7,8 +7,8 @@
 record(longout, "${UUT}:${SITE}:QEN:${FUN}") {
 	field(DTYP, "Soft Channel")
 	field(DESC, "Enable Discontinuity Tester")
-	field(DRVL, "0")
-	field(DRVH, "250")
+	field(DRVL, "${DRVL}")
+	field(DRVH, "${DRVH}")
 	field(FLNK, "${UUT}:${SITE}:QEN:${FUN}:w PP")
 }
 
