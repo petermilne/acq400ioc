@@ -84,3 +84,8 @@ setDiscoIdx {
 	out "disco_idx %d";
 	in "";
 }
+
+setUdpDataSrc {
+	out "udp_data_src %d";
+	in "";
+}
