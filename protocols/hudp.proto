@@ -18,7 +18,12 @@ getDstPort {
 }
 
 getTxPktSz {
-	out "tx_pkt_sz";
+	out "tx_calc_pkt_sz";
+	in "%d";
+}
+
+getTxSPP {
+	out "tx_spp";
 	in "%d";
 }
 

@@ -24,7 +24,17 @@ record(longin, "${UUT}:10:HUDP:TX:DST_PORT") {
 
 record(longin, "${UUT}:10:HUDP:TX:PKT_SZ") {
 	field(DTYP,  "stream")
+	field(DESC,  "TX Total PKT Size")
 	field(INP,   "@hudp.proto getTxPktSz ${SPORT}")
+#	field(SCAN,  "I/O Intr")
+	field(SCAN,  "5 second")
+	field(PINI,  "YES")
+}
+
+record(longin, "${UUT}:10:HUDP:TX:SPP") {
+	field(DTYP,  "stream")
+	field(DESC,  "TX Samples Per Packet")
+	field(INP,   "@hudp.proto getTxSPP ${SPORT}")
 #	field(SCAN,  "I/O Intr")
 	field(SCAN,  "5 second")
 	field(PINI,  "YES")
