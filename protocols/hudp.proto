@@ -37,6 +37,11 @@ getRxPort {
 	in "%d";
 }
 
+getRxPktLen {
+	out "rx_pkt_len";
+	in "%d";
+}
+
 
 
 setCtrlEnum {

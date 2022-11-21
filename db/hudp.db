@@ -56,6 +56,16 @@ record(longin, "${UUT}:10:HUDP:RX:PORT") {
 	field(PINI,  "YES")
 }
 
+record(longin, "${UUT}:10:HUDP:RX:PKT_SZ") {
+	field(DTYP,  "stream")
+	field(INP,   "@hudp.proto getRxPktLen ${SPORT}")
+#	field(SCAN,  "I/O Intr")
+	field(SCAN,  "5 second")
+	field(PINI,  "YES")
+}
+
+
+
 record(mbbo, "${UUT}:10:HUDP:CONTROL") {
 	field(DTYP, "Soft Channel")
 	field(DESC, "Controls UDP")
