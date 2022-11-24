@@ -561,19 +561,8 @@ load_400() {
         let LO=66000000;;
 #   @@todo : different flavour of calmon for SAR ADC needed 
     $MT_DIO432|$MT_DIO432P|$MT_DIO482|$MT_DIO482TD|$MT_DIO482TD_PG|$MT_DIO422)
-    # probably should be common to all @@todo
-        if [ -e /dev/acq400.$site.knobs/gpg_enable ]; then
-            case $model in
-            $MT_DIO482TD_PG)
-                maxdiv=2000000000
-                if [ "x$DIO482TD_PG5" != "x" ]; then
-                    will_load_dio482pg=5
-                else
-                    will_load_dio482pg=4
-                fi;;
-            *)
-                will_load_dio482pg=32;;
-            esac            
+        if [ -e /dev/acq400.$site.knobs/num_pg ]; then
+            will_load_dio482pg=$(cat /dev/acq400.$site.knobs/num_pg)
         else
             name=$(cat /dev/acq400.$site.knobs/module_name)
             [ "$model" = "$MT_DIO482" ] && [ "$SUPPORT_COS" != "" ] && ./scripts/load.dio482 $HOST $site
