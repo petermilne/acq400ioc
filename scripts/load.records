@@ -867,7 +867,7 @@ load_dio482pg() {
     else
         hastrg=1
     fi
-    dblr '"db/dio482pg.db","'${cprams},hastrg=${hastrg},S0=S0WR'"'
+    dblr '"db/dio482pg.db","'${cprams},hastrg=${hastrg},num_pg=${do_count},S0=S0WR'"'
     [ "$self" != "" ] && dblr '"db/dio482pg_self.db","'${cprams},$self,S0=S0WR'"'
 
     if [ $do_count -le 5 ]; then

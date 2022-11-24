@@ -92,5 +92,11 @@ record(mbbo, "${UUT}:${SITE}:BYPASS_TRG_DEBOUNCE:MODE") {
 	field(TWST, "OFF")
 }
 
+record(longin, "${UUT}:${SITE}:NUM_PG") {
+	field(DTYP, "Soft Channel")
+	field(VAL,   "${num_pg}")
+	field(PINI,  "YES")
+}
+
 
 
