@@ -1,6 +1,6 @@
 Terminator = LF;
 ExtraInput = Ignore;
-ReplyTimeout = 500;
+ReplyTimeout = 1000;
 
 
 getCState {
