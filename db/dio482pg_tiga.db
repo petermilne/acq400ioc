@@ -1,0 +1,16 @@
+
+record(longin, "${UUT}:${SITE}:WR:TS:rc") {
+	field(SCAN, "1 second")
+	field(DTYP, "stream")	
+	field(INP,  "@wr.proto getCount(wr_ts_s${SITE}_count) ${S0}")	
+	field(DESC, "TAI Current")	
+	field(PRIO, "LOW")
+}
+
+record(longin, "${UUT}:${SITE}:WR:WRTT:rc") {
+	field(SCAN, "1 second")
+	field(DTYP, "stream")	
+	field(INP,  "@wr.proto getCount(wr_tt_s${SITE}_count) ${S0}")	
+	field(DESC, "WRTT0 Count")	
+	field(PRIO, "LOW")
+}

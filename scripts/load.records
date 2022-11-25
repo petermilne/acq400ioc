@@ -867,8 +867,8 @@ load_dio482pg() {
     else
         hastrg=1
     fi
-    dblr '"db/dio482pg.db","'${cprams},hastrg=${hastrg},num_pg=${do_count},S0=S0WR'"'
-    [ "$self" != "" ] && dblr '"db/dio482pg_self.db","'${cprams},$self,S0=S0WR'"'
+    dblr '"db/dio482pg.db","'${cprams},hastrg=${hastrg},num_pg=${do_count}'"'
+    [ "$self" != "" ] && dblr '"db/dio482pg_self.db","'${cprams},$self'"'
 
     if [ $do_count -le 5 ]; then
         dblr '"db/dio482pg_leds.db","'${cprams}'"'
@@ -880,9 +880,13 @@ load_dio482pg() {
     for dx in $(seq $do_count); do
         dblr '"db/dio482pg_do4.db","'${cprams},UX=$dx,IX=$(($dx-1))'"'
     done
-    sprams="${cprams},SIG=WR,S0=S0WR,CTRMAX=0,DT=1,DTC=1"
-    dblr '"db/_counter.db","'${sprams},lname=TS'"'
-    dblr '"db/_counter.db","'${sprams},lname=WRTT'"'
+    
+    if is_tiga; then
+        dblr '"db/dio482pg_tiga.db","'${cprams},S0=S0WR'"'
+        sprams="${cprams},SIG=WR,S0=S0WR,CTRMAX=0,DT=1,DTC=1"
+        dblr '"db/_counter.db","'${sprams},lname=TS'"'
+        dblr '"db/_counter.db","'${sprams},lname=WRTT'"'
+    fi
     
     echo "dbpf ${HOST}:${site}:GPG:DBG:RSTATE.DISA 0"  >>/tmp/st_final.cmd
     if [ $do_count -eq 4 ]; then 
