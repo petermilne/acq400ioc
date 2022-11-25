@@ -7,9 +7,10 @@ setMB {
 	in;
 }
 
-setMB_Hz {
+setMB_Hz {	
 # fin Hz, fout (setpoint)
 	out "mb_clk %e %(A)e";
+	wait 1000;
 	in;
 	out "acq480_force_training 1";
 	in;
