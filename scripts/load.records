@@ -93,10 +93,7 @@ load_wf_acq_host_window_per_channel() {
 
 is_data32()
 {
-    dk=/dev/acq400.${1}.knobs
-    d32=0
-    [ -e ${dk}/data32 ] && d32=$(cat ${dk}/data32)
-    echo $d32
+    get.site ${1} data32
 }
 make_AI() {
     site=$1
