@@ -143,6 +143,8 @@ long raw_to_volts(aSubRecord *prec) {
 	float* p_cv = (float*)prec->valh;			// Coefficient of variance, VALE and VALF MUST be defined!
 	unsigned short *p_top_half = (unsigned short*)prec->vali;	// user might consider these to be signed we don't care
 	unsigned short *p_low_half = (unsigned short*)prec->valj;
+	const epicsUInt32* p_w1 = (epicsUInt32*)prec->l;
+	const epicsUInt32* p_w2 = (epicsUInt32*)prec->m;
 
 	long min_value;
 	long max_value;
@@ -152,8 +154,8 @@ long raw_to_volts(aSubRecord *prec) {
 	double sumsq = 0;
 	bool compute_squares = p_stddev != 0 || p_rms != 0;
 
-	const epicsUInt32 window1 = *(int*)prec->l;
-	const epicsUInt32 window2 = *(int*)prec->m==0? len-1: *(int*)prec->m;
+	const epicsUInt32 window1 = p_w1 != 0? *p_w1: 0;
+	const epicsUInt32 window2 = p_w2 != 0? *p_w2: len-1;
 	const epicsUInt32 winlen = window2 - window1 + 1;
 	// if window2 < window1, winlen-> infinity, so mean -> 0, which is fair enough
 
