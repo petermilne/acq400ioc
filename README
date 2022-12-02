@@ -1,5 +1,4 @@
-
-# PV name convention:
+ PV name convention:
 ${HOST}:${SITE}:FEATURE  or
 ${HOST}:FEATURE
 
@@ -115,6 +114,17 @@ export RTM_TRANSLEN_ADJ=2
 # if the burst rate is high >10Hz, you might get better results with multiple bursts per buffer.
 # increase bufferlen accordingly, and set this variable (default is 1)
 export BURSTS_PER_BUFFER=${BURSTS_PER_BUFFER:-1}
+
+# for rapid judgement update, single call for easy comment out ..
+# ENABLE JUDGEMENT
+judgement() {
+export SIZE=120
+export IOC_PREINIT=./scripts/load.judgement
+export acq400_Judgement_FIRST_SAM=1
+export acq400JudgementImpl_VERBOSE=0
+export acq400JudgementImpl_CBCUTOFF=999
+}
+# judgement
 
 # BURST MODE LIVE SCOPE. 
 # This is largely superceded by "Judgement", but for the record:

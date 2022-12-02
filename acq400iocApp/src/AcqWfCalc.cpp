@@ -251,7 +251,7 @@ long volts_to_raw(aSubRecord *prec) {
 	double aslo = *reinterpret_cast<double*>(prec->s);
 
 	for (int ii=0; ii <len; ii++) {
-		double yy = (volts[ii] - aoff) * aslo;
+		double yy = (volts[ii] - aoff) / aslo;
 
 		raw[ii] = static_cast<T>(yy);
 

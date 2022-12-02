@@ -822,7 +822,7 @@ template<> const int acq400JudgementImpl<epicsInt16>::SCALE = 1;
 template<> const int acq400JudgementImpl<epicsInt32>::SCALE = 256;   // scale 32 bit number to 24 bit code step.
 
 template<class T> int acq400JudgementImpl<T>::verbose = ::getenv_default("acq400JudgementImpl_VERBOSE", 0);
-template<class T> int acq400JudgementImpl<T>::cbcutoff = ::getenv_default("acq400JudgementImpl_CBCUTOFF", 5);
+template<class T> int acq400JudgementImpl<T>::cbcutoff = ::getenv_default("acq400JudgementImpl_CBCUTOFF", 999);
 
 template<>
 asynStatus acq400JudgementImpl<epicsInt16>::writeInt16Array(asynUser *pasynUser, epicsInt16 *value,
@@ -865,7 +865,6 @@ void acq400JudgementImpl<epicsInt32>::doDataUpdateCallbacks(int ic)
 	}
 	if (ic < cbcutoff){
 		doCallbacksInt32Array(&RAW[ic*nsam], nsam, P_RAW, ic);
-
 	}else{
 		if (verbose > 3){
 			printf("%s doDataUpdateCallbacks(%d/%d)  STUB\n", __FUNCTION__, ic, nchan);

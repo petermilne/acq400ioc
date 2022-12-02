@@ -15,13 +15,11 @@ record(aSub, "${UUT}:${SITE}:JDG:${FN}:${CH}:v2r") {
 
 	field(FTO, "DOUBLE")
 	field(NOO, "1")
-#	field(INPO, "${UUT}:${SITE}:AI:CH:${CH}.EOFF")
-	field(INPO, "0")
+	field(INPO, "${UUT}:${SITE}:AI:CH:${CH}.EOFF")
 
 	field(FTS, "DOUBLE")
 	field(NOS, "1")
-#	field(INPS, "${UUT}:${SITE}:AI:CH:${CH}.ESLO")
-	field(INPS, "838860.8")						
+	field(INPS, "${UUT}:${SITE}:AI:CH:${CH}.ESLO")					
 
 	field(FTVA, "LONG")
 	field(NOVA, "${NSAM}")
