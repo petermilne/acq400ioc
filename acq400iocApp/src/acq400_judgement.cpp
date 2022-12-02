@@ -118,7 +118,9 @@ acq400Judgement::acq400Judgement(const char* portName, int _nchan, int _nsam, in
 	}
 }
 
-int acq400Judgement::verbose = ::getenv_default("acq400JudgementImpl_VERBOSE", 0);
+int acq400Judgement::verbose = ::getenv_default("acq400Judgement_VERBOSE", 0);
+
+
 
 bool acq400Judgement::onCalculate(bool fail)
 {
@@ -151,9 +153,6 @@ bool acq400Judgement::onCalculate(bool fail)
 			}else{
 				break;
 			}
-		}
-		if (verbose > 2){
-			printf("%s doDataUpdateCallbacks(%d)\n", __FUNCTION__, ic);
 		}
 		doDataUpdateCallbacks(ic);
 	}
@@ -427,6 +426,7 @@ public:
 template<>
 void acq400JudgementNJ<epicsInt16>::doDataUpdateCallbacks(int ic)
 {
+
 	doCallbacksInt16Array(&RAW[ic*nsam], nsam, P_RAW, ic);
 }
 
@@ -455,6 +455,7 @@ class acq400JudgementImpl : public acq400Judgement {
 	static const int SCALE;
 
 	static int verbose;
+	static int cbcutoff;
 
 	static bool gt(int l, int r){ return l > r; }
 	static bool lt(int l, int r){ return l < r; }
@@ -661,9 +662,13 @@ public:
 
 		RAW_MU = new ETYPE[nsam*nchan];
 		RAW_ML = new ETYPE[nsam*nchan];
-		CHN_MU = new ETYPE[nchan*nsam];
-		CHN_ML = new ETYPE[nchan*nsam];
 		RAW    = new ETYPE[nsam*nchan];
+		if (verbose > 1){
+			printf("%s RAW = new (%u)[%d] %p..%p\n", __FUNCTION__, (unsigned)sizeof(ETYPE), nsam*nchan, RAW, RAW+nsam*nchan);
+		}
+
+		CHN_MU = new ETYPE[nchan*nsam];  /* cooked order */
+		CHN_ML = new ETYPE[nchan*nsam];  /* cooked order */
 	}
 
 
@@ -813,6 +818,7 @@ template<> const int acq400JudgementImpl<epicsInt16>::SCALE = 1;
 template<> const int acq400JudgementImpl<epicsInt32>::SCALE = 256;   // scale 32 bit number to 24 bit code step.
 
 template<class T> int acq400JudgementImpl<T>::verbose = ::getenv_default("acq400JudgementImpl_VERBOSE", 0);
+template<class T> int acq400JudgementImpl<T>::cbcutoff = ::getenv_default("acq400JudgementImpl_CBCUTOFF", 5);
 
 template<>
 asynStatus acq400JudgementImpl<epicsInt16>::writeInt16Array(asynUser *pasynUser, epicsInt16 *value,
@@ -832,15 +838,31 @@ asynStatus acq400JudgementImpl<epicsInt32>::writeInt32Array(asynUser *pasynUser,
 template<>
 void acq400JudgementImpl<epicsInt16>::doDataUpdateCallbacks(int ic)
 {
-	doCallbacksInt16Array(&RAW[ic*nsam], nsam, P_RAW, ic);
-	doCallbacksInt8Array(RESULT_FAIL,   nchan+1, P_RESULT_FAIL, 0);
+	if (ic < cbcutoff){
+		doCallbacksInt16Array(&RAW[ic*nsam], nsam, P_RAW, ic);
+	}
+	if (ic == 0){
+		doCallbacksInt8Array(RESULT_FAIL,   nchan+1, P_RESULT_FAIL, 0);
+	}
 }
 
 template<>
 void acq400JudgementImpl<epicsInt32>::doDataUpdateCallbacks(int ic)
 {
-	doCallbacksInt32Array(&RAW[ic*nsam], nsam, P_RAW, ic);
-	doCallbacksInt8Array(RESULT_FAIL,   nchan+1, P_RESULT_FAIL, 0);
+	if (verbose > 1){
+		printf("%s RAW(%u)[%d] %p..%p\n", __FUNCTION__, (unsigned)sizeof(epicsInt32), nsam*ic, &RAW[ic*nsam], &RAW[ic*nsam]+nsam);
+	}
+	if (ic < cbcutoff){
+		doCallbacksInt32Array(&RAW[ic*nsam], nsam, P_RAW, ic);
+
+	}else{
+		if (verbose > 3 && ic > 4){
+			printf("%s doDataUpdateCallbacks(%d/%d)  STUB\n", __FUNCTION__, ic, nchan);
+		}
+	}
+	if (ic == 0){
+		doCallbacksInt8Array(RESULT_FAIL,   nchan+1, P_RESULT_FAIL, 0);
+	}
 }
 
 template<>
