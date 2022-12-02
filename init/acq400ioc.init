@@ -43,7 +43,7 @@ source /usr/local/epics/scripts/init_make_knobs.sh
 
 if [ ! -e $LOG ]; then
 	grep -q emlog /proc/modules; [ $? -ne 0 ] && /sbin/insmod /usr/local/lib/modules/emlog.ko
-        [ -e $LOG ] || mkemlog $LOG
+        [ -e $LOG ] || mkemlog $LOG 16
 fi
 
 wait_ioc_records_loaded() {
