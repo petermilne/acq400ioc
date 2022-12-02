@@ -242,7 +242,7 @@ long raw_to_volts(aSubRecord *prec) {
  * OUTPUTS:
  * VALA : link to raw
  */
-template <class T>
+template <class T, int SHL>
 long volts_to_raw(aSubRecord *prec) {
 	float * volts = reinterpret_cast<float*>(prec->a);
 	int len = prec->nea;
@@ -253,7 +253,7 @@ long volts_to_raw(aSubRecord *prec) {
 	for (int ii=0; ii <len; ii++) {
 		double yy = (volts[ii] - aoff) / aslo;
 
-		raw[ii] = static_cast<T>(yy);
+		raw[ii] = static_cast<T>(yy) << SHL;
 
 		if (::verbose && ii < 5){
 			printf("volts_to_raw [%d] %.2f -> %ld  # aslo %e aoff %e\n", ii, volts[ii], (long)raw[ii], aslo, aoff);
@@ -521,9 +521,9 @@ static registryFunctionRef my_asub_Ref[] = {
        {"raw_to_volts_LONG",  (REGISTRYFUNCTION) raw_to_volts<long, 8>},
        {"raw_to_volts_INT24",  (REGISTRYFUNCTION) raw_to_volts<long, 0>},
        {"raw_to_volts_SHORT",  (REGISTRYFUNCTION) raw_to_volts<short, 0>},
-       {"volts_to_raw_SHORT", (REGISTRYFUNCTION) volts_to_raw<short>},
-       {"volts_to_raw_LONG", (REGISTRYFUNCTION) volts_to_raw<long>},
-       {"volts_to_raw_DAC20", (REGISTRYFUNCTION) volts_to_raw<long>},
+       {"volts_to_raw_SHORT", (REGISTRYFUNCTION) volts_to_raw<short, 0>},
+       {"volts_to_raw_LONG", (REGISTRYFUNCTION) volts_to_raw<long, 8>},
+       {"volts_to_raw_DAC20", (REGISTRYFUNCTION) volts_to_raw<long, 0>},
        {"cart2pol", (REGISTRYFUNCTION) cart2pol<short>},
        {"cart2pol_LONG", (REGISTRYFUNCTION) cart2pol<long>},
        {"cart2pol_SHORT", (REGISTRYFUNCTION) cart2pol<short>},
