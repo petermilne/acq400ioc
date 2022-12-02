@@ -125,7 +125,9 @@ make_AI() {
         [ "x$WF_ACQ_HOST_WINDOW_PER_CHANNEL" = "xy" ] && load_wf_acq_host_window_per_channel  $ch "$wprams"
     done
     if [ $FIRST_AI_WF_RECORDS -eq 1 ]; then       
-        dblr \"db/wfAcqHostTb.db\",\"${PRAMS},size=${SIZE}\"    
+        dblr \"db/wfAcqHostTb.db\",\"${PRAMS},size=${SIZE}\"
+        sprams="UUT=${HOST},SITE=${site},CTRMAX=$CTR28,DT=1,DTC=1"
+        dblr '"db/_counter.db","'${sprams},SIG=AI,lname=WF'"'
         FIRST_AI_WF_RECORDS=0
     fi  
     let nchanp1="$nchan+1"  

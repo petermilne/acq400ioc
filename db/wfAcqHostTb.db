@@ -19,3 +19,11 @@ record(aSub, "${UUT}:${SITE}:AI:WF:TB") {
 	field(DESC, "AI waveform timebase seconds")	
 }
 
+record(longin, "${UUT}:${SITE}:AI:WF:rc") {
+# body of this Raw Count record provided by device-specific code
+	field(SCAN, "1 second")
+	field(DOL,  "${UUT}:${SITE}:AI:WF:01:UPDATES")
+	field(OMSL, "closed_loop")
+
+	field(FLNK, "${UUT}:${SITE}:AI:WF:ACTIVE")
+}
