@@ -838,8 +838,15 @@ asynStatus acq400JudgementImpl<epicsInt32>::writeInt32Array(asynUser *pasynUser,
 template<>
 void acq400JudgementImpl<epicsInt16>::doDataUpdateCallbacks(int ic)
 {
+	if (verbose > 1){
+		printf("%s RAW(%u)[%d] %p..%p\n", __FUNCTION__, (unsigned)sizeof(epicsInt16), nsam*ic, &RAW[ic*nsam], &RAW[ic*nsam]+nsam);
+	}
 	if (ic < cbcutoff){
 		doCallbacksInt16Array(&RAW[ic*nsam], nsam, P_RAW, ic);
+	}else{
+		if (verbose > 3){
+			printf("%s doDataUpdateCallbacks(%d/%d)  STUB\n", __FUNCTION__, ic, nchan);
+		}
 	}
 	if (ic == 0){
 		doCallbacksInt8Array(RESULT_FAIL,   nchan+1, P_RESULT_FAIL, 0);
@@ -856,7 +863,7 @@ void acq400JudgementImpl<epicsInt32>::doDataUpdateCallbacks(int ic)
 		doCallbacksInt32Array(&RAW[ic*nsam], nsam, P_RAW, ic);
 
 	}else{
-		if (verbose > 3 && ic > 4){
+		if (verbose > 3){
 			printf("%s doDataUpdateCallbacks(%d/%d)  STUB\n", __FUNCTION__, ic, nchan);
 		}
 	}
