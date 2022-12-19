@@ -2,9 +2,8 @@
 
 
 record(bo, "${UUT}:NACC:DNA") {
-	field(DTYP, "stream")
-	field(DESC,  "Direct not Accumulate")
-	field(OUT,  "@slowmon.proto setDNA ${SPORT}")
+	field(DTYP, "Soft Channel")
+	field(DESC,  "Direct not Accumulate")	
 	field(ZNAM, "ACC")
 	field(ONAM, "DIR")
 	field(VAL,  "1")
@@ -16,19 +15,17 @@ record(bi, "${UUT}:NACC:HW") {
 	field(DESC,  "Direct not Accumulate")	
 	field(ZNAM, "FALSE")
 	field(ONAM, "TRUE")
-	field(VAL,  "1")
+	field(VAL,  "0")
 	field(PINI, "YES")	
 }
-
 
 record(longout, "${UUT}:0:SLOWMON:FS") {
 	field(DTYP, "stream")
 	field(DESC, "SLOWMON output sample rate")
 	field(OUT,  "@slowmon.proto setSlowmonFs S0")
 	field(DRVL, "1")
-	field(DRVH, "64")
+	field(DRVH, "100")
 	field(EGU,  "Hz")
-	field(FLNK, "${UUT}:0:SLOWMON:NACC")
 }
 	
 record(longout, "${UUT}:0:SLOWMON:FIN") {
@@ -44,34 +41,33 @@ record(longout, "${UUT}:0:SLOWMON:FIN") {
 record(longin, "${UUT}:0:SLOWMON:FIN:ACT") {
 	field(DTYP, "Soft Channel")	
 	field(DESC, "SLOWMON FIN actual")
+	field(INP,  "${UUT}:0:STAT:AXI64:W:FREQ")
 	field(EGU,  "Hz")
 }
-
-record(calc, "${UUT}:0:SLOWMON:NACC") {
-	field(DESC, "Software Accumulate")
-	field(INPA, "${UUT}:0:SLOWMON:FS")
-	field(INPB, "${UUT}:0:SLOWMON:FIN")
-	field(CALC, "floor(B/A)")
-	field(FLNK, "${UUT}:0:SLOWMON:NACC:DUTY")
+record(calc, "${UUT}:0:STAT:AXI64:W:FREQ") {
+	field(FLNK, "${UUT}:0:SLOWMON:FIN:ACT")
 }
 
-record(calc, "${UUT}:0:SLOWMON:NACC:DUTY") {
-	field(DESC, "Software FS, Actual")
-	field(INPA, "${UUT}:0:SLOWMON:FIN:ACT")
-	field(INPB, "${UUT}:0:SLOWMON:FS")
-	field(INPC, "${UUT}:0:SLOWMON:NACC")
-	field(CALC, "100*B*C/A")
-	field(EGU,  "%")
-	field(PREC, "2")
-	field(FLNK, "${UUT}:NACC:c")
+
+record(longout, "${UUT}:0:SLOWMON:NACC") {
+	field(DTYP, "stream")
+	field(DESC, "Software Accumulate")
+	field(OUT,  "@slowmon.proto setSlowmonNacc S0")
+	field(DRVL, "1")
+	field(DRVH, "100")
+	field(EGU,  "Samples/Update")	
 }
 	
 record(longout, "${UUT}:0:NACC:NACC") {
 	field(DTYP, "Soft Channel")
-	field(DESC, "NACC filter N value")
+	field(DESC, "Slowmon output nsamples)
 	field(DRVL, "1")
 	field(DRVH, "256")
-	field(FLNK, "${UUT}:NACC:c")
+	field(VAL,  "1")
+	field(PINI, "YES")
+	field(DRVL, "1")
+	field(DRVH, "256")	
+#	field(FLNK, "${UUT}:NACC:c")
 }
 
 record(longout, "${UUT}:0:NACC:START") {
@@ -97,11 +93,11 @@ record(longout, "${UUT}:0:NACC:PRES") {
 	field(DRVH, "${PRESMAX}")
 }
 
-record(calcout, "${UUT}:NACC:c") {
-	field(DTYP, "stream")
-	field(INPA, "${UUT}:0:NACC:NACC")
-	field(INPB, "${UUT}:0:NACC:SHR")
-	field(INPC, "${UUT}:0:NACC:START")	
-	field(INPD, "${UUT}:0:NACC:PRES")
-	field(OUT,  "@slowmon.proto setNACC ${SPORT}")
-}
+#record(calcout, "${UUT}:NACC:c") {
+#	field(DTYP, "stream")
+#	field(INPA, "${UUT}:0:NACC:NACC")
+#	field(INPB, "${UUT}:0:NACC:SHR")
+#	field(INPC, "${UUT}:0:NACC:START")	
+#	field(INPD, "${UUT}:0:NACC:PRES")
+#	field(OUT,  "@slowmon.proto setNACC ${SPORT}")
+#}

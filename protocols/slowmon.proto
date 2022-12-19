@@ -26,3 +26,8 @@ setSlowmonFin {
 	out "slowmon_fin %d";
 	in;
 }
+
+setSlowmonNacc {
+	out "slowmon_nacc %d";
+	in;
+}
