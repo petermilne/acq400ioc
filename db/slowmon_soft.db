@@ -55,19 +55,16 @@ record(longout, "${UUT}:0:SLOWMON:NACC") {
 	field(OUT,  "@slowmon.proto setSlowmonNacc S0")
 	field(DRVL, "1")
 	field(DRVH, "100")
-	field(EGU,  "Samples/Update")	
+	field(EGU,  "Samples")	
 }
 	
 record(longout, "${UUT}:0:NACC:NACC") {
 	field(DTYP, "Soft Channel")
-	field(DESC, "Slowmon output nsamples)
+	field(DESC, "Slowmon output nsamples")
 	field(DRVL, "1")
 	field(DRVH, "256")
 	field(VAL,  "1")
 	field(PINI, "YES")
-	field(DRVL, "1")
-	field(DRVH, "256")	
-#	field(FLNK, "${UUT}:NACC:c")
 }
 
 record(longout, "${UUT}:0:NACC:START") {

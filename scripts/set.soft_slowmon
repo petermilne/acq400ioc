@@ -1,0 +1,16 @@
+#!/bin/sh
+# set.soft_slowmon   FIN FS NACC
+
+FIN=${1}
+FS=${2}
+NACC=${3:-1}
+
+echo set.soft_slowmon FIN:$FIN FS:$FS NACC:$NACC
+
+HN=$(hostname)
+
+caput $HN:0:SLOWMON:FIN $FIN
+caput $HN:0:SLOWMON:FS  $FS
+caput $HN:0:SLOWMON:NACC $NACC
+
+
