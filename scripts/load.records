@@ -560,7 +560,10 @@ load_400() {
         let LO=66000000;;
 #   @@todo : different flavour of calmon for SAR ADC needed 
     $MT_DIO432|$MT_DIO432P|$MT_DIO482|$MT_DIO482TD|$MT_DIO482TD_PG|$MT_DIO422)
-        if [ -e ${esite}/num_pg ]; then
+        if [ "$(get_mtv ${site})" = "$MTV_DIO482_PPW" ]; then
+            ./scripts/load.ppw ${HOST} ${site}
+            return
+        elif [ -e ${esite}/num_pg ]; then
             will_load_dio482pg=$(cat ${esite}/num_pg)
         else
             name=$(cat /dev/acq400.$site.knobs/module_name)

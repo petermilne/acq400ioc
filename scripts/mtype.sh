@@ -38,6 +38,14 @@ MT_DIO482TD_PG=7B
 MT_ACQ494=B
 MT_DIO422=71
 
+MTV_DIO482_PPW="7A E"
+
+get_mtv() {
+    case $1 in
+    [1-6])
+        echo $(cd /etc/acq400/$1; cat module_type module_variant);;
+    esac
+}
 
 nameFromMT() {
 	case $1 in
