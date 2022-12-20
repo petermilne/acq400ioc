@@ -1,0 +1,11 @@
+#!/bin/sh
+# load.ppw
+uut=$1
+site=$2
+HSS="UUT=${uut},SITE=${site},SPORT=S${site}"
+
+echo '# load.dio482ppw .. copy load.dio432'
+source ./scripts/record_support.sh
+
+dblr '"db/dio432.db","'${HSS}'"'
+
