@@ -4,8 +4,11 @@ uut=$1
 site=$2
 HSS="UUT=${uut},SITE=${site},SPORT=S${site}"
 
-echo '# load.dio482ppw .. copy load.dio432'
+echo '# load.dio482ppw .. '
 source ./scripts/record_support.sh
 
-dblr '"db/dio432.db","'${HSS}'"'
+source ./scripts/record_support.sh
 
+for dx in $(seq 6); do
+    dblr '"db/dio482pg_do4.db","'${HSS},UX=$dx,IX=$(($dx-1))'"'
+done
