@@ -162,16 +162,16 @@ record(mbbo, "${UUT}:${SITE}:PPW:${ch}:REPMODE") {
 	field(ZRST, "ONCE")
 	field(ONST, "REP")
 	field(TWST, "CONT")
-#	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:REPS:c PP")	
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:REPS:c PP")	
 }
 
 record(calcout, "${UUT}:${SITE}:PPW:${ch}:REPS:c") {
-#	field(INPA, "${UUT}:${SITE}:PPW:${ch}:REPMODE")
-#	field(INPB, "${UUT}:${SITE}:PPW:${ch}:REPS")
-#	field(CALC, "A==0? 0 : A==2? 65535: B==0? 1: B==65535?65534: B")	
-#	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:REPS PP")
-#	field(DISV, "1")
-#	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:REPS:s.PACT")	
+	field(INPA, "${UUT}:${SITE}:PPW:${ch}:REPMODE")
+	field(INPB, "${UUT}:${SITE}:PPW:${ch}:REPS")
+	field(CALC, "A==0? 0 : A==2? 65535: B==0? 1: B==65535?65534: B")	
+	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:REPS PP")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:REPS:s.PACT")	
 }
 
 
