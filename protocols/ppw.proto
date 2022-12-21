@@ -38,5 +38,5 @@ setReps {
 }
 getReps {
 	out "ppw_rep\$1";
-	in "%d";
+	in "ppw_rep\$1=%d";
 }

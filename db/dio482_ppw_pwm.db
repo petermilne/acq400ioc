@@ -162,14 +162,16 @@ record(mbbo, "${UUT}:${SITE}:PPW:${ch}:REPMODE") {
 	field(ZRST, "ONCE")
 	field(ONST, "REP")
 	field(TWST, "CONT")
-	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:REPS:c PP")	
+#	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:REPS:c PP")	
 }
 
-record(calcout, "${UUT}:${SITE}:REPS:c") {
-	field(INPA, "${UUT}:${SITE}:PPW:${ch}:REPMODE")
-	field(INPB, "${UUT}:${SITE}:PPW:${ch}:REPS")
-	field(CALC, "A==0? 0 : A==2? 65535: B==0? 1: B==65535?65534: B")	
-	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:REPS PP")
+record(calcout, "${UUT}:${SITE}:PPW:${ch}:REPS:c") {
+#	field(INPA, "${UUT}:${SITE}:PPW:${ch}:REPMODE")
+#	field(INPB, "${UUT}:${SITE}:PPW:${ch}:REPS")
+#	field(CALC, "A==0? 0 : A==2? 65535: B==0? 1: B==65535?65534: B")	
+#	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:REPS PP")
+#	field(DISV, "1")
+#	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:REPS:s.PACT")	
 }
 
 
@@ -183,7 +185,7 @@ record(longout, "${UUT}:${SITE}:PPW:${ch}:REPS") {
 record(longin, "${UUT}:${SITE}:PPW:${ch}:REPS:r") {
 	field(DTYP, "stream")	
 	field(INP,  "@ppw.proto getReps(${ch}) ${SPORT}")
-	field(SCAN, "I/O Intr")
+	field(SCAN, "1 second")
 	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:REPS:s")
 }
 record(longout, "${UUT}:${SITE}:PPW:${ch}:REPS:s") {
@@ -193,7 +195,17 @@ record(longout, "${UUT}:${SITE}:PPW:${ch}:REPS:s") {
 	field(DOL,  "${UUT}:${SITE}:PPW:${ch}:REPS:r NPP")
 	field(OMSL, "closed_loop")
 	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:REPS PP")
+#	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:REPS:cr")
 } 	
+record(calcout, "${UUT}:${SITE}:PPW:${ch}:REPS:cr") {
+#	field(INPA, "${UUT}:${SITE}:PPW:${ch}:REPMODE")
+#	field(INPB, "${UUT}:${SITE}:PPW:${ch}:REPS")
+#	field(CALC, "B==0? 0: B==65535?2: 1")	
+#	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:REPMODE PP")
+#	field(DISV, "1")
+#	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:REPS:s.PACT")	
+}
+
 
 record(longout, "${UUT}:${SITE}:PPW:${ch}:REPS:w") {
 	field(DTYP, "stream")
@@ -201,6 +213,8 @@ record(longout, "${UUT}:${SITE}:PPW:${ch}:REPS:w") {
 	field(DRVL, "0")
 	field(DRVH, "65535")	
 	field(DISV, "1")
+	field(DOL,  "${UUT}:${SITE}:PPW:${ch}:REPS")
+	field(OMSL, "closed_loop")	
 	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:REPS:s.PACT")
 }
 
