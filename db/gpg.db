@@ -9,28 +9,25 @@ record (bo, "${UUT}:${SITE}:GPG:ENABLE")	{
 	field(FLNK, "${UUT}:${SITE}:GPG:ENABLE:w PP")
 }
 
-record (mbbo, "${UUT}:${SITE}:GPG:ENABLE:w")	{
+record (bo, "${UUT}:${SITE}:GPG:ENABLE:w")	{
 	field(DTYP, "stream")
-	field(OUT,  "@mb.proto set_gpg_enable() ${SPORT}")	
-	field(NOBT, "2")
+	field(OUT,  "@mb.proto set_gpg_enable() ${SPORT}")
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:GPG:ENABLE:s.PACT")
 	field(OMSL, "closed_loop")
 	field(DOL, "${UUT}:${SITE}:GPG:ENABLE PP")		
 }
 
-record (mbbi, "${UUT}:${SITE}:GPG:ENABLE:r") {
+record (bi, "${UUT}:${SITE}:GPG:ENABLE:r") {
 	field(DTYP, "stream")
 	field(INP,  "@mb.proto get_gpg_enable() ${SPORT}")	
-	field(NOBT, "2")	
 	field(SCAN, "1 second")
 	field(PINI, "YES")	
 	field(FLNK, "${UUT}:${SITE}:GPG:ENABLE:s")
 }
 
-record (mbbo, "${UUT}:${SITE}:GPG:ENABLE:s") {
+record (bo, "${UUT}:${SITE}:GPG:ENABLE:s") {
 	field(DTYP, "Soft Channel")
-	field(NOBT, "2")
 	field(OMSL, "closed_loop")	
 	field(DOL, "${UUT}:${SITE}:GPG:ENABLE:r NPP")	
 	field(OUT, "${UUT}:${SITE}:GPG:ENABLE PP")	
