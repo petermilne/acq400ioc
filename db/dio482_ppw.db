@@ -1,4 +1,4 @@
-# dio482_ppwt.db 
+# dio482_ppw.db 
 
 record(mbbo, "${UUT}:${SITE}:PPW:${ch}:TRG") {
 	field(DTYP, "Soft Channel")
@@ -70,10 +70,8 @@ record(mbbo, "${UUT}:${SITE}:PPW:${ch}:TRG:DX:s") {
 	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:TRG:DX PP")
 } 	
 
-record(bo, "${UUT}:${SITE}:PPW:${ch}:TRG:DX:w") {
-	field(ONAM, "ON")
-	field(ZNAM, "OFF")
-	field(DESC, "")
+record(mbbo, "${UUT}:${SITE}:PPW:${ch}:TRG:DX:w") {
+	field(NOBT, "3")
 	field(DTYP, "Soft Channel")	
 	field(FLNK, "${UUT}:${SITE}:${ch}:_ppwt PP")
 	field(DISV, "1")

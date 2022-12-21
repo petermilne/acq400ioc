@@ -1,0 +1,207 @@
+# dio482_ppw_pwm.db 
+
+#const unsigned PPW_PWM_FIELDS[] = { PPW_PWM_IS, PPW_PWM_ICOUNT, PPW_PWM_OCOUNT, PPW_PWM_PRD, 0 };
+#const unsigned PPW_REP_FIELDS[] = { PPW_REP_FIELD, 0 };
+
+#KNOB_FUN_REG(ppw_pwm, CH, PPW_PWM(CH), PPW_PWM_FIELDS);
+#KNOB_FUN_REG(ppw_rep, CH, PPW_REP(CH), PPW_REP_FIELDS)
+
+record(bo, "${UUT}:${SITE}:PPW:${ch}:PULSE") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "configure PPW ${ch} trigger")
+	field(ZNAM, "INIT_LO")
+	field(ONAM, "INIT_HI")			
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:w PP")	
+}
+
+
+#http://www.aps.anl.gov/epics/tech-talk/2010/msg00131.php
+# rgm   : setpoint
+# rgm:r : readback
+# rgm:s : sync
+# rgm:w : write
+# added twist, all 3 writes get muxed together in :_ppwp
+# while we could disable ICOUNT, SENSE when set==0, better effect doing this on 
+# the gui. The driver driver will reject attempts to set 0,X,X where X!=0
+
+record(mbbi, "${UUT}:${SITE}:PPW:${ch}:PULSE:r") {
+	field(DTYP, "stream")
+	field(INP,  "@ppw.proto getSig4(ppw_pwm${ch}) ${SPORT}")
+	field(SCAN, "1 second")
+	field(PINI, "YES")
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:s")
+}
+record(mbbo, "${UUT}:${SITE}:PPW:${ch}:PULSE:s") {
+	field(DTYP, "Soft Channel")
+	field(DOL,  "${UUT}:${SITE}:PPW:${ch}:PULSE:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:PULSE PP")
+}
+
+record(mbbo, "${UUT}:${SITE}:PPW:${ch}:PULSE:w") {
+	field(DTYP, "Soft Channel")	
+	field(FLNK, "${UUT}:${SITE}:_ppwp PP")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:PULSE:s.PACT")
+}
+
+record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT") {
+	field(DTYP, "Soft Channel")
+	field(DRVL, "0")
+	field(DRVH, "1023")
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT:w PP")
+}     
+
+record(longin, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT:r") {
+	field(DTYP, "stream")	
+	field(INP,  "@signal.proto getSigIcount(ppw_pwm${ch}) ${SPORT}")
+	field(SCAN, "I/O Intr")
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT:s")
+}
+record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT:s") {
+	field(DTYP, "Soft Channel")
+	field(DRVL, "0")
+	field(DRVH, "1023")
+	field(DOL,  "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT PP")
+} 	
+
+record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT:w") {
+	field(DTYP, "Soft Channel")
+	field(DRVL, "0")
+	field(DRVH, "1023")
+	field(FLNK, "${UUT}:${SITE}:_ppwp PP")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT:s.PACT")
+}
+
+record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT") {
+	field(DTYP, "Soft Channel")
+	field(DRVL, "0")
+	field(DRVH, "1023")
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT:w PP")
+}     
+
+record(longin, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT:r") {
+	field(DTYP, "stream")	
+	field(INP,  "@signal.proto getSigOcount(ppw_pwm${ch}) ${SPORT}")
+	field(SCAN, "I/O Intr")
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT:s")
+}
+record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT:s") {
+	field(DTYP, "Soft Channel")
+	field(DRVL, "0")
+	field(DRVH, "1023")
+	field(DOL,  "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT PP")
+} 	
+
+record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT:w") {
+	field(DTYP, "Soft Channel")
+	field(DRVL, "0")
+	field(DRVH, "1023") 
+	field(FLNK, "${UUT}:${SITE}:_ppwp PP")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT:s.PACT")
+}
+
+
+record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP") {
+	field(DTYP, "Soft Channel")
+	field(DRVL, "0")
+	field(DRVH, "65535")
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:w PP")
+}     
+
+record(longin, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:r") {
+	field(DTYP, "stream")	
+	field(INP,  "@signal.proto getSigGP(ppw_pwm${ch}) ${SPORT}")
+	field(SCAN, "I/O Intr")
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:s")
+}
+record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:s") {
+	field(DTYP, "Soft Channel")
+	field(DRVL, "0")
+	field(DRVH, "65535")
+	field(DOL,  "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:PULSE:GP PP")
+} 	
+
+record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:w") {
+	field(DTYP, "Soft Channel")
+	field(DRVL, "0")
+	field(DRVH, "65535")
+	field(FLNK, "${UUT}:${SITE}:_ppwp PP")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:s.PACT")
+}
+
+
+record(calcout, "${UUT}:${SITE}:_ppwp") {
+	field(INPA, "${UUT}:${SITE}:PPW:${ch}:PULSE")
+	field(INPB, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT")
+	field(INPC, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT")
+	field(INPD, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP")
+	field(CALC, "0")
+	field(DTYP, "stream")
+# refuse to update in the RUN state	
+	field(SDIS, "${UUT}:${SITE}:RUN")
+	field(DISV, "1")
+	field(OUT,  "@ppw.proto setSig4(ppw_pwm${ch}) ${SPORT}")
+}
+
+
+
+record(mbbo, "${UUT}:${SITE}:PPW:${ch}:REPMODE") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "configure PPW ${ch} trigger")
+	field(NOBT, "2")
+	field(ZRST, "ONCE")
+	field(ONST, "REP")
+	field(TWST, "CONT")
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:REPS:c PP")	
+}
+
+record(calcout, "${UUT}:${SITE}:REPS:c") {
+	field(INPA, "${UUT}:${SITE}:PPW:${ch}:REPMODE")
+	field(INPB, "${UUT}:${SITE}:PPW:${ch}:REPS")
+	field(CALC, "A==0? 0 : A==2? 65535: B==0? 1: B==65535?65534: B")	
+	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:REPS PP")
+}
+
+
+record(longout, "${UUT}:${SITE}:PPW:${ch}:REPS") {
+	field(DTYP, "Soft Channel")
+	field(DRVL, "0")
+	field(DRVH, "65535")
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:REPS:w PP")
+}     
+
+record(longin, "${UUT}:${SITE}:PPW:${ch}:REPS:r") {
+	field(DTYP, "stream")	
+	field(INP,  "@signal.proto getReps ${SPORT}")
+	field(SCAN, "I/O Intr")
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:REPS:s")
+}
+record(longout, "${UUT}:${SITE}:PPW:${ch}:REPS:s") {
+	field(DTYP, "Soft Channel")
+	field(DRVL, "0")
+	field(DRVH, "65535")
+	field(DOL,  "${UUT}:${SITE}:PPW:${ch}:REPS:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:REPS PP")
+} 	
+
+record(longout, "${UUT}:${SITE}:PPW:${ch}:REPS:w") {
+	field(DTYP, "stream")
+	field(OUT,  "@signal.proto setReps ${SPORT}")
+	field(DRVL, "0")
+	field(DRVH, "65535")	
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:REPS:s.PACT")
+}
+
+
