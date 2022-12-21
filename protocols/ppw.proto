@@ -40,3 +40,7 @@ getReps {
 	out "ppw_rep\$1";
 	in "ppw_rep\$1=%d";
 }
+
+dioEn {
+	out "dio_en %d";
+}

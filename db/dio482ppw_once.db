@@ -1,0 +1,47 @@
+		
+
+record (bo, "${UUT}:${SITE}:DIO:ENABLE")	{
+	field(DESC, "Enable DIO")
+	field(DTYP, "Soft Channel")
+	field(ZNAM, "disabled")
+	field(ONAM, "enabled")
+	field(FLNK, "${UUT}:${SITE}:DIO:ENABLE:w PP")
+}
+
+record (bo, "${UUT}:${SITE}:DIO:ENABLE:w")	{
+	field(DTYP, "stream")
+	field(OUT,  "@mb.proto set_gpg_enable() ${SPORT}")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:DIO:ENABLE:s.PACT")
+	field(OMSL, "closed_loop")
+	field(DOL, "${UUT}:${SITE}:DIO:ENABLE PP")
+	field(FLNK, "${UUT}:${SITE}:ppw_led_clear"))
+}
+
+record (bi, "${UUT}:${SITE}:DIO:ENABLE:r") {
+	field(DTYP, "stream")
+	field(INP,  "@mb.proto get_gpg_enable() ${SPORT}")	
+	field(SCAN, "1 second")
+	field(PINI, "YES")	
+	field(FLNK, "${UUT}:${SITE}:DIO:ENABLE:s")
+}
+
+record (bo, "${UUT}:${SITE}:DIO:ENABLE:s") {
+	field(DTYP, "Soft Channel")
+	field(OMSL, "closed_loop")	
+	field(DOL, "${UUT}:${SITE}:DIO:ENABLE:r NPP")	
+	field(OUT, "${UUT}:${SITE}:DIO:ENABLE PP")	
+}
+
+record(calcout, "${UUT}:${SITE}:ppw_led_clear")
+{
+	field(DESC, "Clear P LED on disable")	
+	field(INPA, "${UUT}:${SITE}:DO:${UX}")
+	field(INPB, "${UUT}:${SITE}:DIO:ENABLE")
+	field(CALC, "A==2 && B==0")
+	field(OCAL, "0")
+	field(OOPT, "Transition To Non-zero")
+	field(DOPT, "Use OCAL")		
+	field(OUT,  "${UUT}:${SITE}:LED:DO${UX} PP")
+}
+

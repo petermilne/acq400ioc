@@ -1,0 +1,59 @@
+
+record(bo, "${UUT}:${SITE}:LED:DO5") {
+	field(DTYP, "stream")
+	field(OUT,  "@dio432.proto setPGDO_BIT(15) ${SPORT}")	
+	field(ZNAM, "0")
+	field(ONAM, "1")
+	field(VAL,  "0")
+	field(PINI, "YES")	
+}
+
+record(bo, "${UUT}:${SITE}:LED:DO5") {
+	field(DTYP, "stream")
+	field(OUT,  "@dio432.proto setPGDO_BIT(14) ${SPORT}")	
+	field(ZNAM, "0")
+	field(ONAM, "1")
+	field(VAL,  "0")
+	field(PINI, "YES")	
+}
+
+record(bo, "${UUT}:${SITE}:LED:DO4") {
+	field(DESC, "DO4 is set")
+	field(DTYP, "stream")
+	field(OUT,  "@dio432.proto setPGDO_BIT(11) ${SPORT}")	
+	field(ZNAM, "0")
+	field(ONAM, "1")
+	field(VAL,  "0")
+	field(PINI, "YES")	
+}
+
+record(bo, "${UUT}:${SITE}:LED:DO3") {
+	field(DESC, "DO3 is set")
+	field(DTYP, "stream")
+	field(OUT,  "@dio432.proto setPGDO_BIT(10) ${SPORT}")	
+	field(ZNAM, "0")
+	field(ONAM, "1")
+	field(VAL,  "0")
+	field(PINI, "YES")	
+}
+
+record(bo, "${UUT}:${SITE}:LED:DO2") {
+	field(DESC, "DO2 is set")
+	field(DTYP, "stream")
+	field(OUT,  "@dio432.proto setPGDO_BIT(9) ${SPORT}")	
+	field(ZNAM, "0")
+	field(ONAM, "1")
+	field(VAL,  "0")
+	field(PINI, "YES")	
+}
+
+record(bo, "${UUT}:${SITE}:LED:DO1") {
+	field(DESC, "DO1 is set")
+	field(DTYP, "stream")
+	field(OUT,  "@dio432.proto setPGDO_BIT(8) ${SPORT}")	
+	field(ZNAM, "0")
+	field(ONAM, "1")
+	field(VAL,  "0")
+	field(PINI, "YES")	
+}
+

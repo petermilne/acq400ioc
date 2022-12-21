@@ -1,0 +1,56 @@
+
+record(mbbo, "${UUT}:${SITE}:DO:${UX}") {
+	field(DTYP, "Soft Channel")
+	field(NOBT, "2")
+	field(ZRST, "0")
+	field(ONST, "1")
+	field(TWST, "P")
+	field(VAL,  "2")
+	field(PINI, "YES")
+	field(FLNK, "${UUT}:${SITE}:DO:${UX}:c")
+}
+
+record(calcout, "${UUT}:${SITE}:DO:${UX}:c")
+{
+	field(INPA, "${UUT}:${SITE}:DO:${UX}")
+	field(CALC, "A < 2")
+	field(OCAL, "A==1")
+	field(OOPT, "Every Time")
+	field(DOPT, "Use OCAL")	
+	field(FLNK, "${UUT}:${SITE}:DO:${UX}:d")
+	field(OUT,  "${UUT}:${SITE}:DO:${UX}:w PP")
+}
+
+record(bo, "${UUT}:${SITE}:DO:${UX}:w") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "")
+	field(DTYP, "stream")
+	field(OUT,  "@dio432.proto setPGDO_BIT(${IX}) ${SPORT}")	
+}
+
+
+record(bo, "${UUT}:${SITE}:DO:${UX}:d") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "$placeholder")
+	field(DTYP, "stream")
+	field(OUT,  "@dio432.proto setPGDO_DIR_BIT(${IX}) ${SPORT}")	
+	field(DOL,  "${UUT}:${SITE}:DO:${UX}:c")
+	field(OMSL, "closed_loop")
+	field(FLNK, "${UUT}:${SITE}:DO:${UX}:l")
+}
+
+record(calcout, "${UUT}:${SITE}:DO:${UX}:l")
+{
+	field(DESC, "Set/Clear LED when direct")	
+	field(INPA, "${UUT}:${SITE}:DO:${UX}")
+	field(CALC, "A < 2")
+	field(OCAL, "A==1")
+	field(OOPT, "Every Time")
+	field(DOPT, "Use OCAL")		
+	field(OUT,  "${UUT}:${SITE}:LED:DO${UX} PP")
+}
+
+
+
