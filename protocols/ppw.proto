@@ -8,7 +8,7 @@ setSig4 {
 
 getSig4 {
 	out "\$1";
-	in "\$1=%d,%*d,%*d,%d";
+	in "\$1=%d,%*d,%*d,%*d";
 	@replytimeout {
 		disconnect;
 		wait 2000;

@@ -54,7 +54,7 @@ record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT") {
 
 record(longin, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT:r") {
 	field(DTYP, "stream")	
-	field(INP,  "@signal.proto getSigIcount(ppw_pwm${ch}) ${SPORT}")
+	field(INP,  "@ppw.proto getSigIcount(ppw_pwm${ch}) ${SPORT}")
 	field(SCAN, "I/O Intr")
 	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT:s")
 }
@@ -85,7 +85,7 @@ record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT") {
 
 record(longin, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT:r") {
 	field(DTYP, "stream")	
-	field(INP,  "@signal.proto getSigOcount(ppw_pwm${ch}) ${SPORT}")
+	field(INP,  "@ppw.proto getSigOcount(ppw_pwm${ch}) ${SPORT}")
 	field(SCAN, "I/O Intr")
 	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT:s")
 }
@@ -117,7 +117,7 @@ record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP") {
 
 record(longin, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:r") {
 	field(DTYP, "stream")	
-	field(INP,  "@signal.proto getSigGP(ppw_pwm${ch}) ${SPORT}")
+	field(INP,  "@ppw.proto getSigGP(ppw_pwm${ch}) ${SPORT}")
 	field(SCAN, "I/O Intr")
 	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:s")
 }
@@ -148,8 +148,8 @@ record(calcout, "${UUT}:${SITE}:_ppwp") {
 	field(CALC, "0")
 	field(DTYP, "stream")
 # refuse to update in the RUN state	
-	field(SDIS, "${UUT}:${SITE}:RUN")
-	field(DISV, "1")
+#	field(SDIS, "${UUT}:${SITE}:RUN")
+#	field(DISV, "1")
 	field(OUT,  "@ppw.proto setSig4(ppw_pwm${ch}) ${SPORT}")
 }
 
@@ -182,7 +182,7 @@ record(longout, "${UUT}:${SITE}:PPW:${ch}:REPS") {
 
 record(longin, "${UUT}:${SITE}:PPW:${ch}:REPS:r") {
 	field(DTYP, "stream")	
-	field(INP,  "@signal.proto getReps ${SPORT}")
+	field(INP,  "@ppw.proto getReps(${ch}) ${SPORT}")
 	field(SCAN, "I/O Intr")
 	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:REPS:s")
 }
@@ -197,7 +197,7 @@ record(longout, "${UUT}:${SITE}:PPW:${ch}:REPS:s") {
 
 record(longout, "${UUT}:${SITE}:PPW:${ch}:REPS:w") {
 	field(DTYP, "stream")
-	field(OUT,  "@signal.proto setReps ${SPORT}")
+	field(OUT,  "@ppw.proto setReps(${ch}) ${SPORT}")
 	field(DRVL, "0")
 	field(DRVH, "65535")	
 	field(DISV, "1")

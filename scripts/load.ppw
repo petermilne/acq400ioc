@@ -7,9 +7,7 @@ HSS="UUT=${uut},SITE=${site},SPORT=S${site}"
 echo '# load.dio482ppw .. '
 source ./scripts/record_support.sh
 
-source ./scripts/record_support.sh
-
-for ch in $(seq 6); do
+for ch in $(seq ${PPWCHAN:-6}); do
     dblr '"db/dio482pg_do4.db","'${HSS},UX=$ch,IX=$(($ch-1))'"'
     dblr '"db/dio482_ppw.db","'${HSS},ch=$ch,IX=$(($ch-1))'"'
     dblr '"db/dio482_ppw_pwm.db","'${HSS},ch=$ch,IX=$(($ch-1))'"'
