@@ -1,5 +1,5 @@
 
-record(bo, "${UUT}:${SITE}:LED:DO5") {
+record(bo, "${UUT}:${SITE}:LED:DO6") {
 	field(DTYP, "stream")
 	field(OUT,  "@dio432.proto setPGDO_BIT(15) ${SPORT}")	
 	field(ZNAM, "0")
