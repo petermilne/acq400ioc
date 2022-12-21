@@ -195,15 +195,13 @@ record(longout, "${UUT}:${SITE}:PPW:${ch}:REPS:s") {
 	field(DOL,  "${UUT}:${SITE}:PPW:${ch}:REPS:r NPP")
 	field(OMSL, "closed_loop")
 	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:REPS PP")
-#	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:REPS:cr")
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:REPS:cr")
 } 	
 record(calcout, "${UUT}:${SITE}:PPW:${ch}:REPS:cr") {
-#	field(INPA, "${UUT}:${SITE}:PPW:${ch}:REPMODE")
-#	field(INPB, "${UUT}:${SITE}:PPW:${ch}:REPS")
-#	field(CALC, "B==0? 0: B==65535?2: 1")	
-#	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:REPMODE PP")
-#	field(DISV, "1")
-#	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:REPS:s.PACT")	
+	field(INPA, "${UUT}:${SITE}:PPW:${ch}:REPMODE")
+	field(INPB, "${UUT}:${SITE}:PPW:${ch}:REPS")
+	field(CALC, "B==0? 0: B==65535?2: 1")	
+	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:REPMODE PP")
 }
 
 
