@@ -1,0 +1,128 @@
+# dio482_ppwt.db 
+
+record(mbbo, "${UUT}:${SITE}:PPW:${ch}:TRG") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "configure PPW ${ch} trigger")
+	field(NOBT, "2")
+	field(ZRST, "TRG_BUS")
+	field(ONST, "IM_BUS")
+	field(TWST, "TRG_BUS")
+	field(THST, "CUSTOM")
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:TRG:w PP")	
+}
+
+#http://www.aps.anl.gov/epics/tech-talk/2010/msg00131.php
+# rgm   : setpoint
+# rgm:r : readback
+# rgm:s : sync
+# rgm:w : write
+# added twist, all 3 writes get muxed together in :_ppwt
+# while we could disable DX, SENSE when set==0, better effect doing this on 
+# the gui. The driver driver will reject attempts to set 0,X,X where X!=0
+
+record(mbbi, "${UUT}:${SITE}:PPW:${ch}:TRG:r") {
+	field(DTYP, "stream")
+	field(INP,  "@signal.proto getSig(ppw_trg${ch}) ${SPORT}")
+	field(SCAN, "1 second")
+	field(PINI, "YES")
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:TRG:s")
+}
+record(mbbo, "${UUT}:${SITE}:PPW:${ch}:TRG:s") {
+	field(DTYP, "Soft Channel")
+	field(DOL,  "${UUT}:${SITE}:PPW:${ch}:TRG:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:TRG PP")
+}
+
+record(mbbo, "${UUT}:${SITE}:PPW:${ch}:TRG:w") {
+	field(DTYP, "Soft Channel")	
+	field(FLNK, "${UUT}:${SITE}:${ch}:_ppwt PP")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:TRG:s.PACT")
+}
+
+record(mbbo, "${UUT}:${SITE}:PPW:${ch}:TRG:DX") {
+	field(DTYP, "Soft Channel")
+	field(NOBT, "3")
+	field(ZRST, "d0")
+	field(ONST, "d1")
+	field(TWST, "d2")
+	field(THST, "d3")
+	field(FRST, "d4")
+	field(FVST, "d5")
+	field(SXST, "d6")
+	field(SVST, "d7")    
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:TRG:DX:w PP")
+}     
+
+record(mbbi, "${UUT}:${SITE}:PPW:${ch}:TRG:DX:r") {
+	field(DTYP, "stream")
+	field(NOBT, "3")
+	field(INP,  "@signal.proto getSigDx(ppw_trg${ch}) ${SPORT}")
+	field(SCAN, "I/O Intr")		
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:TRG:DX:s")
+}
+record(mbbo, "${UUT}:${SITE}:PPW:${ch}:TRG:DX:s") {
+	field(DTYP, "Soft Channel")
+	field(NOBT, "3")
+	field(DOL,  "${UUT}:${SITE}:PPW:${ch}:TRG:DX:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:TRG:DX PP")
+} 	
+
+record(bo, "${UUT}:${SITE}:PPW:${ch}:TRG:DX:w") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "")
+	field(DTYP, "Soft Channel")	
+	field(FLNK, "${UUT}:${SITE}:${ch}:_ppwt PP")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:TRG:DX:s.PACT")
+}
+record(bo, "${UUT}:${SITE}:PPW:${ch}:TRG:SENSE") {
+	field(DESC, "PPW:${ch}:TRG Sense")
+	field(DTYP, "Soft Channel")
+	field(ZNAM, "falling")
+	field(ONAM, "rising")
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:TRG:SENSE:w PP")
+}
+
+record(bi, "${UUT}:${SITE}:PPW:${ch}:TRG:SENSE:r") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "")
+	field(DTYP, "stream")
+	field(INP,  "@signal.proto getSigSense(ppw_trg${ch}) ${SPORT}")
+	field(SCAN, "I/O Intr")	
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:TRG:SENSE:s")
+}
+record(bo, "${UUT}:${SITE}:PPW:${ch}:TRG:SENSE:s") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "")
+	field(DTYP, "Soft Channel")
+	field(DOL,  "${UUT}:${SITE}:PPW:${ch}:TRG:SENSE:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:TRG:SENSE PP")
+}
+record(bo, "${UUT}:${SITE}:PPW:${ch}:TRG:SENSE:w") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "")
+	field(DTYP, "Soft Channel")	
+	field(FLNK, "${UUT}:${SITE}:${ch}:_ppwt PP")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:TRG:SENSE:s.PACT")
+}
+record(calcout, "${UUT}:${SITE}:${ch}:_ppwt") {
+	field(INPA, "${UUT}:${SITE}:PPW:${ch}:TRG")
+	field(INPB, "${UUT}:${SITE}:PPW:${ch}:TRG:DX")
+	field(INPC, "${UUT}:${SITE}:PPW:${ch}:TRG:SENSE")
+	field(CALC, "0")
+	field(DTYP, "stream")
+# refuse to update in the RUN state	
+	field(SDIS, "${UUT}:${SITE}:RUN")
+	field(DISV, "1")
+	field(OUT,  "@signal.proto setSig(ppw_trg${ch}) ${SPORT}")
+}
+
