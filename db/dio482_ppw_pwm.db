@@ -20,7 +20,7 @@ record(bo, "${UUT}:${SITE}:PPW:${ch}:PULSE") {
 # rgm:r : readback
 # rgm:s : sync
 # rgm:w : write
-# added twist, all 3 writes get muxed together in :_ppwp
+# added twist, all 3 writes get muxed together in :${ch}:_ppwp
 # while we could disable ICOUNT, SENSE when set==0, better effect doing this on 
 # the gui. The driver driver will reject attempts to set 0,X,X where X!=0
 
@@ -40,7 +40,7 @@ record(mbbo, "${UUT}:${SITE}:PPW:${ch}:PULSE:s") {
 
 record(mbbo, "${UUT}:${SITE}:PPW:${ch}:PULSE:w") {
 	field(DTYP, "Soft Channel")	
-	field(FLNK, "${UUT}:${SITE}:_ppwp PP")
+	field(FLNK, "${UUT}:${SITE}:${ch}:_ppwp PP")
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:PULSE:s.PACT")
 }
@@ -71,7 +71,7 @@ record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT:w") {
 	field(DTYP, "Soft Channel")
 	field(DRVL, "0")
 	field(DRVH, "1023")
-	field(FLNK, "${UUT}:${SITE}:_ppwp PP")
+	field(FLNK, "${UUT}:${SITE}:${ch}:_ppwp PP")
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT:s.PACT")
 }
@@ -102,7 +102,7 @@ record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT:w") {
 	field(DTYP, "Soft Channel")
 	field(DRVL, "0")
 	field(DRVH, "1023") 
-	field(FLNK, "${UUT}:${SITE}:_ppwp PP")
+	field(FLNK, "${UUT}:${SITE}:${ch}:_ppwp PP")
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT:s.PACT")
 }
@@ -134,13 +134,13 @@ record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:w") {
 	field(DTYP, "Soft Channel")
 	field(DRVL, "0")
 	field(DRVH, "65535")
-	field(FLNK, "${UUT}:${SITE}:_ppwp PP")
+	field(FLNK, "${UUT}:${SITE}:${ch}:_ppwp PP")
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:s.PACT")
 }
 
 
-record(calcout, "${UUT}:${SITE}:_ppwp") {
+record(calcout, "${UUT}:${SITE}:${ch}:_ppwp") {
 	field(INPA, "${UUT}:${SITE}:PPW:${ch}:PULSE")
 	field(INPB, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT")
 	field(INPC, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT")
@@ -195,13 +195,15 @@ record(longout, "${UUT}:${SITE}:PPW:${ch}:REPS:s") {
 	field(DOL,  "${UUT}:${SITE}:PPW:${ch}:REPS:r NPP")
 	field(OMSL, "closed_loop")
 	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:REPS PP")
-	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:REPS:cr")
+#	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:REPS:cr")
 } 	
 record(calcout, "${UUT}:${SITE}:PPW:${ch}:REPS:cr") {
 	field(INPA, "${UUT}:${SITE}:PPW:${ch}:REPMODE")
 	field(INPB, "${UUT}:${SITE}:PPW:${ch}:REPS")
 	field(CALC, "B==0? 0: B==65535?2: 1")	
 	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:REPMODE PP")
+	field(DISV, "1")
+#	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:REPS:s.PACT")	
 }
 
 
