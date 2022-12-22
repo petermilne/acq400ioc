@@ -12,7 +12,7 @@ record(calcout, "${UUT}:${SITE}:DI:${UX}:c")
 {
 	field(INPA, "${UUT}:${SITE}:di32")
 	field(INPB, "${IX}")
-	field(CALC, "A&(1<<B)!=0")
+	field(CALC, "(A&(1<<B))!=0")
 	field(OOPT, "Every Time")
 	field(DOPT, "Use CALC")		
 	field(OUT,  "${UUT}:${SITE}:DI:${UX} PP")
