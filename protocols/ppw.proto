@@ -43,4 +43,5 @@ getReps {
 
 dioEn {
 	out "dio_en %d";
+	in "";
 }
