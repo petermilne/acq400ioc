@@ -45,3 +45,8 @@ setPGDO_DIR_BIT {
 	out "DO32_immediate_mask %{-|+}d\$1";
 	in;
 }
+
+get_di_snoop {
+	out "di_snoop";
+	in "%x";
+}
