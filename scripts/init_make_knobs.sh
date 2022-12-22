@@ -181,7 +181,7 @@ make_epics_knobs() {
 	do
 		pv1=${PV#*:}
 		kn1=${pv1#*:}
-		[ -e /etc/acq400/0/$kn1 ] || make_caget $PV $kn1 0  
+		[ -e /etc/acq400/0/$kn1 ] || make_caput $PV $kn1 0  
 	done
 	for PV in $(egrep -e 0:WR $RLP)
 	do
