@@ -564,7 +564,7 @@ load_400() {
             ./scripts/load.ppw ${HOST} ${site}
             return
         else
-            /scripts/local.dio482_DI ${HOST} ${site}
+            ./scripts/load.dio482td_DI ${HOST} ${site}
         fi;;        
     $MT_DIO432|$MT_DIO432P|$MT_DIO482|$MT_DIO482TD_PG|$MT_DIO422)
         if [ -e ${esite}/num_pg ]; then

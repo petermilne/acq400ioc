@@ -17,7 +17,6 @@ record (bo, "${UUT}:${SITE}:DIO:ENABLE:w")	{
 	field(SDIS, "${UUT}:${SITE}:DIO:ENABLE:s.PACT")
 	field(OMSL, "closed_loop")
 	field(DOL, "${UUT}:${SITE}:DIO:ENABLE PP")
-	field(FLNK, "${UUT}:${SITE}:ppw_led_clear"))
 }
 
 record (bi, "${UUT}:${SITE}:DIO:ENABLE:r") {
