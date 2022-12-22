@@ -41,7 +41,12 @@ getReps {
 	in "ppw_rep\$1=%d";
 }
 
-dioEn {
+set_dioEn {
 	out "dio_en %d";
 	in "";
+}
+
+get_dioEn {
+	out "dio_en";
+	in "%d";
 }

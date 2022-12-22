@@ -12,7 +12,7 @@ record (bo, "${UUT}:${SITE}:DIO:ENABLE")	{
 
 record (bo, "${UUT}:${SITE}:DIO:ENABLE:w")	{
 	field(DTYP, "stream")
-	field(OUT,  "@ppw.proto dioEn() ${SPORT}")
+	field(OUT,  "@ppw.proto set_dioEn() ${SPORT}")
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:DIO:ENABLE:s.PACT")
 	field(OMSL, "closed_loop")
@@ -21,7 +21,7 @@ record (bo, "${UUT}:${SITE}:DIO:ENABLE:w")	{
 
 record (bi, "${UUT}:${SITE}:DIO:ENABLE:r") {
 	field(DTYP, "stream")
-	field(INP,  "@ppw.proto dioEn() ${SPORT}")
+	field(INP,  "@ppw.proto get_dioEn() ${SPORT}")
 	field(SCAN, "1 second")
 	field(PINI, "YES")	
 	field(FLNK, "${UUT}:${SITE}:DIO:ENABLE:s")
