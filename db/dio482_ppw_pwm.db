@@ -195,7 +195,7 @@ record(longout, "${UUT}:${SITE}:PPW:${ch}:REPS:s") {
 	field(DOL,  "${UUT}:${SITE}:PPW:${ch}:REPS:r NPP")
 	field(OMSL, "closed_loop")
 	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:REPS PP")
-#	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:REPS:cr")
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:REPS:cr")
 } 	
 record(calcout, "${UUT}:${SITE}:PPW:${ch}:REPS:cr") {
 	field(INPA, "${UUT}:${SITE}:PPW:${ch}:REPMODE")
