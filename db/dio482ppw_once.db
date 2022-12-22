@@ -39,9 +39,9 @@ record(calcout, "${UUT}:${SITE}:ppw_led_clear")
 	field(INPA, "${UUT}:${SITE}:DO:${UX}")
 	field(INPB, "${UUT}:${SITE}:DIO:ENABLE")
 	field(CALC, "A==2 && B==0")
-	field(OCAL, "0")
 	field(OOPT, "Transition To Non-zero")
-	field(DOPT, "Use OCAL")		
+	field(DOPT, "Use OCAL")
+	field(OCAL, "0")
 	field(OUT,  "${UUT}:${SITE}:LED:DO${UX} PP")
 }
 

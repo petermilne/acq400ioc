@@ -46,9 +46,9 @@ record(calcout, "${UUT}:${SITE}:DO:${UX}:l")
 	field(DESC, "Set/Clear LED when direct")	
 	field(INPA, "${UUT}:${SITE}:DO:${UX}")
 	field(CALC, "A < 2")
+	field(OOPT, "When Non-zero")
+	field(DOPT, "Use OCAL")
 	field(OCAL, "A==1")
-	field(OOPT, "Every Time")
-	field(DOPT, "Use OCAL")		
 	field(OUT,  "${UUT}:${SITE}:LED:DO${UX} PP")
 }
 
