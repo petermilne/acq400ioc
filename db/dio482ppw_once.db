@@ -5,6 +5,8 @@ record (bo, "${UUT}:${SITE}:DIO:ENABLE")	{
 	field(DTYP, "Soft Channel")
 	field(ZNAM, "disabled")
 	field(ONAM, "enabled")
+	field(VAL,  "1")
+	field(PINI, "YES")
 	field(FLNK, "${UUT}:${SITE}:DIO:ENABLE:w PP")
 }
 
