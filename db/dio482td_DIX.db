@@ -30,3 +30,6 @@ record(bo, "${UUT}:${SITE}:DI:${UX}:c2") {
 	field(OUT, "${UUT}:${SITE}:LED:DI${UX} PP")		
 }
 
+record(bi, "${UUT}:${SITE}:DI:${UX}") {
+	field(FLNK, "${UUT}:${SITE}:DI:${UX}:c2")
+}
