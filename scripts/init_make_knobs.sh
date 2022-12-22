@@ -181,14 +181,7 @@ make_epics_knobs() {
 	do
 		pv1=${PV#*:}
 		kn1=${pv1#*:}
-		if [ ! -e /etc/acq400/0/$kn1 ]; then
-		    case $pv1 in 
-		    *FS)
-		        make_caput $PV $kn1 0;;
-		    *)
-		        make_caget $PV $kn1 0;;
-		    esac
-		fi  
+		[ -e /etc/acq400/0/$kn1 ] || make_caget $PV $kn1 0  
 	done
 	for PV in $(egrep -e 0:WR $RLP)
 	do
