@@ -449,6 +449,7 @@ load_400() {
     has_ch_gains=0
     calmon="calmon"
     decim=1;
+    is_acq425=0
 
     case $model in
     $MT_ACQ420|$MT_ACQ420F|$MT_ACQ424|$MT_ACQ425|$MT_ACQ425F|$MT_ACQ427|$MT_ACQ427F|$MT_ACQ423)
@@ -456,7 +457,10 @@ load_400() {
         has_rgm=1
         calmon=calmon42x
         has_ch_gains=1
+        
         case $model in
+        $MT_ACQ425|$MT_ACQ425F)
+            is_acq425=1;;
         $MT_ACQ427|$MT_ACQ427F)
             HAS_ACQ427=1;;
         $MT_ACQ423)         
@@ -599,6 +603,9 @@ load_400() {
         dblr '"db/adc-'${is_adc}'.db","'$aprams'"'
         if [ "x${calmon}" != "xnone" ]; then
             echo >>/tmp/st_post.cmd "seq ${calmon} \"uut=${HOST},site=${site}\""
+            
+            [ $is_acq425 -ne 0 ] && 
+                echo >>/tmp/st_post.cmd "seq acq425_gain_all_mon \"uut=${HOST},site=${site},verbose=${ACQ425_GAIN_ALL_MON_VERBOSE:-0}\""
         fi
         ONSETTRANSIENT=${ONSETTRANSIENT:-1}
     fi
