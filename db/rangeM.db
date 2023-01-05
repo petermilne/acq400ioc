@@ -1,3 +1,4 @@
+
 # ACQ420, ACQ425 gains : Master : control only
 
 record (mbbo, "${UUT}:${SITE}:GAIN:${CH}") {	
@@ -8,7 +9,6 @@ record (mbbo, "${UUT}:${SITE}:GAIN:${CH}") {
 	field(TWST, "${G2}V")
 	field(THST, "${G3}V")
 	field(FLNK, "${UUT}:${SITE}:GAIN:${CH}:s") 
-#	field(FLNK, "${UUT}:${SITE}:GAIN:fan1") 
 }
 
 record(calcout, "${UUT}:${SITE}:GAIN:${CH}:s") {
