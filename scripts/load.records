@@ -603,9 +603,6 @@ load_400() {
         dblr '"db/adc-'${is_adc}'.db","'$aprams'"'
         if [ "x${calmon}" != "xnone" ]; then
             echo >>/tmp/st_post.cmd "seq ${calmon} \"uut=${HOST},site=${site},verbose=${CALMON_VERBOSE:-0}\""
-            
-            [ $is_acq425 -ne 0 ] && 
-                echo >>/tmp/st_post.cmd "seq acq425_gain_all_mon \"uut=${HOST},site=${site},verbose=${ACQ425_GAIN_ALL_MON_VERBOSE:-0}\""
         fi
         ONSETTRANSIENT=${ONSETTRANSIENT:-1}
     fi
