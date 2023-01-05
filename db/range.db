@@ -31,19 +31,19 @@ record (mbbo, "${UUT}:${SITE}:GAIN:${CH}:w")	{
 	field(FLNK, "${UUT}:${SITE}:GAIN:${CH}:wf")
 }
 
-record(dfanout, "${UUT}:${SITE}:GAIN:${CH}:wf") {
-	field(DOL,  "${UUT}:${SITE}:GAIN:${CH}:w")
-	field(OMSL, "closed_loop")
-	field(OUTA, "${UUT}:${SITE}:GAIN:${CH}:r PP")
+record(fanout, "${UUT}:${SITE}:GAIN:${CH}:wf") {
+	field(LNKA, "${UUT}:${SITE}:GAIN:${CH}:r PP")
 	field(FLNK, "${UUT}:${SITE}:GAIN_CHANGES")
 }
 record (mbbi, "${UUT}:${SITE}:GAIN:${CH}:r") {
 	field(DTYP, "stream")
 	field(INP,  "@acq42x.proto getGain(${IX}) ${SPORT}")	
 	field(NOBT, "2")	
-	#field(SCAN, "10 second")
+#	field(SCAN, "5 second")
 	field(SCAN, "Passive")
-	field(PINI, "YES")	
+	field(PINI, "YES")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:GAIN:RDIS")
 	field(FLNK, "${UUT}:${SITE}:GAIN:${CH}:s")
 }
 

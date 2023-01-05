@@ -7,9 +7,26 @@ record (mbbo, "${UUT}:${SITE}:GAIN:${CH}") {
 	field(ONST, "${G1}V")
 	field(TWST, "${G2}V")
 	field(THST, "${G3}V")
-	field(FLNK, "${UUT}:${SITE}:GAIN:fan1")    	
+	field(FLNK, "${UUT}:${SITE}:GAIN:${CH}:s") 
+#	field(FLNK, "${UUT}:${SITE}:GAIN:fan1") 
 }
 
+record(calcout, "${UUT}:${SITE}:GAIN:${CH}:s") {
+	field(CALC, "1")
+	field(OOPT, "Every Time")
+	field(DOPT, "Use CALC")
+	field(OUT, "${UUT}:${SITE}:GAIN:RDIS PP")
+	field(FLNK, "${UUT}:${SITE}:GAIN:fan1")  
+}
+
+record(bo, "${UUT}:${SITE}:GAIN:RDIS") {
+	field(DTYP, "Soft Channel")
+	field(ZNAM, "ENABLE")
+	field(ONAM, "DISABLE")	
+	field(DESC, "Global gain readback disable")
+	field(PINI, "YES")
+	field(VAL,  "1")	  
+}
 
 record(dfanout, "${UUT}:${SITE}:GAIN:fan1") {
 	field(DOL,  "${UUT}:${SITE}:GAIN:${CH}")
