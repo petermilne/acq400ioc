@@ -560,7 +560,7 @@ load_400() {
         create_asyn_channel S${site}A 127.0.0.1:$((4220+${site}))
         has_rgm=1       
         load_AO $site $model $cprams
-        echo >>/tmp/st_post.cmd "seq calmonAO \"uut=${HOST},site=${site}\"" 
+        echo >>/tmp/st_post.cmd "seq calmonAO \"uut=${HOST},site=${site},verbose=${CALMON_VERBOSE:-0}\"" 
         let LO=66000000;;
 #   @@todo : different flavour of calmon for SAR ADC needed 
     $MT_DIO482TD)
@@ -602,7 +602,7 @@ load_400() {
         aprams="UUT=${HOST},SITE=${site},CHG=${has_ch_gains}"
         dblr '"db/adc-'${is_adc}'.db","'$aprams'"'
         if [ "x${calmon}" != "xnone" ]; then
-            echo >>/tmp/st_post.cmd "seq ${calmon} \"uut=${HOST},site=${site}\""
+            echo >>/tmp/st_post.cmd "seq ${calmon} \"uut=${HOST},site=${site},verbose=${CALMON_VERBOSE:-0}\""
             
             [ $is_acq425 -ne 0 ] && 
                 echo >>/tmp/st_post.cmd "seq acq425_gain_all_mon \"uut=${HOST},site=${site},verbose=${ACQ425_GAIN_ALL_MON_VERBOSE:-0}\""

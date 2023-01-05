@@ -39,11 +39,19 @@ char pvname[80];
 char pvfield[100];
 
 int scale;
+int verbose;
 
-%%extern void* acq400_openDoc(const char* docfile, int* nchan);
-%%extern int acq400_getChannel(void *prv, int ch, const char* sw, float* eslo, float* eoff, int nocal);
-%%extern int acq400_isData32(void* prv);
-%%extern int acq400_isCalibrated(void* prv);
+
+%{
+#include <stdlib.h>
+
+extern void* acq400_openDoc(const char* docfile, int* nchan);
+extern int acq400_getChannel(void *prv, int ch, const char* sw, float* eslo, float* eoff, int nocal);
+extern int acq400_isData32(void* prv);
+extern int acq400_isCalibrated(void* prv);	
+}%
+
+
 
 ss calmon {
 	state init {
@@ -54,6 +62,7 @@ ss calmon {
 			if (macValueGet("site") != 0){
 				site = macValueGet("site");
 			}
+			if (macValueGet("verbose") != 0) verbose = atoi(macValueGet("verbose"));
 			sprintf(fname, "/dev/sites/%s/caldef.xml",  site);			
 			doc = acq400_openDoc(fname, &nchan);
 			adc_cal_mode = adc_cal_mode0 = acq400_isCalibrated(doc);
@@ -129,7 +138,7 @@ ss calmon {
 					}					
 					skey[0] = gains[ch]+'0';
 					if (acq400_getChannel(doc, ch, skey, &eslo[ch], &eoff[ch], adc_cal_mode==1) == 1){
-						if (ch==1){
+						if (ch==1 || verbose > 1){
 							printf("site:%s g:%d ch:%2d eslo:%.6e eoff:%.6e\n", 
 										site, gains[ch], ch, eslo[ch], eoff[ch]);
 						}
