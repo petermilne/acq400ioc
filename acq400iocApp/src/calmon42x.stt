@@ -232,7 +232,7 @@ ss calmon {
 		entry {
 			if (verbose) printf("wait_and_retry\n");
 		}
-		when(delay(1.3)){
+		when(delay(0.3)){
 			
 		} state check_success
 	}
