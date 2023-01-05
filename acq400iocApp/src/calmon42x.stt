@@ -33,7 +33,6 @@ char* doc;
 char fname[80];
 char* uut;
 char* site = "1";		// default site 1, should override 
-int ch;
 int nchan;
 char pvname[80];
 char pvfield[100];
@@ -125,6 +124,7 @@ ss calmon {
 		} state error
 		
 		when(doc != 0){
+			int ch;
 			for (ch = 1; ch <= nchan; ++ch){				
 				snprintf(pvname, 80, "%s:%s:AI:CH:%02d", uut, site, ch);						
 				snprintf(pvfield, 100, "%s.%s", pvname, "ESLO");
@@ -159,6 +159,7 @@ ss calmon {
 		when() {
 			pvGet(adc_cal_mode);
 			if (adc_cal_mode != 0){
+				int ch;
 				printf("make_change site=%s %s\n", site, adc_cal_mode==1? "caldef": "calibrated");
 				
 				scale = 0;
@@ -218,6 +219,12 @@ ss calmon {
 	state check_success {
 		entry {
 			if (verbose) printf("check_success\n");
+			if (has_ch_gains){
+				int ch;
+				for (ch = 1; ch <= nchan; ++ch){
+					pvGet(gains[ch], SYNC);
+				}
+			}
 		}		
 		when(has_ch_gains == 0 || ll_check_success(*site-'0', gains, nchan) == 0){
 			
@@ -229,11 +236,12 @@ ss calmon {
 	}
 	
 	state wait_and_retry {
-		entry {
-			if (verbose) printf("wait_and_retry\n");
-		}
+		when(adc_cal_mode != adc_cal_mode0 || gain_changes != gain_changes0){
+			if (verbose) printf("wait_and_retry change detected => wait_abit_more\n");
+		} state wait_abit_more
+
 		when(delay(0.3)){
-			
+			if (verbose) printf("wait_and_retry => check_sucess\n");
 		} state check_success
 	}
 	
@@ -251,7 +259,7 @@ ss calmon {
 	}
 	
 	state wait_abit_more {
-		when(delay(1.1)){
+		when(delay(0.8)){
 			if (verbose) printf("wait_abit_more delay done\n");
 		} state make_change		
 	} 
