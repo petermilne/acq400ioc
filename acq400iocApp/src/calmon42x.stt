@@ -48,7 +48,38 @@ int verbose;
 extern void* acq400_openDoc(const char* docfile, int* nchan);
 extern int acq400_getChannel(void *prv, int ch, const char* sw, float* eslo, float* eoff, int nocal);
 extern int acq400_isData32(void* prv);
-extern int acq400_isCalibrated(void* prv);	
+extern int acq400_isCalibrated(void* prv);
+
+int ll_check_success(int site, int gains[], int nchan)
+{
+	char cmd[80];
+	char* actstr = cmd;
+	char gainstr[33];
+	FILE* fp;
+	int ch;
+	
+	for (ch = 1; ch <= nchan; ++ch){
+		gainstr[ch-1] = gains[ch]+'0';		
+	}
+	gainstr[ch-1] = '\0';
+			
+	snprintf(cmd, 80, "get.site %d gains", site);
+	
+	fp = popen(cmd, "r");
+	if (fp == 0){
+		printf("ERROR: popen fail");
+		return -1;
+	}
+	if (fgets(actstr, 80, fp)){
+		actstr[strlen(actstr)-1] = '\0';  /* rtrim */
+		printf("Compare: set:\"%s\" act:\"%s\"\n", gainstr, actstr);
+		if (strcmp(gainstr, actstr)){
+			printf("Needs fixing\n");
+		}
+	}
+	pclose(fp);
+	return 0;
+}
 }%
 
 
@@ -162,6 +193,14 @@ ss calmon {
 			}else{
 				printf("make_change: STUB\n");
 			}
+		} state check_success
+	}
+	
+	state check_success {
+		when(){
+			if (has_ch_gains){
+				ll_check_success(*site-'0', gains, nchan);
+			}
 		} state wait_change
 	}
 	
@@ -175,8 +214,14 @@ ss calmon {
 				printf("gain change %d\n", gain_changes);
 				gain_changes0 = gain_changes;
 			}		 			
-		} state make_change
+		} state wait_abit_more
 	}
+	
+	state wait_abit_more {
+		when(delay(1.1)){
+			if (verbose) printf("wait_abit_more delay done\n");
+		} state make_change		
+	} 
 }
 
 
