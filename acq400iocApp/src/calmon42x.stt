@@ -126,10 +126,7 @@ ss calmon {
 					}
 					if (gains[ch] < 0 || gains[ch] > 9){
 						printf("ERROR: gain out of range %d\n", gains[ch]);
-					}
-					if (gains[ch] == 0){
-						printf("ERROR: ch:%d gain set to zero, this is bad\n", ch);
-					}
+					}					
 					skey[0] = gains[ch]+'0';
 					if (acq400_getChannel(doc, ch, skey, &eslo[ch], &eoff[ch], adc_cal_mode==1) == 1){
 						if (ch==1){
