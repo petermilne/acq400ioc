@@ -92,9 +92,9 @@ ONSETTRANSIENT=0
 export EPICS_CAS_INTF_ADDR_LIST=localhost
 
 # WF_ACQ_HOST_WINDOW_PER_CHANNEL .. normal is a window per site, to enable per channel:
-WF_ACQ_HOST_WINDOW_PER_CHANNEL=y
+export WF_ACQ_HOST_WINDOW_PER_CHANNEL=y
 
-# Possible multiple windows per channel
+# Possible multiple windows per channel, combine with WF_ACQ_HOST_WINDOW_PER_CHANNEL=y for unique window per WF
 # default cooked data channel name: ${UUT}:${SITE}:AI:WF:${cid}:V
 # duplicate channels possible with name ${UUT}:${SITE}:AI:${WF}:${cid}:V   # $WF= W1..WF, $LNK=LNK1..F
 # add to /mnt/local/sysconfig/epics.sh

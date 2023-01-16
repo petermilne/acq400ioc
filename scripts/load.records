@@ -88,7 +88,7 @@ load_wf_acq_host_window_per_channel() {
         outx=OUTH;;
     esac
     fan=fan$((1+ch/8))
-    dblr \"db/wfAcqHostWindowPerChannel.db\",\"${wprams},fan=${fan},outx=${outx}\"
+    dblr \"db/wfAcqHostWindowPerChannel.db\",\"${wprams},WF=WF,fan=${fan},outx=${outx}\"
 }
 
 is_data32()
