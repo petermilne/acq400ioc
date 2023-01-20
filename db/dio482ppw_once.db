@@ -48,11 +48,13 @@ record(calcout, "${UUT}:${SITE}:DIO:ENABLE:c") {
 
 record(bo, "${UUT}:${SITE}:DIO:ENABLE:clr") {
 	field(DTYP, "Soft Channel")
-	field(FLNK, "${UUT}:${SITE}:DIO:ENABLE:fan")
+	field(FLNK, "${UUT}:${SITE}:DIO:ENABLE:fan PP")
+	field(ZNAM, "0")
+	field(ONAM, "1")
 }
 record(dfanout, "${UUT}:${SITE}:DIO:ENABLE:fan") {
 	field(DOL,  "${UUT}:${SITE}:DIO:ENABLE")
-	field(OMSL, "supervisory")
+	field(OMSL, "closed_loop")
 	field(OUTA, "${UUT}:${SITE}:SIG:PULSE1:RESET PP")
 	field(OUTB, "${UUT}:${SITE}:SIG:PULSE2:RESET PP")
 	field(OUTC, "${UUT}:${SITE}:SIG:PULSE3:RESET PP")
