@@ -1,4 +1,4 @@
-		
+
 
 record (bo, "${UUT}:${SITE}:DIO:ENABLE")	{
 	field(DESC, "Enable DIO")
@@ -24,13 +24,34 @@ record (bi, "${UUT}:${SITE}:DIO:ENABLE:r") {
 	field(DTYP, "stream")
 	field(INP,  "@ppw.proto get_dioEn() ${SPORT}")
 	field(SCAN, "1 second")
-	field(PINI, "YES")	
+	field(PINI, "YES")
 	field(FLNK, "${UUT}:${SITE}:DIO:ENABLE:s")
 }
 
 record (bo, "${UUT}:${SITE}:DIO:ENABLE:s") {
 	field(DTYP, "Soft Channel")
-	field(OMSL, "closed_loop")	
-	field(DOL, "${UUT}:${SITE}:DIO:ENABLE:r NPP")	
-	field(OUT, "${UUT}:${SITE}:DIO:ENABLE PP")	
+	field(OMSL, "closed_loop")
+	field(DOL, "${UUT}:${SITE}:DIO:ENABLE:r NPP")
+	field(OUT, "${UUT}:${SITE}:DIO:ENABLE PP")
 }
+
+# Clkdiv with external clock - go direct.
+
+record (longout, "${UUT}:${SITE}:CLKDIV") {
+	field(DTYP, "Soft Channel")
+	field(FLNK, "${UUT}:${SITE}:clkdiv:e PP")
+	field(LOPR, "1")
+	field(HOPR, "${MAXDIV}")
+	field(VAL,  "1")
+	field(PINI, "YES")
+}
+
+record (longout, "${UUT}:${SITE}:clkdiv:e") {
+	field(DTYP, "longoutAcqHost")
+	field(DOL,  "${UUT}:${SITE}:CLKDIV")
+	field(OUT, "@/dev/acq400.${SITE}.knobs/clkdiv")
+	field(OMSL, "closed_loop")
+	field(DISV, "0")
+	field(SDIS, "${UUT}:${SITE}:CLK")
+}
+

@@ -4,6 +4,8 @@ uut=$1
 site=$2
 HSS="UUT=${uut},SITE=${site},SPORT=S${site}"
 
+ctpr="${HSS},CTRMAX=65535,DT=1,DTC=1"
+
 echo '# load.dio482ppw .. '
 source ./scripts/record_support.sh
 
@@ -14,4 +16,5 @@ for ch in $(seq ${PPWCHAN:-6}); do
     dblr '"db/dio482ppw_doX.db","'${HSS},UX=$ch,IX=$(($ch-1))'"'
     dblr '"db/dio482_ppw.db","'${HSS},ch=$ch,IX=$(($ch-1))'"'
     dblr '"db/dio482_ppw_pwm.db","'${HSS},ch=$ch,IX=$(($ch-1))'"'
+    dblr '"db/counter.db","'${ctpr},lname=PULSE${ch},pname=ppw_cnt${ch}'"'
 done

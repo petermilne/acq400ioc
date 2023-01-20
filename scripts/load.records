@@ -565,7 +565,7 @@ load_400() {
 #   @@todo : different flavour of calmon for SAR ADC needed 
     $MT_DIO482TD)
         if [ "$(get_mtv ${site})" = "$MTV_DIO482_PPW" ]; then
-            ./scripts/load.ppw ${HOST} ${site}
+            ./scripts/load.dio482ppw ${HOST} ${site}
             return
         else
             ./scripts/load.dio482td_DI ${HOST} ${site}
