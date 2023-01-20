@@ -33,12 +33,26 @@ record (bo, "${UUT}:${SITE}:DIO:ENABLE:s") {
 	field(OMSL, "closed_loop")
 	field(DOL, "${UUT}:${SITE}:DIO:ENABLE:r NPP")
 	field(OUT, "${UUT}:${SITE}:DIO:ENABLE PP")
-	field(FLNK, "${UUT}:${SITE}:DIO:ENABLE:fan")
+	field(FLNK, "${UUT}:${SITE}:DIO:ENABLE:c")
 }
 
+
+record(calcout, "${UUT}:${SITE}:DIO:ENABLE:c") {
+	field(INPA, "${UUT}:${SITE}:DIO:ENABLE")
+	field(CALC, "A")
+	field(OUT, "${UUT}:${SITE}:DIO:ENABLE:clr PP")
+	field(DOPT, "Use OCAL")
+	field(OOPT, "Transition To Zero")
+	field(OCAL, "!A")
+}
+
+record(bo, "${UUT}:${SITE}:DIO:ENABLE:clr") {
+	field(DTYP, "Soft Channel")
+	field(FLNK, "${UUT}:${SITE}:DIO:ENABLE:fan")
+}
 record(dfanout, "${UUT}:${SITE}:DIO:ENABLE:fan") {
 	field(DOL,  "${UUT}:${SITE}:DIO:ENABLE")
-	field(OMSL, "closed_loop")
+	field(OMSL, "supervisory")
 	field(OUTA, "${UUT}:${SITE}:SIG:PULSE1:RESET PP")
 	field(OUTB, "${UUT}:${SITE}:SIG:PULSE2:RESET PP")
 	field(OUTC, "${UUT}:${SITE}:SIG:PULSE3:RESET PP")
@@ -54,6 +68,8 @@ record (longout, "${UUT}:${SITE}:CLKDIV") {
 	field(FLNK, "${UUT}:${SITE}:clkdiv:e PP")
 	field(LOPR, "1")
 	field(HOPR, "${MAXDIV}")
+	field(DRVL, "1")
+	field(DRVH, "${MAXDIV}")
 	field(VAL,  "1")
 	field(PINI, "YES")
 }
@@ -63,7 +79,5 @@ record (longout, "${UUT}:${SITE}:clkdiv:e") {
 	field(DOL,  "${UUT}:${SITE}:CLKDIV")
 	field(OUT, "@/dev/acq400.${SITE}.knobs/clkdiv")
 	field(OMSL, "closed_loop")
-	field(DISV, "0")
-	field(SDIS, "${UUT}:${SITE}:CLK")
 }
 
