@@ -33,6 +33,18 @@ record (bo, "${UUT}:${SITE}:DIO:ENABLE:s") {
 	field(OMSL, "closed_loop")
 	field(DOL, "${UUT}:${SITE}:DIO:ENABLE:r NPP")
 	field(OUT, "${UUT}:${SITE}:DIO:ENABLE PP")
+	field(FLNK, "${UUT}:${SITE}:DIO:ENABLE:fan")
+}
+
+record(dfanout, "${UUT}:${SITE}:DIO:ENABLE:fan") {
+	field(DOL,  "${UUT}:${SITE}:DIO:ENABLE")
+	field(OMSL, "closed_loop")
+	field(OUTA, "${UUT}:${SITE}:SIG:PULSE1:RESET PP")
+	field(OUTB, "${UUT}:${SITE}:SIG:PULSE2:RESET PP")
+	field(OUTC, "${UUT}:${SITE}:SIG:PULSE3:RESET PP")
+	field(OUTD, "${UUT}:${SITE}:SIG:PULSE4:RESET PP")
+	field(OUTE, "${UUT}:${SITE}:SIG:PULSE5:RESET PP")
+	field(OUTF, "${UUT}:${SITE}:SIG:PULSE6:RESET PP")
 }
 
 # Clkdiv with external clock - go direct.

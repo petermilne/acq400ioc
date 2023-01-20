@@ -9,7 +9,7 @@ ctpr="${HSS},CTRMAX=65535,DT=1,DTC=1"
 echo '# load.dio482ppw .. '
 source ./scripts/record_support.sh
 
-dblr '"db/dio482ppw_once.db","'${HSS}'"'
+dblr '"db/dio482ppw_once.db","'${HSS},MAXDIV=65535'"'
 dblr '"db/dio482ppw_leds.db","'${HSS}'"'
 
 for ch in $(seq ${PPWCHAN:-6}); do
