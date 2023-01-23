@@ -672,7 +672,11 @@ load_400() {
                 load_rgm "${mprams},onst=nc,twst=RGM"
             fi
         fi
-        dblr '"db/has_rgm.db","'${mprams},HAS_RGM=$has_rgm'"'
+        case $is_adc in
+        yes) _is_adc = 1;;
+        *)   _is_adc = 0;;
+        esac
+        dblr '"db/has_rgm.db","'${mprams},HAS_RGM=$has_rgm,IS_ADC=$_is_adc'"'
 
         [ "x$RTM_BUFFER_MON" = "xy" ] && 
             echo "seq rtm_buffer_mon \"uut=${HOST},verbose=${RTM_BUFFER_MON_VERBOSE:-0}\""

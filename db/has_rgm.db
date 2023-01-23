@@ -1,8 +1,18 @@
 record(bi, "${UUT}:${SITE}:HAS_RGM") {
-	field(DESC, "$placeholder")
+	field(DESC, "Site had Repeating Gate Mode")
 	field(DTYP, "Soft Channel")
 	field(VAL,  "${HAS_RGM}")
 	field(PINI, "YES")
 	field(ZNAM, "0")
 	field(ONAM, "1")
 }
+
+record(bi, "${UUT}:${SITE}:IS_ADC") {
+	field(DESC, "Site is an ADC")
+	field(DTYP, "Soft Channel")
+	field(VAL,  "${IS_ADC}")
+	field(PINI, "YES")
+	field(ZNAM, "0")
+	field(ONAM, "1")
+}
+

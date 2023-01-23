@@ -12,14 +12,14 @@ record(calcout, "${UUT}:${SITE}:QEN:COUNT:POS")
 {
 	field(DESC, "Moving forwards")
 	field(INPA, "${UUT}:${SITE}:QEN:COUNT")
-	field(VAL, "INPA>A? 1: 0)
+	field(VAL,  "INPA>A? 1: 0")
 	field(FLNK, "${UUT}:${SITE}:QEN:NEG")
 }
 record(calcout, "${UUT}:${SITE}:QEN:COUNT:NEG")
 {
 	field(DESC, "Moving reverse")
 	field(INPA, "${UUT}:${SITE}:QEN:COUNT")
-	field(VAL, "INPA<A? 1: 0)
+	field(VAL,  "INPA<A? 1: 0")
 	field(FLNK, "${UUT}:${SITE}:QEN:DI4")
 }
 
