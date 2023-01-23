@@ -12,7 +12,7 @@ record(calc, "${UUT}:${SITE}:QEN:COUNT:POS")
 {
 	field(DESC, "Moving forwards")
 	field(INPA, "${UUT}:${SITE}:QEN:COUNT")
-	field(INPB, "${UUT}:${SITE}:QEN:COUNT:POS.A")
+	field(INPB, "${UUT}:${SITE}:QEN:COUNT:POS.LA")
 	field(CALC,  "A>B? 1: 0")
 	field(FLNK, "${UUT}:${SITE}:QEN:COUNT:NEG")
 }
@@ -20,7 +20,7 @@ record(calc, "${UUT}:${SITE}:QEN:COUNT:NEG")
 {
 	field(DESC, "Moving reverse")
 	field(INPA, "${UUT}:${SITE}:QEN:COUNT")
-	field(INPB, "${UUT}:${SITE}:QEN:COUNT:NEG.A")
+	field(INPB, "${UUT}:${SITE}:QEN:COUNT:NEG.LA")
 	field(CALC,  "A<B? 1: 0")
 	field(FLNK, "${UUT}:${SITE}:QEN:DI4")
 }
