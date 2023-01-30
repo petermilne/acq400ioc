@@ -53,7 +53,7 @@ MB_MODEL=$(basename ${devicetree_image%*.dtb})
 ssb=$(cat /etc/acq400/0/ssb)
 
 case $MB_MODEL in
-acq2106*|acq2206*)
+acq2[12]06*)
     ;;
 *)
     RTM_BUFFER_MON=y;;
@@ -940,7 +940,7 @@ load_mb_base() {
 
     dblr '"db/hwmonvolts_common.db","UUT='${HOST}'"'
     case $mt in
-    acq2106*|acq2206*)
+    acq2[12]06*)
             load_mb_acq2106
             dblr '"db/hwmonvolts_2106.db","UUT='${HOST}'"'
             acq2106b=$(cat /sys/module/acq420fmc/parameters/is_acq2106B)
@@ -963,7 +963,7 @@ load_mb_base() {
                 echo 'dbLoadRecords("db/acq2006sites.db","'${cprams}'")'
         done
         dblr '"db/acq1001leds.db","UUT='${HOST}'"' ;;
-    acq2106*|acq2206*|acq2006|acq2006b)
+    acq2[12]06*|acq2006|acq2006b)
         for site in $(seq 1 $ns)
         do
             cprams="UUT=${HOST},site=${site}"
@@ -971,7 +971,7 @@ load_mb_base() {
         done;;
     esac
     case $mt in
-    acq2106*|acq2206*)
+    acq2[12]06*)
         dblr '"db/acq2106leds.db","UUT='${HOST}'"' ;;
     acq2006*)
         dblr '"db/acq2006leds.db","UUT='${HOST}'"' ;;
@@ -1040,7 +1040,7 @@ load_mb_sites() {
                 zopts="THST=OFF,THVL=0"
             fi
             dblr '"db/z7io_mb.db","UUT='${HOST},${zopts}',SPORT=S0"';;
-        acq2106*|acq2206*)
+        acq2[12]06*)
             thst="ZCLK"
             [ $(isRevA $MB_MODEL) -ne 0 ] && thst=""
             dblr '"db/acq2006clktree.db","UUT='${HOST},thst=${thst}'"'
@@ -1126,7 +1126,7 @@ load_mb_sync() {
         case $FUN in
         CLK)    
             case $MB_MODEL in
-            acq2106*|acq2206*)
+            acq2[12]06*)
                 #                   0       1       2       3       4 
                 lsb_x ${lp0},NOBT=3 "nc"        HDMI    GPG0    COMM_A  INT01M;;
             *)
@@ -1141,7 +1141,7 @@ load_mb_sync() {
             fi;;
         SYNC)
             case $MB_MODEL in
-            acq2106*|acq2206*)
+            acq2[12]06*)
                 if [ $HAS_WR -eq 1 ]; then
                     lsb_x ${lp0},NOBT=1 WRPPS nc
                 else
@@ -1157,7 +1157,7 @@ load_mb_sync() {
         case $FUN in
         CLK)
             case $MB_MODEL in
-            acq2106*|acq2206*)
+            acq2[12]06*)
                 if [ $HAS_WR -eq 1 ]; then
                     lsb_x ${lp1},NOBT=1 MCLK nc
                 else
@@ -1172,7 +1172,7 @@ load_mb_sync() {
                 lsb_x ${lp1},NOBT=3 STRIG HOSTA HDMI_GPIO GPG1 DSP1 FP_SYNC WRTT1   NONE
             else                
                 case $MB_MODEL in
-                acq2106*|acq2206*)
+                acq2[12]06*)
                     lsb_x ${lp1},NOBT=2 STRIG HOSTA HOSTB GPG1;;
                 *)
                     lsb_x ${lp1},NOBT=2 STRIG HDMI_GPIO GPG1;;
@@ -1180,7 +1180,7 @@ load_mb_sync() {
             fi;;                
         SYNC)
             case $MB_MODEL in
-            acq2106*|acq2206*)
+            acq2[12]06*)
                 if [ $HAS_WR -eq 1 ]; then
                     lsb_x ${lp1},NOBT=1 WRPPS nc
                 else
@@ -1275,7 +1275,7 @@ load_mb_sync() {
     
     if [ $HAS_ACQ43X -ne 0 ] && [ $ACQ43X_SET_SAMPLE_RATE -ge 0 ] && [ $HAS_WR -eq 0 ]; then
             case $MB_MODEL in
-            acq2106*|acq2206*)
+            acq2[12]06*)
                 (
                 echo "dbpf ${HOST}:SYS:CLK:FPMUX XCLK"
                 echo "dbpf ${HOST}:SYS:FPCLK: 32768000"
@@ -1503,7 +1503,7 @@ esac
 #fi
 
 case $MB_MODEL in
-acq2106*|acq2206*)
+acq2[12]06*)
     echo "dbpf ${HOST}:0:SIG:SRC:CLK:0 INT01M"
     [ $(cat /dev/gpio/CHIP2/P27/value) -eq 1 ] && echo dbpf "${HOST}:SYS:VAN.CALC \"6.6*B - 18.9\"" ;;
 acq10*)
