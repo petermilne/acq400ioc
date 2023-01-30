@@ -4,6 +4,7 @@
 MT_ACQ2006=80
 MT_ACQ1001=81
 MT_ACQ2106=82
+MT_ACQ2206=87
 
 MT_ACQ420=1
 MT_ACQ420F=A1
@@ -52,6 +53,7 @@ nameFromMT() {
 	$MT_ACQ2006)	echo "acq2006";;
 	$MT_ACQ1001)	echo "acq1001";;
 	$MT_ACQ2106)	echo "acq2106";;
+	$MT_ACQ2206)	echo "acq2206";;
 	$MT_ACQ420|$MT_ACQ420F)
 					echo "acq420";;	
 	$MT_ACQ435)		echo "acq435";;
