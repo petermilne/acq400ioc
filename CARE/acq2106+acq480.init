@@ -9,10 +9,13 @@ cp /usr/local/CARE/acq480_streamd.0.conf /etc/sysconfig/acq400_streamd.0.conf
 PNAME=$(basename $0)
 
 compat=$(cat /proc/device-tree/chosen/compatible_model)
-if [ "x$compat" != "xacq2106" ]; then
+case $compat in
+acq2106|acq2206)
+	;;
+*)
 	logger -t $PNAME "ERROR : script valid for ACQ2106 host ONLY"
-	exit 1
-fi
+	exit 1;;
+esac
 
 list_int_configs() {
 	speeds=""
