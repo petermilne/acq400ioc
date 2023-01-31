@@ -1044,6 +1044,10 @@ load_mb_sites() {
             thst="ZCLK"
             [ $(isRevA $MB_MODEL) -ne 0 ] && thst=""
             dblr '"db/acq2006clktree.db","UUT='${HOST},thst=${thst}'"'
+            case $MB_MODEL in
+            acq2206*)
+                dblr '"db/acq2206mb.db","UUT='${HOST}',SPORT=S0,MB_SET_MIN=2000"';;
+            esac
             dblr '"db/acq2106mb.db","UUT='${HOST}',SPORT=S0,MB_SET_MIN=2000"';;     
         *)
             thst="ZCLK"

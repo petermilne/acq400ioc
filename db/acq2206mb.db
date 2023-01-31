@@ -1,0 +1,57 @@
+record (bi, "${UUT}:0:SYS:FAN_EN") {
+	field(DESC, "motherboard fan enable")
+	field(DTYP, "biAcqHost")
+	field(INP, "@/dev/gpio/FAN_EN")
+	field(SCAN, "5 second")
+	field(ZNAM, "OFF")
+	field(ONAM, "ON")
+	field(PINI, "YES")	
+}
+
+record (bi, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DET:A") {
+	field(DESC, "output cable detected")
+	field(DTYP, "biAcqHost")
+	field(INP, "@/dev/gpio/HDMI_CABLE_DET_A")
+	field(SCAN, "5 second")
+	field(ZNAM, "nc")
+	field(ONAM, "CONNECTED")
+	field(PINI, "YES")	
+}
+
+record (bi, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DET:B") {
+	field(DESC, "output cable detected")
+	field(DTYP, "biAcqHost")
+	field(INP, "@/dev/gpio/HDMI_CABLE_DET_B")
+	field(SCAN, "5 second")
+	field(ZNAM, "nc")
+	field(ONAM, "CONNECTED")
+	field(PINI, "YES")	
+}
+
+record (bi, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DET:C") {
+	field(DESC, "output cable detected")
+	field(DTYP, "biAcqHost")
+	field(INP, "@/dev/gpio/HDMI_CABLE_DET_C")
+	field(SCAN, "5 second")
+	field(ZNAM, "nc")
+	field(ONAM, "CONNECTED")
+	field(PINI, "YES")	
+}
+record (bi, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DET:D") {
+	field(DESC, "output cable detected")
+	field(DTYP, "biAcqHost")
+	field(INP, "@/dev/gpio/HDMI_CABLE_DET_D")
+	field(SCAN, "5 second")
+	field(ZNAM, "nc")
+	field(ONAM, "CONNECTED")
+	field(PINI, "YES")	
+}
+record (bi, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DET:E") {
+	field(DESC, "output cable detected")
+	field(DTYP, "biAcqHost")
+	field(INP, "@/dev/gpio/HDMI_CABLE_DET_E")
+	field(SCAN, "5 second")
+	field(ZNAM, "nc")
+	field(ONAM, "CONNECTED")
+	field(PINI, "YES")	
+}
