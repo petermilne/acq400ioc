@@ -46,12 +46,3 @@ record (bi, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DET:D") {
 	field(ONAM, "CONNECTED")
 	field(PINI, "YES")	
 }
-record (bi, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DET:E") {
-	field(DESC, "output cable detected")
-	field(DTYP, "biAcqHost")
-	field(INP, "@/dev/gpio/HDMI_CABLE_DET_E")
-	field(SCAN, "5 second")
-	field(ZNAM, "nc")
-	field(ONAM, "CONNECTED")
-	field(PINI, "YES")	
-}
