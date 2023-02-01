@@ -37,6 +37,8 @@ record(ao, "${UUT}:SYS:PSU:POT:_vanpot") {
 	field(LINR, "LINEAR")
 	field(ESLO, "1")
 	field(ASLO, "1")
+	field(DRVH, "255")
+	field(DRVL, "0")	
 }
 
 # POSITIVE
@@ -58,7 +60,7 @@ record(ao, "${UUT}:SYS:PSU:POT:VAP") {
 record(calcout, "${UUT}:SYS:PSU:POT:_vap") {
 	field(INPA, "${UUT}:SYS:PSU:POT:VAP")
 	field(OUT,  "${UUT}:SYS:PSU:POT:_vappot PP")
-	field(CALC, "(140000/((A / 1.6) - 1)) - 16000; B:=VAL")
+	field(CALC, "(140000/((A/1.6) - 1)) - 16000; B:=VAL")
 	field(DOPT, "Use OCAL")
 	field(OCAL, "B*255/50000")
 	field(OOPT, "Every Time")
@@ -75,6 +77,8 @@ record(ao, "${UUT}:SYS:PSU:POT:_vappot") {
 	field(LINR, "LINEAR")
 	field(ESLO, "1")
 	field(ASLO, "1")
+	field(DRVH, "255")
+	field(DRVL, "0")
 }
 
 
