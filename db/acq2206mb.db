@@ -8,39 +8,39 @@ record (bi, "${UUT}:0:SYS:FAN_EN") {
 	field(PINI, "YES")	
 }
 
-record (bi, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DET:A") {
+record (bi, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DET:1") {
 	field(DESC, "output cable detected")
 	field(DTYP, "biAcqHost")
-	field(INP, "@/dev/gpio/HDMI_CABLE_DET_A")
+	field(INP, "@/dev/gpio/HDMI_CABLE_DET_1")
 	field(SCAN, "5 second")
 	field(ZNAM, "nc")
 	field(ONAM, "CONNECTED")
 	field(PINI, "YES")	
 }
 
-record (bi, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DET:B") {
+record (bi, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DET:2") {
 	field(DESC, "output cable detected")
 	field(DTYP, "biAcqHost")
-	field(INP, "@/dev/gpio/HDMI_CABLE_DET_B")
+	field(INP, "@/dev/gpio/HDMI_CABLE_DET_2")
 	field(SCAN, "5 second")
 	field(ZNAM, "nc")
 	field(ONAM, "CONNECTED")
 	field(PINI, "YES")	
 }
 
-record (bi, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DET:C") {
+record (bi, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DET:3") {
 	field(DESC, "output cable detected")
 	field(DTYP, "biAcqHost")
-	field(INP, "@/dev/gpio/HDMI_CABLE_DET_C")
+	field(INP, "@/dev/gpio/HDMI_CABLE_DET_3")
 	field(SCAN, "5 second")
 	field(ZNAM, "nc")
 	field(ONAM, "CONNECTED")
 	field(PINI, "YES")	
 }
-record (bi, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DET:D") {
+record (bi, "${UUT}:0:SIG:SYNC_BUS:OUT:CABLE_DET:4") {
 	field(DESC, "output cable detected")
 	field(DTYP, "biAcqHost")
-	field(INP, "@/dev/gpio/HDMI_CABLE_DET_D")
+	field(INP, "@/dev/gpio/HDMI_CABLE_DET_4")
 	field(SCAN, "5 second")
 	field(ZNAM, "nc")
 	field(ONAM, "CONNECTED")
