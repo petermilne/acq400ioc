@@ -20,24 +20,22 @@ record(ao, "${UUT}:SYS:PSU:POT:VAN") {
 record(calcout, "${UUT}:SYS:PSU:POT:_van") {
 	field(INPA, "${UUT}:SYS:PSU:POT:VAN")
 	field(OUT,  "${UUT}:SYS:PSU:POT:_vanpot PP")
-	field(CALC, "(365000/((-A/0.8) - 1)) - 20000; B:=VAL")
-	field(DOPT, "Use OCAL")
-	field(OCAL, "B*255/50000")
+	field(CALC, "(365000/((-A/0.8) - 1)) - 20000")
+	field(DOPT, "Use CALC")	
 	field(OOPT, "Every Time")
 	field(PREC, "0")
 	field(DESC, "Analog Rail Neg Pot Setting")
-	field(EGU,  "pot ticks")
-	field(HOPR, "255")
-	field(LOPR, "0")
+	field(EGU,  "ohm")
 }
 
 record(ao, "${UUT}:SYS:PSU:POT:_vanpot") {
 	field(DTYP, "dsSysfsAo")
 	field(OUT,  "@/dev/acq2006/van")
 	field(LINR, "LINEAR")
-	field(ESLO, "1")
+	# ESLO = 50000/255 = 	
+	field(ESLO, "196")	
 	field(ASLO, "1")
-	field(DRVH, "255")
+	field(DRVH, "50000")
 	field(DRVL, "0")	
 }
 
@@ -60,24 +58,22 @@ record(ao, "${UUT}:SYS:PSU:POT:VAP") {
 record(calcout, "${UUT}:SYS:PSU:POT:_vap") {
 	field(INPA, "${UUT}:SYS:PSU:POT:VAP")
 	field(OUT,  "${UUT}:SYS:PSU:POT:_vappot PP")
-	field(CALC, "(140000/((A/1.6) - 1)) - 16000; B:=VAL")
-	field(DOPT, "Use OCAL")
-	field(OCAL, "B*255/50000")
+	field(CALC, "(140000/((A/1.6) - 1)) - 16000")
+	field(DOPT, "Use CALC")	
 	field(OOPT, "Every Time")
 	field(PREC, "0")
 	field(DESC, "Analog Rail Pos Pot Setting")
-	field(EGU,  "pot ticks")
-	field(HOPR, "255")
-	field(LOPR, "0")
+	field(EGU,  "ohm")
 }
 
 record(ao, "${UUT}:SYS:PSU:POT:_vappot") {
 	field(DTYP, "dsSysfsAo")
 	field(OUT,  "@/dev/acq2006/vap")
 	field(LINR, "LINEAR")
-	field(ESLO, "1")
+# ESLO = 50000/255 = 	
+	field(ESLO, "196")
 	field(ASLO, "1")
-	field(DRVH, "255")
+	field(DRVH, "50000")
 	field(DRVL, "0")
 }
 
