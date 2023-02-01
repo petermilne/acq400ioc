@@ -672,10 +672,12 @@ load_400() {
                 load_rgm "${mprams},onst=nc,twst=RGM"
             fi
         fi
-        case $is_adc in
-        yes) _is_adc = 1;;
-        *)   _is_adc = 0;;
-        esac
+        
+        if [ "$is_adc" != "no" ]; then
+            _is_adc=1
+        else
+            _is_adc=0
+        fi
         dblr '"db/has_rgm.db","'${mprams},HAS_RGM=$has_rgm,IS_ADC=$_is_adc'"'
 
         [ "x$RTM_BUFFER_MON" = "xy" ] && 
