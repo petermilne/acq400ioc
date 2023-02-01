@@ -20,9 +20,9 @@ record(ao, "${UUT}:SYS:PSU:POT:VAN") {
 record(calcout, "${UUT}:SYS:PSU:POT:_van") {
 	field(INPA, "${UUT}:SYS:PSU:POT:VAN")
 	field(OUT,  "${UUT}:SYS:PSU:POT:_vanpot PP")
-	field(CALC, "(365000/((-A/0.8) - 1)) - 20000")
+	field(CALC, "(365000/((-A/0.8) - 1)) - 20000; B:=VAL")
 	field(DOPT, "Use OCAL")
-	field(OCAL, "VAL*255/50000")
+	field(OCAL, "B*255/50000")
 	field(OOPT, "Every Time")
 	field(PREC, "0")
 	field(DESC, "Analog Rail Neg Pot Setting")
@@ -58,9 +58,9 @@ record(ao, "${UUT}:SYS:PSU:POT:VAP") {
 record(calcout, "${UUT}:SYS:PSU:POT:_vap") {
 	field(INPA, "${UUT}:SYS:PSU:POT:VAP")
 	field(OUT,  "${UUT}:SYS:PSU:POT:_vappot PP")
-	field(CALC, "(140000/((A / 1.6) - 1)) - 16000")	
+	field(CALC, "(140000/((A / 1.6) - 1)) - 16000; B:=VAL")
 	field(DOPT, "Use OCAL")
-	field(OCAL, "VAL*255/50000")	
+	field(OCAL, "B*255/50000")
 	field(OOPT, "Every Time")
 	field(PREC, "0")
 	field(DESC, "Analog Rail Pos Pot Setting")
