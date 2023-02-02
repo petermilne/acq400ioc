@@ -34,7 +34,8 @@ record(ao, "${UUT}:SYS:PSU:POT:_vanpot") {
 	field(LINR, "LINEAR")
 	# ESLO = 50000/255 = 	
 	field(ESLO, "196")	
-	field(ASLO, "1")
+	field(ASLO, "-1")
+	field(AOFF, "255")
 	field(DRVH, "50000")
 	field(DRVL, "0")	
 }
@@ -72,7 +73,8 @@ record(ao, "${UUT}:SYS:PSU:POT:_vappot") {
 	field(LINR, "LINEAR")
 # ESLO = 50000/255 = 	
 	field(ESLO, "196")
-	field(ASLO, "1")
+	field(ASLO, "-1")
+	field(AOFF, "255")
 	field(DRVH, "50000")
 	field(DRVL, "0")
 }
