@@ -29,7 +29,7 @@ load_mgt400_sfp()
 			dblr '"db/mgt480sfp.db","'${sprams},CH=${ch}'"'	
 			
 			echo >>/tmp/st_post.cmd \
-			"seq sfp_txen \"uut=${HOST},port=${ch},verbose=2,remove_threshold=3\""
+			"seq sfp_txen \"uut=${HOST},port=${ch},verbose=${SFP_TXEN_VERBOSE:-0},remove_threshold=${SFP_TXEN_REMOVE_THRESHOLD:-4}\""
 	done	
 }
 
