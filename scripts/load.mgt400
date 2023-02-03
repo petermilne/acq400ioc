@@ -26,7 +26,10 @@ load_mgt400_sfp()
 	sprams="UUT=${HOST}"
 	for ch in 1 2 3 4
 	do
-			dblr '"db/mgt480sfp.db","'${sprams},CH=${ch}'"'		
+			dblr '"db/mgt480sfp.db","'${sprams},CH=${ch}'"'	
+			
+			echo >>/tmp/st_post.cmd \
+			"seq sfp_txen \"uut=${HOST},port=${ch},verbose=2,remove_threshold=3\""
 	done	
 }
 

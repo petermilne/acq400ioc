@@ -17,3 +17,44 @@ record (bi, "${UUT}:MGT:SFP:${CH}:LOS") {
 	field(DISV, "0")
 	field(SDIS, "${UUT}:MGT:SFP:${CH}:PRESENT")	
 }
+
+record(bo, "${UUT}:MGT:SFP:${CH}:TX_DISABLE") {
+	field(DESC, "disable SFP")
+	field(DTYP, "Soft Channel")
+	field(ONAM, "1")
+	field(ZNAM, "0")
+
+	field(FLNK, "${UUT}:MGT:SFP:${CH}:TX_DISABLE:w")
+}
+
+record(bo, "${UUT}:MGT:SFP:${CH}:TX_DISABLE:w") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "")
+	field(DTYP, "boAcqHost")
+	field(OUT,  "@/dev/gpio/MGT482/SFP${CH}/TX_DISABLE")	
+	field(DISV, "1")
+	field(SDIS, "${UUT}:MGT:SFP:${CH}:TX_DISABLE:s.PACT")
+	field(DOL,  "${UUT}:MGT:SFP:${CH}:TX_DISABLE PP")
+	field(OMSL, "closed_loop")	
+}
+
+record(bi, "${UUT}:MGT:SFP:${CH}:TX_DISABLE:r") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "")
+	field(DTYP, "biAcqHost")
+	field(INP,  "@/dev/gpio/MGT482/SFP${CH}/TX_DISABLE")
+	field(SCAN, "5 second")
+	field(FLNK, "${UUT}:MGT:SFP:${CH}:TX_DISABLE:s")
+}
+
+record(bo, "${UUT}:MGT:SFP:${CH}:TX_DISABLE:s") {
+	field(ONAM, "ON")
+	field(ZNAM, "OFF")
+	field(DESC, "")
+	field(DTYP, "Soft Channel")
+	field(DOL,  "${UUT}:MGT:SFP:${CH}:TX_DISABLE:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:MGT:SFP:${CH}:TX_DISABLE PP")
+}

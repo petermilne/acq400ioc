@@ -15,7 +15,7 @@ option +r;
 
 int rxpower; assign rxpower to "{uut}:SFP:3:RXPWR"; monitor rxpower;
 int upcount; assign upcount to "{uut}:SFP:3:RXPWR:COUNT"; monitor upcount;
-int txdisable; assign txdisable to "{uut}:11:SFP_TX_DISABLE";
+int txdisable; assign txdisable to "{uut}:MGT:SFP:3:TX_DISABLE";
 
 int verbose;
 
