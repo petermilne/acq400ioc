@@ -12,6 +12,7 @@ int tx_disable; assign tx_disable to "{uut}:MGT:SFP:{port}:TX_DISABLE";
 int verbose;
 int remove_threshold = 5;
 int remove_count = 0;
+int present_count = 0;
 char* port;
 
 /* Rx Pwr thresholds in uW */
@@ -40,12 +41,15 @@ ss sfp_txen {
 	}
 	
 	state wait_remove {
-		when(!present && ++remove_count > remove_threshold){			
+		when(!present && ++remove_count > remove_threshold){
+			present_count = 0;
 			tx_disable = 1; pvPut(tx_disable);
 			if (verbose) printf("%s:%s PRES:%d %s -> %s TX_DIS:%d %s\n", "acq2206_sfp_en", port, present, "wait_remove", "wait_present", tx_disable, tx_disable?"OFF":"ON");
 		} state wait_present
 		when(present){
-			if (verbose) printf("%s:%s PRES:%d %s -> %s TX_DIS:%d %s\n", "acq2206_sfp_en", port, present, "wait_remove", "wait_present", tx_disable, tx_disable?"OFF":"ON");
-		} state wait_present		
+			if (present_count++ == 0){
+				if (verbose) printf("%s:%s PRES:%d %s -> %s TX_DIS:%d %s\n", "acq2206_sfp_en", port, present, "wait_remove", "wait_present", tx_disable, tx_disable?"OFF":"ON");
+			}
+		} state wait_remove
 	}	
 }
