@@ -249,6 +249,8 @@ record(mbbi, "${UUT}:MODE:TRANS_ACT:STATE") {
 	field(INP,  "@transient.proto read_state ${SPORTT}")
 	field(SCAN, "I/O Intr")		
 	field(FLNK, "${UUT}:MODE:TRANS_ACT:STATE_f")
+	field(VAL,  "0")
+	field(PINI, "YES")
 }
 
 
