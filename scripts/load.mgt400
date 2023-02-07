@@ -93,7 +93,7 @@ load_mgt400() {
 }
 #tr '[:upper:]' '[:lower:]'
 
-# kmcu sfp gpio do no exist
+# kmcu, z7io sfp gpio do not exist
 [ -e /dev/gpio/MGT482/SFP1/PRESENT ] && load_mgt400_sfp
 
 MGTPORTS=0

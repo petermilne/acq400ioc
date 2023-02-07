@@ -1391,6 +1391,9 @@ load_mb() {
         
         [ -e /dev/acq400.13.knobs ] && echo "seq mgtStopOnLinkDown \"uut=${HOST},port=A\"" >>/tmp/st_post.cmd
         [ -e /dev/acq400.12.knobs ] && echo "seq mgtStopOnLinkDown \"uut=${HOST},port=B\"" >>/tmp/st_post.cmd
+    elif [[ "$mt" = "z7io" && -e /dev/acq400.11.knobs ]]; then
+        source /usr/local/epics/scripts/load.mgt400
+        echo "seq mgtStopOnLinkDown \"uut=${HOST},port=C\"" >>/tmp/st_post.cmd
     fi
     
     if [[ -e /dev/acq400.10.knobs && $hudp -eq 1 ]]; then
