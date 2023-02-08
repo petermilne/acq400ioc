@@ -36,7 +36,8 @@ record(bo, "${UUT}:MGT:SFP:${CH}:TX_DISABLE:w") {
 	field(DISV, "1")
 	field(SDIS, "${UUT}:MGT:SFP:${CH}:TX_DISABLE:s.PACT")
 	field(DOL,  "${UUT}:MGT:SFP:${CH}:TX_DISABLE PP")
-	field(OMSL, "closed_loop")	
+	field(OMSL, "closed_loop")
+	field(FLNK, "${UUT}:MGT:SFP:${CH}:TX_ENABLED")
 }
 
 record(bi, "${UUT}:MGT:SFP:${CH}:TX_DISABLE:r") {
@@ -57,4 +58,13 @@ record(bo, "${UUT}:MGT:SFP:${CH}:TX_DISABLE:s") {
 	field(DOL,  "${UUT}:MGT:SFP:${CH}:TX_DISABLE:r NPP")
 	field(OMSL, "closed_loop")
 	field(OUT,  "${UUT}:MGT:SFP:${CH}:TX_DISABLE PP")
+	field(FLNK, "${UUT}:MGT:SFP:${CH}:TX_ENABLED")
 }
+
+record(calc, "${UUT}:MGT:SFP:${CH}:TX_ENABLED") {
+	field(DESC, "shows inverse of TX_DIS to mimic led")
+	field(INPA, "${UUT}:MGT:SFP:${CH}:TX_DISABLE")
+	field(CALC, "!A")
+}
+
+
