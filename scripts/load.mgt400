@@ -41,7 +41,7 @@ load_mgt400() {
 	site=$1
 	abc=$2
 
-	sport="S${abc}"
+	sport="SM${abc}"
 			
 	cprams="UUT=${HOST},SITE=${abc},chan=${abc}"
 	# count is scaled by 0.5
@@ -121,11 +121,14 @@ done
 
 dblr '"db/acq2106_mgtports.db","UUT='${HOST}',MGTPORTS='${MGTPORTS}'"'
 
+if [ "$mt" != "z7io" ]; then
 # SFP1 at 4291
-for port in 1 2 3 4; do
+    for port in 1 2 3 4; do
 		create_asyn_channel SSFP${port} 127.0.0.1:429${port}
 		dblr '"db/sfp.db", "UUT='${HOST}',PORT='${port}',SPORT=SSFP'${port}'"'
-done
+    done
+fi
+
 
 
 
