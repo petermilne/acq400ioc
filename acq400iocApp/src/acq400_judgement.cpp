@@ -651,10 +651,11 @@ class acq400JudgementImpl : public acq400Judgement {
 		}
 	}
 
+	int print_fails;
 public:
 	acq400JudgementImpl(const char* portName, int _nchan, int _nsam, int _bursts_per_buffer, unsigned _ndma) :
 		acq400Judgement(portName, _nchan, _nsam, _bursts_per_buffer),
-		ndma(_ndma)
+		ndma(_ndma), print_fails(0)
 	{
 		createParam(PS_MU,  AATYPE,    	&P_MU);
 		createParam(PS_ML,  AATYPE,    	&P_ML);
@@ -709,8 +710,12 @@ public:
 
 		if (!esok){
 			esok = handle_es((unsigned*)(raw+nchan));
-			printf("ERROR %s es not at offset0, %s\n", __FUNCTION__, esok? "ES found at +1": "ES NOT FOUND");
+			if (++print_fails < 4){
+				printf("ERROR %s es not at offset0, %s\n", __FUNCTION__, esok? "ES found at +1": "ES NOT FOUND");
+			}
 			return;
+		}else{
+			print_fails = 0;
 		}
 
 		updateTimeStamp(offset);
