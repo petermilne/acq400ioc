@@ -33,7 +33,7 @@ ss ppw_tick_scaler {
 			for (dx = 1; dx <= 6; ++dx){
 				snprintf(pvname, 128, "%s:%s:PPW:%d:PULSE:%s.DRVH", uut, site, dx, "DELAY");
 				pvAssign(delay_drvh[dx], pvname);
-				snprintf(pvname, 128, "%s:%s:PPW:%d:PULSE:%s.DRVH", uut, site, dx, "TOP");
+				snprintf(pvname, 128, "%s:%s:PPW:%d:PULSE:%s.DRVH", uut, site, dx, "WIDTH");
 				pvAssign(top_drvh[dx], pvname);
 			}
 			pvGet(max_tick);

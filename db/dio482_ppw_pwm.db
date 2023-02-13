@@ -257,7 +257,7 @@ record(calcout, "${UUT}:${SITE}:PPW:${ch}:PULSE:DELAY:c") {
 	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:GP:c")
 }
 
-record(ao, "${UUT}:${SITE}:PPW:${ch}:PULSE:TOP") {
+record(ao, "${UUT}:${SITE}:PPW:${ch}:PULSE:WIDTH") {
 	field(DESC, "PULSE HI TIME ms")
 	field(DTYP, "Soft Channel")
 	field(DRVL, "0")
@@ -265,11 +265,11 @@ record(ao, "${UUT}:${SITE}:PPW:${ch}:PULSE:TOP") {
 	# NFG, has to be a constant => needs a seq to fix ..
 	field(DRVH, "999")
 	field(EGU, "ms")
-	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:TOP:c")
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:WIDTH:c")
 }
 
-record(calcout, "${UUT}:${SITE}:PPW:${ch}:PULSE:TOP:c") {
-	field(INPA, "${UUT}:${SITE}:PPW:${ch}:PULSE:TOP")
+record(calcout, "${UUT}:${SITE}:PPW:${ch}:PULSE:WIDTH:c") {
+	field(INPA, "${UUT}:${SITE}:PPW:${ch}:PULSE:WIDTH")
 	field(INPB, "${UUT}:${SITE}:PPW:DELAY:MAX")
 	field(CALC,  "A/B*1023")
 	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT PP")
