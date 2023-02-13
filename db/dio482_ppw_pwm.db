@@ -1,4 +1,4 @@
-# dio482_ppw_pwm.db 
+# dio482_ppw_pwm.db
 
 #const unsigned PPW_PWM_FIELDS[] = { PPW_PWM_IS, PPW_PWM_ICOUNT, PPW_PWM_OCOUNT, PPW_PWM_PRD, 0 };
 #const unsigned PPW_REP_FIELDS[] = { PPW_REP_FIELD, 0 };
@@ -10,8 +10,8 @@ record(bo, "${UUT}:${SITE}:PPW:${ch}:PULSE") {
 	field(DTYP, "Soft Channel")
 	field(DESC, "configure PPW ${ch} trigger")
 	field(ZNAM, "INIT_LO")
-	field(ONAM, "INIT_HI")			
-	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:w PP")	
+	field(ONAM, "INIT_HI")
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:w PP")
 }
 
 
@@ -21,7 +21,7 @@ record(bo, "${UUT}:${SITE}:PPW:${ch}:PULSE") {
 # rgm:s : sync
 # rgm:w : write
 # added twist, all 3 writes get muxed together in :${ch}:_ppwp
-# while we could disable ICOUNT, SENSE when set==0, better effect doing this on 
+# while we could disable ICOUNT, SENSE when set==0, better effect doing this on
 # the gui. The driver driver will reject attempts to set 0,X,X where X!=0
 
 record(mbbi, "${UUT}:${SITE}:PPW:${ch}:PULSE:r") {
@@ -39,7 +39,7 @@ record(mbbo, "${UUT}:${SITE}:PPW:${ch}:PULSE:s") {
 }
 
 record(mbbo, "${UUT}:${SITE}:PPW:${ch}:PULSE:w") {
-	field(DTYP, "Soft Channel")	
+	field(DTYP, "Soft Channel")
 	field(FLNK, "${UUT}:${SITE}:${ch}:_ppwp PP")
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:PULSE:s.PACT")
@@ -50,10 +50,10 @@ record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT") {
 	field(DRVL, "0")
 	field(DRVH, "1023")
 	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT:w PP")
-}     
+}
 
 record(longin, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT:r") {
-	field(DTYP, "stream")	
+	field(DTYP, "stream")
 	field(INP,  "@ppw.proto getSigIcount(ppw_pwm${ch}) ${SPORT}")
 	field(SCAN, "I/O Intr")
 	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT:s")
@@ -65,7 +65,7 @@ record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT:s") {
 	field(DOL,  "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT:r NPP")
 	field(OMSL, "closed_loop")
 	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT PP")
-} 	
+}
 
 record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT:w") {
 	field(DTYP, "Soft Channel")
@@ -81,10 +81,10 @@ record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT") {
 	field(DRVL, "0")
 	field(DRVH, "1023")
 	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT:w PP")
-}     
+}
 
 record(longin, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT:r") {
-	field(DTYP, "stream")	
+	field(DTYP, "stream")
 	field(INP,  "@ppw.proto getSigOcount(ppw_pwm${ch}) ${SPORT}")
 	field(SCAN, "I/O Intr")
 	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT:s")
@@ -96,12 +96,12 @@ record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT:s") {
 	field(DOL,  "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT:r NPP")
 	field(OMSL, "closed_loop")
 	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT PP")
-} 	
+}
 
 record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT:w") {
 	field(DTYP, "Soft Channel")
 	field(DRVL, "0")
-	field(DRVH, "1023") 
+	field(DRVH, "1023")
 	field(FLNK, "${UUT}:${SITE}:${ch}:_ppwp PP")
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT:s.PACT")
@@ -111,12 +111,12 @@ record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT:w") {
 record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP") {
 	field(DTYP, "Soft Channel")
 	field(DRVL, "0")
-	field(DRVH, "65535")
+	field(DRVH, "2047")
 	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:w PP")
-}     
+}
 
 record(longin, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:r") {
-	field(DTYP, "stream")	
+	field(DTYP, "stream")
 	field(INP,  "@ppw.proto getSigGP(ppw_pwm${ch}) ${SPORT}")
 	field(SCAN, "I/O Intr")
 	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:s")
@@ -124,16 +124,16 @@ record(longin, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:r") {
 record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:s") {
 	field(DTYP, "Soft Channel")
 	field(DRVL, "0")
-	field(DRVH, "65535")
+	field(DRVH, "2047")
 	field(DOL,  "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:r NPP")
 	field(OMSL, "closed_loop")
 	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:PULSE:GP PP")
-} 	
+}
 
 record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:w") {
 	field(DTYP, "Soft Channel")
 	field(DRVL, "0")
-	field(DRVH, "65535")
+	field(DRVH, "2047")
 	field(FLNK, "${UUT}:${SITE}:${ch}:_ppwp PP")
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:s.PACT")
@@ -147,7 +147,7 @@ record(calcout, "${UUT}:${SITE}:${ch}:_ppwp") {
 	field(INPD, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP")
 	field(CALC, "0")
 	field(DTYP, "stream")
-# refuse to update in the RUN state	
+# refuse to update in the RUN state
 #	field(SDIS, "${UUT}:${SITE}:RUN")
 #	field(DISV, "1")
 	field(OUT,  "@ppw.proto setSig4(ppw_pwm${ch}) ${SPORT}")
@@ -162,7 +162,7 @@ record(mbbo, "${UUT}:${SITE}:PPW:${ch}:REPMODE") {
 	field(ZRST, "ONCE")
 	field(ONST, "REP")
 	field(TWST, "CONT")
-	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:REPS:c PP")	
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:REPS:c PP")
 }
 
 record(calcout, "${UUT}:${SITE}:PPW:${ch}:REPS:c") {
@@ -171,7 +171,7 @@ record(calcout, "${UUT}:${SITE}:PPW:${ch}:REPS:c") {
 	field(CALC, "A==0? 1 : A==2? 65536: B==0? 1: B==65536?65534: B")
 	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:REPS PP")
 	field(DISV, "1")
-	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:REPS:s.PACT")	
+	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:REPS:s.PACT")
 }
 
 
@@ -180,10 +180,10 @@ record(longout, "${UUT}:${SITE}:PPW:${ch}:REPS") {
 	field(DRVL, "1")
 	field(DRVH, "65536")
 	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:REPS:w PP")
-}     
+}
 
 record(longin, "${UUT}:${SITE}:PPW:${ch}:REPS:r") {
-	field(DTYP, "stream")	
+	field(DTYP, "stream")
 	field(INP,  "@ppw.proto getReps(${ch}) ${SPORT}")
 	field(SCAN, "1 second")
 	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:REPS:s")
@@ -196,14 +196,14 @@ record(longout, "${UUT}:${SITE}:PPW:${ch}:REPS:s") {
 	field(OMSL, "closed_loop")
 	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:REPS PP")
 	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:REPS:cr")
-} 	
+}
 record(calcout, "${UUT}:${SITE}:PPW:${ch}:REPS:cr") {
 	field(INPA, "${UUT}:${SITE}:PPW:${ch}:REPMODE")
 	field(INPB, "${UUT}:${SITE}:PPW:${ch}:REPS")
 	field(CALC, "B==1? 0: B==65536?2: 1")
 	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:REPMODE PP")
 	field(DISV, "1")
-#	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:REPS:s.PACT")	
+#	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:REPS:s.PACT")
 }
 
 
@@ -214,8 +214,75 @@ record(longout, "${UUT}:${SITE}:PPW:${ch}:REPS:w") {
 	field(DRVH, "65536")
 	field(DISV, "1")
 	field(DOL,  "${UUT}:${SITE}:PPW:${ch}:REPS")
-	field(OMSL, "closed_loop")	
+	field(OMSL, "closed_loop")
 	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:REPS:s.PACT")
 }
+
+
+record(calc, "${UUT}:${SITE}:PPW:TICK") {
+	field(INPC, "40e6")
+	field(INPD, "${UUT}:${SITE}:CLKDIV")
+	field(CALC, "1e9/C*D")
+	field(EGU,  "ns")
+	field(FLNK, "${UUT}:${SITE}:PPW:DELAY:MAX")
+}
+
+record (longout, "${UUT}:${SITE}:clkdiv:e") {
+	field(FLNK, "${UUT}:${SITE}:PPW:TICK")
+}
+
+record(calc, "${UUT}:${SITE}:PPW:DELAY:MAX") {
+	field(INPA, "${UUT}:${SITE}:PPW:TICK")
+	field(INPB, "1023")
+	field(CALC, "A*B/1e6")
+	field(EGU,  "ms")
+}
+
+record(ao, "${UUT}:${SITE}:PPW:${ch}:PULSE:DELAY") {
+	field(DESC, "PULSE DELAY ms")
+	field(DTYP, "Soft Channel")
+	field(DRVL, "0")
+	#field(DRVH, "${UUT}:${SITE}:PPW:DELAY:MAX")
+	# NFG, has to be a constant => needs a seq to fix ..
+	field(DRVH, "999")
+	field(EGU, "ms")
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:DELAY:c")
+}
+
+record(calcout, "${UUT}:${SITE}:PPW:${ch}:PULSE:DELAY:c") {
+	field(INPA, "${UUT}:${SITE}:PPW:${ch}:PULSE:DELAY")
+	field(INPB, "${UUT}:${SITE}:PPW:DELAY:MAX")
+	field(CALC,  "A/B*1023")
+	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT PP")
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:GP:c")
+}
+
+record(ao, "${UUT}:${SITE}:PPW:${ch}:PULSE:TOP") {
+	field(DESC, "PULSE HI TIME ms")
+	field(DTYP, "Soft Channel")
+	field(DRVL, "0")
+	#field(DRVH, "${UUT}:${SITE}:PPW:DELAY:MAX")
+	# NFG, has to be a constant => needs a seq to fix ..
+	field(DRVH, "999")
+	field(EGU, "ms")
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:TOP:c")
+}
+
+record(calcout, "${UUT}:${SITE}:PPW:${ch}:PULSE:TOP:c") {
+	field(INPA, "${UUT}:${SITE}:PPW:${ch}:PULSE:TOP")
+	field(INPB, "${UUT}:${SITE}:PPW:DELAY:MAX")
+	field(CALC,  "A/B*1023")
+	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT PP")
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:GP:c")
+}
+
+record(calcout, "${UUT}:${SITE}:PPW:${ch}:GP:c") {
+	field(INPA, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT")
+	field(INPB, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT)
+	field(CALC,  "A+B")
+	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:PULSE:GP PP")
+}
+
+
 
 
