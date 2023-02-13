@@ -5,18 +5,22 @@
 program ppw_tick_scaler
 option +r;
 
-int present; assign present to "{uut}:MGT:SFP:{port}:PRESENT"; monitor present;
-int tx_disable; assign tx_disable to "{uut}:MGT:SFP:{port}:TX_DISABLE";
 
-int verbose;
-int remove_threshold = 5;
-int remove_count = 0;
-int present_count = 0;
+double max_tick; assign max_tick to "{uut}:{site}:PPW:DELAY:MAX"; monitor max_tick;
+
+#define NDX	6
+#define NDX1	7
+
+double delay_drvh[NDX1]; assign delay_drvh to {};    // index from 1. 
+double top_drvh[NDX1];   assign top_drvh to {};
+
+char* uut;
 char* port;
-
-/* Rx Pwr thresholds in uW */
-#define TH_RX_LO	5
-#define TH_RX_HI	10
+char* site;
+char pvname[128];
+double max_tick0;
+int verbose;
+int dx;
 
 ss ppw_tick_scaler {
 	state init {
@@ -24,39 +28,33 @@ ss ppw_tick_scaler {
 			if (macValueGet("verbose")){
 				verbose = macValueGet("verbose")[0] - '0';
 			}
-			if (macValueGet("remove_threshold")){
-				remove_threshold = macValueGet("remove_threshold")[0] - '0';
+			uut = macValueGet("uut");			
+			site = macValueGet("site");
+			for (dx = 1; dx <= 6; ++dx){
+				snprintf(pvname, 128, "%s:%s:PPW:%d:PULSE:%s.DRVH", uut, site, dx, "DELAY");
+				pvAssign(delay_drvh[dx], pvname);
+				snprintf(pvname, 128, "%s:%s:PPW:%d:PULSE:%s.DRVH", uut, site, dx, "TOP");
+				pvAssign(top_drvh[dx], pvname);
 			}
-			port = macValueGet("port");
-			tx_disable = 1; pvPut(tx_disable);
-		} state wait_present
+			pvGet(max_tick);
+		} state set_all
 	}
-	state wait_present {
-		when(present){
-			tx_disable = 0; pvPut(tx_disable);
-			remove_count = 0;
-			if (verbose) printf("%s:%s PRES:%d %s -> %s TX_DIS:%d %s\n", "acq2206_sfp_en", port, present, "wait_present", "wait_remove", tx_disable, tx_disable?"OFF":"ON");
-		} state wait_remove
+	state set_all {
+		entry{			
+			for (dx = 1; dx <= 6; ++dx){
+				delay_drvh[dx] = max_tick; pvPut(delay_drvh[dx]);
+				top_drvh[dx] = max_tick; pvPut(top_drvh[dx]);
+			}
+			max_tick0 = max_tick;
+		}
+		when() {
+			;
+		} state wait_change
 	}
 
-	state wait_remove {
-		when(!present && ++remove_count > remove_threshold){
-			present_count = 0;
-			tx_disable = 1; pvPut(tx_disable);
-			if (verbose) printf("%s:%s PRES:%d %s -> %s TX_DIS:%d %s\n", "acq2206_sfp_en", port, present, "wait_remove", "wait_present", tx_disable, tx_disable?"OFF":"ON");
-		} state wait_present
-		when(!present){
-			if (verbose) printf("%s:%s PRES:%d %s -> %s TX_DIS:%d %s\n", "acq2206_sfp_en", port, present, "wait_remove", "wait_remove_timeout", tx_disable, tx_disable?"OFF":"ON");
-		} state wait_remove_timeout
-		when(present){
-			if (++present_count < 4 || present_count%16 == 0){
-				if (verbose) printf("%s:%s PRES:%d %s -> %s TX_DIS:%d %s\n", "acq2206_sfp_en", port, present, "wait_remove", "wait_remove_timeout", tx_disable, tx_disable?"OFF":"ON");
-			}
-		} state wait_remove_timeout
-	}
-	state wait_remove_timeout {
-		when(delay(1)){
-
-		} state wait_remove
+	state wait_change {
+		when(max_tick != max_tick0){
+			
+		} state set_all
 	}
 }

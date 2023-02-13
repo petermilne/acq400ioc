@@ -18,3 +18,5 @@ for ch in $(seq ${PPWCHAN:-6}); do
     dblr '"db/dio482_ppw_pwm.db","'${HSS},ch=$ch,IX=$(($ch-1))'"'
     dblr '"db/counter.db","'${ctpr},lname=PULSE${ch},pname=ppw_cnt${ch}'"'
 done
+
+echo >>/tmp/st_post.cmd "seq ppw_tick_scaler \"uut=${uut},site=${site},verbose=${PPW_VERBOSE:-0}\"" 
