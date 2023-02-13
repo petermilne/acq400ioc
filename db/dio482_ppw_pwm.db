@@ -278,7 +278,7 @@ record(calcout, "${UUT}:${SITE}:PPW:${ch}:PULSE:TOP:c") {
 
 record(calcout, "${UUT}:${SITE}:PPW:${ch}:GP:c") {
 	field(INPA, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT")
-	field(INPB, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT)
+	field(INPB, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT")
 	field(CALC,  "A+B")
 	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:PULSE:GP PP")
 }
