@@ -19,7 +19,6 @@ record (calcout, "${UUT}:SYS:CLK:fpclk0") {
 	field(OOPT, "When Zero")
 	field(FLNK, "${UUT}:SYS:CLK:xclk0")	
 	field(DISV, "1")
-	field(SDIS, "${UUT}:SYS:CLK:FPMUX:r.PACT")
 }
 
 record (calcout, "${UUT}:SYS:CLK:xclk0") {
@@ -27,7 +26,7 @@ record (calcout, "${UUT}:SYS:CLK:xclk0") {
 	field(CALC, "A==1")
 	field(OUT, "${UUT}:SYS:CLK:_OSC_X_CLK_OE PP")
 	field(OOPT, "When Zero")
-	field(FLNK, "${UUT}:SYS:CLK:zclk0")	
+	field(FLNK, "${UUT}:SYS:CLK:zclk0")
 }
 
 record (calcout, "${UUT}:SYS:CLK:zclk0") {
@@ -59,7 +58,7 @@ record (calcout, "${UUT}:SYS:CLK:zclk") {
 	field(CALC, "A==3")	
 	field(OUT, "${UUT}:SYS:CLK:_ZCLK_OE PP")
 	field(OOPT, "Transition To Non-zero")
-	field(FLNK, "${UUT}:SYS:CLK:_FP_OE")			
+	field(FLNK, "${UUT}:SYS:CLK:fpclk0")
 }
 
 record (calcout, "${UUT}:SYS:CLK:fpclk0") {
@@ -76,7 +75,6 @@ record (bo, "${UUT}:SYS:CLK:_FP_CLK_OE") {
 	field(DESC, "Front Panel Clock Output En")
 	field(DTYP, "boAcqHost")
 	field(OUT, "@/dev/gpio/CLK/FP_CLK_OE")
-	
 }
 
 record (bo, "${UUT}:SYS:CLK:_FP_OE") {
