@@ -24,7 +24,7 @@ record(calcout, "${UUT}:SYS:CLK:FP_NOT_HDMI:w2"){
 	field(INPA, "${UUT}:0:SIG:SRC:CLK:0")
 	field(INPB, "${UUT}:SYS:CLK:FPMUX")
 	field(CALC, "A==5||B==2")
-	field(OUT,  "${UUT}:SYS:CLK:_FP_CLK_OE PP")
+	field(OUT,  "${UUT}:SYS:CLK:_FP_OE PP")
 }
 
 # enable FPCLK (needed if  ${UUT}:SYS:CLK:FPMUX is not FPCLK)
