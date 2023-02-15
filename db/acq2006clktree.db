@@ -6,25 +6,26 @@ record (mbbo, "${UUT}:SYS:CLK:FPMUX") {
 	field(ONST, "XCLK")
 	field(TWST, "FPCLK")
 	field(THST, "${thst}")
-	field(FLNK, "${UUT}:SYS:CLK:fpclk0")
+	field(FLNK, "${UUT}:SYS:CLK:xclk0")
 	field(VAL,  "0")
 	field(PINI, "YES")
 }
 
 # break before make .. 
-record (calcout, "${UUT}:SYS:CLK:fpclk0") {
-	field(INPA, "${UUT}:SYS:CLK:FPMUX")
-	field(CALC, "A==2")
-	field(OUT, "${UUT}:SYS:CLK:_FP_CLK_OE PP")
-	field(OOPT, "When Zero")
-	field(FLNK, "${UUT}:SYS:CLK:xclk0")	
-	field(DISV, "1")
-}
 
 record (calcout, "${UUT}:SYS:CLK:xclk0") {
 	field(INPA, "${UUT}:SYS:CLK:FPMUX")
 	field(CALC, "A==1")
 	field(OUT, "${UUT}:SYS:CLK:_OSC_X_CLK_OE PP")
+	field(OOPT, "When Zero")
+	field(FLNK, "${UUT}:SYS:CLK:fpclk0")
+}
+
+
+record (calcout, "${UUT}:SYS:CLK:fpclk0") {
+	field(INPA, "${UUT}:SYS:CLK:FPMUX")
+	field(CALC, "A==2")
+	field(OUT, "${UUT}:SYS:CLK:_FP_CLK_OE PP")
 	field(OOPT, "When Zero")
 	field(FLNK, "${UUT}:SYS:CLK:zclk0")
 }
@@ -32,10 +33,11 @@ record (calcout, "${UUT}:SYS:CLK:xclk0") {
 record (calcout, "${UUT}:SYS:CLK:zclk0") {
 	field(INPA, "${UUT}:SYS:CLK:FPMUX")
 	field(CALC, "A==3")
-	field(OUT, "${UUT}:SYS:CLK:_ZCLK_OE PP")
+	field(OUT,  "${UUT}:SYS:CLK:_ZCLK_OE PP")
 	field(OOPT, "When Zero")
 	field(FLNK, "${UUT}:SYS:CLK:fpclk")	
 }
+
 # make
 record (calcout, "${UUT}:SYS:CLK:fpclk") {
 	field(INPA, "${UUT}:SYS:CLK:FPMUX")
@@ -56,15 +58,15 @@ record (calcout, "${UUT}:SYS:CLK:xclk") {
 record (calcout, "${UUT}:SYS:CLK:zclk") {
 	field(INPA, "${UUT}:SYS:CLK:FPMUX")
 	field(CALC, "A==3")	
-	field(OUT, "${UUT}:SYS:CLK:_ZCLK_OE PP")
+	field(OUT,  "${UUT}:SYS:CLK:_ZCLK_OE PP")
 	field(OOPT, "Transition To Non-zero")
-	field(FLNK, "${UUT}:SYS:CLK:fpclk0")
+	field(FLNK, "${UUT}:SYS:CLK:fpclk1")
 }
 
-record (calcout, "${UUT}:SYS:CLK:fpclk0") {
+record (calcout, "${UUT}:SYS:CLK:fpclk1") {
 	field(INPA, "${UUT}:SYS:CLK:FPMUX")
 	field(CALC, "A==2")
-	field(OUT, "${UUT}:SYS:CLK:_FP_OE PP")
+	field(OUT,  "${UUT}:SYS:CLK:_FP_OE PP")
 	field(OOPT, "Transition To Non-zero")
 	field(FLNK, "${UUT}:SYS:CLK:_OSC_X_OE")
 }
@@ -74,7 +76,9 @@ record (bo, "${UUT}:SYS:CLK:_FP_CLK_OE") {
 	field(ZNAM, "OFF")
 	field(DESC, "Front Panel Clock Output En")
 	field(DTYP, "boAcqHost")
-	field(OUT, "@/dev/gpio/CLK/FP_CLK_OE")
+	field(OUT,  "@/dev/gpio/CLK/FP_CLK_OE")
+	field(VAL,  "0")
+	field(PINI, "YES")
 }
 
 record (bo, "${UUT}:SYS:CLK:_FP_OE") {
@@ -82,7 +86,9 @@ record (bo, "${UUT}:SYS:CLK:_FP_OE") {
 	field(ZNAM, "OFF")
 	field(DESC, "")
 	field(DTYP, "boAcqHost")
-	field(OUT, "@/dev/gpio/CLK/FP_OE")		
+	field(OUT,  "@/dev/gpio/CLK/FP_OE")
+	field(VAL,  "0")
+	field(PINI, "YES")
 }
 
 record (bo, "${UUT}:SYS:CLK:_OSC_X_CLK_OE") {
@@ -90,8 +96,9 @@ record (bo, "${UUT}:SYS:CLK:_OSC_X_CLK_OE") {
 	field(ZNAM, "OFF")
 	field(DESC, "OSC X Clock Output En")
 	field(DTYP, "boAcqHost")
-	field(OUT, "@/dev/gpio/CLK/OSC_X_CLK_OE")
-		
+	field(OUT,  "@/dev/gpio/CLK/OSC_X_CLK_OE")
+	field(VAL,  "0")
+	field(PINI, "YES")
 }
 
 record (bo, "${UUT}:SYS:CLK:_OSC_X_OE") {
@@ -99,7 +106,7 @@ record (bo, "${UUT}:SYS:CLK:_OSC_X_OE") {
 	field(ZNAM, "OFF")
 	field(DESC, "")
 	field(DTYP, "boAcqHost")
-	field(OUT, "@/dev/gpio/CLK/OSC_X_OE")
+	field(OUT,  "@/dev/gpio/CLK/OSC_X_OE")
 	field(OMSL, "closed_loop")
 	field(DOL,  "${UUT}:SYS:CLK:xclk")		
 }
@@ -109,5 +116,7 @@ record (bo, "${UUT}:SYS:CLK:_ZCLK_OE") {
 	field(ZNAM, "OFF")
 	field(DESC, " ")
 	field(DTYP, "boAcqHost")
-	field(OUT, "@/dev/gpio/CLK/ZCLK_OE")	
+	field(OUT,  "@/dev/gpio/CLK/ZCLK_OE")
+	field(VAL,  "0")
+	field(PINI, "YES")
 }
