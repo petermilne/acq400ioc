@@ -3,8 +3,8 @@
 
 record (bo, "${UUT}:SYS:CLK:FP_NOT_HDMI") {
 	field(DTYP, "Soft Channel")
-	field(ONAM, "HDMI")
-	field(ZNAM, "FP")	
+	field(ZNAM, "HDMI")
+	field(ONAM, "FP")	
 	field(FLNK, "${UUT}:SYS:CLK:fpnhdmi0")
 	field(VAL,  "0")
 	field(PINI, "YES")
@@ -19,10 +19,11 @@ record(calcout, "${UUT}:SYS:CLK:FP_NOT_HDMI:w"){
 	field(FLNK, "${UUT}:SYS:CLK:FP_NOT_HDMI:w2")
 }
 
-# 1::FP or 5: FP_NOT_HDMI :: enable front side FPCLK switch (else off for noise purposes.
+# 5:FP_NOT_HDMI OR FPMUX=2:FPCLK :: enable front side FPCLK switch (else off for noise purposes.
 record(calcout, "${UUT}:SYS:CLK:FP_NOT_HDMI:w2"){
 	field(INPA, "${UUT}:0:SIG:SRC:CLK:0")
-	field(CALC, "A==1||A==5")
+	field(INPB, "${UUT}:SYS:CLK:FPMUX")
+	field(CALC, "A==5||B==2")
 	field(OUT,  "${UUT}:SYS:CLK:_FP_CLK_OE PP")
 }
 
@@ -55,7 +56,7 @@ record(mbbi, "${UUT}:0:SIG:SRC:CLK:0:r") {
 record (calcout, "${UUT}:SYS:CLK:fpnhdmi0") {
 	field(INPA, "0")
 	field(CALC, "A")
-	field(OUT, "${UUT}:SYS:CLK:_FP_CLK_OE2 PP")
+	field(OUT, "${UUT}:SYS:CLK:_FP_CLK2_OE PP")
 	field(FLNK, "${UUT}:SYS:CLK:fpnhdmi1")	
 }
 
@@ -70,7 +71,8 @@ record (calcout, "${UUT}:SYS:CLK:fpnhdmi1") {
 record (calcout, "${UUT}:SYS:CLK:fpnhdmi2") {
 	field(INPA, "${UUT}:SYS:CLK:FP_NOT_HDMI")
 	field(CALC, "A")
-	field(OUT, "${UUT}:SYS:CLK:_FP_CLK_OE2 PP")
+	field(OUT, "${UUT}:SYS:CLK:_FP_CLK2_OE PP")
+	field(FLNK, "${UUT}:SYS:CLK:fpnhdmi3")
 }
 
 # maybe make HDMI
