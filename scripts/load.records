@@ -1053,7 +1053,8 @@ load_mb_sites() {
             dblr '"db/acq2006clktree.db","UUT='${HOST},thst=${thst}'"'
             case $MB_MODEL in
             acq2206*)
-                dblr '"db/acq2206mb.db","UUT='${HOST}',SPORT=S0,MB_SET_MIN=2000"';;
+                dblr '"db/acq2206mb.db","UUT='${HOST}',SPORT=S0,MB_SET_MIN=2000"'
+                dblr '"db/acq2206clktree.db","UUT='${HOST}'"';;
             esac
             dblr '"db/acq2106mb.db","UUT='${HOST}',SPORT=S0,MB_SET_MIN=2000"';;     
         *)
@@ -1137,9 +1138,12 @@ load_mb_sync() {
         case $FUN in
         CLK)    
             case $MB_MODEL in
-            acq2[12]06*)
+            acq2106*)
                 #                   0       1       2       3       4 
-                lsb_x ${lp0},NOBT=3 "nc"        HDMI    GPG0    COMM_A  INT01M;;
+                lsb_x ${lp0},NOBT=3 "nc"    HDMI    GPG0    COMM_A  INT01M;;
+           acq2206*)
+                #                   0       1       2       3       4      5
+                lsb_x ${lp0},NOBT=3 "nc"    HDMI    GPG0    COMM_A  INT01M FP;;
             *)
                 lsb_x ${lp0},NOBT=3 EXT HDMI GPG0   "nc" INT01M;;
             esac;;
