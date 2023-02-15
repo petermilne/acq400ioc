@@ -62,6 +62,14 @@ record (calcout, "${UUT}:SYS:CLK:zclk") {
 	field(FLNK, "${UUT}:SYS:CLK:_FP_OE")			
 }
 
+record (calcout, "${UUT}:SYS:CLK:fpclk0") {
+	field(INPA, "${UUT}:SYS:CLK:FPMUX")
+	field(CALC, "A==2")
+	field(OUT, "${UUT}:SYS:CLK:_FP_OE PP")
+	field(OOPT, "Transition To Non-zero")
+	field(FLNK, "${UUT}:SYS:CLK:_OSC_X_OE")
+}
+
 record (bo, "${UUT}:SYS:CLK:_FP_CLK_OE") {
 	field(ONAM, "ON")
 	field(ZNAM, "OFF")
@@ -76,10 +84,7 @@ record (bo, "${UUT}:SYS:CLK:_FP_OE") {
 	field(ZNAM, "OFF")
 	field(DESC, "")
 	field(DTYP, "boAcqHost")
-	field(OUT, "@/dev/gpio/CLK/FP_OE")
-	field(OMSL, "closed_loop")
-	field(DOL,  "${UUT}:SYS:CLK:fpclk")
-	field(FLNK, "${UUT}:SYS:CLK:_OSC_X_OE")			
+	field(OUT, "@/dev/gpio/CLK/FP_OE")		
 }
 
 record (bo, "${UUT}:SYS:CLK:_OSC_X_CLK_OE") {
