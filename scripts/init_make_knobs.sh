@@ -205,6 +205,16 @@ make_epics_knobs() {
 		site=${pv1%%:*}
 		ln -s /usr/local/epics/scripts/COS_EN /etc/acq400/${site}/
 	done
+    for PV in $(egrep -e MGT.*TX_DISABLE$ $RLP)
+    do
+        sfp=$(echo $PV | awk -F: '{ print $4 }')
+        case $sfp in
+        1) make_caput $PV TX_DISABLE 13;;
+        2) make_caput $PV TX_DISABLE 12;;
+        3) make_caput $PV TX_DISABLE 11;;
+        4) make_caput $PV TX_DISABLE 10;;
+        esac
+    done
 	make_reset_knobs 0 12 13
 		
 	make_site0_knobs	
