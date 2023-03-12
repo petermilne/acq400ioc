@@ -187,5 +187,11 @@ record (longin, "${UUT}:${SITE}:AWG:CURSOR:PULL") {
 	field(SCAN, "I/O Intr")
 }
 
+record (stringin, "${UUT}:${SITE}:AWG:SEG") {
+	field(DTYP, "stream")
+	field(INP, "@awg.proto getAwgSeg ${SPORT}")
+	field(DESC, "Current segment")
+	field(SCAN, ".5 second")
+}
 
 

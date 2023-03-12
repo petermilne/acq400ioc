@@ -27,13 +27,21 @@ getML {
 }
 
 getMaxlen {
-      out "playloop_maxlen";
-      in "%d";   
+	out "playloop_maxlen";
+	in "%d";   
 }
 
+getMaxlen {
+	out "playloop_maxlen";
+	in "%d";   
+}
+getAwgSeg {
+	out "awg_seg";
+	in "%s";
+}
 getCompletedShot {
-    out "completed_shot";
-    in "%d";
+	out "completed_shot";
+	in "%d";
 }
 
 getMux {
@@ -42,25 +50,25 @@ getMux {
 }
 
 getOneShot {
-    out "playloop_oneshot";
-    in "%d";
+	out "playloop_oneshot";
+	in "%d";
 }
 
 setOneShot {
-    out "playloop_oneshot %d";
-    in;
+	out "playloop_oneshot %d";
+	in;
 }
 setAbort {
-    out "playloop_oneshot %d";
-    in;
-    out "awg_abort %d";
-    in;
+    	out "playloop_oneshot %d";
+    	in;
+    	out "awg_abort %d";
+    	in;
 }
 
 setBurstLen {
-    out "rtm %d";   
-    in;
-    out "rtm_translen %d";
+    	out "rtm %d";   
+    	in;
+    	out "rtm_translen %d";
 }
 
 getPushBuf {
