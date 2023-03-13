@@ -31,10 +31,6 @@ getMaxlen {
 	in "%d";   
 }
 
-getMaxlen {
-	out "playloop_maxlen";
-	in "%d";   
-}
 getAwgSeg {
 	out "awg_seg";
 	in "%s";
