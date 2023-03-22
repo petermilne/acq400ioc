@@ -161,6 +161,10 @@ is_42x() {
     echo $MEZ | egrep -q ACQ42\|AO42
 }
 
+is_43x() {
+    echo $MEZ | egrep -q ACQ43
+}
+
 
 
 CLKDX_OUT=d1
@@ -187,7 +191,7 @@ FS_DEF=200000; is_48x && FS_DEF=20000000
 # report init status - this will be overwritten on successful completion
 set_common() {
     echo "WARNING:$CMDLINE incomplete" > /dev/shm/role
-    set.site 0 SIG:*:RESET=1  &
+#   set.site 0 SIG:*:RESET=1  &
 }
 
 # even a slave can master another link in the chain..
@@ -262,6 +266,12 @@ set_48x_override() {
     set.site 1 CLKDIV=${CLKDIV:-1}
     # Configure HDMI Clock out
     set.site 0 SIG:SYNC_OUT:CLK:DX  d0
+}
+
+set_43x_override() {
+    hi_res_mode=1
+    [ $1 -ge 52000 ] && hi_res_mode=0
+    set.site 1 hi_res_mode=$hi_res_mode
 }
 
 
@@ -354,7 +364,8 @@ else
 	    set_common
 	    set_out_slave
 	    $set_slave
-	    is_48x && set_48x_override $FS slave;;
+	    is_48x && set_48x_override $FS slave
+	    is_43x && set_43x_override $FS slave;;
 	slavemb)
 	    set_common
 	    set_out_slave
