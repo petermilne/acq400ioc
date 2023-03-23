@@ -68,7 +68,7 @@ load_wf_acq_host_window_per_channel() {
     ch=$1; shift;
     wprams="$*"
     echo "# load_wf_acq_host_window_per_channel $ch $wprams"
-    
+
     case $((ch%8)) in
     0)
         outx=OUTA;;
@@ -99,10 +99,10 @@ make_AI() {
     site=$1
     type=SHORT
     maxcode=32768
-    
+
     PRAMS="UUT=${HOST},SITE=${site}"
     dblr \"db/ai.db\",\"${PRAMS},SPORT=S${site}\"
-        
+
     if [ $(is_data32 $site) -eq 1 ]; then
         type=LONG
         maxcode=2147483648
@@ -121,17 +121,17 @@ make_AI() {
         wprams="${wprams},maxcode=${maxcode},vmax=${vmax},eslo=${eslo}"
 
         dblr \"db/wfAcqHost.db\",\"WF=WF,LNKX=LNK0,${wprams}\"
-        
+
         [ "x$WF_ACQ_HOST_WINDOW_PER_CHANNEL" = "xy" ] && load_wf_acq_host_window_per_channel  $ch "$wprams"
     done
-    if [ $FIRST_AI_WF_RECORDS -eq 1 ]; then       
+    if [ $FIRST_AI_WF_RECORDS -eq 1 ]; then
         dblr \"db/wfAcqHostTb.db\",\"${PRAMS},size=${SIZE}\"
         sprams="UUT=${HOST},SITE=${site},CTRMAX=$CTR28,DT=1,DTC=1"
         dblr '"db/_counter.db","'${sprams},SIG=AI,lname=WF'"'
         FIRST_AI_WF_RECORDS=0
-    fi  
-    let nchanp1="$nchan+1"  
-    dblr \"db/cal.db\",\"${wprams},nchanp1=${nchanp1}\"     
+    fi
+    let nchanp1="$nchan+1"
+    dblr \"db/cal.db\",\"${wprams},nchanp1=${nchanp1}\"
 }
 
 
@@ -140,27 +140,27 @@ make_AI_records() {
     let i1=$2
     let i2=$i1+$3
     let ch=1
-    
+
     touch /dev/shm/subrate
-    
+
     vmax=$(get_range $site)
-    
+
     if [ $(is_data32 $site) -eq 1 ]; then
             maxcode=8388608
     else
             maxcode=32768
-    fi  
+    fi
     eslo=$(echo $vmax $maxcode | awk '{ print $1/$2 }')
-        
+
     for ix in $(seq $i1 $i2)
     do
         cid=$(printf "%02d" $ch)
         PRAMS="UUT=$HOST:${site},cid=$cid,idx=$ix,fname=subrate"
-        PRAMS=$PRAMS",egul=-$vmax,eguf=$vmax,lopr=-$vmax,hopr=$vmax,eslo=$eslo"     
-        dblr \"db/aiAcqHost.db\",\"$PRAMS\"     
+        PRAMS=$PRAMS",egul=-$vmax,eguf=$vmax,lopr=-$vmax,hopr=$vmax,eslo=$eslo"
+        dblr \"db/aiAcqHost.db\",\"$PRAMS\"
         let ch=$ch+1
     done
-                
+
 }
 
 FIRST_AI_TR_RECORDS=1
@@ -171,17 +171,17 @@ make_AI_TR_records() {
     let i2=$i1+$3
     let ch=1
     let size=$4
-    
+
     if [ $(is_data32 $site) -eq 1 ]; then
-            maxcode=2147483648      
+            maxcode=2147483648
             TYPE=LONG
     else
             maxcode=32768
-            TYPE=SHORT          
+            TYPE=SHORT
     fi
-    vmax=$(get_range $site) 
+    vmax=$(get_range $site)
     eslo=$(echo $vmax $maxcode | awk '{ print $1/$2 }')
-        
+
     for ix in $(seq $i1 $i2)
     do
         cid=$(printf "%02d" $ch)
@@ -189,13 +189,13 @@ make_AI_TR_records() {
         alt=$(printf "%02d" $ix1)
         PRAMS="UUT=$HOST,SITE=${site},cid=$cid,ch=$ch,alt=$alt"
         WPRAMS="${PRAMS},size=${size},type=${TYPE}"
-        WPRAMS="${WPRAMS},maxcode=${maxcode},vmax=${vmax},eslo=${eslo}"     
-        dblr \"db/wfAcqHostTw.db\",\"$WPRAMS\"      
+        WPRAMS="${WPRAMS},maxcode=${maxcode},vmax=${vmax},eslo=${eslo}"
+        dblr \"db/wfAcqHostTw.db\",\"$WPRAMS\"
         let ch=$ch+1
     done
     [ $FIRST_AI_TR_RECORDS -eq 1 ] && [ "x$WPRAMS" != "x" ] && \
-        dblr \"db/wfAcqHostTwTb.db\",\"$WPRAMS\"    
-    FIRST_AI_TR_RECORDS=0   
+        dblr \"db/wfAcqHostTwTb.db\",\"$WPRAMS\"
+    FIRST_AI_TR_RECORDS=0
 }
 
 
@@ -219,7 +219,7 @@ make_AI_TR() {
     fi
     ssb=$(cat /etc/acq400/0/ssb)
     echo 1>&2 "load.records: make_AI_TR ssb:$ssb NSAMPLES:$NSAMPLES"
-    
+
     if [ $NSAMPLES -eq 100000 ]; then
         if [ $ssb -gt 128 ]; then
             NSAMPLES=$(($NSAMPLES/2))
@@ -262,7 +262,7 @@ acq480_div() {
         fi
     fi
 }
-        
+
 
 load_AO() {
         site=$1
@@ -275,7 +275,7 @@ load_AO() {
 
         case $mtype in
         $MT_AO420)
-            if [ $site -ge 101 ]; then              
+            if [ $site -ge 101 ]; then
                 nchan=2
                 dblr '"db/dac_mux.db","'${cprams},MUXNAME=DAC_MUX,mknob=dac_mux'"'
                 if [ -e /etc/acq400/$site/dac_mux_master ]; then
@@ -295,7 +295,7 @@ load_AO() {
             done;;
         $MT_AO4220)
             maxcode=524288
-            type=LONG       
+            type=LONG
             nchan=4;
             chg=1
             dblr '"db/aoALL.db","'${cprams}'"'
@@ -305,10 +305,10 @@ load_AO() {
                 echo "seq ao420_range_set \"UUT=${HOST},SITE=${site},CID=$ch\"" >>/tmp/st_post.cmd
                 # PINI fails to set VAL on AO record. set GAIN (attenuation) to 100%
                 echo "dbpf ${HOST}:${site}:AWG:G:${ch} 100" >> /tmp/st_post.cmd
-            done;;          
+            done;;
         $MT_AO428)
             maxcode=524288
-            type=LONG       
+            type=LONG
             nchan=8
             for ch in $(seq 1 $nchan)
             do
@@ -332,15 +332,15 @@ load_AO() {
                 if [ -e $kb ]; then
                     ix=${kb#*range}
                     if [ "$ix" != "99" ]; then
-                        ch=$ix                                  
+                        ch=$ix
                         dblr '"db/ao424_range.db","'${cprams}',CH='$ch',IX='$ix',KNOB='${kb}'"'
                     fi
                     has_range=1
-                fi      
+                fi
             done
             if [ $has_range -ne 0 ]; then
-                dblr '"db/ao424_rangeM.db","'${cprams},SPORT=S${site}',CH='ALL'"'               
-            fi;;            
+                dblr '"db/ao424_rangeM.db","'${cprams},SPORT=S${site}',CH='ALL'"'
+            fi;;
         esac
         if [ $nchan -gt 0 ]; then
             let nchanp1="$nchan+1"
@@ -350,7 +350,7 @@ load_AO() {
             wprams="${PRAMS},size=${SIZE},type=${type},CHG=${chg}"
             wprams="${wprams},maxcode=${maxcode},vmax=${vmax},eslo=${eslo}"
             dblr \"db/calAO.db\",\"${wprams},nchanp1=${nchanp1}\"
-        fi          
+        fi
 }
 
 HAS_ACQ43X=0
@@ -360,15 +360,15 @@ ACQ480_S1=0
 OUTX="ABCDEFGH"
 
 # we allow ONE AWG only
-AWG_DONE=n  
+AWG_DONE=n
 
 load_400_statics() { (
-    site=$1 
-    mt=$2   
+    site=$1
+    mt=$2
     cprams="UUT=${HOST},SITE=${site}"
     ek=/etc/acq400/$site
     model=$(cat ${ek}/MODEL)
-    
+
     if [ $site -gt 0 ]; then
         pn=$(cat ${ek}/PART_NUM | awk '{ print $1 }')
     else
@@ -378,7 +378,7 @@ load_400_statics() { (
     serial=$(cat ${ek}/SERIAL)
     role=$(cat ${ek}/module_role)
     d32=$(cat /dev/acq400.${site}.knobs/data32)
-    
+
     if [ "$(isDIO $mt)" = "yes" ]; then
         ssb=$((4*nc/32))
     else
@@ -386,19 +386,19 @@ load_400_statics() { (
     fi
     dba="MODEL=$model,PN=$pn,NCHAN=$nc,SERIAL=$serial,ROLE=$role,MTYPE=$mt,SSB=$ssb"
 
-    dblr '"db/acq400.db","'${cprams},${dba}'"'      
+    dblr '"db/acq400.db","'${cprams},${dba}'"'
 ) }
 
 load_acq494() {
     site=$1
     cprams=$2
-    
+
     echo "# load_acq494 $site $cprams"
     ctpr="${cprams},CTRMAX=$CTR28,DT=1,DTC=1"
     for ch in 1 2 3 4; do
         dblr '"db/counter.db","'${ctpr},lname=TDC_CH${ch}_EVT,pname=scount_evt_ch${ch}'"'
-        dblr '"db/acq494fmc.db","'${cprams},CH=${ch},RAW=${ch}'"' 
-        dblr '"db/acq494fmc50R.db","'${cprams},CH=:${ch},RAW=_${ch}'"' 
+        dblr '"db/acq494fmc.db","'${cprams},CH=${ch},RAW=${ch}'"'
+        dblr '"db/acq494fmc50R.db","'${cprams},CH=:${ch},RAW=_${ch}'"'
     done
 }
 
@@ -406,14 +406,14 @@ load_rgm() {
     blen=$(cat /sys/module/acq420fmc/parameters/bufferlen)
     rgmprams="BLEN=${blen},RADJ=${RTM_TRANSLEN_ADJ:-0},BPB=${BURSTS_PER_BUFFER:-1}"
     dblr '"db/acq4xx_rgm.db","'${1},${rgmprams}'"'
-} 
+}
 
 load_400() {
     site=$1
-    
-    if [ $site -lt 1 ] || [ $site -gt 6 ] && [ $site -lt 101 ] || [ $site -gt 106 ]; then 
+
+    if [ $site -lt 1 ] || [ $site -gt 6 ] && [ $site -lt 101 ] || [ $site -gt 106 ]; then
         echo 1>&2 "load.records:error site:$site"
-        exit 1  
+        exit 1
     fi
     # since driver B2.457, module_type printed in hex
     model=$(cat /dev/acq400.${site}.knobs/module_type)
@@ -422,21 +422,21 @@ load_400() {
     has_output=$(hasOutput $model)
     has_rgm=0
     will_load_dio482pg=0
-    
+
     echo 1>&2 "load.records:load_400 site:$site model:$model name:$name"
-    
+
     LO=100000000
-    maxhz=1000000   
-        
+    maxhz=1000000
+
     [ -e $esite/MAX_KHZ ] && let maxhz="$(cat $esite/MAX_KHZ) * 1000"
-    
+
     load_400_statics $site $model
     create_asyn_channel S${site} 127.0.0.1:$((4220+${site}))
     cprams="UUT=${HOST},SITE=${site},SPORT=S${site}"
-    
-    # temporary hack. define in epics.sh eg 
+
+    # temporary hack. define in epics.sh eg
     # export GAINS=G0=10,G1=5,G2=2,G3=1
-    [ -e /dev/sites/$site/gains.sh ] && source /dev/sites/$site/gains.sh    
+    [ -e /dev/sites/$site/gains.sh ] && source /dev/sites/$site/gains.sh
     #gains=${GAINS:-G0=10,G1=5,G2=2.5,G3=1.25}
     gains=${GAINS:-G0=10,G1=5,G2=2,G3=1}
     if echo $gains | egrep -q -e X -e dB; then
@@ -444,7 +444,7 @@ load_400() {
     else
         gain_file_pfx="range"
     fi
-    
+
     is_adc="no"
     has_ch_gains=0
     calmon="calmon"
@@ -457,31 +457,31 @@ load_400() {
         has_rgm=1
         calmon=calmon42x
         has_ch_gains=1
-        
+
         case $model in
         $MT_ACQ425|$MT_ACQ425F)
             is_acq425=1;;
         $MT_ACQ427|$MT_ACQ427F)
             HAS_ACQ427=1;;
-        $MT_ACQ423)         
+        $MT_ACQ423)
             gains="GX=fixed"
             gain_file_pfx="gain423";;
         $MT_ACQ424)
             has_ch_gains=0
             LO=66000000;;
         *)
-            ;;                      
+            ;;
         esac;;
-    
+
     $MT_BOLO8|$MT_BOLO8B)
         is_adc="sar"
         if [ ! -z $BOLO8DSP ] && [ $BOLO8DSP -eq 1 ]; then
             calmon=none
-        else        
+        else
             calmon=calmon42x
-        fi      
+        fi
         has_ch_gains=1;;
-    
+
     $MT_ACQ435|$MT_ACQ430|$MT_ACQ437|$MT_ACQ436)
         is_adc="ds"
         has_rgm=1
@@ -489,11 +489,11 @@ load_400() {
         $MT_ACQ437)
             has_ch_gains=1;;
         esac
-        
+
         if [ "x${site}" = "x1" ]; then
             HAS_ACQ43X=1
             echo 1>&2 "HAS_ACQ43X Detected: $HAS_ACQ43X"
-        fi      
+        fi
         let LO=$LO/256;;
     $MT_ACQ465)
         is_adc="ds"
@@ -513,7 +513,7 @@ load_400() {
             ACQ465_FILTER=$(cat /etc/acq400/$site/acq465_filter_default)
             dblr '"db/acq465elfM.db","'${cprams},acq465_filter=$ACQ465_FILTER'"'
         fi;;
-    $MT_ACQ480)     
+    $MT_ACQ480)
         let ACQ480_COUNT=$ACQ480_COUNT+1
         [ $ACQ480_COUNT -eq 1 ] && \
             cp protocols/continuous-480.proto protocols/continuous.proto
@@ -528,24 +528,24 @@ load_400() {
         maxhz=80000000
         has_ch_gains=1
         calmon=calmon480
-        
+
         mprams="UUT=${HOST},SITE=${site},SPORT=S${site}_480"
         create_asyn_channel S${site}_480 127.0.0.1:$((4220+${site}))
         create_asyn_channel S${site}_480t 127.0.0.1:432${site}
-        
-        t50r=0; jcp=0; 
+
+        t50r=0; jcp=0;
         sroot="/etc/acq400/${site}"
         [ -e ${sroot}/T50R_1 ] && t50r=1
-        [ -e ${sroot}/JC_LOL ] && jcp=1     
+        [ -e ${sroot}/JC_LOL ] && jcp=1
         [ -e ${sroot}/acq480_fpga_decim ] && \
             decim=$(cat ${sroot}/acq480_fpga_decim)
         a480p="SPTRAIN=S${site}_480t,JCP=${jcp},T50R=${t50r},DECIM=${decim}"
-        
+
         dblr '"db/acq480fmc.db","'${mprams},${a480p}'"'
         dblr '"db/acq480_mr.db","'${mprams}'"'
         [ $site -gt 1 ] && \
             dblr '"db/acq480_mr_flnk.db","'${mprams},'SITEM1='$(($site-1))'"'
-        
+
 
         for ic in $(seq 1 8); do
             ch=$(printf "%02d" $ic)
@@ -558,18 +558,18 @@ load_400() {
         load_acq494 ${site} "${cprams}";;
     $MT_AO420|$MT_AO424|$MT_AO428|$MT_AO4220)
         create_asyn_channel S${site}A 127.0.0.1:$((4220+${site}))
-        has_rgm=1       
+        has_rgm=1
         load_AO $site $model $cprams
-        echo >>/tmp/st_post.cmd "seq calmonAO \"uut=${HOST},site=${site},verbose=${CALMON_VERBOSE:-0}\"" 
+        echo >>/tmp/st_post.cmd "seq calmonAO \"uut=${HOST},site=${site},verbose=${CALMON_VERBOSE:-0}\""
         let LO=66000000;;
-#   @@todo : different flavour of calmon for SAR ADC needed 
+#   @@todo : different flavour of calmon for SAR ADC needed
     $MT_DIO482TD)
         if [ "$(get_mtv ${site})" = "$MTV_DIO482_PPW" ]; then
             ./scripts/load.dio482ppw ${HOST} ${site}
             return
         else
             ./scripts/load.dio482td_DI ${HOST} ${site}
-        fi;;        
+        fi;;
     $MT_DIO432|$MT_DIO432P|$MT_DIO482|$MT_DIO482TD_PG|$MT_DIO422)
         if [ -e ${esite}/num_pg ]; then
             will_load_dio482pg=$(cat ${esite}/num_pg)
@@ -581,8 +581,8 @@ load_400() {
                 has_output="no"
             fi
             [ -e ./scripts/load.$name ] && ./scripts/load.$name $HOST $site
-        fi;;        
-    $MT_DIOB)       
+        fi;;
+    $MT_DIOB)
         name=$(cat /dev/acq400.$site.knobs/module_name)
         [ -e ./scripts/load.$name ] && ./scripts/load.$name $HOST $site
         return;;
@@ -594,9 +594,9 @@ load_400() {
         dblr '"db/pigcelf.db","'${cprams}'"'
         calmon=none;;
     esac
-    
+
     echo 1>&2 "site:$site model:$model is_adc $is_adc"
-    
+
     if [ "$is_adc" != "no" ]; then
         make_AI $site
         aprams="UUT=${HOST},SITE=${site},CHG=${has_ch_gains}"
@@ -607,7 +607,7 @@ load_400() {
         ONSETTRANSIENT=${ONSETTRANSIENT:-1}
     fi
 
-    
+
     if [ "${name}" = "acq480" ]; then
         source /dev/sites/${site}/details
         if [ "${FRU_PROD_NAME}" = "ACQ482ELF" ]; then
@@ -623,43 +623,43 @@ load_400() {
     else
         hwmondb="db/hwmon_${name}.db"
     fi
-    
+
     if [ -e ${hwmondb} ]; then
         let hmb=$site
         case $MB_MODEL in
         kmcu*)
             let hmb=$hmb+1;;
-        esac        
+        esac
         dblr '"'${hwmondb}'","'${cprams},HMB=${hmb}'"'
     fi
     if [ -e /etc/acq400/${site}/anatrg_01 ]; then
         [ "x$ANATRG_LOADED" = "x" ] && source ./scripts/load.anatrg
         make_anatrg ${site}
     elif [ -e /etc/acq400/${site}/deltrg_01 ]; then
-        [ "x$DELTRG_LOADED" = "x" ] && source ./scripts/load.deltrg 
+        [ "x$DELTRG_LOADED" = "x" ] && source ./scripts/load.deltrg
         make_deltrg ${site}
     fi
 
     if [ ${site} -eq 1 ]; then
-        dblr '"db/eventCount.db","'${cprams},SPORT=SPEV'"'      
+        dblr '"db/eventCount.db","'${cprams},SPORT=SPEV'"'
         sprams="${cprams},CTRMAX=$CTR28,DT=1,DTC=1"
         dblr '"db/_counter.db","'${sprams},SIG=EVT,lname=INDX'"'
         dblr '"db/_counter.db","'${sprams},SIG=EVT,lname=SMPL'"'
         create_asyn_channel SPEV 127.0.0.1:4238
     fi
-    
+
     dblr '"db/acq400fmc.db","'${cprams},'MAXHZ='${maxhz}'"'
-        
+
     if [ "x$model" != "x$MT_ACQ480" ] && [ "$is_adc" != "ds" ] || [ "x$model" = "x$MT_ACQ465" ]; then
         dblr '"db/acq420fmc.db","'${cprams},'LO='${LO},MAXDIV=${maxdiv:-65536}'"'
     fi
 
     if [ ${site} -eq $FIRST_SITE ]; then
-        
-        mprams="UUT=${HOST},SITE=${site},SPORT=S${site}M"       
+
+        mprams="UUT=${HOST},SITE=${site},SPORT=S${site}M"
 
         if [ $HAS_ACQ43X -eq 1 ]; then
-            load_rgm "${mprams},onst=SRTM,twst=RGM"         
+            load_rgm "${mprams},onst=SRTM,twst=RGM"
             echo 1>&2 "HAS_ACQ43X Detected: $HAS_ACQ43X"
             #ACQ435 .. nb HIRES makes it /2
             # MUST  be AFTER acq420fmc.d to hook the right DT0
@@ -667,12 +667,12 @@ load_400() {
             has_rgm=1
         elif [ $has_rgm -eq 1 ]; then
             if [ "$is_adc" = "no" ]; then
-                load_rgm "${mprams},onst=RTMC,twst=nc"  
+                load_rgm "${mprams},onst=RTMC,twst=nc"
             else
                 load_rgm "${mprams},onst=nc,twst=RGM"
             fi
         fi
-        
+
         if [ "$is_adc" != "no" ]; then
             _is_adc=1
         else
@@ -680,21 +680,21 @@ load_400() {
         fi
         dblr '"db/has_rgm.db","'${mprams},HAS_RGM=$has_rgm,IS_ADC=$_is_adc'"'
 
-        [ "x$RTM_BUFFER_MON" = "xy" ] && 
+        [ "x$RTM_BUFFER_MON" = "xy" ] &&
             echo "seq rtm_buffer_mon \"uut=${HOST},verbose=${RTM_BUFFER_MON_VERBOSE:-0}\""
         create_asyn_channel S${site}M 127.0.0.1:$((4220+${site}))
 
         if [ "$is_adc" != "no" ]; then
             create_asyn_channel SS0 127.0.0.1:4220
             if [ "$(hasNACC_BYPASS $model)" == "yes" ]; then
-                
+
                 if [ "$is_adc" = "sar" ]; then
                     presmax=128
                 else
                     presmax=1
                 fi
                 dblr '"db/slowmon.db","'$mprams',PRESMAX='${presmax},FIN_MAX=${SLOWMON_FIN_MAX:-80}'"'
-                s1=1                
+                s1=1
                 [ -e /etc/acq400/0/sites ] && s1=$(cat /etc/acq400/0/sites | tr , \ | awk '{ print $1 }')
                 echo "seq slowmon_rate_adjust \"uut=${HOST},s1=${s1},verbose=${SLOWMON_VERBOSE:-0}\""
                 echo 1 > /etc/acq400/0/slowmon_hw
@@ -703,15 +703,15 @@ load_400() {
                 echo 0 > /etc/acq400/0/slowmon_hw
             fi
         fi
-    fi  
-    if [ "${is_adc}" != "no" ]; then        
+    fi
+    if [ "${is_adc}" != "no" ]; then
         HPRAMS="${cprams},size=$HSIZE,type=LONG,fname=HG.${site}"
         dblr '"db/hgAcqHost.db","'${HPRAMS}'"'
         dblr '"db/signal.db","'${cprams}',FNAM=SYNC,FN=sync,ZNAM=internal,ONAM=external,DISV=1"'
         dblr '"db/signal.db","'${cprams}',FNAM=EVENT1,FN=event1,ZNAM=disable,ONAM=enable,DISV=-1"'
-        dblr '"db/signal.db","'${cprams}',FNAM=EVENT0,FN=event0,ZNAM=disable,ONAM=enable,DISV=-1"'      
+        dblr '"db/signal.db","'${cprams}',FNAM=EVENT0,FN=event0,ZNAM=disable,ONAM=enable,DISV=-1"'
     fi
-    
+
 
 
     CTPR="${cprams},CTRMAX=$CTR28,DT=1,DTC=1"
@@ -722,7 +722,7 @@ load_400() {
     *)
         psc=sample_count;;
     esac
-    
+
     dblr '"db/counter.db","'${CTPR},lname=CLK_COUNT,pname=clk_count'"'
     dblr '"db/counter.db","'${CTPR},lname=sample_count,pname=${psc}'"'
     dblr '"db/counter.db","'${CTPR},lname=SAMPLE_COUNT,pname=${psc}'"'
@@ -741,15 +741,15 @@ load_400() {
             ixgrp="IX=$ix,FAN=$fan0,fan=${OUTX:$f9:1}"
             dblr '"'${gain_file}'","'${cprams}',CH='$ch','$gains','$ixgrp'"'
             has_gain=1
-        fi      
+        fi
     done
     if [ $has_gain -ne 0 ]; then
         gain_file=db/${gain_file_pfx}M.db
-        dblr '"'${gain_file}'","'${cprams}','$gains',CH='ALL'"'             
+        dblr '"'${gain_file}'","'${cprams}','$gains',CH='ALL'"'
     fi
     ) >>/tmp/gains_last
-        
-    dblr '"db/signal.db","'${cprams}',FNAM=TRG,FN=trg,ZNAM=none,ONAM=enable,DISV=1"'    
+
+    dblr '"db/signal.db","'${cprams}',FNAM=TRG,FN=trg,ZNAM=none,ONAM=enable,DISV=1"'
     dblr '"db/signal.db","'${cprams}',FNAM=CLK,FN=clk,ZNAM=internal,ONAM=external,DISV=1"'
     if [ $site -eq 1 ]; then
         dblr '"db/clkstatus.db","'${cprams}',FNAM=CLK,FN=clk,DISV=1"'
@@ -773,9 +773,9 @@ load_400() {
         fi
         AWG_DONE=y
     fi
-    
+
     if [ "x$model" = "x$MT_ACQ480" ]; then
-        let sp1=$site+1     
+        let sp1=$site+1
         dblr '"db/acq480fmc99.db","'${cprams},SITEP1=${sp1},div=$(acq480_div)'"' \
             >>/tmp/st_pre.cmd
         if [ $ACQ480_COUNT -gt 1 ]; then
@@ -798,7 +798,7 @@ load_400() {
     else
         dblr '"db/acq420fmc99.db","'${cprams}'"'
     fi
-    
+
 
 }
 
@@ -816,12 +816,12 @@ load_421() {
             CPRAMS="${PRAMS},lname=${LNAME},pname=${PNAME}"
             dblr '"db/ao421mux.db","'${CPRAMS}'"'
         done
-    done        
+    done
 }
 
 zynq_hwmon() {
     DEV=$1
-    # scale values 
+    # scale values
     # cat in_temp0_offset in_temp0_scale  (mC)
     # -2219
     # 123.040771484
@@ -834,9 +834,9 @@ load_intmon() {
     activeirq=$(echo y | nc localhost 4239  | awk '{ print $1 }')
     dt=${INTMON_DT:-10}
     for irq in $activeirq
-    do  
+    do
         dblr '"db/intmon.db","UUT='${HOST}',SPORT=SI,irq='$irq',dt='$dt'"'
-    done    
+    done
 }
 
 load_gpg() {
@@ -849,14 +849,14 @@ load_gpg() {
     else
         mondis=1
     fi
-    dblr '"db/gpg.db","'${PG0}',MONDIS='${mondis}'"'    
+    dblr '"db/gpg.db","'${PG0}',MONDIS='${mondis}'"'
     if [ $site -eq 0 ]; then
-        dblr '"db/signal.db","'${PRAMS},FNAM=GPG_CLK,FN=gpg_clk,DISV=1'"'   
+        dblr '"db/signal.db","'${PRAMS},FNAM=GPG_CLK,FN=gpg_clk,DISV=1'"'
         dblr '"db/signal.db","'${PRAMS},FNAM=GPG_TRG,FN=gpg_trg,DISV=1'"'
-        dblr '"db/signal.db","'${PRAMS},FNAM=GPG_SYNC,FN=gpg_sync,DISV=1'"' 
+        dblr '"db/signal.db","'${PRAMS},FNAM=GPG_SYNC,FN=gpg_sync,DISV=1'"'
         dblr '"db/signal.db","'${PG0}',FNAM=SPAD1_US,FN=spad1_us,ZNAM=disable,ONAM=enable,DISV=1"'
     fi
-    create_asyn_channel SG${site} 127.0.0.1:$((4220+${site}))   
+    create_asyn_channel SG${site} 127.0.0.1:$((4220+${site}))
 }
 
 load_dio482pg() {
@@ -864,7 +864,7 @@ load_dio482pg() {
     do_count=${2:-32}
     shift; shift
     cprams="$*"
-    
+
     load_gpg $site
     dblr '"db/signal.db","'${cprams}',FNAM=SYNC,FN=sync,ZNAM=internal,ONAM=external,DISV=1"'
 
@@ -893,29 +893,29 @@ load_dio482pg() {
 
     if [ $do_count -le 5 ]; then
         dblr '"db/dio482pg_leds.db","'${cprams}'"'
-        set.site $site num_pg $do_count 
-        for dx in $(seq $do_count); do      
-            echo "seq pg4_flasher \"uut=${HOST},site=${site},dox=${dx}\""       
+        set.site $site num_pg $do_count
+        for dx in $(seq $do_count); do
+            echo "seq pg4_flasher \"uut=${HOST},site=${site},dox=${dx}\""
         done
     fi
     for dx in $(seq $do_count); do
         dblr '"db/dio482pg_do4.db","'${cprams},UX=$dx,IX=$(($dx-1))'"'
     done
-    
+
     if is_tiga; then
         dblr '"db/dio482pg_tiga.db","'${cprams},S0=S0WR'"'
         sprams="${cprams},SIG=WR,S0=S0WR,CTRMAX=0,DT=1,DTC=1"
         dblr '"db/_counter.db","'${sprams},lname=TS'"'
         dblr '"db/_counter.db","'${sprams},lname=WRTT'"'
     fi
-    
+
     echo "dbpf ${HOST}:${site}:GPG:DBG:RSTATE.DISA 0"  >>/tmp/st_final.cmd
-    if [ $do_count -eq 4 ]; then 
+    if [ $do_count -eq 4 ]; then
         (
         echo "seq clk_freq_flasher \"signal=${HOST}:0:SIG:CLK_S${site},led=${HOST}:${site}:LED:CLK\""
     #   echo "seq clk_freq_flasher \"signal=${HOST}:0:SIG:TRG_S${site},led=${HOST}:${site}:LED:TRG\""
         echo "seq clk_freq_flasher \"signal=${HOST}:${site}:SIG:sample_count,led=${HOST}:${site}:LED:TRG\""
-        ) >> /tmp/st_final.cmd  
+        ) >> /tmp/st_final.cmd
     fi
     echo "seq pg_trg_debounce \"uut=${HOST},site=${site},verbose=${PG_TRG_DEBOUNCE_VERBOSE:-0}\""
 }
@@ -923,19 +923,19 @@ load_dio482pg() {
 load_mb_acq2106() {
     hs=/dev/acq400.0.knobs/has_axi_dma_stack
     if [ -e $hs ] && [ $(cat $hs) != "0" ]; then
-        dblr '"db/stack_480.db","'UUT=${HOST}',SITE=0,SPORT=S0B"'             
-    fi  
+        dblr '"db/stack_480.db","'UUT=${HOST}',SITE=0,SPORT=S0B"'
+    fi
 }
 load_mb_base() {
     ns=$1
     mt=$2
     zynq_hwmon Z
-    
+
     load_400_statics 0 $mt
-    
+
     for SITE in $(seq 0 $ns)
     do
-        CPRAMS="UUT=${HOST},lname=${SITE}"              
+        CPRAMS="UUT=${HOST},lname=${SITE}"
         PRAMS="$CPRAMS,pname=/dev/hwmon/${SITE}/temp,scale=0.001,offset=0"
         dblr '"db/hwmontemp.db","'${PRAMS}'"'
     done
@@ -999,7 +999,7 @@ isRevA() {
     rc=0
     case $1 in
     acq1001|acq1002)
-            [ $SN -lt 40 ] && rc=1;; 
+            [ $SN -lt 40 ] && rc=1;;
     acq2006)
             [ $SN -le 10 ] && rc=1;;
     esac
@@ -1009,7 +1009,7 @@ isRevA() {
 load_mb_sites() {
     KB=$1
     NS=$2
-    
+
     echo 1>&2 "load.records:load_mb_sites $1 $2 $3"
     CPRAMS="UUT=${HOST},SITE=0"
     (
@@ -1036,7 +1036,7 @@ load_mb_sites() {
         dist3=CPU
     fi
     dblr '"db/acq400mb.db","UUT='${HOST},dist3=${dist3}',SPORT=S0,SPORT2=S0A"'
-    
+
     case $MB_MODEL in
         kmcu*)
             ;;
@@ -1055,7 +1055,7 @@ load_mb_sites() {
             acq2206*)
                 dblr '"db/acq2206mb.db","UUT='${HOST}',SPORT=S0,MB_SET_MIN=2000"';;
             esac
-            dblr '"db/acq2106mb.db","UUT='${HOST}',SPORT=S0,MB_SET_MIN=2000"';;     
+            dblr '"db/acq2106mb.db","UUT='${HOST}',SPORT=S0,MB_SET_MIN=2000"';;
         *)
             thst="ZCLK"
             [ $(isRevA $MB_MODEL) -ne 0 ] && thst=""
@@ -1068,14 +1068,14 @@ load_mb_sites() {
         dblr '"db/reboot.db","UUT='${HOST}',SPORT=S0"'
     if [ "$LOAD_INTMON" = "y" ]; then
         # uses 1% cpu for monitoring. Not default
-        create_asyn_channel SI 127.0.0.1:4239           
+        create_asyn_channel SI 127.0.0.1:4239
         load_intmon
     fi
     sl=$(cat /etc/acq400/0/SITELIST)
     dblr '"db/mb_common.db","UUT='${HOST},SL=\'${sl}\'',SPORT=S0"'
     create_asyn_channel S0 127.0.0.1:4220 ${S0_DEBUG}
-    create_asyn_channel S0A 127.0.0.1:4220   
-    create_asyn_channel S0B 127.0.0.1:4220   
+    create_asyn_channel S0A 127.0.0.1:4220
+    create_asyn_channel S0B 127.0.0.1:4220
     create_asyn_channel S0C 127.0.0.1:4220
     create_asyn_channel S0R 127.0.0.1:4220
     create_asyn_channel NP 127.0.0.1:2226
@@ -1125,20 +1125,20 @@ load_mb_trg_gpio()
     done
 }
 load_mb_sync() {
-    KB=$1 
-    
+    KB=$1
+
 # and acq2006 R2 with HDMI
     CPRAMS="UUT=${HOST},SITE=0,SPORT=S0"
     for FUN in SYNC TRG CLK
-    do       
-        # d0  
+    do
+        # d0
         lprams="${CPRAMS},FUN=${FUN},fun=$(toLower ${FUN})"
         lp0="${lprams},BIT=0"
         case $FUN in
-        CLK)    
+        CLK)
             case $MB_MODEL in
             acq2106*)
-                #                   0       1       2       3       4 
+                #                   0       1       2       3       4
                 lsb_x ${lp0},NOBT=3 "nc"    HDMI    GPG0    COMM_A  INT01M;;
            acq2206*)
                 #                   0       1       2       3       4      5
@@ -1166,7 +1166,7 @@ load_mb_sync() {
                 lsb_x ${lp0},NOBT=3 EXT HDMI INT01M PPS MCLK GPG0;;
             esac
         esac
-        
+
         # d1
         lp1="${lprams},BIT=1"
         case $FUN in
@@ -1181,18 +1181,18 @@ load_mb_sync() {
             *)
                 lsb_x ${lp1},NOBT=2 MCLK HDMI GPG1;;
             esac;;
-        TRG)    
+        TRG)
             if [ $(has_dsp_trg $MB_MODEL) -ne 0 ]; then
                 #                   0     1     2         3    4    5       6       7
                 lsb_x ${lp1},NOBT=3 STRIG HOSTA HDMI_GPIO GPG1 DSP1 FP_SYNC WRTT1   NONE
-            else                
+            else
                 case $MB_MODEL in
                 acq2[12]06*)
                     lsb_x ${lp1},NOBT=2 STRIG HOSTA HOSTB GPG1;;
                 *)
                     lsb_x ${lp1},NOBT=2 STRIG HDMI_GPIO GPG1;;
                 esac
-            fi;;                
+            fi;;
         SYNC)
             case $MB_MODEL in
             acq2[12]06*)
@@ -1204,11 +1204,11 @@ load_mb_sync() {
             *)
                 lsb_x ${lp1},NOBT=3 EXT HDMI INT01M PPS MCLK GPG1;;
             esac;;
-        *)      
+        *)
             echo ERROR undefined FUN;;
         esac
     done
-     
+
     if [ "$(cat /dev/acq400.0.knobs/module_role)" = "CLKOUT" ]; then
         disin=1; disout=0;
     else
@@ -1217,7 +1217,7 @@ load_mb_sync() {
     for FUN in GPIO SYNC TRG TRGOUT CLKOUT
     do
         disa=0,thvl=15
-        case $FUN in 
+        case $FUN in
         GPIO)   fprams="nobt=4,zrst=INPUT,src=EVT"
                 lprams="FUN=${FUN},fun=$(toLower ${FUN}),disa=${disin}";;
         SYNC)   fprams="nobt=4,zrst=INPUT,src=SYNC"
@@ -1257,37 +1257,37 @@ load_mb_sync() {
         GPIO) twst=EVNT;;
         CLK)  twst=CLK;;
         esac
-        dblr '"db/sync_out_src_x.db","'${CPRAMS},${lprams},TWST=${twst}'"'      
+        dblr '"db/sync_out_src_x.db","'${CPRAMS},${lprams},TWST=${twst}'"'
     done
     for dx in 0 1 2 3 4 5 6 7
     do
-            case $dx in 
-            0)  
+            case $dx in
+            0)
                     hdmi_src="FP_GPIO";;
             1|5)    hdmi_src="HDMI_GPIO";;
             2|6)    hdmi_src="HDMI_TRG";;
             3|7)    hdmi_src="HDMI_SYNC";;
-            4)  
+            4)
                 if [ $HAS_WR -eq 1 ]; then
                     hdmi_src="WR_PPS"
-                else 
+                else
                     hdmi_src="FP_GPIO"
                 fi;;
             esac
             dblr '"db/sig_event_src.db","'${CPRAMS},BIT=${dx},HDMI=${hdmi_src}'"'
     done
     dblr '"db/sync_bus_data.db","'${CPRAMS}'"'
-    
-    
+
+
     echo >>/tmp/st_post.cmd "seq autoRepeat \"uut=${HOST},debug=${AUTO_REPEAT_DEBUG:-/dev/null}\""
     [ "$ONSETTRANSIENT" = "1" ] && \
         echo >>/tmp/st_post.cmd "seq onSetTransient \"uut=${HOST}\""
-            
+
     is_tiga && return
-    
+
     echo 1>&2 "HAS_ACQ43X $HAS_ACQ43X"
     ACQ43X_SET_SAMPLE_RATE=${ACQ43X_SET_SAMPLE_RATE:-0}
-    
+
     if [ $HAS_ACQ43X -ne 0 ] && [ $ACQ43X_SET_SAMPLE_RATE -ge 0 ] && [ $HAS_WR -eq 0 ]; then
             case $MB_MODEL in
             acq2[12]06*)
@@ -1307,7 +1307,7 @@ load_mb_sync() {
                 echo >>/tmp/st_post.cmd "seq $ssr \"uut=${HOST},fin=0:SIG:CLK_EXT:FREQ\"";;
             esac
     fi
-    
+
     echo >>/tmp/st_post.cmd "seq setMB_ClockMonitor \"uut=${HOST},retry=${CLOCKMONITOR}\""
 }
 
@@ -1315,13 +1315,13 @@ load_mb_stats()
 {
     cprams="UUT=${HOST},SITE=0,SPORT=S0S,SIG=STAT"
     dblr '"db/blockcounter.db","'${cprams}'"'
-    
+
     sprams="${cprams},CTRMAX=$CTR28,DT=1,DTC=1"
     for stat in GETS PUTS AXI64:W AXI64:F AXI64:C
     do
         dblr '"db/_counter.db","'${sprams},lname=${stat}'"'
     done
-    create_asyn_channel S0S 127.0.0.1:4220  
+    create_asyn_channel S0S 127.0.0.1:4220
 }
 
 
@@ -1333,9 +1333,9 @@ load_system() {
     elif [ "x$ip1" != "x" ]; then
         ipx=$ip1
     fi
-    ipb=$(echo $ipx | tr . :) 
+    ipb=$(echo $ipx | tr . :)
     sw=$(head -n1 /etc/acq400/0/software_version)
-    gw=$(sed -e 's/TOP_//' /etc/acq400/0/fpga_version | awk '{ print $1 }' | sed -e 's/ACQ2106/216/' -e 's/ACQ2206/226/' -e 's/DMA/D/') 
+    gw=$(sed -e 's/TOP_//' /etc/acq400/0/fpga_version | awk '{ print $1 }' | sed -e 's/ACQ2106/216/' -e 's/ACQ2206/226/' -e 's/DMA/D/')
     dba="ipaddrbis=$ipb,IP0=$ip0,IP1=$ip1,SW=$sw,GW=$gw"
 cat - <<EOF
 epicsEnvSet("STREAM_PROTOCOL_PATH","./protocols")
@@ -1354,7 +1354,7 @@ KB=/dev/acq400.0.knobs
 
 load_mb() {
     echo 1>&2 "load.records:load_mb"
-        
+
     case $MB_MODEL in
         acq2206*)
                 ns=6; mt=acq2206;;
@@ -1375,11 +1375,11 @@ load_mb() {
                 ns=1; mt=acq1001;;
         *)
                 ns=1; mt=acq1001;;
-    esac        
-    
+    esac
+
     load_mb_base $ns $mt
     load_mb_stats
-    
+
     hudp=0; grep -q UDP /tmp/fpga_status  && hudp=1
     if [ -e $KB ]; then
         load_mb_sites $KB $ns $mt $hudp
@@ -1392,17 +1392,17 @@ load_mb() {
 
     if [[ -e /dev/acq400.12.knobs || -e /dev/acq400.13.knobs ]]; then
         source /usr/local/epics/scripts/load.mgt400
-        
+
         [ -e /dev/acq400.13.knobs ] && echo "seq mgtStopOnLinkDown \"uut=${HOST},port=A\"" >>/tmp/st_post.cmd
         [ -e /dev/acq400.12.knobs ] && echo "seq mgtStopOnLinkDown \"uut=${HOST},port=B\"" >>/tmp/st_post.cmd
     elif [[ "$mt" = "z7io" && -e /dev/acq400.11.knobs ]]; then
         source /usr/local/epics/scripts/load.mgt400
         echo "seq mgtStopOnLinkDown \"uut=${HOST},port=C\"" >>/tmp/st_post.cmd
     fi
-    
+
     if [[ -e /dev/acq400.10.knobs && $hudp -eq 1 ]]; then
         create_asyn_channel S10 127.0.0.1:4230
-        PRAMS="UUT=${HOST},SITE=10" 
+        PRAMS="UUT=${HOST},SITE=10"
         dblr '"db/counter.db","'${PRAMS},CTRMAX=2147483648,DT=1,DTC=1,lname=HUDP_RX_PKT,pname=rx_pkt_count'"'
         dblr '"db/counter.db","'${PRAMS},CTRMAX=2147483648,DT=1,DTC=1,lname=HUDP_TX_PKT,pname=tx_pkt_count'"'
         dblr '"db/counter.db","'${PRAMS},CTRMAX=1048576,DT=1,DTC=1,lname=HUDP_DISCO,pname=disco_count'"'
@@ -1412,13 +1412,13 @@ load_mb() {
     if [ "x$SHOTBUSY_OK" = "xy" ] && [ -e /dev/gpio/LED/ACT_G ]; then
         echo "seq shotBusy \"uut=${HOST},verbose=${SHOT_BUSY_VERBOSE:-0}\"" >>/tmp/st_post.cmd
     fi
-    echo 1>&2 "load.records:load_mb 99"     
+    echo 1>&2 "load.records:load_mb 99"
 }
 
 load_mod_present()
 {
     CPRAMS="UUT=${HOST},SITE=$1,PRESENT=$2"
-    dblr '"db/mod_present.db","'${CPRAMS}'"'        
+    dblr '"db/mod_present.db","'${CPRAMS}'"'
 }
 # execution starts here
 
@@ -1444,15 +1444,15 @@ cat /tmp/gains_last
 for sitepath in /dev/sites/*
 do
     if [ -d $sitepath ]; then
-        file=$sitepath/details  
+        file=$sitepath/details
         FRU_PROD_NAME=nothing
         site=$(basename $sitepath)
         source $file
         if [ "x$FRU_PROD_NAME" = "xAO421FMC" -o \
              "x$FRU_PROD_NAME" = "xAO421ELF"      ]; then
-            
+
             load_421 $site
-        fi      
+        fi
         LOAD_MOD=/usr/local/epics/scripts/load.${FRU_PROD_NAME// /}
         if [ -e $LOAD_MOD ]; then
             echo 1>&2 "load.records:$LOAD_MOD $HOST $site"
@@ -1479,7 +1479,7 @@ do
     elif [ -e $file ]; then
         echo 1>&2 "source extension $file"
         source $file
-    fi 
+    fi
 done
 
 if [ "x$IOC_PREINIT" != "x" ]; then
@@ -1544,8 +1544,8 @@ fi
 IOC_READY_DELAY=${IOC_READY_DELAY:-3}
 
 cat - >>/tmp/st_final.cmd <<EOF
-dbpf ${HOST}:LIVE:PREPCT 50 
-seq on_delay "pv=${HOST}:IOC_READY,val=1,delay=$IOC_READY_DELAY,priority=0" 
+dbpf ${HOST}:LIVE:PREPCT 50
+seq on_delay "pv=${HOST}:IOC_READY,val=1,delay=$IOC_READY_DELAY,priority=0"
 system(/usr/local/epics/scripts/onIocReady)
 EOF
 echo 1>&2 "load.records 99"
