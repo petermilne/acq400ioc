@@ -406,12 +406,11 @@ load_rgm() {
     st=$1
     mp=$2
     case $(cat /dev/acq400.${st}.knobs/module_type) in
-    MT_ACQ480)
+    $MT_ACQ480)
         radj=${RTM_TRANSLEN_ADJ:-1};;
     *)
         radj=${RTM_TRANSLEN_ADJ:--1};;
     esac
-    echo "# pgmwashere here do we have vars site=$site SITE=$SITE mt=$mt"
     blen=$(cat /sys/module/acq420fmc/parameters/bufferlen)
     rgmprams="BLEN=${blen},RADJ=${radj},BPB=${BURSTS_PER_BUFFER:-1}"
     dblr '"db/acq4xx_rgm.db","'${mp},${rgmprams}'"'

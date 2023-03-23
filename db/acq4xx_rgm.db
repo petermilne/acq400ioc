@@ -165,8 +165,7 @@ record(calcout, "${UUT}:${SITE}:RTM_TRANSLEN:ONCHANGE") {
 	field(DOPT, "Use CALC")
 	field(OUT,  "${UUT}:${SITE}:RTM_TRANSLENp PP")
 	field(LOPR, "0")
-	field(HOPR, "16777216")
-	
+	field(HOPR, "16777215")
 }
 
 
