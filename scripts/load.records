@@ -403,9 +403,18 @@ load_acq494() {
 }
 
 load_rgm() {
+    st=$1
+    mp=$2
+    case $(cat /dev/acq400.${st}.knobs/module_type) in
+    MT_ACQ480)
+        radj=${RTM_TRANSLEN_ADJ:-1};;
+    *)
+        radj=${RTM_TRANSLEN_ADJ:--1};;
+    esac
+    echo "# pgmwashere here do we have vars site=$site SITE=$SITE mt=$mt"
     blen=$(cat /sys/module/acq420fmc/parameters/bufferlen)
-    rgmprams="BLEN=${blen},RADJ=${RTM_TRANSLEN_ADJ:-0},BPB=${BURSTS_PER_BUFFER:-1}"
-    dblr '"db/acq4xx_rgm.db","'${1},${rgmprams}'"'
+    rgmprams="BLEN=${blen},RADJ=${radj},BPB=${BURSTS_PER_BUFFER:-1}"
+    dblr '"db/acq4xx_rgm.db","'${mp},${rgmprams}'"'
 }
 
 load_400() {
@@ -659,7 +668,7 @@ load_400() {
         mprams="UUT=${HOST},SITE=${site},SPORT=S${site}M"
 
         if [ $HAS_ACQ43X -eq 1 ]; then
-            load_rgm "${mprams},onst=SRTM,twst=RGM"
+            load_rgm ${site} "${mprams},onst=SRTM,twst=RGM"
             echo 1>&2 "HAS_ACQ43X Detected: $HAS_ACQ43X"
             #ACQ435 .. nb HIRES makes it /2
             # MUST  be AFTER acq420fmc.d to hook the right DT0
@@ -667,9 +676,9 @@ load_400() {
             has_rgm=1
         elif [ $has_rgm -eq 1 ]; then
             if [ "$is_adc" = "no" ]; then
-                load_rgm "${mprams},onst=RTMC,twst=nc"
+                load_rgm ${site} "${mprams},onst=RTMC,twst=nc"
             else
-                load_rgm "${mprams},onst=nc,twst=RGM"
+                load_rgm ${site} "${mprams},onst=nc,twst=RGM"
             fi
         fi
 
@@ -766,7 +775,7 @@ load_400() {
             eval $(get.site 0 distributor)
             dblr '"db/awg.db","'${dprams},dsites=\'${sites}\''"'
             echo "seq select_awg_distributor \"${dprams},verbose=1\""
-            load_rgm "${dprams},onst=nc,twst=nc"
+            load_rgm ${dist_s1} "${dprams},onst=nc,twst=nc"
             sprams="${dprams},CTRMAX=$CTR28,DT=1,DTC=1"
             dblr '"db/_counter.db","'${sprams},SIG=AWG,lname=REPS'"'
             echo "dbpf ${HOST}:${site}:SIG:clk_counter_src d$((${site}+1))" >> /tmp/st_post.cmd
