@@ -40,11 +40,17 @@ done
 
 # gains
 
+dblr '"db/bolo8-gainM.db","'HS=${HS}'"'
+
+OUTX="ABCDEFGH"
+
 for ch in $(seq 1 8)
 do
-	PRAMS="HS=${HS},KNOB=/dev/bolo8/${SITE}/ADC_${ch}_,CH=${ch}"
+    f9=$(($ch-1))
+	PRAMS="HS=${HS},KNOB=/dev/bolo8/${SITE}/ADC_${ch}_,CH=${ch},fan=${OUTX:$f9:1}"
 	dblr '"db/bolo8-gains.db","'${PRAMS}'"'
 done
+
 
 if [ ! -z $BOLO8DSP ] && [ $BOLO8DSP -eq 1 ]; then
 	

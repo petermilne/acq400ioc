@@ -69,3 +69,8 @@ record(calc, "${HS}:B8:GAIN:${CH}_f") {
 record(aSub, "${HS}:AI:WF:0${CH}:V") {	
 	field(INPC,  "${HS}:B8:GAIN:${CH}_f")
 }
+
+record(dfanout, "${HS}:B8:GAIN:ALL:fan1") {
+	field(OUT${fan}, "${HS}:B8:GAIN:${CH} PP")
+}
+
