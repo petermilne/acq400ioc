@@ -88,7 +88,7 @@ ss calmon {
 				if (ch==1) printf("assign %s\n",pvfield);
 				
 				if (has_ch_gains){
-					snprintf(pvname, 80, "%s:%s:B8:GAIN:%d.RVAL", uut, site, ch);
+					snprintf(pvname, 80, "%s:%s:B8:GAIN:%d", uut, site, ch);
 					pvAssign(gains[ch], pvname);
 					//pvGet(gains[ch]);
 				}
@@ -168,7 +168,7 @@ ss calmon {
 			}else{
 				printf("make_change: STUB\n");
 			}
-		} state check_success
+		} state wait_change    /* check_success not possible with current ll settings */
 	}
 	
 	state check_success {
@@ -180,7 +180,7 @@ ss calmon {
 					pvGet(gains[ch], SYNC);
 				}
 			}
-		}		
+		}
 		when(has_ch_gains == 0 || acq400_cal_ll_check_success(*site-'0', gains, nchan) == 0){
 			if (has_ch_gains){
 				readback_disable = 0;
