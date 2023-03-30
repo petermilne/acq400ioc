@@ -483,10 +483,10 @@ load_400() {
 
     $MT_BOLO8|$MT_BOLO8B)
         is_adc="sar"
-        if [ ! -z $BOLO8DSP ] && [ $BOLO8DSP -eq 1 ]; then
+        if [ -n "$BOLO8DSP" ] && [ $BOLO8DSP -eq 1 ] && [ -z "$BOLO8DSP_CAL_OK" ]; then
             calmon=none
         else
-            calmon=calmon42x
+            calmon=calmonBOLO
         fi
         has_ch_gains=1;;
 

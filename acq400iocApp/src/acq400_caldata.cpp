@@ -33,6 +33,7 @@
 extern "C" {
 	void* acq400_openDoc(const char* docfile, int* nchan);
 	int acq400_isCalibrated(void* prv);
+	int acq400_cal_ll_check_success(int site, int gains[], int nchan);
 	int acq400_getChannel(void *prv, int ch, const char* sw, float* eslo, float* eoff, int nocal);
 	int acq400_getChannelByNearestGain(void *prv, int ch, const char* sw, int gain, float* eslo, float* eoff, int nocal);
 	int acq400_isData32(void* prv);
@@ -214,4 +215,55 @@ int acq400_getChannelByNearestGain(void *prv, int ch, const char* sw, int gain, 
 		VPRINTF("%s: %.5g adjusted\n", __FUNCTION__, *eslo);
 	}
 	return 1;
+}
+
+
+static void fixup(int site, char* cmd, int maxcmd, const char* gainstr, const char* actstr){
+	int ch = 1;
+	FILE* fp;
+
+	for (int ic = 0; gainstr[ic]; ++ic, ++ch){
+		if (gainstr[ic] != actstr[ic]){
+			snprintf(cmd, maxcmd, "set.site %d gain%d=%c", site, ch, gainstr[ic]);
+			fp = popen(cmd, "r");
+			pclose(fp);
+		}
+	}
+}
+
+int acq400_cal_ll_check_success(int site, int gains[], int nchan)
+{
+	char cmd[80];
+	char* actstr = cmd;
+	char gainstr[33];
+	FILE* fp;
+	int ch;
+	int rc = 0;
+
+	for (ch = 1; ch <= nchan; ++ch){
+		gainstr[ch-1] = gains[ch]+'0';
+	}
+	gainstr[ch-1] = '\0';
+
+	snprintf(cmd, 80, "get.site %d gains", site);
+
+	fp = popen(cmd, "r");
+	if (fp == 0){
+		printf("ERROR: popen fail");
+		rc = -1;
+	}else if (fgets(actstr, 80, fp) == 0){
+		rc = -1;
+		pclose(fp);
+	}else{
+		pclose(fp);
+
+		actstr[strlen(actstr)-1] = '\0';  /* rtrim */
+		rc = strcmp(gainstr, actstr);
+		printf("site:%d Compare: set:\"%s\" act:\"%s\" %s\n", site, gainstr, actstr, rc? "Needs Fixing": "OK");
+		if (rc){
+			fixup(site, cmd, 80, gainstr, actstr);
+		}
+	}
+
+	return rc;
 }
