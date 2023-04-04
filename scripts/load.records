@@ -662,6 +662,13 @@ load_400() {
         dblr '"db/acq420fmc.db","'${cprams},'LO='${LO},MAXDIV=${maxdiv:-65536}'"'
     fi
 
+    if [ "$is_adc" != "no" ]; then
+        _is_adc=1
+    else
+        _is_adc=0
+    fi
+    dblr '"db/has_rgm.db","'${cprams},HAS_RGM=$has_rgm,IS_ADC=$_is_adc'"'
+
     if [ ${site} -eq $FIRST_SITE ]; then
 
         mprams="UUT=${HOST},SITE=${site},SPORT=S${site}M"
@@ -680,13 +687,6 @@ load_400() {
                 load_rgm ${site} "${mprams},onst=nc,twst=RGM"
             fi
         fi
-
-        if [ "$is_adc" != "no" ]; then
-            _is_adc=1
-        else
-            _is_adc=0
-        fi
-        dblr '"db/has_rgm.db","'${mprams},HAS_RGM=$has_rgm,IS_ADC=$_is_adc'"'
 
         [ "x$RTM_BUFFER_MON" = "xy" ] &&
             echo "seq rtm_buffer_mon \"uut=${HOST},verbose=${RTM_BUFFER_MON_VERBOSE:-0}\""
@@ -774,7 +774,7 @@ load_400() {
             eval $(get.site 0 distributor)
             dblr '"db/awg.db","'${dprams},dsites=\'${sites}\''"'
             echo "seq select_awg_distributor \"${dprams},verbose=1\""
-            load_rgm ${dist_s1} "${dprams},onst=nc,twst=nc"
+            [ ${has_rgm} -eq 1 ] && load_rgm ${dist_s1} "${dprams},onst=nc,twst=nc"
             sprams="${dprams},CTRMAX=$CTR28,DT=1,DTC=1"
             dblr '"db/_counter.db","'${sprams},SIG=AWG,lname=REPS'"'
             echo "dbpf ${HOST}:${site}:SIG:clk_counter_src d$((${site}+1))" >> /tmp/st_post.cmd
