@@ -136,7 +136,7 @@ fi
 # report init status - this will be overwritten on successful completion
 set_common() {
     echo "WARNING:$CMDLINE incomplete" > /dev/shm/role
-    set.site 0 SIG:*:RESET=1  &
+#    set.site 0 SIG:*:RESET=1  &
 }
 
 # even a slave can master another link in the chain..
