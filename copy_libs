@@ -1,9 +1,8 @@
 #!/bin/bash
 # copy library and headers from source package location.
 
+mkdir -p lib/linux-arm lib/linux-x86_64/ include
 cp -a ../lib/linux-arm/libacq.so* lib/linux-arm
 cp -a ../lib/linux-x86_64/libacq.so* lib/linux-x86_64/
-cp ../ACQ420FMC/acq-util.h include
-cp ../ACQ420FMC/Buffer.h include
-cp ../ACQ420FMC/ES.h include
+cp -a ../include/* include
 
