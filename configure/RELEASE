@@ -25,7 +25,7 @@ TEMPLATE_TOP=$(EPICS_BASE)/templates/makeBaseApp/top
 #SNCSEQ=$(EPICS_BASE)/../modules/soft/seq
 #SNCSEQ=$(EPICS_BASE)/../modules/seq-2.2.5
 #SNCSEQ = /usr/local/epics/modules/seq-2.2.5
-SNCSEQ=$(EPICS_BASE)/../seq_base
+SNCSEQ=$(EPICS_BASE)/../modules/seq
 
 
 # EPICS_BASE usually appears last so other apps can override stuff:
