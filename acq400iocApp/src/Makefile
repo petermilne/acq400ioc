@@ -66,10 +66,7 @@ acq400ioc_DBD += ppw_tick_scaler.dbd
 acq400ioc_LIBS += acq2ioc
 acq400ioc_LIBS += seq pv
 acq400ioc_LIBS += acq
-#acq400ioc_LIBS +=fftw3
 
-#PROD_LIBS += stream
-#PROD_LIBS += asyn
 # acq400ioc_registerRecordDeviceDriver.cpp derives from acq400ioc.dbd
 acq400ioc_SRCS += acq400ioc_registerRecordDeviceDriver.cpp
 acq400ioc_SRCS += acq400_judgement.cpp
