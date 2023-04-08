@@ -1,3 +1,2 @@
 # configure/CONFIG_SITE.Common.linux-x86_64
 
-LDFLAGS += -L /usr/lib64/ -lfftw3f 

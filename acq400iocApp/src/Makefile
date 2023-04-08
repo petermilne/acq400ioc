@@ -143,7 +143,7 @@ acq400ioc_SRCS_vxWorks += -nil-
 # Finally link to the EPICS Base libraries
 acq400ioc_LIBS += $(EPICS_BASE_IOC_LIBS)
 
-PROD_SYS_LIBS_DEFAULT += stream asyn pcre
+PROD_SYS_LIBS_DEFAULT += stream asyn pcre fftw3f
 #===========================
 
 include $(TOP)/configure/RULES

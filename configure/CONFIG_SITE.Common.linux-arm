@@ -1,3 +1,2 @@
 # CONFIG_SITE.Common.linux-arm
 
-LDFLAGS += -lfftw3f 
