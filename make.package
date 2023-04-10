@@ -12,7 +12,7 @@ if [ "x$1" = "xxl" ]; then
 	else
 		echo WARNING NOT on xl branch
 	fi
-else [ "$(basename $(dirname $PWD))" = "ACQ400_ESW_TOP" ]; then
+elif [ "$(basename $(dirname $PWD))" = "ACQ400_ESW_TOP" ]; then
 	ISXL=1
 	echo "ACQ400_ESW_TOP detected, ISXL set $ISXL"
 fi
