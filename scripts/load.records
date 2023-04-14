@@ -407,9 +407,9 @@ load_rgm() {
     mp=$2
     case $(cat /dev/acq400.${st}.knobs/module_type) in
     $MT_ACQ480)
-        radj=${RTM_TRANSLEN_ADJ:-1};;
+        radj=${RTM_TRANSLEN_ADJ:-0};;
     *)
-        radj=${RTM_TRANSLEN_ADJ:--1};;
+        radj=${RTM_TRANSLEN_ADJ:-0};;
     esac
     blen=$(cat /sys/module/acq420fmc/parameters/bufferlen)
     rgmprams="BLEN=${blen},RADJ=${radj},BPB=${BURSTS_PER_BUFFER:-1}"
@@ -978,6 +978,13 @@ load_mb_base() {
         do
             cprams="UUT=${HOST},site=${site}"
             dblr '"db/acq2006sites.db","'${cprams}'"'
+        done;;
+    z7io*)
+        for s in 1 2; do
+            if [ -e /dev/sites/${s}/details ]; then
+                cprams="UUT=${HOST},site=${site}"
+                echo 'dbLoadRecords("db/acq2006sites.db","'${cprams}'")'   
+            fi
         done;;
     esac
     case $mt in
