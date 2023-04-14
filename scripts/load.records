@@ -982,7 +982,7 @@ load_mb_base() {
     z7io*)
         for s in 1 2; do
             if [ -e /dev/sites/${s}/details ]; then
-                cprams="UUT=${HOST},site=${site}"
+                cprams="UUT=${HOST},site=${s}"
                 echo 'dbLoadRecords("db/acq2006sites.db","'${cprams}'")'   
             fi
         done;;
