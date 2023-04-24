@@ -257,7 +257,7 @@ record(calcout, "${UUT}:${SITE}:PPW:${ch}:PULSE:DELAY:c") {
 	field(INPB, "${UUT}:${SITE}:PPW:DELAY:MAX")
 	field(CALC,  "A/B*2147483648")
 	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT PP")
-	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:GP:c")
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:PERIOD:c")
 }
 
 record(ao, "${UUT}:${SITE}:PPW:${ch}:PULSE:WIDTH") {
@@ -276,16 +276,41 @@ record(calcout, "${UUT}:${SITE}:PPW:${ch}:PULSE:WIDTH:c") {
 	field(INPB, "${UUT}:${SITE}:PPW:DELAY:MAX")
 	field(CALC,  "A/B*2147483648")
 	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT PP")
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:PERIOD:c")
+}
+
+record(ao, "${UUT}:${SITE}:PPW:${ch}:PULSE:PERIOD") {
+	field(DESC, "PULSE PERIOD ms")
+	field(DTYP, "Soft Channel")
+	field(DRVL, "0")
+	#field(DRVH, "${UUT}:${SITE}:PPW:DELAY:MAX")
+	# NFG, has to be a constant => needs a seq to fix ..
+	field(DRVH, "999")
+	field(EGU, "ms")
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:PERIOD:c")
+}
+
+
+record(calcout, "${UUT}:${SITE}:PPW:${ch}:PULSE:PERIOD:c") {
+	field(INPA, "${UUT}:${SITE}:PPW:${ch}:PULSE:WIDTH")
+	field(INPB, "${UUT}:${SITE}:PPW:DELAY:MAX")
+	field(INPC, "${UUT}:${SITE}:PPW:${ch}:PULSE:PERIOD")
+	field(INPD, "${UUT}:${SITE}:PPW:${ch}:PULSE:DELAY")
+	field(CALC, "min(max(A+D,C),B)")
+	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:PULSE:PERIOD PP")
+	
+#	field(DISV, "1")
+#	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:PULSE:PERIOD.PACT")
+	
 	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:GP:c")
 }
 
 record(calcout, "${UUT}:${SITE}:PPW:${ch}:GP:c") {
-	field(INPA, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT")
-	field(INPB, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT")
-	field(CALC,  "A+B")
-	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:PULSE:GP PP")
+       field(INPA, "${UUT}:${SITE}:PPW:${ch}:PULSE:PERIOD")
+       field(INPB, "${UUT}:${SITE}:PPW:DELAY:MAX")
+       field(CALC,  "A/B*2147483648")
+       field(OUT,  "${UUT}:${SITE}:PPW:${ch}:PULSE:GP PP")
 }
-
 
 
 

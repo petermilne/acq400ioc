@@ -13,6 +13,7 @@ double max_tick; assign max_tick to "{uut}:{site}:PPW:DELAY:MAX"; monitor max_ti
 
 double delay_drvh[NDX1]; assign delay_drvh to {};    // index from 1. 
 double top_drvh[NDX1];   assign top_drvh to {};
+double prd_drvh[NDX1];	 assign prd_drvh to {};
 
 char* uut;
 char* port;
@@ -35,6 +36,8 @@ ss ppw_tick_scaler {
 				pvAssign(delay_drvh[dx], pvname);
 				snprintf(pvname, 128, "%s:%s:PPW:%d:PULSE:%s.DRVH", uut, site, dx, "WIDTH");
 				pvAssign(top_drvh[dx], pvname);
+				snprintf(pvname, 128, "%s:%s:PPW:%d:PULSE:%s.DRVH", uut, site, dx, "PERIOD");
+				pvAssign(prd_drvh[dx], pvname);
 			}
 			pvGet(max_tick);
 		} state set_all
@@ -42,8 +45,9 @@ ss ppw_tick_scaler {
 	state set_all {
 		entry{			
 			for (dx = 1; dx <= 6; ++dx){
-				delay_drvh[dx] = max_tick; pvPut(delay_drvh[dx]);
-				top_drvh[dx] = max_tick; pvPut(top_drvh[dx]);
+				delay_drvh[dx] = max_tick; 	pvPut(delay_drvh[dx]);
+				top_drvh[dx] = max_tick; 	pvPut(top_drvh[dx]);
+				prd_drvh[dx] = max_tick;	pvPut(prd_drvh[dx]);
 			}
 			max_tick0 = max_tick;
 		}
