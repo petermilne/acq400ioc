@@ -287,8 +287,31 @@ record(ao, "${UUT}:${SITE}:PPW:${ch}:PULSE:PERIOD") {
 	# NFG, has to be a constant => needs a seq to fix ..
 	field(DRVH, "999")
 	field(EGU, "ms")
-	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:PERIOD:c")
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:PERIOD:w")
 }
+
+record(ao, "${UUT}:${SITE}:PPW:${ch}:PULSE:PERIOD:r") {
+	field(DTYP, "Soft Channel")
+	field(SCAN, "1 second")	
+	field(DOL,  "${UUT}:${SITE}:PPW:${ch}:PULSE:PERIOD:c NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:PULSE:PERIOD PP")	
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:PERIOD:s")
+}
+record(ao, "${UUT}:${SITE}:PPW:${ch}:PULSE:PERIOD:s") {
+	field(DTYP, "Soft Channel")
+	field(DOL,  "${UUT}:${SITE}:PPW:${ch}:PULSE:PERIOD:r NPP")
+	field(OMSL, "closed_loop")
+	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:PULSE:PERIOD PP")
+}
+
+record(ao, "${UUT}:${SITE}:PPW:${ch}:PULSE:PERIOD:w") {
+	field(DTYP, "Soft Channel")
+	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:PERIOD:c")
+	field(DISV, "1")
+	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:PULSE:PERIOD:s.PACT")
+}
+
 
 
 record(calcout, "${UUT}:${SITE}:PPW:${ch}:PULSE:PERIOD:c") {
