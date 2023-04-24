@@ -114,7 +114,7 @@ record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT:w") {
 record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP") {
 	field(DTYP, "Soft Channel")
 	field(DRVL, "0")
-	field(DRVH, "2047")
+	field(DRVH, "2147483648")
 	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:w PP")
 }
 
@@ -127,7 +127,7 @@ record(longin, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:r") {
 record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:s") {
 	field(DTYP, "Soft Channel")
 	field(DRVL, "0")
-	field(DRVH, "2047")
+	field(DRVH, "2147483648")
 	field(DOL,  "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:r NPP")
 	field(OMSL, "closed_loop")
 	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:PULSE:GP PP")
@@ -136,7 +136,7 @@ record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:s") {
 record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:w") {
 	field(DTYP, "Soft Channel")
 	field(DRVL, "0")
-	field(DRVH, "2047")
+	field(DRVH, "2147483648")
 	field(FLNK, "${UUT}:${SITE}:${ch}:_ppwp PP")
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:s.PACT")
