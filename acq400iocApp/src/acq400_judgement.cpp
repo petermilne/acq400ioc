@@ -664,14 +664,14 @@ public:
 		RAW_MU = new ETYPE[nsam*nchan];
 		RAW_ML = new ETYPE[nsam*nchan];
 		RAW    = new ETYPE[nsam*nchan];
-		if (verbose == 0){
-			printf("%s RAW = new (%u)[%d] %p..%p\n", __FUNCTION__, (unsigned)sizeof(ETYPE), nsam*nchan, RAW, RAW+nsam*nchan);
-		}
+
+		printf("%s RAW = new (%u)[%d] %p..%p\n",
+				__FUNCTION__, (unsigned)sizeof(ETYPE), nsam*nchan, RAW, RAW+nsam*nchan);
 
 		CHN_MU = new ETYPE[nchan*nsam];  /* cooked order */
 		CHN_ML = new ETYPE[nchan*nsam];  /* cooked order */
 
-		if (verbose == 0){
+		if (verbose > 0){
 			printf("INFO %s cbcutoff set %d\n", __FUNCTION__, cbcutoff);
 		}
 	}
