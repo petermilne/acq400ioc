@@ -241,6 +241,8 @@ else
 	        if [ "$plan" != "$FMB_DEF" ]; then
 	            FMB_DEF=$plan
 	            CLKDIV=1
+		else
+		    CLKDIV=unknown
 	        fi
 	    fi
 	fi
@@ -249,6 +251,7 @@ else
 	    eval $(egu2int FS=${P2:-$FS_DEF})
 	    eval $(egu2int FMB=${FMB_DEF})	
 	    CLKDIV=$(($FMB/$FS))
+	    echo calculated $CLKDIV
     fi
 fi
 
