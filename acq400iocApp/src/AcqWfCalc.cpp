@@ -211,12 +211,26 @@ long raw_to_volts(aSubRecord *prec) {
 			float jscale = *(float*)prec->q;
 			float* valp = (float*)prec->valp;
 			float* valq = (float*)prec->valq;
+			const bool i_is_int16 = prec->ftp == epicsInt16T;
+			const bool j_is_int16 = prec->ftq == epicsInt16T;
+
 			if (::verbose > 1){
-				printf("%s : convert iscale:%f jscale:%f\n", prec->name, iscale, jscale);
+				printf("%s : convert iscale:%f*%s jscale:%f*%s\n",
+						prec->name,
+						iscale, i_is_int16? "int16": "u16",
+						jscale, j_is_int16? "int16": "u16");
 			}
-			for (epicsUInt32 ii = 0; ii <len; ii++) {
-				valp[ii] = iscale * p_top_half[ii];
-				valq[ii] = jscale * p_low_half[ii];
+			for (epicsUInt32 ii = 0; ii<len; ii++) {
+				if (i_is_int16){
+					valp[ii] = iscale * ((short*)p_top_half)[ii];
+				}else{
+					valp[ii] = iscale * p_top_half[ii];
+				}
+				if (j_is_int16){
+					valp[ii] = jscale * ((short*)p_low_half)[ii];
+				}else{
+					valq[ii] = jscale * p_low_half[ii];
+				}
 			}
 		}
 	}

@@ -1,7 +1,7 @@
 # customizes the PWR array, CAL mode a V, I split
 
 record(aSub, "${UUT}:${SITE}:AI:TW:${cid}:V") {
-	field(FTVI, "USHORT")
+	field(FTVI, "SHORT")
 	field(NOVI, "${SPL_TW_LEN}")
 	field(FTVJ, "USHORT")
 	field(NOVJ, "${SPL_TW_LEN}")	
