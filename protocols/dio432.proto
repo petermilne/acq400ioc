@@ -1,6 +1,16 @@
 Terminator = LF;
 ExtraInput = Ignore;
 
+get_mode {
+	out "mode";
+	in "%d %*s";
+}
+
+set_mode {
+	out "mode %d";
+	in "";
+}
+
 get_dwg {
 	out "dwg_status";
 	in "%d %(\$1)d";
@@ -26,8 +36,20 @@ get_DI32 {
 	in "%x"
 }
 
+get_DI32_4x8 {
+	out "DI32";
+	in "0x%(\$1:B4.RVAL)!2x%(\$1:B3.RVAL)!2x%(\$1:B2.RVAL)!2x%(\$1:B1.RVAL)!2x";
+}
+
+
+
 set_DO32 {
 	out "DO32 0x%08x";
+	in;
+}
+
+set_DO32_4x8 {
+	out "DO32 0x%(\$1:B4.RVAL)02x%(\$1:B3.RVAL)02x%(\$1:B2.RVAL)02x%(\$1:B1.RVAL)02x";
 	in;
 }
 
@@ -49,4 +71,9 @@ setPGDO_DIR_BIT {
 get_di_snoop {
 	out "di_snoop";
 	in "%x";
+}
+
+get_dir {
+	out "byte_is_output";
+	in "%(\$1:B1.RVAL)d,%(\$1:B2.RVAL)d,%(\$1:B3.RVAL)d,%(\$1:B4.RVAL)d";
 }
