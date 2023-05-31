@@ -579,6 +579,10 @@ load_400() {
             ./scripts/load.dio482td_DI ${HOST} ${site}
         fi;;
     $MT_DIO432|$MT_DIO432P|$MT_DIO482|$MT_DIO482TD_PG|$MT_DIO422)
+        case $(cat /dev/acq400.$site.knobs/module_variant) in
+        20|21)
+            is_adc="counter";;
+        esac
         if [ -e ${esite}/num_pg ]; then
             will_load_dio482pg=$(cat ${esite}/num_pg)
         else
