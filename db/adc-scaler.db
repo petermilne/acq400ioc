@@ -1,0 +1,52 @@
+# dio482_scaler.db
+
+record(longout, "${UUT}:${SITE}:DWELL"){
+    field(DESC, "SCALER DWELL count")
+    field(DTYP, "Soft Channel")    
+    field(DRVL, "10")
+    field(DRVH, "65535")
+    field(FLNK, "${UUT}:${SITE}:DWELL:w PP")
+}
+
+record(longout, "${UUT}:${SITE}:DWELL:w"){
+    field(DESC, "SCALER DWELL count")
+    field(DTYP, "stream")
+    field(OUT,  "@dio482_scaler.proto set_dwell ${SPORT}")
+    field(OMSL, "closed_loop")
+    field(DOL,  "${UUT}:${SITE}:DWELL")
+	field(DISV, "1")	
+	field(SDIS, "${UUT}:${SITE}:DWELL:r.PACT")    
+    field(DRVL, "10")
+    field(DRVH, "65535") 
+}
+
+record(longin, "${UUT}:${SITE}:DWELL:r"){
+    field(DESC, "SCALER DWELL count")
+    field(DTYP, "stream")
+    field(OUT,  "@dio482_scaler.proto get_dwell ${SPORT}")
+    field(SCAN, "2 second")
+    field(FLNK, "${UUT}:${SITE}:DWELL:s")  
+}
+
+record(longout, "${UUT}:${SITE}:DWELL:s"){
+    field(DESC, "SCALER DWELL count")
+    field("Soft Channel")
+	field(OMSL, "closed_loop")
+	field(DOL,  "${UUT}:${SITE}:DWELL:r NPP")
+	field(OUT,  "${UUT}:${SITE}:DWELL PP")
+}
+
+record(ao, "${UUT}:${SITE}:DWELL:TIME") {
+    field(DESC, "DWELL Time in ms")
+    field(EGU,  "s")
+    field(FLNK, "${UUT}:${SITE}:DWELL:TIME:c PP")
+}
+
+record(calcout, "${UUT}:${SITE}:DWELL:TIME:c") {    
+    field(INPA, "${UUT}:${SITE}:DWELL:TIME")
+    field(INPB, "200e-9")
+    field(CALC, "A/B")
+    field(DOPT, "Use CALC")
+    field(OOPT, "On Change")
+    field(OUT,  "${UUT}:${SITE}:DWELL NPP")
+}
