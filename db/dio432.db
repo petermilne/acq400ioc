@@ -20,8 +20,16 @@ record(mbbi, "${UUT}:${SITE}:DIO:MODE") {
 	field(TWST, "CLK")
 	field(INP, "@dio432.proto get_mode() ${SPORT}")
 	field(SCAN, "1 second")
+	field(FLNK, "${UUT}:${SITE}:DIO:fan")
 }
 
+# force DO's to process as they may be disabled.. from change of OUTPUT
+record(fanout, "${UUT}:${SITE}:DIO:fan") {
+	field(LNKA, "${UUT}:${SITE}:IMM:DO:B1 PP")
+	field(LNKB, "${UUT}:${SITE}:IMM:DO:B2 PP")
+	field(LNKC, "${UUT}:${SITE}:IMM:DO:B3 PP")
+	field(LNKD, "${UUT}:${SITE}:IMM:DO:B4 PP")	
+}
 
 record(longin, "${UUT}:${SITE}:IMM:DI32") {
 	field(SCAN, "1 second")
