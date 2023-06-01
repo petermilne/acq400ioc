@@ -86,14 +86,20 @@ record(mbbiDirect, "${UUT}:${SITE}:IMM:DI:B2") {
 }
 
 record(mbbiDirect, "${UUT}:${SITE}:IMM:DI:B1") {
+	field(DTYP, "Raw Soft Channel")
+	field(NOBT, "8")
+	field(MASK, "0xff")
+	field(SDIS, "${UUT}:${SITE}:ISOUTPUT:B1")
+	field(DISV, "1")
+}
+
+record(mbbiDirect, "${UUT}:${SITE}:IMM:DI:bx") {
 	field(DTYP, "stream")
 	field(DESC, "Instantaneous DI, Byte1")
 	field(INP,  "@dio432.proto get_DI32_4x8(${UUT}:${SITE}:IMM:DI) ${SPORT}")
 	field(SCAN, ".5 second")
 	field(NOBT, "8")
 	field(MASK, "0xff")
-	field(SDIS, "${UUT}:${SITE}:ISOUTPUT:B1")
-	field(DISV, "1")
 }
 
 record(mbboDirect, "${UUT}:${SITE}:IMM:DO:B4") {
