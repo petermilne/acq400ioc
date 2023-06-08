@@ -25,10 +25,10 @@ record(mbbi, "${UUT}:${SITE}:DIO:MODE") {
 
 # force DO's to process as they may be disabled.. from change of OUTPUT
 record(fanout, "${UUT}:${SITE}:DIO:fan") {
-	field(LNKA, "${UUT}:${SITE}:IMM:DO:B1 PP")
-	field(LNKB, "${UUT}:${SITE}:IMM:DO:B2 PP")
-	field(LNKC, "${UUT}:${SITE}:IMM:DO:B3 PP")
-	field(LNKD, "${UUT}:${SITE}:IMM:DO:B4 PP")	
+	field(LNKA, "${UUT}:${SITE}:IMM:DO:BYTE1 PP")
+	field(LNKB, "${UUT}:${SITE}:IMM:DO:BYTE2 PP")
+	field(LNKC, "${UUT}:${SITE}:IMM:DO:BYTE3 PP")
+	field(LNKD, "${UUT}:${SITE}:IMM:DO:BYTE4 PP")
 }
 
 record(longin, "${UUT}:${SITE}:IMM:DI32") {
@@ -45,22 +45,22 @@ record(longout, "${UUT}:${SITE}:IMM:DO32") {
 	field(PRIO, "LOW")
 }
 
-record(bi, "${UUT}:${SITE}:ISOUTPUT:B4") {
+record(bi, "${UUT}:${SITE}:ISOUTPUT:BYTE4") {
 	field(DTYP, "Raw Soft Channel")
 	field(ZNAM, "FALSE")
 	field(ONAM, "TRUE")
 }
-record(bi, "${UUT}:${SITE}:ISOUTPUT:B3") {
+record(bi, "${UUT}:${SITE}:ISOUTPUT:BYTE3") {
 	field(DTYP, "Raw Soft Channel")
 	field(ZNAM, "FALSE")
 	field(ONAM, "TRUE")
 }
-record(bi, "${UUT}:${SITE}:ISOUTPUT:B2") {
+record(bi, "${UUT}:${SITE}:ISOUTPUT:BYTE2") {
 	field(DTYP, "Raw Soft Channel")
 	field(ZNAM, "FALSE")
 	field(ONAM, "TRUE")
 }
-record(bi, "${UUT}:${SITE}:ISOUTPUT:B1") {
+record(bi, "${UUT}:${SITE}:ISOUTPUT:BYTE1") {
 	field(DTYP, "stream")
 	field(INP,  "@dio432.proto get_dir(${UUT}:${SITE}:ISOUTPUT) ${SPORT}")
 	field(PINI, "YES")
@@ -69,88 +69,88 @@ record(bi, "${UUT}:${SITE}:ISOUTPUT:B1") {
 	field(ONAM, "TRUE")
 }
 
-record(mbbiDirect, "${UUT}:${SITE}:IMM:DI:B4") {
+record(mbbiDirect, "${UUT}:${SITE}:IMM:DI:BYTE4") {
 	field(DTYP, "Raw Soft Channel")
 	field(DESC, "Instantaneous DI, Byte4")
 	field(NOBT, "8")
-	field(SDIS, "${UUT}:${SITE}:ISOUTPUT:B4")
+	field(SDIS, "${UUT}:${SITE}:ISOUTPUT:BYTE4")
 	field(DISV, "1")
 }
 
-record(mbbiDirect, "${UUT}:${SITE}:IMM:DI:B3") {
+record(mbbiDirect, "${UUT}:${SITE}:IMM:DI:BYTE3") {
 	field(DTYP, "Raw Soft Channel")
 	field(DESC, "Instantaneous DI, Byte3")
 	field(NOBT, "8")
-	field(SDIS, "${UUT}:${SITE}:ISOUTPUT:B3")
+	field(SDIS, "${UUT}:${SITE}:ISOUTPUT:BYTE3")
 	field(DISV, "1")
 }
 
-record(mbbiDirect, "${UUT}:${SITE}:IMM:DI:B2") {
+record(mbbiDirect, "${UUT}:${SITE}:IMM:DI:BYTE2") {
 	field(DTYP, "Raw Soft Channel")
 	field(DESC, "Instantaneous DI, Byte2")
 	field(NOBT, "8")
-	field(SDIS, "${UUT}:${SITE}:ISOUTPUT:B2")
+	field(SDIS, "${UUT}:${SITE}:ISOUTPUT:BYTE2")
 	field(DISV, "1")
 }
 
-record(mbbiDirect, "${UUT}:${SITE}:IMM:DI:B1") {
+record(mbbiDirect, "${UUT}:${SITE}:IMM:DI:BYTE1") {
 	field(DTYP, "Raw Soft Channel")
 	field(NOBT, "8")
 	field(MASK, "0xff")
-	field(SDIS, "${UUT}:${SITE}:ISOUTPUT:B1")
+	field(SDIS, "${UUT}:${SITE}:ISOUTPUT:BYTE1")
 	field(DISV, "1")
 }
 
 record(mbbiDirect, "${UUT}:${SITE}:IMM:DI:bx") {
 	field(DTYP, "stream")
-	field(DESC, "Instantaneous DI, Byte1")
+	field(DESC, "Instantaneous DI, monitor")
 	field(INP,  "@dio432.proto get_DI32_4x8(${UUT}:${SITE}:IMM:DI) ${SPORT}")
 	field(SCAN, ".5 second")
 	field(NOBT, "8")
 	field(MASK, "0xff")
 }
 
-record(mbboDirect, "${UUT}:${SITE}:IMM:DO:B4") {
+record(mbboDirect, "${UUT}:${SITE}:IMM:DO:BYTE4") {
 	field(DTYP, "stream")
 	field(DESC, "Instantaneous DO, Byte4")
 	field(OUT,  "@dio432.proto set_DO32_4x8(${UUT}:${SITE}:IMM:DO) ${SPORT}")
 	field(PINI, "YES")
 	field(VAL,  "0")
 	field(NOBT, "8")
-	field(SDIS, "${UUT}:${SITE}:ISOUTPUT:B4")
+	field(SDIS, "${UUT}:${SITE}:ISOUTPUT:BYTE4")
 	field(DISV, "0")
 }
 
-record(mbboDirect, "${UUT}:${SITE}:IMM:DO:B3") {
+record(mbboDirect, "${UUT}:${SITE}:IMM:DO:BYTE3") {
 	field(DTYP, "stream")
 	field(DESC, "Instantaneous DO, Byte3")
 	field(OUT,  "@dio432.proto set_DO32_4x8(${UUT}:${SITE}:IMM:DO) ${SPORT}")
 	field(PINI, "YES")
 	field(VAL,  "0")
 	field(NOBT, "8")
-	field(SDIS, "${UUT}:${SITE}:ISOUTPUT:B3")
+	field(SDIS, "${UUT}:${SITE}:ISOUTPUT:BYTE3")
 	field(DISV, "0")
 }
 
-record(mbboDirect, "${UUT}:${SITE}:IMM:DO:B2") {
+record(mbboDirect, "${UUT}:${SITE}:IMM:DO:BYTE2") {
 	field(DTYP, "stream")
 	field(DESC, "Instantaneous DO, Byte2")
 	field(OUT,  "@dio432.proto set_DO32_4x8(${UUT}:${SITE}:IMM:DO) ${SPORT}")
 	field(PINI, "YES")
 	field(VAL,  "0")
 	field(NOBT, "8")
-	field(SDIS, "${UUT}:${SITE}:ISOUTPUT:B2")
+	field(SDIS, "${UUT}:${SITE}:ISOUTPUT:BYTE2")
 	field(DISV, "0")
 }
 
-record(mbboDirect, "${UUT}:${SITE}:IMM:DO:B1") {
+record(mbboDirect, "${UUT}:${SITE}:IMM:DO:BYTE1") {
 	field(DTYP, "stream")
 	field(DESC, "Instantaneous DO, Byte1")
 	field(OUT,  "@dio432.proto set_DO32_4x8(${UUT}:${SITE}:IMM:DO) ${SPORT}")
 	field(PINI, "YES")
 	field(VAL,  "0")
 	field(NOBT, "8")
-	field(SDIS, "${UUT}:${SITE}:ISOUTPUT:B1")
+	field(SDIS, "${UUT}:${SITE}:ISOUTPUT:BYTE1")
 	field(DISV, "0")
 }
 
