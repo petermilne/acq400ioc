@@ -21,6 +21,8 @@ record(mbbi, "${UUT}:${SITE}:DIO:MODE") {
 	field(INP, "@dio432.proto get_mode() ${SPORT}")
 	field(SCAN, "1 second")
 	field(FLNK, "${UUT}:${SITE}:DIO:fan")
+	field(SDIS, "${UUT}:${SITE}:NOPOLL")
+	field(DISV, "1")
 }
 
 # force DO's to process as they may be disabled.. from change of OUTPUT
@@ -37,6 +39,8 @@ record(longin, "${UUT}:${SITE}:IMM:DI32") {
 	field(INP,  "@dio432.proto get_DI32 ${SPORT}")	
 	field(DESC, "DI32 immediate value")	
 	field(PRIO, "LOW")
+	field(SDIS, "${UUT}:${SITE}:NOPOLL")
+	field(DISV, "1")
 }
 record(longout, "${UUT}:${SITE}:IMM:DO32") {	
 	field(DTYP, "stream")	
@@ -101,6 +105,11 @@ record(mbbiDirect, "${UUT}:${SITE}:IMM:DI:BYTE1") {
 	field(DISV, "1")
 }
 
+record(bo, "${UUT}:${SITE}:NOPOLL") {
+	field(DTYP, "Soft Channel")
+	field(ZNAM, "0")
+	field(ONAM, "1")
+}
 record(mbbiDirect, "${UUT}:${SITE}:IMM:DI:bx") {
 	field(DTYP, "stream")
 	field(DESC, "Instantaneous DI, monitor")
@@ -108,6 +117,8 @@ record(mbbiDirect, "${UUT}:${SITE}:IMM:DI:bx") {
 	field(SCAN, ".1 second")
 	field(NOBT, "8")
 	field(MASK, "0xff")
+	field(SDIS, "${UUT}:${SITE}:NOPOLL")
+	field(DISV, "1")
 }
 
 record(mbboDirect, "${UUT}:${SITE}:IMM:DO:BYTE4") {
