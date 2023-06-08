@@ -579,14 +579,13 @@ load_400() {
             ./scripts/load.dio482td_DI ${HOST} ${site}
         fi;;
     $MT_DIO432|$MT_DIO432P|$MT_DIO482|$MT_DIO482TD_PG|$MT_DIO422)
-        case $(cat /dev/acq400.$site.knobs/module_variant) in
-        20|21)
+        mv=$(cat /dev/acq400.$site.knobs/module_variant)
+        if [ "$model" = "$MT_DIO482" ] && [ "$mv" = "20" -o "$mv" = "21" ]; then
             if [ $SITE -eq 1 ]; then
                 dblr '"db/dio482-scaler.db",'${cprams}'"'
             fi
-            is_adc="scaler";;
-        esac
-        if [ -e ${esite}/num_pg ]; then
+            is_adc="scaler"
+        elif [ -e ${esite}/num_pg ]; then
             will_load_dio482pg=$(cat ${esite}/num_pg)
         else
             name=$(cat /dev/acq400.$site.knobs/module_name)
