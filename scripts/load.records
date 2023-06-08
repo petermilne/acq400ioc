@@ -581,8 +581,8 @@ load_400() {
     $MT_DIO432|$MT_DIO432P|$MT_DIO482|$MT_DIO482TD_PG|$MT_DIO422)
         mv=$(cat /dev/acq400.$site.knobs/module_variant)
         if [ "$model" = "$MT_DIO482" ] && [ "$mv" = "20" -o "$mv" = "21" ]; then
-            if [ $SITE -eq 1 ]; then
-                dblr '"db/dio482-scaler.db",'${cprams}'"'
+            if [ $site -eq 1 ]; then
+                dblr '"db/dio482-scaler.db","'${cprams}'"'
             fi
             is_adc="scaler"
         elif [ -e ${esite}/num_pg ]; then
@@ -718,7 +718,7 @@ load_400() {
             fi
         fi
     fi
-    if [ "${is_adc}" != "no" ]; then
+    if [ "${is_adc}" != "no" -a "${is_adc}" != "scaler" ]; then
         HPRAMS="${cprams},size=$HSIZE,type=LONG,fname=HG.${site}"
         dblr '"db/hgAcqHost.db","'${HPRAMS}'"'
         dblr '"db/signal.db","'${cprams}',FNAM=SYNC,FN=sync,ZNAM=internal,ONAM=external,DISV=1"'
