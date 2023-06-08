@@ -1,0 +1,12 @@
+Terminator = LF;
+ExtraInput = Ignore;
+
+get_dwell {
+	out "dwell";
+	in "%d";
+}
+
+set_dwell {
+	out "dwell %d";
+	in "";
+}
