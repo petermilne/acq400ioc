@@ -38,7 +38,7 @@ get_DI32 {
 
 get_DI32_4x8 {
 	out "DI32";
-	in "0x%(\$1:B4.RVAL)!2x%(\$1:B3.RVAL)!2x%(\$1:B2.RVAL)!2x%(\$1:B1.RVAL)!2x";
+	in "0x%(\$1:BYTE4.RVAL)!2x%(\$1:BYTE3.RVAL)!2x%(\$1:BYTE2.RVAL)!2x%(\$1:BYTE1.RVAL)!2x";
 }
 
 
@@ -49,7 +49,7 @@ set_DO32 {
 }
 
 set_DO32_4x8 {
-	out "DO32 0x%(\$1:B4.RVAL)02x%(\$1:B3.RVAL)02x%(\$1:B2.RVAL)02x%(\$1:B1.RVAL)02x";
+	out "DO32 0x%(\$1:BYTE4.RVAL)02x%(\$1:BYTE3.RVAL)02x%(\$1:BYTE2.RVAL)02x%(\$1:BYTE1.RVAL)02x";
 	in;
 }
 
