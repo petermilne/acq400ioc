@@ -75,5 +75,5 @@ get_di_snoop {
 
 get_dir {
 	out "byte_is_output";
-	in "%(\$1:B1.RVAL)d,%(\$1:B2.RVAL)d,%(\$1:B3.RVAL)d,%(\$1:B4.RVAL)d";
+	in "%(\$1:BYTE1.RVAL)d,%(\$1:BYTE2.RVAL)d,%(\$1:BYTE3.RVAL)d,%(\$1:BYTE4.RVAL)d";
 }
