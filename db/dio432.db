@@ -64,7 +64,7 @@ record(bi, "${UUT}:${SITE}:ISOUTPUT:BYTE1") {
 	field(DTYP, "stream")
 	field(INP,  "@dio432.proto get_dir(${UUT}:${SITE}:ISOUTPUT) ${SPORT}")
 	field(PINI, "YES")
-	field(SCAN, "5 second")
+	field(SCAN, ".5 second")
 	field(ZNAM, "FALSE")
 	field(ONAM, "TRUE")
 }
@@ -105,7 +105,7 @@ record(mbbiDirect, "${UUT}:${SITE}:IMM:DI:bx") {
 	field(DTYP, "stream")
 	field(DESC, "Instantaneous DI, monitor")
 	field(INP,  "@dio432.proto get_DI32_4x8(${UUT}:${SITE}:IMM:DI) ${SPORT}")
-	field(SCAN, ".5 second")
+	field(SCAN, ".1 second")
 	field(NOBT, "8")
 	field(MASK, "0xff")
 }

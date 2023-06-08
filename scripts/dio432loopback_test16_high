@@ -1,0 +1,22 @@
+#!/bin/sh
+
+S1=${1:-1}
+
+PVI=$(hostname):$S1:IMM:DI
+PVO=$(hostname):$S1:IMM:DO
+
+echo "loopback test to self, SITE=$S1 cabled d16->d31 => d0..d15"
+
+/usr/local/CARE/dio432init.immediate $S1 0,0,1,1
+sleep 1
+
+for BYTE in 3 4; do
+   for BIT in 0 1 2 3 4 5 6 7; do
+	OUT=$(caput $PVO:BYTE$BYTE.B$BIT 1|grep New)
+	sleep .2
+	echo $OUT ' => ' $(caget $PVI:BYTE$(($BYTE-2)).B$BIT)
+	caput $PVO:BYTE$BYTE.B$BIT 0 2>&1 >/dev/null
+   done
+done
+
+
