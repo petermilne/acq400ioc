@@ -15,7 +15,7 @@ record(bo, "${UUT}:${SITE}:PPW:${ch}:PULSE") {
 }
 
 # New limits for 32 bit regs. NB: EPICS uses long, signed, so 2**31 is the max.
-# 2**31 = 2147483648
+# 2**31 = 2147483647
 # 2**32 = 4294967296
 
 #http://www.aps.anl.gov/epics/tech-talk/2010/msg00131.php
@@ -50,8 +50,8 @@ record(mbbo, "${UUT}:${SITE}:PPW:${ch}:PULSE:w") {
 
 record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT") {
 	field(DTYP, "Soft Channel")
-	field(DRVL, "0")
-	field(DRVH, "2147483648")
+	field(DRVL, "1")
+	field(DRVH, "2147483647")
 	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT:w PP")
 }
 
@@ -64,7 +64,7 @@ record(longin, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT:r") {
 record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT:s") {
 	field(DTYP, "Soft Channel")
 	field(DRVL, "0")
-	field(DRVH, "2147483648")
+	field(DRVH, "2147483647")
 	field(DOL,  "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT:r NPP")
 	field(OMSL, "closed_loop")
 	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT PP")
@@ -72,8 +72,8 @@ record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT:s") {
 
 record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT:w") {
 	field(DTYP, "Soft Channel")
-	field(DRVL, "0")
-	field(DRVH, "2147483648")
+	field(DRVL, "1")
+	field(DRVH, "2147483647")
 	field(FLNK, "${UUT}:${SITE}:${ch}:_ppwp PP")
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT:s.PACT")
@@ -81,8 +81,8 @@ record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT:w") {
 
 record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT") {
 	field(DTYP, "Soft Channel")
-	field(DRVL, "0")
-	field(DRVH, "2147483648")
+	field(DRVL, "1")
+	field(DRVH, "2147483647")
 	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT:w PP")
 }
 
@@ -95,7 +95,7 @@ record(longin, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT:r") {
 record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT:s") {
 	field(DTYP, "Soft Channel")
 	field(DRVL, "0")
-	field(DRVH, "2147483648")
+	field(DRVH, "2147483647")
 	field(DOL,  "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT:r NPP")
 	field(OMSL, "closed_loop")
 	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT PP")
@@ -103,8 +103,8 @@ record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT:s") {
 
 record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT:w") {
 	field(DTYP, "Soft Channel")
-	field(DRVL, "0")
-	field(DRVH, "2147483648")
+	field(DRVL, "1")
+	field(DRVH, "2147483647")
 	field(FLNK, "${UUT}:${SITE}:${ch}:_ppwp PP")
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT:s.PACT")
@@ -113,8 +113,8 @@ record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT:w") {
 
 record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP") {
 	field(DTYP, "Soft Channel")
-	field(DRVL, "0")
-	field(DRVH, "2147483648")
+	field(DRVL, "1")
+	field(DRVH, "2147483647")
 	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:w PP")
 }
 
@@ -127,7 +127,7 @@ record(longin, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:r") {
 record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:s") {
 	field(DTYP, "Soft Channel")
 	field(DRVL, "0")
-	field(DRVH, "2147483648")
+	field(DRVH, "2147483647")
 	field(DOL,  "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:r NPP")
 	field(OMSL, "closed_loop")
 	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:PULSE:GP PP")
@@ -136,7 +136,7 @@ record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:s") {
 record(longout, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:w") {
 	field(DTYP, "Soft Channel")
 	field(DRVL, "0")
-	field(DRVH, "2147483648")
+	field(DRVH, "2147483647")
 	field(FLNK, "${UUT}:${SITE}:${ch}:_ppwp PP")
 	field(DISV, "1")
 	field(SDIS, "${UUT}:${SITE}:PPW:${ch}:PULSE:GP:s.PACT")
@@ -236,7 +236,7 @@ record (longout, "${UUT}:${SITE}:clkdiv:e") {
 
 record(calc, "${UUT}:${SITE}:PPW:DELAY:MAX") {
 	field(INPA, "${UUT}:${SITE}:PPW:TICK")
-	field(INPB, "2147483648")
+	field(INPB, "2147483647")
 	field(CALC, "A*B/1e6")
 	field(EGU,  "ms")
 }
@@ -255,7 +255,7 @@ record(ao, "${UUT}:${SITE}:PPW:${ch}:PULSE:DELAY") {
 record(calcout, "${UUT}:${SITE}:PPW:${ch}:PULSE:DELAY:c") {
 	field(INPA, "${UUT}:${SITE}:PPW:${ch}:PULSE:DELAY")
 	field(INPB, "${UUT}:${SITE}:PPW:DELAY:MAX")
-	field(CALC,  "A/B*2147483648")
+	field(CALC,  "A/B*2147483647")
 	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:PULSE:ICOUNT PP")
 	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:PERIOD:c")
 }
@@ -274,7 +274,7 @@ record(ao, "${UUT}:${SITE}:PPW:${ch}:PULSE:WIDTH") {
 record(calcout, "${UUT}:${SITE}:PPW:${ch}:PULSE:WIDTH:c") {
 	field(INPA, "${UUT}:${SITE}:PPW:${ch}:PULSE:WIDTH")
 	field(INPB, "${UUT}:${SITE}:PPW:DELAY:MAX")
-	field(CALC,  "A/B*2147483648")
+	field(CALC,  "A/B*2147483647")
 	field(OUT,  "${UUT}:${SITE}:PPW:${ch}:PULSE:OCOUNT PP")
 	field(FLNK, "${UUT}:${SITE}:PPW:${ch}:PULSE:PERIOD:c")
 }
@@ -331,7 +331,7 @@ record(calcout, "${UUT}:${SITE}:PPW:${ch}:PULSE:PERIOD:c") {
 record(calcout, "${UUT}:${SITE}:PPW:${ch}:GP:c") {
        field(INPA, "${UUT}:${SITE}:PPW:${ch}:PULSE:PERIOD")
        field(INPB, "${UUT}:${SITE}:PPW:DELAY:MAX")
-       field(CALC,  "A/B*2147483648")
+       field(CALC,  "A/B*2147483647")
        field(OUT,  "${UUT}:${SITE}:PPW:${ch}:PULSE:GP PP")
 }
 
