@@ -10,3 +10,13 @@ set_dwell {
 	out "dwell %d";
 	in "";
 }
+
+get_acc {
+	out "acc_not_reset";
+	in "%d";
+}
+
+set_acc {
+	out "acc_not_reset %d";
+	in "";
+}

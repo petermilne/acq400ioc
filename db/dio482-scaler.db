@@ -51,3 +51,41 @@ record(calcout, "${UUT}:${SITE}:DWELL:TIME:c") {
     field(OOPT, "On Change")
     field(OUT,  "${UUT}:${SITE}:DWELL PP")
 }
+
+record(bo, "${UUT}:${SITE}:ACC"){
+    field(DESC, "SCALER ACCumulate NOT reset count")
+    field(DTYP, "Soft Channel")
+    field(ZNAM, "RESET")
+    field(ONAM, "ACCUMULATE")
+    field(FLNK, "${UUT}:${SITE}:ACC:w PP")
+}
+
+record(bo, "${UUT}:${SITE}:ACC:w"){
+    field(DESC, "SCALER ACC count")
+    field(DTYP, "stream")
+    field(OUT,  "@dio482_scaler.proto set_acc ${SPORT}")
+    field(OMSL, "closed_loop")
+    field(DOL,  "${UUT}:${SITE}:ACC")
+    field(DISV, "1")
+    field(SDIS, "${UUT}:${SITE}:ACC:r.PACT")
+    field(ZNAM, "RESET")
+    field(ONAM, "ACCUMULATE")
+}
+
+record(bi, "${UUT}:${SITE}:ACC:r"){
+    field(DESC, "SCALER ACC count")
+    field(DTYP, "stream")
+    field(INP,  "@dio482_scaler.proto get_acc ${SPORT}")
+    field(SCAN, "2 second")
+    field(FLNK, "${UUT}:${SITE}:ACC:s")
+    field(ZNAM, "RESET")
+    field(ONAM, "ACCUMULATE")
+}
+
+record(bo, "${UUT}:${SITE}:ACC:s"){
+    field(DESC, "SCALER ACC count")
+    field(DTYP, "Soft Channel")
+    field(OMSL, "closed_loop")
+    field(DOL,  "${UUT}:${SITE}:ACC:r NPP")
+    field(OUT,  "${UUT}:${SITE}:ACC PP")
+}
