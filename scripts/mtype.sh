@@ -49,7 +49,8 @@ get_mtv() {
 }
 
 nameFromMT() {
-	case $1 in
+	mt=$((echo $1 | sed -e s/^0//))
+	case $mt in
 	$MT_ACQ2006)	echo "acq2006";;
 	$MT_ACQ1001)	echo "acq1001";;
 	$MT_ACQ2106)	echo "acq2106";;
@@ -97,28 +98,32 @@ case $(nameFromMT $1) in
 	esac	
 }
 hasOutput() {
-	case $1 in
+	mt=$((echo $1 | sed -e s/^0//))
+	case $mt in
 	$MT_DIO432|$MT_DIO432P|$MT_DIO482TD|$MT_DIO482TD_PG|$MT_DIO482|$MT_AO420|$MT_AO4220|$MT_AO424|$MT_AO428|$MT_ACQ436|$MT_DIO422) echo "yes";;
 	*) echo "no";;
 	esac
 }
 
 isDIO() {
-	case $1 in
+	mt=$((echo $1 | sed -e s/^0//))
+	case $mt in
 	$MT_DIO432|$MT_DIO432P|$MT_DIO482TD|$MT_DIO482TD_PG|$MT_DIO482) echo "yes";;
 	*) echo "no";;
 	esac
 }
 
 isACQ43x() {
-	case $1 in
+	mt=$((echo $1 | sed -e s/^0//))
+	case $mt in
 	$MT_ACQ430|$MT_ACQ435|$MT_ACQ436|$MT_ACQ437) echo "yes";;
 	*) echo "no";;
 	esac
 }
 
 hasNACC_BYPASS() {
-	case $1 in
+	mt=$((echo $1 | sed -e s/^0//))
+	case $mt in
 	$MT_ACQ423|$MT_ACQ424|$MT_ACQ425|$MT_ACQ435) echo "yes";;
 	*) echo "no";;
 	esac
