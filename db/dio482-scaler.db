@@ -41,6 +41,8 @@ record(ao, "${UUT}:${SITE}:DWELL:TIME") {
     field(DTYP, "Soft Channel")	
     field(EGU,  "s")
     field(FLNK, "${UUT}:${SITE}:DWELL:TIME:c PP")
+    field(VAL,  "1e-4")
+    field(PINI, "YES")
 }
 
 record(calcout, "${UUT}:${SITE}:DWELL:TIME:c") {    
