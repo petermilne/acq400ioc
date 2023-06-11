@@ -155,7 +155,7 @@ long raw_to_volts(aSubRecord *prec) {
 	bool compute_squares = p_stddev != 0 || p_rms != 0;
 
 	const epicsUInt32 window1 = p_w1 != 0? *p_w1: 0;
-	const epicsUInt32 window2 = p_w2 != 0? *p_w2: len-1;
+	const epicsUInt32 window2 = p_w2 != 0 && *p_w2 != 0? *p_w2: len-1;
 	const epicsUInt32 winlen = window2 - window1 + 1;
 	// if window2 < window1, winlen-> infinity, so mean -> 0, which is fair enough
 
