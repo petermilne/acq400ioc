@@ -282,8 +282,9 @@ config_distributor_sites() {
 	for site in $distributor_sites; do
 		if [ $(get.site $site module_role) = "MASTER" ]; then
 			set.site $site clk '1,1,1'
-			set.site $site CLKDIV=${CLKDIV:-1}
 			set.site $site "trg=1,${TRG_DX:-$1},${TRG_SENSE:-rising}"
+                        set.site $site clkdiv=${CLKDIV:-1}
+			set.site $site CLKDIV=${CLKDIV:-1}
 		fi
 	done
 }
