@@ -35,21 +35,21 @@ getAstats2 {
 	out "astats\$1";
 	in "%x %(\$2:\$3:rc)d %(\$2:\$4:rc)d";
 }
+# reg=0x00be0001 sites=1,2,3,4,6 DATA_MOVER_EN=on spad=1
 
 getAggregator {
 	out "aggregator";
-	in "reg=0x%x sites=%*s DATA_MOVER_EN=%*s";
+	in "reg=0x%x sites=%*s DATA_MOVER_EN=%*s spad=%*d";
 }
 
 getAggregatorSites {	
-	in "reg=0x%*x sites=%s DATA_MOVER_EN=%*s";		
+	in "reg=0x%*x sites=%s DATA_MOVER_EN=%*s spad=%*d";
 }
 
 getAggregatorEn {	
-	in "reg=0x%*x sites=%*s DATA_MOVER_EN=%{off|on}";
+	in "reg=0x%*x sites=%*s DATA_MOVER_EN=%{off|on} spad=%*d";
 }
 
 getSpadEn {
-	out "spad";
-	in "%d";
+	in "reg=0x%*x sites=%*s DATA_MOVER_EN=%*s spad=%d";
 }
