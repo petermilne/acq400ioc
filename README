@@ -104,9 +104,25 @@ export WF_ACQ_HOST_WINDOW_PER_CHANNEL=y
 # JUDGEMENT:
 append to /mnt/local/sysconfig/epics.sh
 export SIZE=1024
-
-# single script handles data16 and data32..
+# # single script handles data16 and data32..
 export IOC_PREINIT=./scripts/load.judgement
+export acq400_Judgement_FIRST_SAM=1
+
+## rc.user:
+judgement() {
+# short trace length, rapid update 50Hz possible
+set.site 1 RTM_TRANSLEN 128
+set.site 1 RGM RTM
+set.site 1 RGM:DX d0
+set.site 1 RGM:SENSE rising
+}
+## epics.sh
+judgement() {
+# short trace length, rapid update 50Hz possible
+export SIZE=128
+export IOC_PREINIT=./scripts/load.judgement
+export acq400_Judgement_FIRST_SAM=1
+}
 
 # adjustment for off by one error in some personalities eg ACQ424
 export RTM_TRANSLEN_ADJ=2
