@@ -107,6 +107,11 @@ export SIZE=1024
 # # single script handles data16 and data32..
 export IOC_PREINIT=./scripts/load.judgement
 export acq400_Judgement_FIRST_SAM=1
+# for 50Hz and above, RTM adjusts buffer size full auto
+export BURSTS_PER_BUFFER=2
+export RTM_BUFFER_MON=y
+export RTM_BUFFER_MON_VERBOSE=1
+
 
 ## rc.user:
 judgement() {

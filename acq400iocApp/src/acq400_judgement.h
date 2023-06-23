@@ -8,7 +8,6 @@
 #ifndef ACQ400IOCAPP_SRC_ACQ400_JUDGEMENT_H_
 #define ACQ400IOCAPP_SRC_ACQ400_JUDGEMENT_H_
 
-
 #include "asynPortDriver.h"
 
 #define PS_NCHAN 		"NCHAN"				/* asynInt32, 		r/o */
@@ -60,6 +59,7 @@ public:
 protected:
 	int handle_es(unsigned* raw);
 	virtual void handle_burst(int vbn, int offset) = 0;
+	/**< vbn: virtual buffer number. ib is physical buffer */
 	bool calculate(epicsInt16* raw, const epicsInt16* mu, const epicsInt16* ml);
 	/* return TRUE if any fail */
 	bool onCalculate(bool fail);
@@ -70,7 +70,7 @@ protected:
 
 	const int nchan;
 	const int nsam;
-	const int bursts_per_buffer;
+	const int bursts_per_buffer;  /** aka bpb */
 
 	/** Values used for pasynUser->reason, and indexes into the parameter library. */
 	int P_NCHAN;
@@ -109,7 +109,7 @@ protected:
 	epicsFloat64 sample_time;
 	epicsInt32 sample_delta_ns;
 
-	int ib;
+	int ib;			/** ib is physical buffer contains bpb vpb's */
 	bool fill_requested;
 };
 
