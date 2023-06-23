@@ -156,11 +156,21 @@ record(longout, "${UUT}:${SITE}:RTM_TRANSLEN") {
 	field(FLNK, "${UUT}:${SITE}:RTM_TRANSLEN:ONCHANGE PP")
 }
 
+record(longin, "${UUT}:${SITE}:ES_SPREAD") {
+	field(DTYP, "Soft Channel")
+	field(DESC, "ES spreads over this number of samples")
+	field(LOPR, "1")
+	field(HOPR, "4")
+	field(PINI, "YES")
+	field(VAL,  "${ES_SPREAD}")
+}
+
 record(calcout, "${UUT}:${SITE}:RTM_TRANSLEN:ONCHANGE") {
 	field(INPA, "${UUT}:${SITE}:RTM_TRANSLEN")
 	field(INPB, "${UUT}:${SITE}:ES_ENABLE")
-	field(INPC, "${RADJ}")
-	field(CALC, "A-B+C")	
+	field(INPC, "${UUT}:${SITE}:ES_SPREAD")
+	field(INPD, "${RADJ}")
+	field(CALC, "A - B*C + D")
 	field(OOPT, "On Change")
 	field(DOPT, "Use CALC")
 	field(OUT,  "${UUT}:${SITE}:RTM_TRANSLENp PP")
