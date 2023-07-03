@@ -44,13 +44,6 @@ getQstatsEmpty {
 	in "%d,%(\$1:FILLING)d,%(\$1:FULL)d,%(\$1:FULL_APP)d,%(\$1:DROPS)d";
 }
 
-# transient
-# transient PRE=1000 POST=1000 OSAM=1 SOFT_TRIGGER=1
-
-setTransient {
-	out "transient PRE=%(\$1:PRE)d POST=%(\$1:POST)d OSAM=%(\$1:OSAM)d SOFT_TRIGGER=%(\$1:SOFT_TRIGGER)d";
-	in;
-}
 
 setContinuous {
 	out "streamtonowhered %s";

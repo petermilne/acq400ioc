@@ -27,3 +27,40 @@ getChDataSize  { in "DATA_SIZE=%*d,%d"; }
 
 
 mdsPutCh	{ in "mdsPutCh %d"; }
+
+
+# transient
+# transient PRE=1000 POST=1000 OSAM=1 SOFT_TRIGGER=1
+
+setTransient {
+	out "transient PRE=%(\$1:PRE)d POST=%(\$1:POST)d OSAM=%(\$1:OSAM)d SOFT_TRIGGER=%(\$1:SOFT_TRIGGER)d";
+	in;
+}
+
+setTransientDemux {
+	out "transient DEMUX=%d";
+	in;
+}
+
+# PRE=0 POST=100000 OSAM=1 DEMUX=1 SOFT_TRIGGER=0
+getTransientPre {
+	out "transient";
+	in "PRE=%d POST=%*d OSAM=%*d DEMUX=%*d SOFT_TRIGGER=%*d"
+}
+
+getTransientPost {
+	in "PRE=%*d POST=%d OSAM=%*d DEMUX=%*d SOFT_TRIGGER=%*d"
+}
+
+getTransientOsam {
+	in "PRE=%*d POST=%*d OSAM=%d DEMUX=%*d SOFT_TRIGGER=%*d"
+}
+
+getTransientDemux {
+	in "PRE=%*d POST=%*d OSAM=%*d DEMUX=%d SOFT_TRIGGER=%*d"
+}
+
+getTransientSoftTrigger {
+	in "PRE=%*d POST=%*d OSAM=%*d DEMUX=%*d SOFT_TRIGGER=%d"
+}
+
