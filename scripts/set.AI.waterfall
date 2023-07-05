@@ -1,12 +1,16 @@
 #!/bin/sh
 source /etc/profile.d/epics.sh
 SITE=${SITE:-${1:-1}}
+EN=${2:-1}
 NCHAN=$(get.site $SITE NCHAN)
 DOFF=5
 
 HN=${IOC_HOST}
 eoff=0
 noff=0
+
+
+if [ $EN -eq 1 ]; then
 
 for ch in $(seq 1 $NCHAN)
 do
@@ -22,4 +26,8 @@ do
 	fi
 done
 
+else
+	caput $HN:$SITE:ADC_CAL default
+	caput $HN:$SITE:ADC_CAL calibrated
+fi
 
