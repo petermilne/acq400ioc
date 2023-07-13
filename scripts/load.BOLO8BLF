@@ -66,7 +66,8 @@ if [ ! -z $BOLO8DSP ] && [ $BOLO8DSP -eq 1 ]; then
 		c1=$(($c1+1))
 		cid=$(printf "%02d" $ix)
 		ZCH=$(printf "%02d" $c1)
-		dblr '"db/bolo8-wfAcqHost.db","'${PRAMS},cid=${cid},CH=${ZCH},P1="MAG",pmax=$MAGMAX,desc=$MAGDESC,ESLO=7.109e-8'"'
+#		dblr '"db/bolo8-wfAcqHost.db","'${PRAMS},cid=${cid},CH=${ZCH},P1="MAG",pmax=$MAGMAX,desc=$MAGDESC,ESLO=7.109e-8'"'
+        dblr '"db/bolo8-wfAcqHost.db","'${PRAMS},cid=${cid},CH=${ZCH},P1="MAG",pmax=$MAGMAX,desc=$MAGDESC,ESLO=7.109e-5'"'
 	done
 	
 	PHIMAX=10
@@ -89,7 +90,8 @@ if [ ! -z $BOLO8DSP ] && [ $BOLO8DSP -eq 1 ]; then
 		c1=$(($c1+1))
 		cid=$(printf "%02d" $ix)
 		ZCH=$(printf "%02d" $c1)	
-		dblr '"db/bolo8-wfAcqHost.db","'${PRAMS},cid=${cid},CH=${ZCH},P1="PWR",pmax=$PWRMAX,desc=$PWRDESC,ESLO=4.550e-6'"'
+#		dblr '"db/bolo8-wfAcqHost.db","'${PRAMS},cid=${cid},CH=${ZCH},P1="PWR",pmax=$PWRMAX,desc=$PWRDESC,ESLO=4.550e-6'"'
+		dblr '"db/bolo8-wfAcqHost.db","'${PRAMS},cid=${cid},CH=${ZCH},P1="PWR",pmax=$PWRMAX,desc=$PWRDESC,ESLO=4.550e-3'"'
 		dblr '"db/bolo8-wfAcqHostCALVI.db","'${PRAMS},cid=${cid},CH=${ZCH},P1="PWR"'"'		
 	done
 
