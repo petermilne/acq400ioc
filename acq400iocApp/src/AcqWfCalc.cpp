@@ -108,6 +108,7 @@ static int verbose;
  *
  * INPP : float* iscale     for converting VALI
  * INPQ : float* jscale     for converting VALJ
+ * INPR : long suppress     suppress P,Q conversion if set.
  * VALP : VALI * INPP
  * VALQ : VALJ * INPQ
  */
@@ -145,6 +146,7 @@ long raw_to_volts(aSubRecord *prec) {
 	unsigned short *p_low_half = (unsigned short*)prec->valj;
 	const epicsUInt32* p_w1 = (epicsUInt32*)prec->l;
 	const epicsUInt32* p_w2 = (epicsUInt32*)prec->m;
+	short suppress_pq = *(short*)prec->r;
 
 	long min_value;
 	long max_value;
@@ -195,7 +197,7 @@ long raw_to_volts(aSubRecord *prec) {
 					prec->name, aslo, aoff, (unsigned)rx, yy, window1, window2);
 		}
 	}
-	if (sizeof(T) == 4 && prec->novi == len && prec->novj == len){
+	if (suppress_pq == 0 && sizeof(T) == 4 && prec->novi == len && prec->novj == len){
 		if (::verbose > 1){
 			printf("%s : splitting lw\n", prec->name);
 		}
