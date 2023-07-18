@@ -38,6 +38,7 @@ MT_DIO482TD=7A
 MT_DIO482TD_PG=7B
 MT_ACQ494=B
 MT_DIO422=71
+MT_DI460=72
 
 MTV_DIO482_PPW="7A E"
 
@@ -88,6 +89,7 @@ nameFromMT() {
 	$MT_DIO482TD_PG) echo "dio482td_pg";;
 	$MT_ACQ494)    echo "acq494fmc";;
 	$MT_DIO422)    echo "dio422elf";;
+	$MT_DI460)      echo "di460elf";;
 	# no default	
 	esac					
 }

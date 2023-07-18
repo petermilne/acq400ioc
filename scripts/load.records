@@ -598,9 +598,9 @@ load_400() {
         else
             ./scripts/load.dio482td_DI ${HOST} ${site}
         fi;;
-    $MT_DIO432|$MT_DIO432P|$MT_DIO482|$MT_DIO482TD_PG|$MT_DIO422)
+    $MT_DIO432|$MT_DIO432P|$MT_DIO482|$MT_DIO482TD_PG|$MT_DIO422|$MT_DI460)
         mv=$(cat /dev/acq400.$site.knobs/module_variant)
-        if [ "$model" = "$MT_DIO482" ] && [ "$mv" = "20" -o "$mv" = "21" ]; then
+        if [ "$model" = "$MT_DIO482" -o "$model" = "$MT_DI460" ] && [ "$mv" = "20" -o "$mv" = "21" ]; then
             if [ $site -eq 1 ]; then
                 dblr '"db/dio482-scaler.db","'${cprams}'"'
             fi
