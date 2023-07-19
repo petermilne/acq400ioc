@@ -10,6 +10,7 @@ record(calc, "${UUT}:${SITE}:CNT:FREQ:${ch}") {
 	field(INPA, "${UUT}:${SITE}:CNT:RAW:${ch}")
 	field(INPB, "${UUT}:0:SIG:SYN_S${SITE}:FREQ")
 	field(INPC, "${UUT}:${SITE}:ACC")
-	field(CALC, "C==0? A*B: 0")
+	field(INPD, "${UUT}:${SITE}:CNT:FREQ:${ch}.LA")
+	field(CALC, "C==0? A*B: ABS(A-D)")
 	field(EGU,  "Hz")
 }
