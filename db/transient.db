@@ -169,7 +169,6 @@ record(bi, "${UUT}:MODE:TRANSIENT:DEMUX:r") {
 
 record(bo, "${UUT}:MODE:TRANSIENT:DEMUX:s") {
 	field(DTYP, "Soft Channel")
-	field(EGU,  "Samples")
 	field(ZNAM, "0")
 	field(ONAM, "1")
 	field(OMSL, "closed_loop")
@@ -182,7 +181,6 @@ record(bi, "${UUT}:MODE:TRANSIENT:AUTO_SOFT_TRG:r") {
 	field(INP,  "@transient.proto getTransientSoftTrigger ${SPORT}")
 	field(SCAN, "I/O Intr")
 	field(DESC, "transient set to self trigger")
-	field(EGU,  "Samples")
 	field(ZNAM, "0")
 	field(ONAM, "1")
 }

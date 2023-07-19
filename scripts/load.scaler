@@ -1,0 +1,16 @@
+#!/bin/sh
+
+HOST=$1
+site=$2
+source ./scripts/record_support.sh
+
+HSS="UUT=${HOST},SITE=${site},SPORT=S${site}C"
+
+echo "#load.scaler"
+
+create_asyn_channel S${site}C 127.0.0.1:$((4220+${site}))
+for kb in /etc/acq400/${site}/cnt.*; do
+    kbn=$(basename $kb)
+    ch=${kbn#*.}
+	[ -f $kb ] && dblr '"db/scaler_instcount.db","'${HSS},ch=${ch}'"'
+done

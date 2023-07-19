@@ -20,3 +20,8 @@ set_acc {
 	out "acc_not_reset %d";
 	in "";
 }
+
+get_cnt {
+	out "cnt.\$1";
+	in "%x";
+}

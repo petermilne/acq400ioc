@@ -1,0 +1,15 @@
+record(longin, "${UUT}:${SITE}:CNT:RAW:${ch}") {
+	field(SCAN, "1 second")
+	field(DTYP, "stream")
+	field(INP,  "@dio482_scaler.proto get_cnt(${ch}) ${SPORT}")
+	field(SCAN, "1 second")
+	field(FLNK, "${UUT}:${SITE}:CNT:FREQ:${ch}")  
+}
+
+record(calc, "${UUT}:${SITE}:CNT:FREQ:${ch}") {
+	field(INPA, "${UUT}:${SITE}:CNT:RAW:${ch}")
+	field(INPB, "${UUT}:0:SIG:SYN_S${SITE}:FREQ")
+	field(INPC, "${UUT}:${SITE}:ACC")
+	field(CALC, "C==0? A*B: 0")
+	field(EGU,  "Hz")
+}
