@@ -102,3 +102,13 @@ record(ao, "${UUT}:${SITE}:AWG:D:${cid}") {
         field(PINI, "YES")        	
 }
 
+record(bo, "${UUT}:${SITE}:AWG:DIST") {
+        field(DESC, "$placeholder")
+        field(DTYP, "Soft Channel")
+        field(ZNAM, "DC")
+        field(ONAM, "AWG")
+        field(VAL,  "0")
+        field(PINI, "YES")      
+}
+
+
