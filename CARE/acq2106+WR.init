@@ -69,7 +69,7 @@ case $mtype in
         set.site $site CLKDIV=$CLKDIV
         break
     done;;
-fi	
+esac
 
 
 FREQHZ=$(echo $FREQ | awk '{ print $1*1000000 }')
