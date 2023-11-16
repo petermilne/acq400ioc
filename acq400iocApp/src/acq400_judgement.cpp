@@ -945,7 +945,7 @@ int acq400Judgement::factory(const char *portName, int nchan, int maxPoints, uns
 		if (judgementNJ){
 			new acq400JudgementNJ<epicsInt16>   (portName, nchan, maxPoints, bursts_per_buffer, ndma);
 		}else{
-			new acq400JudgementImpl<epicsInt16> (portName, nchan, maxPoints, bursts_per_buffer, ndma, ::ISACQ480());
+			new acq400JudgementImpl<epicsInt16> (portName, nchan, maxPoints, bursts_per_buffer, ndma);
 		}
 		return(asynSuccess);
 	case sizeof(long):
