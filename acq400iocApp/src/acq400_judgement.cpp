@@ -652,10 +652,12 @@ class acq400JudgementImpl : public acq400Judgement {
 	}
 
 	int print_fails;
+	bool flip_first_sample;
+	ETYPE *first_sample_buffer;
 public:
-	acq400JudgementImpl(const char* portName, int _nchan, int _nsam, int _bursts_per_buffer, unsigned _ndma) :
+	acq400JudgementImpl(const char* portName, int _nchan, int _nsam, int _bursts_per_buffer, unsigned _ndma, bool _flip_first_sample = false) :
 		acq400Judgement(portName, _nchan, _nsam, _bursts_per_buffer),
-		ndma(_ndma), print_fails(0)
+		ndma(_ndma), print_fails(0), flip_first_sample(_flip_first_sample), first_sample_buffer(0)
 	{
 		createParam(PS_MU,  AATYPE,    	&P_MU);
 		createParam(PS_ML,  AATYPE,    	&P_ML);
@@ -674,6 +676,18 @@ public:
 		if (verbose > 0){
 			printf("INFO %s cbcutoff set %d\n", __FUNCTION__, cbcutoff);
 		}
+		if (flip_first_sample){
+			first_sample_buffer = new ETYPE[nchan*nsam];
+		}
+	}
+	~acq400JudgementImpl() {
+		delete [] RAW_MU;
+		delete [] RAW_ML;
+		delete [] RAW;
+		delete [] CHN_MU;
+		delete [] CHN_ML;
+
+		if (first_sample_buffer) delete [] first_sample_buffer;
 	}
 
 
@@ -703,21 +717,8 @@ public:
 		return onCalculate(fail);
 	}
 
-	virtual void handle_burst(int vbn, int offset)
+	void _handle_burst(int vbn, int offset, ETYPE* raw)
 	{
-		ETYPE* raw = (ETYPE*)Buffer::the_buffers[ib]->getBase()+offset;
-		bool esok = handle_es((unsigned*)raw) == 0;
-
-		if (!esok){
-			esok = handle_es((unsigned*)(raw+nchan));
-			if (++print_fails < 4){
-				printf("ERROR %s es not at offset0, %s\n", __FUNCTION__, esok? "ES found at +1": "ES NOT FOUND");
-			}
-			return;
-		}else{
-			print_fails = 0;
-		}
-
 		updateTimeStamp(offset);
 		setIntegerParam(P_SAMPLE_COUNT, sample_count);
 		setIntegerParam(P_CLOCK_COUNT,  clock_count[1]);
@@ -731,12 +732,49 @@ public:
 		setIntegerParam(P_BN, vbn);
 		callParamCallbacks();
 		if (verbose > 1){
-			printf("%s %s FIRST_SAM:%d vbn:%3d off:%d fail:%d\n", __FUNCTION__, esok? "ESOK": "ES NF", FIRST_SAM, vbn, offset, fail);
+			printf("%s FIRST_SAM:%d vbn:%3d off:%d fail:%d\n", __FUNCTION__, FIRST_SAM, vbn, offset, fail);
 		}
 		for(int m32 = 0; m32 < fail_mask_len; ++m32){
 			setIntegerParam(m32, P_RESULT_MASK32, FAIL_MASK32[m32]);
 			callParamCallbacks(m32);
 		}
+	}
+	virtual void handle_burst(int vbn, int offset)
+	{
+		ETYPE* raw = (ETYPE*)Buffer::the_buffers[ib]->getBase()+offset;
+
+		bool esok = handle_es((unsigned*)raw) == 0;
+
+		if (flip_first_sample){
+			if (!esok){
+				int ssb = sizeof(ETYPE)*nsam*nchan;
+				memcpy(first_sample_buffer, raw, ssb);
+				memcpy(raw, raw+ssb, ssb);
+				memcpy(raw+ssb, first_sample_buffer, ssb);
+				esok = handle_es((unsigned*)raw) == 0;
+			}else{
+				printf("UNEXPECTED: flip_first_sample && esok\n");
+			}
+		}
+
+
+		if (!esok){
+			esok = handle_es((unsigned*)(raw+nchan));
+			if (!esok && ++print_fails < 4){
+				printf("ERROR %s es not at offset0, %s %s\n", __FUNCTION__, esok? "ES found at +1": "ES NOT FOUND", flip_first_sample? "FLIP": "STICK");
+				/*
+				int ssb = sizeof(ETYPE)*nsam*nchan;
+				FILE *fp = popen("hexdump -e \'8/2 \"%02x,\" \"\\n\"\'", "w");
+				fwrite(raw, 1, ssb*3, fp);
+				pclose(fp);
+				*/
+			}
+			return;
+		}else{
+			print_fails = 0;
+		}
+		_handle_burst(vbn, offset, raw);
+
 	}
 	/** Called when asyn clients call pasynInt32->write(). */
 	virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value)
@@ -905,9 +943,9 @@ int acq400Judgement::factory(const char *portName, int nchan, int maxPoints, uns
 	switch(data_size){
 	case sizeof(short):
 		if (judgementNJ){
-			new acq400JudgementNJ<epicsInt16> (portName, nchan, maxPoints, bursts_per_buffer, ndma);
+			new acq400JudgementNJ<epicsInt16>   (portName, nchan, maxPoints, bursts_per_buffer, ndma);
 		}else{
-			new acq400JudgementImpl<epicsInt16> (portName, nchan, maxPoints, bursts_per_buffer, ndma);
+			new acq400JudgementImpl<epicsInt16> (portName, nchan, maxPoints, bursts_per_buffer, ndma, ::ISACQ480());
 		}
 		return(asynSuccess);
 	case sizeof(long):

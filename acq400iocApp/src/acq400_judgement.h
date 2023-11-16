@@ -67,6 +67,7 @@ protected:
 	virtual void doMaskUpdateCallbacks(int ic) = 0;
 
 	acq400Judgement(const char* portName, int nchan, int nsam, int bursts_per_buffer=1);
+	virtual ~acq400Judgement(void) {}
 
 	const int nchan;
 	const int nsam;
