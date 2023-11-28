@@ -62,6 +62,17 @@ acq400ioc_DBD += hudpResetOnStop.dbd
 acq400ioc_DBD += sfp_txen.dbd
 acq400ioc_DBD += ppw_tick_scaler.dbd
 
+ifdef STUBPVA
+$(info PVA NOT INCLUDED)
+else
+# PVAccess
+$(info PVA IS INCLUDED define STUBPVA=1 to exclude)
+acq400ioc_DBD += qsrv.dbd
+acq400ioc_DBD += PVAServerRegister.dbd
+acq400ioc_LIBS += qsrv
+acq400ioc_LIBS += $(EPICS_BASE_PVA_CORE_LIBS)
+endif
+
 # Add all the support libraries needed by this IOC
 acq400ioc_LIBS += acq2ioc
 acq400ioc_LIBS += seq pv
