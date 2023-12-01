@@ -1394,6 +1394,10 @@ KB=/dev/acq400.0.knobs
 
 
 
+seqMgtStop() {
+    echo "seq mgtStopOnLinkDown \"uut=${HOST},port=$1\"" >>/tmp/st_post.cmd
+}
+
 load_mb() {
     echo 1>&2 "load.records:load_mb"
 
@@ -1432,25 +1436,23 @@ load_mb() {
     fi
     [ -e /dev/gpio/TRG/d0 ] && load_mb_trg_gpio
 
-    if [[ -e /dev/acq400.12.knobs || -e /dev/acq400.13.knobs ]]; then
+    ls /dev | grep -q acq400.1[0123].knobs
+    if [ $? -eq 0 ]; then    
         source /usr/local/epics/scripts/load.mgt400
-
-        [ -e /dev/acq400.13.knobs ] && echo "seq mgtStopOnLinkDown \"uut=${HOST},port=A\"" >>/tmp/st_post.cmd
-        [ -e /dev/acq400.12.knobs ] && echo "seq mgtStopOnLinkDown \"uut=${HOST},port=B\"" >>/tmp/st_post.cmd
-    elif [[ "$mt" = "z7io" && -e /dev/acq400.11.knobs ]]; then
-        source /usr/local/epics/scripts/load.mgt400
-        echo "seq mgtStopOnLinkDown \"uut=${HOST},port=C\"" >>/tmp/st_post.cmd
+        [ -e /dev/acq400.13.knobs ] && seqMgtStop A
+        [ -e /dev/acq400.12.knobs ] && seqMgtStop B
+        [ -e /dev/acq400.11.knobs ] && [ "$mt" = "z7io" ] && seqMgtStop C
+        if [ $hudp -eq 1 ]; then
+            create_asyn_channel S10 127.0.0.1:4230
+            PRAMS="UUT=${HOST},SITE=10"
+            dblr '"db/counter.db","'${PRAMS},CTRMAX=2147483648,DT=1,DTC=1,lname=HUDP_RX_PKT,pname=rx_pkt_count'"'
+            dblr '"db/counter.db","'${PRAMS},CTRMAX=2147483648,DT=1,DTC=1,lname=HUDP_TX_PKT,pname=tx_pkt_count'"'
+            dblr '"db/counter.db","'${PRAMS},CTRMAX=1048576,DT=1,DTC=1,lname=HUDP_DISCO,pname=disco_count'"'
+            dblr '"db/hudp.db","'${PRAMS},SPORT=S10'"'
+            echo "seq hudpResetOnStop \"uut=${HOST},verbose=${HUDP_VERBOSE:-0}\"" >>/tmp/st_post.cmd
+        fi
     fi
 
-    if [[ -e /dev/acq400.10.knobs && $hudp -eq 1 ]]; then
-        create_asyn_channel S10 127.0.0.1:4230
-        PRAMS="UUT=${HOST},SITE=10"
-        dblr '"db/counter.db","'${PRAMS},CTRMAX=2147483648,DT=1,DTC=1,lname=HUDP_RX_PKT,pname=rx_pkt_count'"'
-        dblr '"db/counter.db","'${PRAMS},CTRMAX=2147483648,DT=1,DTC=1,lname=HUDP_TX_PKT,pname=tx_pkt_count'"'
-        dblr '"db/counter.db","'${PRAMS},CTRMAX=1048576,DT=1,DTC=1,lname=HUDP_DISCO,pname=disco_count'"'
-        dblr '"db/hudp.db","'${PRAMS},SPORT=S10'"'
-        echo "seq hudpResetOnStop \"uut=${HOST},verbose=${HUDP_VERBOSE:-0}\"" >>/tmp/st_post.cmd
-    fi
     if [ "x$SHOTBUSY_OK" = "xy" ] && [ -e /dev/gpio/LED/ACT_G ]; then
         echo "seq shotBusy \"uut=${HOST},verbose=${SHOT_BUSY_VERBOSE:-0}\"" >>/tmp/st_post.cmd
     fi
